@@ -1,0 +1,166 @@
+import React from 'react'
+
+export default function Footer() {
+    return (
+        <div>
+            <div className='bg-black p-5 lg:hidden'>
+                <img src="img/logo-footer.svg" alt="" />
+                <p className='text-white leading-6 text-sm my-3'>به فروشگاه رگال خوش آمدید، جایی که استایل و شیک بودن به شما هدیه داده می‌شود. با خبرنامه رگال همراه باشید و اولین نفر باشید که اخبار، پیشنهادات و توصیه‌های دنیای مد و فشن را می شنوید.</p>
+                <div className='flex items-center gap-3.5'>
+                    <input type="text" placeholder='ایمیل خود را وارد کنید...' className='rounded-lg text-neutral-gray3 border-1 border-neutral-gray8 pr-6 py-3.5' />
+                    <button className='px-6 py-3.25 border-1 border-neutral-gray8 text-neutral-gray3 rounded-[10px] flex justify-center items-center'>عضویت</button>
+                </div>
+                <div className='flex mt-8 gap-13'>
+                    <ul>
+                        <li className='mb-3 ml-1.25 text-white flex justify-center items-center gap-2.5'>
+                            <div className='w-1.5 h-1.5 rounded-full bg-white'></div>
+                            <h5 className='leading-5 font-semibold'>لینک‌های کمکی</h5>
+                        </li>
+                        <li className='px-4 py-2.5 text-neutral-gray3 leading-6 text-sm'><a href="">قوانین و مقررات</a></li>
+                        <li className='px-4 py-2.5 text-neutral-gray3 leading-6 text-sm'><a href="">حریم خصوصی</a></li>
+                        <li className='px-4 py-2.5 text-neutral-gray3 leading-6 text-sm'><a href="">سوالات متداول</a></li>
+                    </ul>
+                    <ul>
+                        <li className='mb-3 ml-1.25 text-white flex justify-center items-center gap-2.5'>
+                            <div className='w-1.5 h-1.5 rounded-full bg-white'></div>
+                            <h5 className='leading-5 font-semibold'>دسته محصولات</h5>
+                        </li>
+                        <li className='px-4 py-2.5 text-neutral-gray3 leading-6 text-sm'><a href="">پیراهن کوتاه</a></li>
+                        <li className='px-4 py-2.5 text-neutral-gray3 leading-6 text-sm'><a href="">شومیز و دامن</a></li>
+                        <li className='px-4 py-2.5 text-neutral-gray3 leading-6 text-sm'><a href="">شلوار</a></li>
+                        <li className='px-4 py-2.5 text-neutral-gray3 leading-6 text-sm'><a href="">سرهمی</a></li>
+                        <li className='px-4 py-2.5 text-neutral-gray3 leading-6 text-sm'><a href="">کت و ترنچ کت</a></li>
+                    </ul>
+                </div>
+                <ul className='pt-4 pb-6 border-b-1 border-neutral-gray12 text-neutral-gray3'>
+                    <li className='py-2 flex gap-2 leading-6 text-sm'>
+                        <img src="img/location.svg" alt="" />
+                        تهران،‌ خیابان ولیعصر نرسیده به میدان ونک، پلاک ۲۰
+                    </li>
+                    <li className='py-2 flex  gap-2 leading-6 text-sm'>
+                        <img src="img/clock.svg" alt="" />
+                        شنبه تا چهارشنبه 9 صبح الی 18
+                    </li>
+                    <li className='py-2 flex gap-2 leading-6 text-sm'>
+                        <img src="img/call-calling.svg" alt="" />
+                        ۰۲۱ - ۱۲۳۴ ۵۶۷۹
+                        |
+                        ۰۲۱ - ۱۲۳۴ ۵۶۷۸
+                    </li>
+                    <li className='py-2 flex gap-2 leading-6 text-sm'>
+                        <img src="img/sms.svg" alt="" />
+                        Info@regal.com
+                    </li>
+                </ul>
+                <div className='mt-6 border-b-1 border-neutral-gray12'>
+                    <p className='text-white leading-6 text-sm mb-4'>ما را در شبکه‌های اجتماعی دنبال کنید:</p>
+                    <div className='flex justify-end gap-2 mb-6'>
+                        <div className='p-3.5 border-1 border-neutral-gray8 rounded-lg'>
+                            <img src="img/Telegram.svg" alt="" />
+                        </div>
+                        <div className='p-3.5 border-1 border-neutral-gray8 rounded-lg'>
+                            <img src="img/Whatsapp.svg" alt="" />
+                        </div>
+                        <div className='p-3.5 border-1 border-neutral-gray8 rounded-lg'>
+                            <img src="img/instagram.svg" alt="" />
+                        </div>
+                    </div>
+                </div>
+                <div className='flex items-center mt-4'>
+                    <img src="img/copyright.svg" alt="" />
+                    <p className='mr-2 text-neutral-gray9 leading-4.5 text-xs'>تمامی حقوق مادی و معنوی برای مجموعه رگال محفوظ است.</p>
+                </div>
+            </div>
+            <div className='bg-black px-12 hidden lg:block'>
+                <div className='flex items-center border-b-1 border-neutral-gray12'>
+                    <div className='mb-32'>
+                        <img src="/img/logo-footer.svg" alt="" />
+                        <p className='text-white leading-6 text-sm mt-3.5 mb-4 max-w-108'>به فروشگاه رگال خوش آمدید، جایی که استایل و شیک بودن به شما هدیه داده می‌شود. با خبرنامه رگال همراه باشید و اولین نفر باشید که اخبار، پیشنهادات و توصیه‌های دنیای مد و فشن را می شنوید.</p>
+                        <div className='flex items-center gap-3.5 max-w-108'>
+                            <input type="text" placeholder='ایمیل خود را وارد کنید...' className='rounded-lg text-neutral-gray3 border-1 border-neutral-gray8 pr-6 pl-22 py-3.5' />
+                            <button className='px-6 py-3.25 border-1 border-neutral-gray8 text-neutral-gray3 rounded-[10px] text-center leading-5.5'>عضویت</button>
+                        </div>
+                    </div>
+                    <div className='h-97 py-6 mx-8 relative'>
+                        <div className='w-0.25 h-85 bg-neutral-gray12'></div>
+                        <div className='w-6.25 h-17.5 rounded-100 bg-neutral-gray13 absolute top-12 translate-x-[50%]'>
+                            <img className='py-5.75' src="/img/arrow-right.svg" alt="" />
+                        </div>
+                    </div>
+                    <div className='flex gap-8 mt-20 mb-12'>
+                        <ul>
+                            <li className='mb-6 text-white flex justify-center items-center gap-2.5'>
+                                <div className='w-1.5 h-1.5 rounded-full bg-white'></div>
+                                <h5 className='leading-5 font-semibold text-nowrap'>لینک‌های کمکی</h5>
+                            </li>
+                            <li className='py-2.5 text-neutral-gray3 leading-6 text-sm'><a href="">قوانین و مقررات</a></li>
+                            <li className='py-2.5 text-neutral-gray3 leading-6 text-sm'><a href="">حریم خصوصی</a></li>
+                            <li className='py-2.5 text-neutral-gray3 leading-6 text-sm'><a href="">سوالات متداول</a></li>
+                        </ul>
+                        <ul>
+                            <li className='mb-6 text-white flex justify-center items-center gap-2.5'>
+                                <div className='w-1.5 h-1.5 rounded-full bg-white'></div>
+                                <h5 className='leading-5 font-semibold text-nowrap'>دسته محصولات</h5>
+                            </li>
+                            <li className='py-2.5 text-neutral-gray3 leading-6 text-sm'><a href="">پیراهن کوتاه</a></li>
+                            <li className='py-2.5 text-neutral-gray3 leading-6 text-sm'><a href="">شومیز و دامن</a></li>
+                            <li className='py-2.5 text-neutral-gray3 leading-6 text-sm'><a href="">شلوار</a></li>
+                            <li className='py-2.5 text-neutral-gray3 leading-6 text-sm'><a href="">سرهمی</a></li>
+                            <li className='py-2.5 text-neutral-gray3 leading-6 text-sm'><a href="">کت و ترنچ کت</a></li>
+                        </ul>
+                        <ul>
+                            <li className='mb-6 text-white flex justify-center items-center gap-2.5'>
+                                <div className='w-1.5 h-1.5 rounded-full bg-white'></div>
+                                <h5 className='leading-5 font-semibold text-nowrap'>ارتباط با ما</h5>
+                            </li>
+                            <li className='py-2.5 text-neutral-gray3 leading-6 text-sm'><a href="">تماس با ما</a></li>
+                            <li className='py-2.5 text-neutral-gray3 leading-6 text-sm'><a href="">درباره ما</a></li>
+                            <li className='py-2.5 text-neutral-gray3 leading-6 text-sm'><a href="">همکاری با ما</a></li>
+                        </ul>
+                        <ul className='text-neutral-gray3'>
+                            <li className='mb-6 text-white flex items-center gap-2.5'>
+                                <div className='w-1.5 h-1.5 rounded-full bg-white'></div>
+                                <h5 className='leading-5 font-semibold text-nowrap'>اطلاعات تماس</h5>
+                            </li>
+                            <li className='py-2 flex gap-2 leading-6 text-sm'>
+                                <img src="/img/call-calling.svg" alt="" />
+                                ۰۲۱ - ۱۲۳۴ ۵۶۷۹
+                                |
+                                ۰۲۱ - ۱۲۳۴ ۵۶۷۸
+                            </li>
+                            <li className='py-2 flex gap-2 leading-6 text-sm'>
+                                <img src="/img/sms.svg" alt="" />
+                                Info@regal.com
+                            </li>
+                            <li className='py-2 flex gap-2 leading-6 text-sm'>
+                                <img src="/img/location.svg" alt="" />
+                                تهران،‌ خیابان ولیعصر نرسیده به میدان ونک، پلاک ۲۰
+                            </li>
+                            <li className='py-2 flex gap-2 leading-6 text-sm'>
+                                <img src="/img/clock.svg" alt="" />
+                                شنبه تا چهارشنبه 9 صبح الی 18
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div className='flex justify-between items-center py-3'>
+                    <div className='flex items-center'>
+                        <img src="/img/copyright.svg" alt="" />
+                        <p className='mr-2 text-neutral-gray9 leading-6 text-sm'>تمامی حقوق مادی و معنوی برای مجموعه رگال محفوظ است.</p>
+                    </div>
+                    <div className='flex gap-2'>
+                        <div className='p-3.5 border-1 border-neutral-gray8 rounded-lg'>
+                            <img src="/img/Telegram.svg" alt="" />
+                        </div>
+                        <div className='p-3.5 border-1 border-neutral-gray8 rounded-lg'>
+                            <img src="/img/Whatsapp.svg" alt="" />
+                        </div>
+                        <div className='p-3.5 border-1 border-neutral-gray8 rounded-lg'>
+                            <img src="/img/instagram.svg" alt="" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}

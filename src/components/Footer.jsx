@@ -5,7 +5,7 @@ export default function Footer() {
         <div>
             <div className='bg-black p-5 lg:hidden'>
                 <img src="/img/logo-footer.svg" alt="" />
-                <p className='text-white leading-6 text-sm my-3'>به فروشگاه رگال خوش آمدید، جایی که استایل و شیک بودن به شما هدیه داده می‌شود. با خبرنامه رگال همراه باشید و اولین نفر باشید که اخبار، پیشنهادات و توصیه‌های دنیای مد و فشن را می شنوید.</p>
+                <p className='text-white leading-6 text-sm my-3 max-w-87.5 lg:max-w-108'>به فروشگاه رگال خوش آمدید، جایی که استایل و شیک بودن به شما هدیه داده می‌شود. با خبرنامه رگال همراه باشید و اولین نفر باشید که اخبار، پیشنهادات و توصیه‌های دنیای مد و فشن را می شنوید.</p>
                 <div className='flex items-center gap-3.5'>
                     <input type="text" placeholder='ایمیل خود را وارد کنید...' className='rounded-lg text-neutral-gray-3 border-1 border-neutral-gray-8 pr-6 py-3.5' />
                     <button className='px-6 py-3.25 border-1 border-neutral-gray8 text-neutral-gray-3 rounded-[10px] flex justify-center items-center'>عضویت</button>

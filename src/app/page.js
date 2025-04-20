@@ -103,14 +103,14 @@ export default function Home() {
           دسته بندی محصولات
         </h5>
         <div className="flex flex-wrap gap-4 lg:hidden">
-          <div className="flex flex-col lg:flex-row gap-4">
+          <div className="flex flex-col md:flex-row md:mx-auto gap-4">
             <div className="w-full h-full">
               <img
-                className="relative w-full h-full z-20"
+                className="relative w-full h-full md:h-auto z-20"
                 src="/img/Category-1.png"
                 alt=""
               />
-              <div className="relative z-50 bottom-16 px-2">
+              <div className="relative z-40 bottom-16 px-2">
                 <h5 className="leading-5 font-semibold text-white">
                   پیراهن کوتاه
                 </h5>
@@ -126,11 +126,11 @@ export default function Home() {
             </div>
             <div className="w-full h-full">
               <img
-                className="relative w-full h-full z-20"
+                className="relative w-full h-full md:h-auto  z-20"
                 src="/img/Category-3.png"
                 alt=""
               />
-              <div className="relative z-50 bottom-16 px-2">
+              <div className="relative z-40 bottom-16 px-2">
                 <h5 className="leading-5 font-semibold text-white">سرهمی</h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -144,11 +144,11 @@ export default function Home() {
             </div>
             <div className="w-full h-full">
               <img
-                className="relative w-full h-full z-20"
+                className="relative w-full h-full md:h-auto  z-20"
                 src="/img/Category-6.png"
                 alt=""
               />
-              <div className="relative z-50 bottom-16 px-2">
+              <div className="relative z-40 bottom-16 px-2">
                 <h5 className="leading-5 font-semibold text-white">
                   شومیز و بلوز
                 </h5>
@@ -164,11 +164,11 @@ export default function Home() {
             </div>
             <div className="w-full h-full">
               <img
-                className="relative w-full h-full z-20"
+                className="relative w-full h-full md:h-auto  z-20"
                 src="/img/Category-8.png"
                 alt=""
               />
-              <div className="relative z-50 bottom-16 px-2">
+              <div className="relative z-40 bottom-16 px-2">
                 <h5 className="leading-5 font-semibold text-white">
                   تاپ و کراپ
                 </h5>
@@ -184,14 +184,14 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex flex-col lg:flex-row gap-4">
+          <div className="flex flex-col md:flex-row md:mx-auto gap-4">
             <div className="w-full h-full">
               <img
-                className="relative w-full h-full z-20"
+                className="relative w-full h-full md:h-auto  z-20"
                 src="/img/Category-2.png"
                 alt=""
               />
-              <div className="relative z-50 bottom-16 px-2">
+              <div className="relative z-40 bottom-16 px-2">
                 <h5 className="leading-5 font-semibold text-white">شلوار</h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -205,11 +205,11 @@ export default function Home() {
             </div>
             <div className="w-full h-full">
               <img
-                className="relative w-full h-full z-20"
+                className="relative w-full h-full md:h-auto  z-20"
                 src="/img/Category-4.png"
                 alt=""
               />
-              <div className="relative z-50 bottom-16 px-2">
+              <div className="relative z-40 bottom-16 px-2">
                 <h5 className="leading-5 font-semibold text-white">
                   کت و جلیقه
                 </h5>
@@ -225,11 +225,11 @@ export default function Home() {
             </div>
             <div className="w-full h-full">
               <img
-                className="relative w-full h-full z-20"
+                className="relative w-full h-full md:h-auto  z-20"
                 src="/img/Category-5.png"
                 alt=""
               />
-              <div className="relative z-50 bottom-16 px-2">
+              <div className="relative z-40 bottom-16 px-2">
                 <h5 className="leading-5 font-semibold text-white">دامن</h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -243,11 +243,11 @@ export default function Home() {
             </div>
             <div className="w-full h-full">
               <img
-                className="relative w-full h-full z-20"
+                className="relative w-full h-full md:h-auto  z-20"
                 src="/img/Category-7.png"
                 alt=""
               />
-              <div className="relative z-50 bottom-16 px-2">
+              <div className="relative z-40 bottom-16 px-2">
                 <h5 className="leading-5 font-semibold text-white">
                   ترنچ کت و پالتو
                 </h5>

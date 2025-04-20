@@ -13,7 +13,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" dir="rtl">
-      <body className="font-yekan-bakh">
+      <body className="font-yekan-bakh overflow-x-hidden">
         <Navbar/>
         {children}
         <Footer/>

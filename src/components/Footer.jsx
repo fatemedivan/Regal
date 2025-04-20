@@ -4,7 +4,7 @@ export default function Footer() {
     return (
         <div>
             <div className='bg-black p-5 lg:hidden'>
-                <img src="img/logo-footer.svg" alt="" />
+                <img src="/img/logo-footer.svg" alt="" />
                 <p className='text-white leading-6 text-sm my-3'>به فروشگاه رگال خوش آمدید، جایی که استایل و شیک بودن به شما هدیه داده می‌شود. با خبرنامه رگال همراه باشید و اولین نفر باشید که اخبار، پیشنهادات و توصیه‌های دنیای مد و فشن را می شنوید.</p>
                 <div className='flex items-center gap-3.5'>
                     <input type="text" placeholder='ایمیل خود را وارد کنید...' className='rounded-lg text-neutral-gray-3 border-1 border-neutral-gray-8 pr-6 py-3.5' />
@@ -32,7 +32,7 @@ export default function Footer() {
                         <li className='px-4 py-2.5 text-neutral-gray-3 leading-6 text-sm'><a href="">کت و ترنچ کت</a></li>
                     </ul>
                 </div>
-                <ul className='pt-4 pb-6 border-b-1 border-neutral-gray12 text-neutral-gray-3'>
+                <ul className='pt-4 pb-6 border-b-1 border-neutral-gray-12 text-neutral-gray-3'>
                     <li className='py-2 flex gap-2 leading-6 text-sm'>
                         <img src="img/location.svg" alt="" />
                         تهران،‌ خیابان ولیعصر نرسیده به میدان ونک، پلاک ۲۰
@@ -52,16 +52,16 @@ export default function Footer() {
                         Info@regal.com
                     </li>
                 </ul>
-                <div className='mt-6 border-b-1 border-neutral-gray12'>
+                <div className='mt-6 border-b-1 border-neutral-gray-12'>
                     <p className='text-white leading-6 text-sm mb-4'>ما را در شبکه‌های اجتماعی دنبال کنید:</p>
                     <div className='flex justify-end gap-2 mb-6'>
-                        <div className='p-3.5 border-1 border-neutral-gray8 rounded-lg'>
+                        <div className='p-3.5 border-1 border-neutral-gray-8 rounded-lg'>
                             <img src="img/Telegram.svg" alt="" />
                         </div>
-                        <div className='p-3.5 border-1 border-neutral-gray8 rounded-lg'>
+                        <div className='p-3.5 border-1 border-neutral-gray-8 rounded-lg'>
                             <img src="img/Whatsapp.svg" alt="" />
                         </div>
-                        <div className='p-3.5 border-1 border-neutral-gray8 rounded-lg'>
+                        <div className='p-3.5 border-1 border-neutral-gray-8 rounded-lg'>
                             <img src="img/instagram.svg" alt="" />
                         </div>
                     </div>
@@ -78,12 +78,12 @@ export default function Footer() {
                         <p className='text-white leading-6 text-sm mt-3.5 mb-4 max-w-108'>به فروشگاه رگال خوش آمدید، جایی که استایل و شیک بودن به شما هدیه داده می‌شود. با خبرنامه رگال همراه باشید و اولین نفر باشید که اخبار، پیشنهادات و توصیه‌های دنیای مد و فشن را می شنوید.</p>
                         <div className='flex items-center gap-3.5 max-w-108'>
                             <input type="text" placeholder='ایمیل خود را وارد کنید...' className='rounded-lg text-neutral-gray-3 border-1 border-neutral-gray-8 pr-6 pl-22 py-3.5' />
-                            <button className='px-6 py-3.25 border-1 border-neutral-gray8 text-neutral-gray-3 rounded-[10px] text-center leading-5.5'>عضویت</button>
+                            <button className='px-6 py-3.25 border-1 border-neutral-gray-8 text-neutral-gray-3 rounded-[10px] text-center leading-5.5'>عضویت</button>
                         </div>
                     </div>
                     <div className='h-97 py-6 mx-8 relative'>
-                        <div className='w-0.25 h-85 bg-neutral-gray12'></div>
-                        <div className='w-6.25 h-17.5 rounded-100 bg-neutral-gray13 absolute top-12 translate-x-[50%]'>
+                        <div className='w-0.25 h-85 bg-neutral-gray-12'></div>
+                        <div className='w-6.25 h-17.5 rounded-100 bg-neutral-gray-13 absolute top-12 translate-x-[50%]'>
                             <img className='py-5.75' src="/img/arrow-right.svg" alt="" />
                         </div>
                     </div>
@@ -117,7 +117,7 @@ export default function Footer() {
                             <li className='py-2.5 text-neutral-gray-3 leading-6 text-sm'><a href="">درباره ما</a></li>
                             <li className='py-2.5 text-neutral-gray-3 leading-6 text-sm'><a href="">همکاری با ما</a></li>
                         </ul>
-                        <ul className='text-neutral-gray3'>
+                        <ul className='text-neutral-gray-3'>
                             <li className='mb-6 text-white flex items-center gap-2.5'>
                                 <div className='w-1.5 h-1.5 rounded-full bg-white'></div>
                                 <h5 className='leading-5 font-semibold text-nowrap'>اطلاعات تماس</h5>
@@ -143,7 +143,7 @@ export default function Footer() {
                         </ul>
                     </div>
                 </div>
-                <div className='flex justify-between items-center py-3'>
+                <div className='flex justify-between items-center py-3 border-t border-t-neutral-gray-12'>
                     <div className='flex items-center'>
                         <img src="/img/copyright.svg" alt="" />
                         <p className='mr-2 text-neutral-gray-9 leading-6 text-sm'>تمامی حقوق مادی و معنوی برای مجموعه رگال محفوظ است.</p>

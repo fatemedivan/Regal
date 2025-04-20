@@ -11,14 +11,20 @@ export default function Home() {
           <div className="relative">
             <h1 className="font-semibold leading-7.5 text-2xl lg:font-bold lg:text-5xl lg:max-w-150 lg:leading-14.5 break-words">
               لباس هایی که{" "}
-              <span className="px-0.25 py-1 bg-cognac-tint1 inline-block break-words">داستان</span> شما
-              را روایت می کنند
+              <span className="px-0.25 py-1 bg-cognac-tint1 inline-block break-words">
+                داستان
+              </span>{" "}
+              شما را روایت می کنند
             </h1>
             <p className="mt-2 mb-3 text-sm leading-6 lg:mb-4 lg:leading-7 lg:text-[1rem]">
               هر لباس با دقت و عشق طراحی شده تا به شما احساس زیبایی و اعتماد به
               نفس بدهد.
             </p>
-            <img className="absolute -top-35 -left-8.5 -z-10 hidden lg:block" src="/img/shape5.svg" alt="" />
+            <img
+              className="absolute -top-35 -left-8.5 -z-10 hidden lg:block"
+              src="/img/shape5.svg"
+              alt=""
+            />
           </div>
           <div className="flex gap-2 items-center overflow-x-auto whitespace-nowrap no-scrollbar">
             <div className="leading-4.5 text-xs text-neutral-gray-11 px-4 py-0.5 bg-neutral-gray-2 border-1 border-neutral-gray-4 rounded-100 lg:py-2.5 lg:px-6 lg:text-sm lg:leading-5">
@@ -46,11 +52,11 @@ export default function Home() {
             <img className="relative mb-7" src="/img/Arrow.svg" alt="" />
           </div>
           <div className="relative ">
-          <img
-                className="absolute w-14 h-14 -top-7 right-72 lg:right-120 lg:w-26 lg:h-26 lg:-top-13"
-                src="img/header-logo.svg"
-                alt=""
-              />
+            <img
+              className="absolute w-14 h-14 -top-7 right-72 lg:right-120 lg:w-26 lg:h-26 lg:-top-13"
+              src="img/header-logo.svg"
+              alt=""
+            />
             <div className="flex gap-3 items-center overflow-x-hidden">
               <img
                 className="lg:hidden"
@@ -62,7 +68,7 @@ export default function Home() {
                 src="/img/header-mobile-2.png"
                 alt=""
               />
-             
+
               <img
                 className="min-w-37.5 h-37.5 lg:hidden"
                 src="/img/header-desktop-4.png"

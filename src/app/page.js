@@ -1,3 +1,6 @@
+import OffProducts from "@/components/OffProducts";
+import ProductItemOff from "@/components/ProductItemOff";
+
 export default function Home() {
   return (
     <div>
@@ -11,7 +14,7 @@ export default function Home() {
           <div className="relative max-w-348">
             <h1 className="font-semibold leading-7.5 text-2xl md:font-bold md:text-5xl md:max-w-150 md:leading-14.5 lg:ml-52">
               لباس هایی که{" "}
-              <span className="px-0.25 py-1 bg-cognac-tint1 inline-block ">
+              <span className="px-0.25 pb-1 pt-3 bg-cognac-tint-1 inline-block ">
                 داستان
               </span>{" "}
               شما را روایت می کنند
@@ -45,7 +48,7 @@ export default function Home() {
             </div>
           </div>
           <div className="flex items-center mt-6 mb-8 md:my-4 lg:my-1 xl:my-4">
-            <button className="ml-6.25 text-sm leading-5 rounded-lg bg-cognac-primery text-white flex justify-center items-center py-2.5 gap-2 px-8 md:py-3.25 md:px-6">
+            <button className="ml-6.25 text-sm leading-5 rounded-lg bg-cognac-primery text-white flex justify-center items-center py-2.5 gap-2 px-15 md:py-3.25 md:px-6">
               مشاهده کالکشن‌ها
               <img src="/img/arrow-left2.svg" alt="" />
             </button>
@@ -103,10 +106,10 @@ export default function Home() {
           دسته بندی محصولات
         </h5>
         <div className="flex flex-wrap gap-4 lg:hidden">
-          <div className="flex flex-col md:flex-row md:mx-auto gap-4">
-            <div className="w-full h-full">
+          <div className="flex flex-col gap-4">
+            <div className="max-h-71">
               <img
-                className="relative w-full h-full md:h-auto z-20"
+                className="relative w-full h-auto z-20"
                 src="/img/Category-1.png"
                 alt=""
               />
@@ -124,9 +127,9 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="w-full h-full">
+            <div className="max-h-35">
               <img
-                className="relative w-full h-full md:h-auto  z-20"
+                className="relative w-full h-auto z-20"
                 src="/img/Category-3.png"
                 alt=""
               />
@@ -142,9 +145,9 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="w-full h-full">
+            <div className="max-h-50">
               <img
-                className="relative w-full h-full md:h-auto  z-20"
+                className="relative w-full h-auto z-20"
                 src="/img/Category-6.png"
                 alt=""
               />
@@ -162,9 +165,9 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="w-full h-full">
+            <div className="max-h-51.5">
               <img
-                className="relative w-full h-full md:h-auto  z-20"
+                className="relative w-full h-auto z-20"
                 src="/img/Category-8.png"
                 alt=""
               />
@@ -184,10 +187,10 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row md:mx-auto gap-4">
-            <div className="w-full h-full">
+          <div className="flex flex-col gap-4">
+            <div className="max-h-50">
               <img
-                className="relative w-full h-full md:h-auto  z-20"
+                className="relative w-full h-auto z-20"
                 src="/img/Category-2.png"
                 alt=""
               />
@@ -203,9 +206,9 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="w-full h-full">
+            <div className="max-h-37.5">
               <img
-                className="relative w-full h-full md:h-auto  z-20"
+                className="relative w-full h-auto z-20"
                 src="/img/Category-4.png"
                 alt=""
               />
@@ -223,9 +226,9 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="w-full h-full">
+            <div className="max-h-49">
               <img
-                className="relative w-full h-full md:h-auto  z-20"
+                className="relative w-full h-auto z-20"
                 src="/img/Category-5.png"
                 alt=""
               />
@@ -241,9 +244,9 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="w-full h-full">
+            <div className="max-h-71">
               <img
-                className="relative w-full h-full md:h-auto  z-20"
+                className="relative w-full h-auto z-20"
                 src="/img/Category-7.png"
                 alt=""
               />
@@ -415,21 +418,69 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <section className="bg-neutral-gray-1 py-8 lg:py-16">
+        <h5 className="font-semibold leading-5 text-center mb-2 lg:font-bold lg:leading-11 lg:text-4xl lg:mb-4">
+          <span className="text-cognac-primery">طراحـــــی </span>و دوخــــت بر
+          اساس شکل بدن شما
+        </h5>
+        <p className="text-neutral-gray-11 text-center mb-6 mx-5 lg:text-sm lg:leading-6 lg:mb-10 lg:mx-40.5">
+          در این بخش از فروشگاه ما، لباس‌ها و استایل‌هایی را پیدا می‌کنید که با
+          فرم بدنی شما همخوانی دارند. ما به شما کمک می‌کنیم تا بهترین انتخاب‌ها
+          را بر اساس فرم بدنی‌تان داشته باشید.برای شروع، کافیست فرم بدنی خود را
+          انتخاب کنید تا ما به شما لباس‌هایی را پیشنهاد دهیم که به شما احساس
+          راحتی و زیبایی بیشتری ببخشند.
+        </p>
+        <button className="flex justify-center items-center gap-2 mx-auto bg-neutral-gray-13 rounded-lg text-white text-sm leading-5 py-2.5 px-8.5 lg:text-[1rem] lg:leading-5.5 lg:py-3.25 lg:px-11">
+          <img className="mb-0.75" src="/img/scissor.svg" alt="" />
+          شخصی دوزی
+        </button>
+        <div className="flex justify-between items-center gap-3 mt-8 lg:mt-16 lg:gap-6 lg:justify-center 2xl:justify-between">
+          <img className="lg:hidden" src="/img/section-2-2.svg" alt="" />
+          <img className="lg:hidden" src="/img/section-2-1.svg" alt="" />
+          <img className="lg:hidden" src="/img/section-2-3.svg" alt="" />
+          <img
+            className="hidden lg:block"
+            src="/img/section-2-desktop-1.png"
+            alt=""
+          />
+          <img
+            className="hidden lg:block"
+            src="/img/section-2-desktop-2.png"
+            alt=""
+          />
+          <img
+            className="hidden lg:block"
+            src="/img/section-2-desktop-3.png"
+            alt=""
+          />
+          <img
+            className="hidden lg:block"
+            src="/img/section-2-desktop-4.png"
+            alt=""
+          />
+          <img
+            className="hidden lg:block"
+            src="/img/section-2-desktop-5.png"
+            alt=""
+          />
+        </div>
+      </section>
+      <OffProducts/>
       <section className="bg-neutral-gray-1 px-5 py-8 lg:flex lg:justify-center lg:gap-11.5 lg:px-12 lg:py-14">
         <div>
-          <div>
+          <div className="sm:text-center">
             <h5 className="font-semibold leading-5 text-black lg:leading-9.5 lg:text-[31px] lg:font-bold">
               کشف شیک‌پوشی با{" "}
               <span className="text-cognac-primery">رگــــــــــــال</span>
             </h5>
-            <p className="text-neutral-gray-11 leading-4.5 text-xs mt-2 mb-6 max-w-87.5 lg:max-w-184 lg:text-sm lg:leading-6 lg:mt-4 lg:mb-12">
+            <p className="text-neutral-gray-11 leading-4.5 text-xs mt-2 mb-6 max-w-87.5 sm:mx-auto lg:max-w-184 lg:text-sm lg:leading-6 lg:mt-4 lg:mb-12">
               رگال جایی است که مد سلطنتی با ظرافت مدرن پیوند می‌خورد. ما
               مجموعه‌ای از لباس‌های بی‌نظیر و منحصر به فرد را برای بانوان باوقار
               و شیک‌پوش ارائه می‌دهیم که با انتخاب آن‌ها، اعتماد به نفس و زیبایی
               شما بیش از پیش نمایان خواهد شد.
             </p>
           </div>
-          <div className="flex flex-wrap gap-4 lg:gap-6 lg:max-w-184 lg:grid lg:grid-cols-[auto_auto_auto]">
+          <div className="flex flex-wrap gap-4 sm:justify-center lg:gap-6 lg:max-w-184 lg:grid lg:grid-cols-[auto_auto_auto]">
             <div className="max-w-42 lg:max-w-86">
               <img className="p-2.5 lg:p-4" src="/img/ruler.svg" alt="" />
               <h6 className="text-neutral-gray-13 text-sm leading-4 font-semibold mt-4 mb-2 lg:text-18 lg:leading-5.5 lg:font-bold lg:mt-6 lg:mb-4">
@@ -476,12 +527,24 @@ export default function Home() {
         </div>
         <div className="flex gap-4 mt-6 max-w-87.5 lg:max-w-max mx-auto lg:flex-row-reverse">
           <img className="lg:hidden" src="/img/about-1.png" alt="" />
-          <img className="hidden lg:block mt-29.5 max-w-68.5 max-h-128.5" src="/img/about-desktop-3.png" alt="" />
+          <img
+            className="hidden lg:block mt-29.5 max-w-68.5 max-h-128.5"
+            src="/img/about-desktop-3.png"
+            alt=""
+          />
           <div className="lg:w-68.5">
             <img className="mb-4 lg:hidden" src="/img/about-2.png" alt="" />
             <img className="lg:hidden" src="/img/about-3.png" alt="" />
-            <img className="hidden lg:block min-w-68.5 min-h-62 mb-4" src="/img/about-desktop-1.png" alt="" />
-            <img className="hidden lg:block min-w-68.5 min-h-62" src="/img/about-desktop-2.png" alt="" />
+            <img
+              className="hidden lg:block min-w-68.5 min-h-62 mb-4"
+              src="/img/about-desktop-1.png"
+              alt=""
+            />
+            <img
+              className="hidden lg:block min-w-68.5 min-h-62"
+              src="/img/about-desktop-2.png"
+              alt=""
+            />
           </div>
         </div>
       </section>

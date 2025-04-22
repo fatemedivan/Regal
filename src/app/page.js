@@ -1,5 +1,6 @@
+import Comments from "@/components/Comments";
 import OffProducts from "@/components/OffProducts";
-import ProductItemOff from "@/components/ProductItemOff";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -62,18 +63,18 @@ export default function Home() {
             />
             <div className="flex gap-3 items-center overflow-x-hidden">
               <img
-                className="lg:hidden"
+                className="lg:hidden object-cover"
                 src="/img/header-mobile-1.png"
                 alt=""
               />
               <img
-                className="lg:hidden"
+                className="lg:hidden object-cover"
                 src="/img/header-mobile-2.png"
                 alt=""
               />
 
               <img
-                className="min-w-37.5 h-37.5 lg:hidden"
+                className="min-w-37.5 h-37.5 object-cover lg:hidden rounded-xl"
                 src="/img/header-desktop-4.png"
                 alt=""
               />
@@ -465,7 +466,7 @@ export default function Home() {
           />
         </div>
       </section>
-      <OffProducts/>
+      <OffProducts />
       <section className="bg-neutral-gray-1 px-5 py-8 lg:flex lg:justify-center lg:gap-11.5 lg:px-12 lg:py-14">
         <div>
           <div className="sm:text-center">
@@ -545,6 +546,122 @@ export default function Home() {
               src="/img/about-desktop-2.png"
               alt=""
             />
+          </div>
+        </div>
+      </section>
+      <Comments />
+      <section className="py-8 mt-16 lg:py-16 lg:mt-22">
+        <div className="mx-5 flex justify-between items-center lg:mx-12">
+          <h5 className="font-semibold leading-5 text-black lg:text-[30px] lg:leading-9.5 lg:font-bold">
+            مقالات مد و استایل زنانه
+          </h5>
+          <div className="flex justify-center items-center gap-2">
+            <a href="" className="text-sm leading-5 text-neutral-gray-11">
+              مشاهده همه
+            </a>
+            <img
+              className="hidden lg:block"
+              src="/img/arrow-left-4.svg"
+              alt=""
+            />
+          </div>
+        </div>
+        <div className="mr-5 mt-6 lg:mt-8 lg:mx-12 flex items-center gap-4 w-210 overflow-x-hidden lg:gap-6 lg:w-full">
+          <div className="relative min-w-64.5 lg:w-108">
+            <Image
+              src={"/img/article-1.svg"}
+              width={258}
+              height={174}
+              className="rounded-tr-2xl rounded-tl-2xl"
+              layout="responsive"
+              alt="article"
+            />
+            <div className="mr-2 lg:mr-4">
+              <h6 className="text-sm font-semibold leading-4 text-neutral-gray-13 mt-3 mb-1 lg:text-lg lg:font-bold lg:leading-5.5 lg:mt-5 lg:mb-2">
+                انتخاب لباس‌های زنانه در هر فصل
+              </h6>
+              <p className="text-xs leading-4.5 text-neutral-gray-10 mb-1 max-w-60.5 line-clamp-2 lg:leading-6 lg:text-sm lg:max-w-100">
+                در تابستان از پارچه‌های نخی و سبک استفاده کنید که نفس‌گیر هستند
+                و در زمستان از پارچه‌های گرم مانند پشم و مخمل که گرمای بدن را
+                حفظ می‌کنند.
+              </p>
+              <p className="text-xs leading-4.5 text-neutral-gray-7 mb-2 lg:text-sm lg:leading-5">
+                ۱۴ شهریور<span className="mx-2">|</span>۱۰ دقیقه
+              </p>
+              <div className="flex items-center gap-2">
+                <div className="bg-cognac-tint-1 text-cognac-shade-1 rounded-100 px-2 py-0.5">
+                  <p className="text-xs leading-4.5 lg:px-3 lg:py-1">استایل</p>
+                </div>
+                <div className="bg-cognac-tint-1 text-cognac-shade-1 rounded-100 px-2 py-0.5 lg:px-3 lg:py-1">
+                  <p className="text-xs leading-4.5 lg:px-3 lg:py-1">
+                    انتخاب پارچه
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="relative min-w-64.5 lg:w-108">
+            <Image
+              src={"/img/article-2.svg"}
+              width={258}
+              height={174}
+              className="rounded-tr-2xl rounded-tl-2xl"
+              layout="responsive"
+              alt="article"
+            />
+            <div className="mr-2 lg:mr-4">
+              <h6 className="text-sm font-semibold leading-4 text-neutral-gray-13 mt-3 mb-1 lg:text-lg lg:font-bold lg:leading-5.5 lg:mt-5 lg:mb-2">
+                جدیدترین ترندهای دنیای مد
+              </h6>
+              <p className="text-xs leading-4.5 text-neutral-gray-10 mb-1 max-w-60.5 line-clamp-2 lg:leading-6 lg:text-sm lg:max-w-100">
+                سال جدید، سبک‌های جدیدی به همراه دارد. در این مقاله، نگاهی به
+                ترندهای برتر دنیای مد در سال 2024 انداخته و نحوه تطبیق آن‌ها با
+                استایل شخصی خود را بررسی کنید.
+              </p>
+              <p className="text-xs leading-4.5 text-neutral-gray-7 mb-2 lg:text-sm lg:leading-5">
+                ۱۴ شهریور<span className="mx-2">|</span>۱۰ دقیقه
+              </p>
+              <div className="flex items-center gap-2">
+                <div className="bg-cognac-tint-1 text-cognac-shade-1 rounded-100 px-2 py-0.5">
+                  <p className="text-xs leading-4.5 lg:px-3 lg:py-1">
+                    ترندهای طراحی
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="relative min-w-64.5 lg:w-108">
+            <Image
+              src={"/img/article-3.svg"}
+              width={258}
+              height={174}
+              className="rounded-tr-2xl rounded-tl-2xl"
+              layout="responsive"
+              alt="article"
+            />
+            <div className="mr-2 lg:mr-4">
+              <h6 className="text-sm font-semibold leading-4 text-neutral-gray-13 mt-3 mb-1 lg:text-lg lg:font-bold lg:leading-5.5 lg:mt-5 lg:mb-2">
+                تأثیر رنگ‌ها در استایل
+              </h6>
+              <p className="text-xs leading-4.5 text-neutral-gray-10 mb-1 max-w-60.5 line-clamp-2 lg:leading-6 lg:text-sm lg:max-w-100">
+                رنگ‌ها نقش مهمی در استایل شما ایفا می‌کنند. در این مقاله یاد
+                می‌گیرید که چگونه رنگ‌هایی را انتخاب کنید که نه تنها شما را
+                زیباتر نشان دهند، بلکه با شخصیتتان همخوانی داشته باشند.
+              </p>
+              <p className="text-xs leading-4.5 text-neutral-gray-7 mb-2 lg:text-sm lg:leading-5">
+                ۱۴ شهریور<span className="mx-2">|</span>۱۰ دقیقه
+              </p>
+              <div className="flex items-center gap-2">
+                <div className="bg-cognac-tint-1 text-cognac-shade-1 rounded-100 px-2 py-0.5">
+                  <p className="text-xs leading-4.5 lg:px-3 lg:py-1">
+                    رنگ بندی
+                  </p>
+                </div>
+                <div className="bg-cognac-tint-1 text-cognac-shade-1 rounded-100 px-2 py-0.5">
+                  <p className="text-xs leading-4.5 lg:px-3 lg:py-1">فرم بدن</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

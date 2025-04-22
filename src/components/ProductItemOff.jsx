@@ -6,7 +6,7 @@ export default function ProductItemOff({ img, title, price, finalPrice, offPerce
             <div className='w-41.75 h-60 lg:w-79.5 lg:h-119 relative object-cover'>
                 <img className='w-full h-full' src={img} alt="" />
                 <div className='absolute w-full top-3 lg:top-4 flex justify-between items-center px-3 lg:px-4'>
-                    <img src="/img/favorite-icon.svg" alt="" />
+                    <img className='cursor-pointer' src="/img/favorite-icon.svg" alt="" />
                     <div className='bg-cognac-primery px-2 py-0.5 lg:px-3 lg:py-1 rounded-100 text-white text-xs leading-4.5'>
                         {offPercent}٪
                     </div>

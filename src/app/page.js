@@ -45,7 +45,7 @@ export default function Home() {
             </div>
           </div>
           <div className="flex items-center mt-6 mb-8 md:my-4 lg:my-1 xl:my-4">
-            <button className="ml-6.25 text-sm leading-5 rounded-lg bg-cognac-primery text-white flex justify-center items-center py-2.5 gap-2 px-15 md:py-3.25 md:px-6">
+            <button className="ml-6.25 text-sm leading-5 rounded-lg bg-cognac-primery text-white flex justify-center items-center py-2.5 gap-2 px-15 md:py-3.25 md:px-6 md:text-[1rem] lg:leading-5.5 cursor-pointer">
               مشاهده کالکشن‌ها
               <img src="/img/arrow-left2.svg" alt="" />
             </button>
@@ -427,7 +427,7 @@ export default function Home() {
           انتخاب کنید تا ما به شما لباس‌هایی را پیشنهاد دهیم که به شما احساس
           راحتی و زیبایی بیشتری ببخشند.
         </p>
-        <button className="flex justify-center items-center gap-2 mx-auto bg-neutral-gray-13 rounded-lg text-white text-sm leading-5 py-2.5 px-8.5 lg:text-[1rem] lg:leading-5.5 lg:py-3.25 lg:px-11">
+        <button className="flex justify-center items-center gap-2 mx-auto bg-neutral-gray-13 rounded-lg text-white text-sm leading-5 py-2.5 px-8.5 lg:text-[1rem] lg:leading-5.5 lg:py-3.25 lg:px-11 cursor-pointer">
           <img className="mb-0.75" src="/img/scissor.svg" alt="" />
           شخصی دوزی
         </button>
@@ -556,7 +556,7 @@ export default function Home() {
               مشاهده همه
             </a>
             <img
-              className="hidden lg:block"
+              className="hidden lg:block cursor-pointer"
               src="/img/arrow-left-4.svg"
               alt=""
             />

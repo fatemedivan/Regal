@@ -4,8 +4,8 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="container">
-      <header className="max-h-158 px-5 mt-28 mb-16 lg:flex items-center lg:ml-0 lg:gap-6 lg:mr-12 lg:mt-39 lg:mb-22  ">
+    <div>
+      <header className="max-h-158 pr-5 mt-28 mb-16 lg:flex items-center lg:ml-0 lg:gap-6 lg:mr-12 lg:mt-39 lg:mb-22  ">
         <img
           className="hidden lg:block mr-auto"
           src="/img/header-desktop-1.png"
@@ -98,7 +98,7 @@ export default function Home() {
           </div>
         </div>
       </header>
-      <section className="px-5 mb-16  ">
+      <section className="px-5 mb-16 container">
         <h5 className="font-semibold leading-5 text-black mt-16 mb-6">
           دسته بندی محصولات
         </h5>
@@ -415,7 +415,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="bg-neutral-gray-1 py-8 lg:py-16  ">
+      <section className="bg-neutral-gray-1 py-8 lg:py-16">
         <h5 className="font-semibold leading-5 text-center mb-2 lg:font-bold lg:leading-11 lg:text-4xl lg:mb-4">
           <span className="text-cognac-primery">طراحـــــی </span>و دوخــــت بر
           اساس شکل بدن شما
@@ -463,7 +463,7 @@ export default function Home() {
         </div>
       </section>
       <OffProducts />
-      <section className="bg-neutral-gray-1 px-5 py-8 lg:flex lg:justify-center lg:gap-11.5 lg:px-12 lg:py-14  ">
+      <section className="bg-neutral-gray-1 px-5 py-8 lg:flex lg:justify-center lg:gap-11.5 lg:px-12 lg:py-14 container">
         <div>
           <div className="sm:text-center">
             <h5 className="font-semibold leading-5 text-black lg:leading-9.5 lg:text-[31px] lg:font-bold">
@@ -546,7 +546,7 @@ export default function Home() {
         </div>
       </section>
       <Comments />
-      <section className="py-8 mt-16 lg:py-16 lg:mt-22  ">
+      <section className="py-8 mt-16 lg:py-16 lg:mt-22 container">
         <div className="mx-5 flex justify-between items-center lg:mx-12">
           <h5 className="font-semibold leading-5 text-black lg:text-30 lg:leading-9.5 lg:font-bold">
             مقالات مد و استایل زنانه

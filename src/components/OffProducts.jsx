@@ -18,11 +18,11 @@ export default function OffProducts() {
   }
 
   return (
-    <section className="mt-17 mb-16 lg:mt-22">
+    <section className="mt-17 mb-16 lg:mt-22 container">
       <div className="mx-5 mb-6 flex justify-between items-center lg:mx-12 lg:mb-10">
         <div className="flex items-center gap-2">
           <img className="lg:w-8 lg:h-8" src="/img/discount-shape.svg" alt="" />
-          <h5 className="font-semibold leading-5 lg:text-[30px] lg:leading-9.5">محصولات تخفیف‌دار</h5>
+          <h5 className="font-semibold leading-5 lg:text-30 lg:leading-9.5">محصولات تخفیف‌دار</h5>
         </div>
         <div className="flex items-center gap-2">
           <div

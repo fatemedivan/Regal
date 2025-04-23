@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Footer() {
     return (
-        <div>
+        <div className='container'>
             <div className='bg-black p-5 lg:hidden'>
                 <img src="/img/logo-footer.svg" alt="" />
                 <p className='text-white leading-6 text-sm my-3 max-w-87.5 lg:max-w-108'>به فروشگاه رگال خوش آمدید، جایی که استایل و شیک بودن به شما هدیه داده می‌شود. با خبرنامه رگال همراه باشید و اولین نفر باشید که اخبار، پیشنهادات و توصیه‌های دنیای مد و فشن را می شنوید.</p>

@@ -5,7 +5,7 @@ import Image from "next/image";
 export default function Home() {
   return (
     <div>
-      <header className="container max-h-158 pr-5 mt-28 mb-16 lg:flex items-center lg:ml-0 lg:gap-6 lg:pr-12 lg:mt-39 lg:mb-22">
+      <header className="container overflow-hidden max-h-158 pr-5 mt-28 mb-16 lg:flex items-center lg:ml-0 lg:gap-6 lg:pr-12 lg:mt-39 lg:mb-22">
         <img
           className="hidden lg:block mr-auto"
           src="/img/header-desktop-1.png"
@@ -415,7 +415,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="bg-neutral-gray-1 py-8 lg:py-16">
+      <section className="bg-neutral-gray-1 py-8 lg:py-16 overflow-x-hidden">
         <h5 className="font-semibold leading-5 text-center mb-2 lg:font-bold lg:leading-11 lg:text-4xl lg:mb-4">
           <span className="text-cognac-primery">طراحـــــی </span>و دوخــــت بر
           اساس شکل بدن شما

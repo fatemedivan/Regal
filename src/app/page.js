@@ -5,7 +5,7 @@ import Image from "next/image";
 export default function Home() {
   return (
     <div>
-      <header className="max-h-158 pr-5 mt-28 mb-16 lg:flex items-center lg:ml-0 lg:gap-6 lg:mr-12 lg:mt-39 lg:mb-22  ">
+      <header className="container max-h-158 pr-5 mt-28 mb-16 lg:flex items-center lg:ml-0 lg:gap-6 lg:pr-12 lg:mt-39 lg:mb-22">
         <img
           className="hidden lg:block mr-auto"
           src="/img/header-desktop-1.png"
@@ -98,7 +98,7 @@ export default function Home() {
           </div>
         </div>
       </header>
-      <section className="px-5 mb-16 container">
+      <section className="container mx-auto px-5 mb-16">
         <h5 className="font-semibold leading-5 text-black mt-16 mb-6">
           دسته بندی محصولات
         </h5>
@@ -463,7 +463,7 @@ export default function Home() {
         </div>
       </section>
       <OffProducts />
-      <section className="bg-neutral-gray-1 px-5 py-8 lg:flex lg:justify-center lg:gap-11.5 lg:px-12 lg:py-14 container">
+      <section className="bg-neutral-gray-1 px-5 py-8 lg:flex lg:justify-center lg:gap-11.5 lg:px-12 lg:py-14">
         <div>
           <div className="sm:text-center">
             <h5 className="font-semibold leading-5 text-black lg:leading-9.5 lg:text-[31px] lg:font-bold">
@@ -546,7 +546,7 @@ export default function Home() {
         </div>
       </section>
       <Comments />
-      <section className="py-8 mt-16 lg:py-16 lg:mt-22 container">
+      <section className="container py-8 mt-16 lg:py-16 lg:mt-22">
         <div className="mx-5 flex justify-between items-center lg:mx-12">
           <h5 className="font-semibold leading-5 text-black lg:text-30 lg:leading-9.5 lg:font-bold">
             مقالات مد و استایل زنانه

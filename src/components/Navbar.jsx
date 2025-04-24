@@ -6,7 +6,7 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className='fixed top-0 left-0 right-0 w-full z-50 bg-white flex justify-between items-center p-5 border-b-1 border-neutral-gray-4 lg:py-6.25 lg:px-12 lg:border-none container'>
+            <nav className='container relative min-w-full z-50 bg-white flex justify-between items-center p-5 border-b-1 border-neutral-gray-4 lg:py-6.25 lg:px-12 lg:border-none'>
                 <img src="/img/Logo.svg" alt="" />
                 <ul className='hidden lg:flex justify-between items-center gap-12 px-10 py-2.5 text-neutral-gray-11 bg-neutral-gray-1 border-1 border-neutral-gray-3 rounded-100'>
                     <li ><a href="">صفحه اصلی</a></li>

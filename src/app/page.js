@@ -28,7 +28,11 @@ export default function Home() {
               هر لباس با دقت و عشق طراحی شده تا به شما احساس زیبایی و اعتماد به
               نفس بدهد.
             </p>
-            <img src="/img/shape-header.png" className="hidden lg:block absolute -top-110 right-[55%] xl:-top-130" alt="" />
+            <img
+              src="/img/shape-header.png"
+              className="hidden lg:block absolute -top-110 right-[55%] xl:-top-130"
+              alt=""
+            />
           </div>
           <div className="flex gap-2 items-center">
             <div className="leading-4.5 text-xs text-neutral-gray-11 px-4 py-0.5 bg-neutral-gray-2 border-1 border-neutral-gray-4 rounded-100 md:py-2.5 md:px-6 md:text-sm md:leading-5 text-nowrap">

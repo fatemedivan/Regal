@@ -12,7 +12,7 @@ export default function Comments() {
   useEffect(() => {
     if (glideRef.current) {
       const glide = new Glide(glideRef.current, {
-        type: 'carousel',
+        type: "carousel",
         perView: 3,
         gap: 16,
         direction: "rtl",
@@ -33,11 +33,10 @@ export default function Comments() {
             perView: 1.5,
             gap: 12,
           },
-          580:{
+          580: {
             perView: 1,
-            gap: 12
-          }
-
+            gap: 12,
+          },
         },
       });
 
@@ -66,10 +65,10 @@ export default function Comments() {
         </h5>
         <div className="flex items-center gap-2">
           <div
-            className="p-3 border border-neutral-gray-4 rounded-lg cursor-pointer"
+            className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer"
             ref={prevRef}
           >
-            <Image width={16} height={16} src="/img/arrow-right-2.svg" alt="" />
+            <Image width={16} height={16} src="/img/arrow-right-3.svg" alt="" />
           </div>
           <div
             className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer"

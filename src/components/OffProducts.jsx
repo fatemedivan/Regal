@@ -13,7 +13,7 @@ export default function OffProducts() {
   useEffect(() => {
     if (glideRef.current) {
       const glide = new Glide(glideRef.current, {
-        type: 'carousel',
+        type: "carousel",
         perView: 4,
         gap: 12,
         direction: "rtl",
@@ -66,10 +66,10 @@ export default function OffProducts() {
         </div>
         <div className="flex items-center gap-2">
           <div
-            className="p-3 border border-neutral-gray-4 rounded-lg cursor-pointer custom-prev"
+            className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer custom-prev"
             ref={prevRef}
           >
-            <Image width={16} height={16} src="/img/arrow-right-2.svg" alt="" />
+            <Image width={16} height={16} src="/img/arrow-right-3.svg" alt="" />
           </div>
           <div
             className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer custom-next"

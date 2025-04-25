@@ -563,8 +563,8 @@ export default function Home() {
           <div className="flex flex-wrap gap-4 sm:justify-center lg:gap-6 lg:max-w-184 lg:grid lg:grid-cols-[auto_auto_auto]">
             <div className="max-w-42 lg:max-w-86">
               <Image
-                width={40}
-                height={40}
+               width={56}
+               height={56}
                 className="p-2.5 lg:p-4"
                 src="/img/ruler.svg"
                 alt=""
@@ -580,8 +580,8 @@ export default function Home() {
             <div className="hidden lg:block w-0.25 bg-neutral-gray-4 mx-6 my-7"></div>
             <div className="max-w-42 lg:max-w-86">
               <Image
-                width={40}
-                height={40}
+                 width={56}
+                 height={56}
                 className="p-2.5 lg:p-4"
                 src="/img/like.svg"
                 alt=""
@@ -596,8 +596,8 @@ export default function Home() {
             </div>
             <div className="max-w-42 lg:max-w-86">
               <Image
-                width={40}
-                height={40}
+                width={56}
+                height={56}
                 className="p-2.5 lg:p-4"
                 src="/img/magic-star.svg"
                 alt=""
@@ -613,8 +613,8 @@ export default function Home() {
             <div className="hidden lg:block top-45 h-28 w-0.25 bg-neutral-gray-4 mx-6 my-7"></div>
             <div className="max-w-42 lg:max-w-86">
               <Image
-                width={40}
-                height={40}
+                 width={56}
+                 height={56}
                 className="p-2.5 lg:p-4"
                 src="/img/headphone.svg"
                 alt=""

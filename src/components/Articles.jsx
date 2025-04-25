@@ -13,10 +13,10 @@ export default function Articles() {
         startAt: 0,
         perView: 1.5,
         gap: 16,
-        direction: 'rtl',
-        peek:{
+        direction: "rtl",
+        peek: {
           before: 0,
-          after: 50
+          after: 50,
         },
         breakpoints: {
           1024: {
@@ -51,10 +51,7 @@ export default function Articles() {
           />
         </div>
       </div>
-      <div
-        className="glide mt-6 pr-4 lg:mt-8 lg:px-12 lg:gap-6"
-        ref={glideRef}
-      >
+      <div className="glide mt-6 pr-4 lg:mt-8 lg:px-12 lg:gap-6" ref={glideRef}>
         <div className="glide__track" data-glide-el="track">
           <ul className="glide__slides">
             <li className="glide__slide lg:max-w-108">

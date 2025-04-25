@@ -1,18 +1,22 @@
 import Articles from "@/components/Articles";
 import Comments from "@/components/Comments";
 import OffProducts from "@/components/OffProducts";
+import Image from "next/image";
 
 export default function Home() {
   return (
     <>
-      <header className="container overflow-hidden max-h-158 pr-5 mt-28 mb-16 lg:flex items-center lg:ml-0 lg:gap-6 lg:pr-12 lg:mt-39 lg:mb-22">
-        <img
-          className="hidden lg:block mr-auto"
-          src="/img/header-desktop-1.png"
-          alt=""
-        />
+      <header className="container max-w-full overflow-hidden pr-5 mt-8 mb-16 lg:flex items-center lg:ml-0 lg:gap-6 lg:pr-12 lg:mt-18 lg:mb-22">
+        <div className="relative min-w-120 h-158 hidden lg:block">
+          <Image
+            fill
+            className="mr-auto"
+            src="/img/header-desktop-1.png"
+            alt=""
+          />
+        </div>
         <div className="text-neutral-gray-13">
-          <div className="relative max-w-348">
+          <div className="relative">
             <h1 className="font-semibold leading-7.5 text-2xl md:font-bold md:text-5xl md:max-w-150 md:leading-14.5 lg:ml-52">
               لباس هایی که{" "}
               <span className="px-0.25 pb-1 pt-3 bg-cognac-tint-1 inline-block ">
@@ -43,52 +47,74 @@ export default function Home() {
               <div>...</div>
             </div>
           </div>
-          <div className="flex items-center mt-6 mb-8 md:my-4 lg:my-1 xl:my-4">
+          <div className="flex items-center mt-6 mb-8 md:my-8">
             <button className="ml-6.25 text-sm leading-5 rounded-lg bg-cognac-primery text-white flex justify-center items-center py-2.5 gap-2 px-15 md:py-3.25 md:px-6 md:text-[1rem] lg:leading-5.5 cursor-pointer">
               مشاهده کالکشن‌ها
-              <img src="/img/arrow-left2.svg" alt="" />
+              <Image width={16} height={16} src="/img/arrow-left2.svg" alt="" />
             </button>
-            <img className="relative mb-7" src="/img/Arrow.svg" alt="" />
+            <Image
+              width={25}
+              height={59}
+              className="relative mb-7"
+              src="/img/Arrow.svg"
+              alt=""
+            />
           </div>
-          <div className="relative ">
-            <img
+          <div className="relative">
+            <Image
+              width={14}
+              height={14}
               className="absolute w-14 h-14 -top-7 right-72 lg:right-120 lg:w-26 lg:h-26 lg:-top-13"
               src="img/header-logo.svg"
               alt=""
             />
             <div className="flex gap-3 items-center overflow-x-hidden">
-              <img
+              <Image
+                width={150}
+                height={150}
                 className="lg:hidden object-cover"
                 src="/img/header-mobile-1.png"
                 alt=""
               />
-              <img
+              <Image
+                width={150}
+                height={150}
                 className="lg:hidden object-cover"
                 src="/img/header-mobile-2.png"
                 alt=""
               />
 
-              <img
+              <Image
+                width={150}
+                height={150}
                 className="min-w-37.5 h-37.5 object-cover lg:hidden rounded-xl"
                 src="/img/header-desktop-4.png"
                 alt=""
               />
-              <img
+              <Image
+                width={254}
+                height={312}
                 className="hidden lg:block"
                 src="/img/header-desktop-2.png"
                 alt=""
               />
-              <img
+              <Image
+                width={254}
+                height={312}
                 className="hidden lg:block"
                 src="/img/header-desktop-3.png"
                 alt=""
               />
-              <img
+              <Image
+                width={254}
+                height={312}
                 className="hidden lg:block"
                 src="/img/header-desktop-4.png"
                 alt=""
               />
-              <img
+              <Image
+                width={54}
+                height={312}
                 className="hidden lg:block"
                 src="/img/header-desktop-5.png"
                 alt=""

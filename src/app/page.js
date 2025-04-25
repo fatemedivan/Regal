@@ -6,7 +6,7 @@ import Image from "next/image";
 export default function Home() {
   return (
     <>
-      <header className="container max-w-full overflow-hidden pr-5 mt-8 mb-16 lg:flex items-center lg:ml-0 lg:gap-6 lg:pr-12 lg:mt-18 lg:mb-22">
+      <header className="container max-w-full overflow-hidden pr-5 pt-8 mb-16 lg:flex justify-end items-center lg:ml-0 lg:gap-6 lg:pr-12 lg:pt-18 lg:mb-22">
         <div className="relative min-w-120 h-158 hidden lg:block">
           <Image
             fill
@@ -28,8 +28,9 @@ export default function Home() {
               هر لباس با دقت و عشق طراحی شده تا به شما احساس زیبایی و اعتماد به
               نفس بدهد.
             </p>
+            <img src="/img/shape-header.png" className="hidden lg:block absolute -top-110 right-[55%] xl:-top-130" alt="" />
           </div>
-          <div className="flex gap-2 items-center overflow-x-hidden">
+          <div className="flex gap-2 items-center">
             <div className="leading-4.5 text-xs text-neutral-gray-11 px-4 py-0.5 bg-neutral-gray-2 border-1 border-neutral-gray-4 rounded-100 md:py-2.5 md:px-6 md:text-sm md:leading-5 text-nowrap">
               کالکشن‌های متنوع
             </div>
@@ -64,7 +65,7 @@ export default function Home() {
             <Image
               width={14}
               height={14}
-              className="absolute w-14 h-14 -top-7 right-72 lg:right-120 lg:w-26 lg:h-26 lg:-top-13"
+              className="absolute w-14 h-14 -top-7 right-72 lg:right-[55%] lg:w-26 lg:h-26 lg:-top-13"
               src="img/header-logo.svg"
               alt=""
             />
@@ -123,7 +124,7 @@ export default function Home() {
           </div>
         </div>
       </header>
-      <section className="container mx-auto px-5 mb-16">
+      <section className="container lg:mx-auto px-5 mb-16">
         <h5 className="font-semibold leading-5 text-black mt-16 mb-6">
           دسته بندی محصولات
         </h5>
@@ -563,8 +564,8 @@ export default function Home() {
           <div className="flex flex-wrap gap-4 sm:justify-center lg:gap-6 lg:max-w-184 lg:grid lg:grid-cols-[auto_auto_auto]">
             <div className="max-w-42 lg:max-w-86">
               <Image
-               width={56}
-               height={56}
+                width={56}
+                height={56}
                 className="p-2.5 lg:p-4"
                 src="/img/ruler.svg"
                 alt=""
@@ -580,8 +581,8 @@ export default function Home() {
             <div className="hidden lg:block w-0.25 bg-neutral-gray-4 mx-6 my-7"></div>
             <div className="max-w-42 lg:max-w-86">
               <Image
-                 width={56}
-                 height={56}
+                width={56}
+                height={56}
                 className="p-2.5 lg:p-4"
                 src="/img/like.svg"
                 alt=""
@@ -613,8 +614,8 @@ export default function Home() {
             <div className="hidden lg:block top-45 h-28 w-0.25 bg-neutral-gray-4 mx-6 my-7"></div>
             <div className="max-w-42 lg:max-w-86">
               <Image
-                 width={56}
-                 height={56}
+                width={56}
+                height={56}
                 className="p-2.5 lg:p-4"
                 src="/img/headphone.svg"
                 alt=""
@@ -631,7 +632,7 @@ export default function Home() {
         </div>
         <div className="flex gap-4 mt-6 max-w-87.5 lg:max-w-max mx-auto lg:flex-row-reverse">
           <Image
-            width={167}
+            width={340}
             height={226}
             className="lg:hidden"
             src="/img/about-1.png"
@@ -646,14 +647,14 @@ export default function Home() {
           />
           <div className="lg:w-68.5">
             <Image
-              width={167}
+              width={340}
               height={105}
               className="mb-4 lg:hidden"
               src="/img/about-2.png"
               alt=""
             />
             <Image
-              width={167}
+              width={340}
               height={105}
               className="lg:hidden"
               src="/img/about-3.png"

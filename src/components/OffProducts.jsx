@@ -13,7 +13,7 @@ export default function OffProducts() {
   useEffect(() => {
     if (glideRef.current) {
       const glide = new Glide(glideRef.current, {
-        type: "slider",
+        type: 'carousel',
         perView: 4,
         gap: 12,
         direction: "rtl",

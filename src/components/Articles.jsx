@@ -10,17 +10,22 @@ export default function Articles() {
   useEffect(() => {
     if (glideRef.current) {
       new Glide(glideRef.current, {
+        type: "carousel",
         startAt: 0,
-        perView: 1.5,
-        gap: 16,
+        perView: 2,
+        gap: 12,
         direction: "rtl",
         peek: {
           before: 0,
           after: 50,
         },
         breakpoints: {
-          1024: {
+          680:{
             perView: 2,
+            gap: 12
+          },
+          1024: {
+            perView: 3,
             gap: 24,
           },
           1440: {
@@ -53,17 +58,18 @@ export default function Articles() {
           />
         </div>
       </div>
-      <div className="glide mt-6 pr-4 lg:mt-8 lg:px-12 lg:gap-6" ref={glideRef}>
+      <div className="glide mt-6 pr-4 lg:mt-8 lg:px-12" ref={glideRef}>
         <div className="glide__track" data-glide-el="track">
           <ul className="glide__slides">
-            <li className="glide__slide lg:max-w-108">
+            <li className="glide__slide lg:max-w-108 lg:min-w-108">
               <Image
                 src={"/img/article-1.svg"}
-                width={258}
-                height={174}
+                width={432}
+                height={220}
                 className="rounded-tr-2xl rounded-tl-2xl"
                 layout="responsive"
                 alt="article"
+                quality={100}
               />
               <div className="mr-2 lg:mr-4">
                 <h6 className="text-sm font-semibold leading-4 text-neutral-gray-13 mt-3 mb-1 lg:text-lg lg:font-bold lg:leading-5.5 lg:mt-5 lg:mb-2">
@@ -91,11 +97,11 @@ export default function Articles() {
                 </div>
               </div>
             </li>
-            <li className="glide__slide lg:max-w-108">
+            <li className="glide__slide lg:max-w-108 lg:min-w-108">
               <Image
                 src={"/img/article-2.svg"}
-                width={258}
-                height={174}
+                width={432}
+                height={220}
                 className="rounded-tr-2xl rounded-tl-2xl"
                 layout="responsive"
                 alt="article"
@@ -121,11 +127,11 @@ export default function Articles() {
                 </div>
               </div>
             </li>
-            <li className="glide__slide lg:max-w-108">
+            <li className="glide__slide lg:max-w-108 lg:min-w-108">
               <Image
                 src={"/img/article-3.svg"}
-                width={258}
-                height={174}
+                width={432}
+                height={220}
                 className="rounded-tr-2xl rounded-tl-2xl"
                 layout="responsive"
                 alt="article"

@@ -26,6 +26,7 @@ export default function ProductItemOff({
             className="cursor-pointer"
             src="/img/favorite-icon.svg"
             alt=""
+          
           />
           <div className="bg-cognac-primery px-2 py-0.5 lg:px-3 lg:py-1 rounded-100 text-white text-xs leading-4.5">
             {offPercent}٪

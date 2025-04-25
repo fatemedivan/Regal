@@ -12,8 +12,8 @@ export default function Comments() {
   useEffect(() => {
     if (glideRef.current) {
       const glide = new Glide(glideRef.current, {
-        type: "slider",
-        perView: 1.2,
+        type: 'carousel',
+        perView: 3,
         gap: 16,
         direction: "rtl",
         peek: {
@@ -21,17 +21,23 @@ export default function Comments() {
           after: 50,
         },
         breakpoints: {
-          768: {
-            perView: 1,
+          1440: {
+            perView: 3,
+            gap: 32,
           },
           1024: {
             perView: 2,
             gap: 24,
           },
-          1440: {
-            perView: 3,
-            gap: 32,
+          768: {
+            perView: 1.5,
+            gap: 12,
           },
+          580:{
+            perView: 1,
+            gap: 12
+          }
+
         },
       });
 

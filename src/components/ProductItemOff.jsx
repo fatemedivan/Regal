@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 export default function ProductItemOff({
@@ -11,9 +12,21 @@ export default function ProductItemOff({
   return (
     <div className="min-w-41.75 lg:min-w-79.5">
       <div className="w-41.75 h-60 lg:w-79.5 lg:h-119 relative object-cover">
-        <img className="w-full h-full" src={img} alt="" />
+        <Image
+          width={167}
+          height={239}
+          className="w-full h-full"
+          src={img}
+          alt=""
+        />
         <div className="absolute w-full top-3 lg:top-4 flex justify-between items-center px-3 lg:px-4">
-          <img className="cursor-pointer" src="/img/favorite-icon.svg" alt="" />
+          <Image
+            width={24}
+            height={24}
+            className="cursor-pointer"
+            src="/img/favorite-icon.svg"
+            alt=""
+          />
           <div className="bg-cognac-primery px-2 py-0.5 lg:px-3 lg:py-1 rounded-100 text-white text-xs leading-4.5">
             {offPercent}٪
           </div>

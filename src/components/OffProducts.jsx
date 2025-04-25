@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from "react";
 import Glide from "@glidejs/glide";
 import "@glidejs/glide/dist/css/glide.core.min.css";
 import ProductItemOff from "./ProductItemOff";
+import Image from "next/image";
 
 export default function OffProducts() {
   const glideRef = useRef(null);
@@ -52,7 +53,13 @@ export default function OffProducts() {
     <section className="container max-w-full mt-17 mb-16 lg:mt-22">
       <div className="mx-5 mb-6 flex justify-between items-center lg:mx-12 lg:mb-10">
         <div className="flex items-center gap-2">
-          <img className="lg:w-8 lg:h-8" src="/img/discount-shape.svg" alt="" />
+          <Image
+            width={16}
+            height={16}
+            className="lg:w-8 lg:h-8"
+            src="/img/discount-shape.svg"
+            alt=""
+          />
           <h5 className="font-semibold leading-5 lg:text-30 lg:leading-9.5">
             محصولات تخفیف‌دار
           </h5>
@@ -62,13 +69,13 @@ export default function OffProducts() {
             className="p-3 border border-neutral-gray-4 rounded-lg cursor-pointer custom-prev"
             ref={prevRef}
           >
-            <img src="/img/arrow-right-2.svg" alt="" />
+            <Image width={16} height={16} src="/img/arrow-right-2.svg" alt="" />
           </div>
           <div
             className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer custom-next"
             ref={nextRef}
           >
-            <img src="/img/arrow-left-4.svg" alt="" />
+            <Image width={16} height={16} src="/img/arrow-left-4.svg" alt="" />
           </div>
         </div>
       </div>

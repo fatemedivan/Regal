@@ -129,13 +129,14 @@ export default function Home() {
         </h5>
         <div className="flex flex-wrap gap-4 lg:hidden">
           <div className="flex flex-col gap-4">
-            <div className="max-h-71">
-              <img
+            <div className="h-71 relative w-41.75">
+              <Image
                 className="relative w-full h-auto z-20"
                 src="/img/Category-1.png"
                 alt=""
+                fill
               />
-              <div className="relative z-40 bottom-16 px-2">
+              <div className="relative z-40 top-57.5 px-2">
                 <h5 className="leading-5 font-semibold text-white">
                   پیراهن کوتاه
                 </h5>
@@ -149,13 +150,14 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="max-h-35">
-              <img
+            <div className="h-35 relative w-41.75">
+              <Image
                 className="relative w-full h-auto z-20"
                 src="/img/Category-3.png"
                 alt=""
+                fill
               />
-              <div className="relative z-40 bottom-16 px-2">
+              <div className="relative z-40 top-21.5 px-2">
                 <h5 className="leading-5 font-semibold text-white">سرهمی</h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -167,13 +169,14 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="max-h-50">
-              <img
+            <div className="h-50 relative w-41.75">
+              <Image
                 className="relative w-full h-auto z-20"
                 src="/img/Category-6.png"
                 alt=""
+                fill
               />
-              <div className="relative z-40 bottom-16 px-2">
+              <div className="relative z-40 top-36.5 px-2">
                 <h5 className="leading-5 font-semibold text-white">
                   شومیز و بلوز
                 </h5>
@@ -187,13 +190,14 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="max-h-51.5">
-              <img
+            <div className="h-51.5 relative w-41.75">
+              <Image
                 className="relative w-full h-auto z-20"
                 src="/img/Category-8.png"
                 alt=""
+                fill
               />
-              <div className="relative z-40 bottom-16 px-2">
+              <div className="relative z-40 top-37.5 px-2">
                 <h5 className="leading-5 font-semibold text-white">
                   تاپ و کراپ
                 </h5>
@@ -210,13 +214,14 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col gap-4">
-            <div className="max-h-50">
-              <img
+            <div className="h-50 relative w-41.75">
+              <Image
                 className="relative w-full h-auto z-20"
                 src="/img/Category-2.png"
                 alt=""
+                fill
               />
-              <div className="relative z-40 bottom-16 px-2">
+              <div className="relative z-40 top-36.5 px-2">
                 <h5 className="leading-5 font-semibold text-white">شلوار</h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -228,13 +233,14 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="max-h-37.5">
-              <img
+            <div className="h-37.5 relative w-41.75">
+              <Image
                 className="relative w-full h-auto z-20"
                 src="/img/Category-4.png"
                 alt=""
+                fill
               />
-              <div className="relative z-40 bottom-16 px-2">
+              <div className="relative z-40 top-24 px-2">
                 <h5 className="leading-5 font-semibold text-white">
                   کت و جلیقه
                 </h5>
@@ -248,13 +254,14 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="max-h-49">
-              <img
+            <div className="h-49 relative w-41.75">
+              <Image
                 className="relative w-full h-auto z-20"
                 src="/img/Category-5.png"
                 alt=""
+                fill
               />
-              <div className="relative z-40 bottom-16 px-2">
+              <div className="relative z-40 top-35.5 px-2">
                 <h5 className="leading-5 font-semibold text-white">دامن</h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -266,13 +273,14 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="max-h-71">
-              <img
+            <div className="h-71 relative w-41.75">
+              <Image
                 className="relative w-full h-auto z-20"
                 src="/img/Category-7.png"
                 alt=""
+                fill
               />
-              <div className="relative z-40 bottom-16 px-2">
+              <div className="relative z-40 top-57.25 px-2">
                 <h5 className="leading-5 font-semibold text-white">
                   ترنچ کت و پالتو
                 </h5>
@@ -291,10 +299,12 @@ export default function Home() {
 
         <div className="hidden lg:grid grid-cols-4 grid-rows-6 gap-5">
           <div className="col-span-1 row-span-6 relative rounded-xl overflow-hidden">
-            <img
+            <Image
               src="/img/Category-desktop-1.png"
               alt="دسته‌بندی 1"
               className="w-full h-full object-cover"
+              width={318}
+              height={532}
             />
             <div className="absolute bottom-4 mr-4 text-white">
               <h5 className="text-lg font-bold">پیراهن کوتاه</h5>
@@ -310,10 +320,12 @@ export default function Home() {
           </div>
 
           <div className="col-start-2 row-span-3 relative rounded-xl overflow-hidden">
-            <img
+            <Image
               src="/img/Category-desktop-2.png"
               alt="دسته‌بندی 2"
               className="w-full h-full object-cover"
+              width={318}
+              height={256}
             />
             <div className="absolute bottom-4 mr-4 text-white">
               <h5 className="text-lg font-bold">سرهمی</h5>
@@ -328,10 +340,12 @@ export default function Home() {
             </div>
           </div>
           <div className="col-start-2 row-start-4 row-span-3 relative rounded-xl overflow-hidden">
-            <img
+            <Image
               src="/img/Category-desktop-3.png"
               alt="دسته‌بندی 3"
               className="w-full h-full object-cover"
+              width={318}
+              height={256}
             />
             <div className="absolute bottom-4 mr-4 text-white">
               <h5 className="text-lg font-bold">شومیز و بلوز</h5>
@@ -347,10 +361,12 @@ export default function Home() {
           </div>
 
           <div className="col-start-3 row-span-2 relative rounded-xl overflow-hidden">
-            <img
+            <Image
               src="/img/Category-desktop-4.png"
               alt="دسته‌بندی 4"
               className="w-full h-full object-cover"
+              width={318}
+              height={164}
             />
             <div className="absolute bottom-4 mr-4 text-white">
               <h5 className="text-lg font-bold">تاپ و کراپ</h5>
@@ -365,10 +381,12 @@ export default function Home() {
             </div>
           </div>
           <div className="col-start-3 row-start-3 row-span-2 relative rounded-xl overflow-hidden">
-            <img
+            <Image
               src="/img/Category-desktop-5.png"
               alt="دسته‌بندی 5"
               className="w-full h-full object-cover"
+              width={318}
+              height={164}
             />
             <div className="absolute bottom-4 mr-4 text-white">
               <h5 className="text-lg font-bold">شلوار</h5>
@@ -383,10 +401,12 @@ export default function Home() {
             </div>
           </div>
           <div className="col-start-3 row-start-5 row-span-2 relative rounded-xl overflow-hidden">
-            <img
+            <Image
               src="/img/Category-desktop-6.png"
               alt="دسته‌بندی 6"
               className="w-full h-full object-cover"
+              width={318}
+              height={164}
             />
             <div className="absolute bottom-4 mr-4 text-white">
               <h5 className="text-lg font-bold">کت و جلیقه</h5>
@@ -402,10 +422,12 @@ export default function Home() {
           </div>
 
           <div className="col-start-4 row-span-2 relative rounded-xl overflow-hidden">
-            <img
+            <Image
               src="/img/Category-desktop-7.png"
               alt="دسته‌بندی 7"
               className="w-full h-full object-cover"
+              width={318}
+              height={164}
             />
             <div className="absolute bottom-4 mr-4 text-white">
               <h5 className="text-lg font-bold">دامن</h5>
@@ -421,10 +443,12 @@ export default function Home() {
           </div>
 
           <div className="col-start-4 row-start-3 row-span-4 relative rounded-xl overflow-hidden">
-            <img
+            <Image
               src="/img/Category-desktop-8.png"
               alt="دسته‌بندی 8"
               className="w-full h-full object-cover"
+              width={318}
+              height={348}
             />
             <div className="absolute bottom-4 mr-4 text-white">
               <h5 className="text-lg font-bold">ترنچ کت و پالتو</h5>
@@ -453,37 +477,71 @@ export default function Home() {
           راحتی و زیبایی بیشتری ببخشند.
         </p>
         <button className="flex justify-center items-center gap-2 mx-auto bg-neutral-gray-13 rounded-lg text-white text-sm leading-5 py-2.5 px-8.5 lg:text-[1rem] lg:leading-5.5 lg:py-3.25 lg:px-11 cursor-pointer">
-          <img className="mb-0.75" src="/img/scissor.svg" alt="" />
+          <Image
+            width={16}
+            height={16}
+            className="mb-0.75"
+            src="/img/scissor.svg"
+            alt=""
+          />
           شخصی دوزی
         </button>
         <div className="flex justify-between items-center gap-3 mt-8 lg:mt-16 lg:gap-6 lg:justify-center 2xl:justify-between">
-          <img className="lg:hidden" src="/img/section-2-2.svg" alt="" />
-          <img className="lg:hidden" src="/img/section-2-1.svg" alt="" />
-          <img className="lg:hidden" src="/img/section-2-3.svg" alt="" />
-          <img
+          <Image
+            width={115}
+            height={160}
+            className="lg:hidden"
+            src="/img/section-2-2.svg"
+            alt=""
+          />
+          <Image
+            width={167}
+            height={240}
+            className="lg:hidden"
+            src="/img/section-2-1.svg"
+            alt=""
+          />
+          <Image
+            width={115}
+            height={160}
+            className="lg:hidden"
+            src="/img/section-2-3.svg"
+            alt=""
+          />
+          <Image
             className="hidden lg:block"
             src="/img/section-2-desktop-1.png"
             alt=""
+            width={300}
+            height={244}
           />
-          <img
+          <Image
             className="hidden lg:block"
             src="/img/section-2-desktop-2.png"
             alt=""
+            width={250}
+            height={348}
           />
-          <img
+          <Image
             className="hidden lg:block"
             src="/img/section-2-desktop-3.png"
             alt=""
+            width={374}
+            height={520}
           />
-          <img
+          <Image
             className="hidden lg:block"
             src="/img/section-2-desktop-4.png"
             alt=""
+            width={250}
+            height={348}
           />
-          <img
+          <Image
             className="hidden lg:block"
             src="/img/section-2-desktop-5.png"
             alt=""
+            width={300}
+            height={244}
           />
         </div>
       </section>
@@ -504,7 +562,13 @@ export default function Home() {
           </div>
           <div className="flex flex-wrap gap-4 sm:justify-center lg:gap-6 lg:max-w-184 lg:grid lg:grid-cols-[auto_auto_auto]">
             <div className="max-w-42 lg:max-w-86">
-              <img className="p-2.5 lg:p-4" src="/img/ruler.svg" alt="" />
+              <Image
+                width={40}
+                height={40}
+                className="p-2.5 lg:p-4"
+                src="/img/ruler.svg"
+                alt=""
+              />
               <h6 className="text-neutral-gray-13 text-sm leading-4 font-semibold mt-4 mb-2 lg:text-18 lg:leading-5.5 lg:font-bold lg:mt-6 lg:mb-4">
                 طراحی منحصر به‌فرد
               </h6>
@@ -515,7 +579,13 @@ export default function Home() {
             </div>
             <div className="hidden lg:block w-0.25 bg-neutral-gray-4 mx-6 my-7"></div>
             <div className="max-w-42 lg:max-w-86">
-              <img className="p-2.5 lg:p-4" src="/img/like.svg" alt="" />
+              <Image
+                width={40}
+                height={40}
+                className="p-2.5 lg:p-4"
+                src="/img/like.svg"
+                alt=""
+              />
               <h6 className="text-neutral-gray-13 text-sm leading-4 font-semibold mt-4 mb-2 lg:text-18 lg:leading-5.5 lg:font-bold lg:mt-6 lg:mb-4">
                 دوخت حرفه‌ای و اختصاصی
               </h6>
@@ -525,7 +595,13 @@ export default function Home() {
               </p>
             </div>
             <div className="max-w-42 lg:max-w-86">
-              <img className="p-2.5 lg:p-4" src="/img/magic-star.svg" alt="" />
+              <Image
+                width={40}
+                height={40}
+                className="p-2.5 lg:p-4"
+                src="/img/magic-star.svg"
+                alt=""
+              />
               <h6 className="text-neutral-gray-13 text-sm leading-4 font-semibold mt-4 mb-2 lg:text-18 lg:leading-5.5 lg:font-bold lg:mt-6 lg:mb-4">
                 تعهد به کیفیت
               </h6>
@@ -536,7 +612,13 @@ export default function Home() {
             </div>
             <div className="hidden lg:block top-45 h-28 w-0.25 bg-neutral-gray-4 mx-6 my-7"></div>
             <div className="max-w-42 lg:max-w-86">
-              <img className="p-2.5 lg:p-4" src="/img/headphone.svg" alt="" />
+              <Image
+                width={40}
+                height={40}
+                className="p-2.5 lg:p-4"
+                src="/img/headphone.svg"
+                alt=""
+              />
               <h6 className="text-neutral-gray-13 text-sm leading-4 font-semibold mt-4 mb-2 lg:text-18 lg:leading-5.5 lg:font-bold lg:mt-6 lg:mb-4">
                 پشتیبانی آنلاین و حضوری
               </h6>
@@ -548,24 +630,48 @@ export default function Home() {
           </div>
         </div>
         <div className="flex gap-4 mt-6 max-w-87.5 lg:max-w-max mx-auto lg:flex-row-reverse">
-          <img className="lg:hidden" src="/img/about-1.png" alt="" />
-          <img
+          <Image
+            width={167}
+            height={226}
+            className="lg:hidden"
+            src="/img/about-1.png"
+            alt=""
+          />
+          <Image
             className="hidden lg:block mt-29.5 max-w-68.5 max-h-128.5"
             src="/img/about-desktop-3.png"
             alt=""
+            width={273}
+            height={514}
           />
           <div className="lg:w-68.5">
-            <img className="mb-4 lg:hidden" src="/img/about-2.png" alt="" />
-            <img className="lg:hidden" src="/img/about-3.png" alt="" />
-            <img
+            <Image
+              width={167}
+              height={105}
+              className="mb-4 lg:hidden"
+              src="/img/about-2.png"
+              alt=""
+            />
+            <Image
+              width={167}
+              height={105}
+              className="lg:hidden"
+              src="/img/about-3.png"
+              alt=""
+            />
+            <Image
               className="hidden lg:block min-w-68.5 min-h-62 mb-4"
               src="/img/about-desktop-1.png"
               alt=""
+              width={273}
+              height={248}
             />
-            <img
+            <Image
               className="hidden lg:block min-w-68.5 min-h-62"
               src="/img/about-desktop-2.png"
               alt=""
+              width={273}
+              height={248}
             />
           </div>
         </div>

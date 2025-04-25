@@ -44,10 +44,12 @@ export default function Articles() {
           <a href="" className="text-sm leading-5 text-neutral-gray-11">
             مشاهده همه
           </a>
-          <img
+          <Image
             className="hidden lg:block cursor-pointer"
             src="/img/arrow-left-4.svg"
             alt=""
+            width={16}
+            height={16}
           />
         </div>
       </div>

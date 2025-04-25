@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from "react";
 import Glide from "@glidejs/glide";
 import "@glidejs/glide/dist/css/glide.core.min.css";
 import CommentBox from "./CommentBox";
+import Image from "next/image";
 
 export default function Comments() {
   const glideRef = useRef(null);
@@ -62,13 +63,13 @@ export default function Comments() {
             className="p-3 border border-neutral-gray-4 rounded-lg cursor-pointer"
             ref={prevRef}
           >
-            <img src="/img/arrow-right-2.svg" alt="" />
+            <Image width={16} height={16} src="/img/arrow-right-2.svg" alt="" />
           </div>
           <div
             className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer"
             ref={nextRef}
           >
-            <img src="/img/arrow-left-4.svg" alt="" />
+            <Image width={16} height={16} src="/img/arrow-left-4.svg" alt="" />
           </div>
         </div>
       </div>

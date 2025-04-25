@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 export default function CommentBox({
@@ -14,14 +15,14 @@ export default function CommentBox({
   return (
     <div className="min-w-64.5">
       <div className="flex items-center gap-2 mb-4">
-        <img src={img} alt="" />
+        <Image width={48} height={48} src={img} alt="" />
 
         <div className="flex justify-between w-full">
           <div>
             <p className="leading-7 text-black">{name}</p>
             <p className="text-neutral-gray-11 text-xs leading-4.5">{city}</p>
           </div>
-          <img src="/img/comment-virgol.svg" alt="" />
+          <Image width={20} height={20} src="/img/comment-virgol.svg" alt="" />
         </div>
       </div>
       <div>
@@ -33,10 +34,22 @@ export default function CommentBox({
         </p>
         <div className="flex items-center gap-1">
           {emptyStars.map((src, index) => (
-            <img key={`empty-${index}`} src={src} alt="star-empty" />
+            <Image
+              width={16}
+              height={16}
+              key={`empty-${index}`}
+              src={src}
+              alt="star-empty"
+            />
           ))}
           {filledStars.map((src, index) => (
-            <img key={`filled-${index}`} src={src} alt="star-filled" />
+            <Image
+              width={16}
+              height={16}
+              key={`filled-${index}`}
+              src={src}
+              alt="star-filled"
+            />
           ))}
         </div>
       </div>

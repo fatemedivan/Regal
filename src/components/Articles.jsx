@@ -10,13 +10,17 @@ export default function Articles() {
   useEffect(() => {
     if (glideRef.current) {
       new Glide(glideRef.current, {
-        type: "carousel",
         startAt: 0,
         perView: 1.5,
         gap: 16,
+        direction: 'rtl',
+        peek:{
+          before: 0,
+          after: 50
+        },
         breakpoints: {
           1024: {
-            perView: 2.5,
+            perView: 2,
             gap: 24,
           },
           1440: {
@@ -31,7 +35,7 @@ export default function Articles() {
   }, []);
 
   return (
-    <section className="container py-8 mt-16 lg:py-16 lg:mt-22">
+    <section className="container max-w-full py-8 mt-16 lg:py-16 lg:mt-22">
       <div className="mx-5 flex justify-between items-center lg:mx-12">
         <h5 className="font-semibold leading-5 text-black lg:text-30 lg:leading-9.5 lg:font-bold">
           مقالات مد و استایل زنانه
@@ -48,12 +52,12 @@ export default function Articles() {
         </div>
       </div>
       <div
-        className="glide mt-6 lg:mt-8 lg:px-12 lg:gap-6 lg:w-full"
+        className="glide mt-6 pr-4 lg:mt-8 lg:px-12 lg:gap-6"
         ref={glideRef}
       >
         <div className="glide__track" data-glide-el="track">
           <ul className="glide__slides">
-            <li className="glide__slide">
+            <li className="glide__slide lg:max-w-108">
               <Image
                 src={"/img/article-1.svg"}
                 width={258}
@@ -88,7 +92,7 @@ export default function Articles() {
                 </div>
               </div>
             </li>
-            <li className="glide__slide">
+            <li className="glide__slide lg:max-w-108">
               <Image
                 src={"/img/article-2.svg"}
                 width={258}
@@ -118,7 +122,7 @@ export default function Articles() {
                 </div>
               </div>
             </li>
-            <li className="glide__slide">
+            <li className="glide__slide lg:max-w-108">
               <Image
                 src={"/img/article-3.svg"}
                 width={258}

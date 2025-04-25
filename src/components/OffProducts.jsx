@@ -1,24 +1,55 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
+import Glide from "@glidejs/glide";
+import "@glidejs/glide/dist/css/glide.core.min.css";
 import ProductItemOff from "./ProductItemOff";
 
 export default function OffProducts() {
-  const scrollRef = useRef(null);
+  const glideRef = useRef(null);
+  const prevRef = useRef(null);
+  const nextRef = useRef(null);
 
-  const scrollLeft = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: -200, behavior: "smooth" });
-    }
-  };
+  useEffect(() => {
+    if (glideRef.current) {
+      const glide = new Glide(glideRef.current, {
+        type: "slider",
+        perView: 4,
+        gap: 12,
+        direction: "rtl",
+        breakpoints: {
+          1440: {
+            perView: 4,
+            gap: 24,
+          },
+          1024: {
+            perView: 4,
+            gap: 24,
+          },
+          768: {
+            perView: 4,
+            gap: 12,
+          },
+        },
+      });
 
-  const scrollRight = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: 200, behavior: "smooth" });
+      glide.mount();
+
+      if (prevRef.current && nextRef.current) {
+        prevRef.current.addEventListener("click", () => glide.go("<"));
+        nextRef.current.addEventListener("click", () => glide.go(">"));
+      }
+
+      return () => {
+        if (prevRef.current && nextRef.current) {
+          prevRef.current.removeEventListener("click", () => glide.go("<"));
+          nextRef.current.removeEventListener("click", () => glide.go(">"));
+        }
+      };
     }
-  };
+  }, []);
 
   return (
-    <section className="container mt-17 mb-16 lg:mt-22">
+    <section className="container max-w-full mt-17 mb-16 lg:mt-22">
       <div className="mx-5 mb-6 flex justify-between items-center lg:mx-12 lg:mb-10">
         <div className="flex items-center gap-2">
           <img className="lg:w-8 lg:h-8" src="/img/discount-shape.svg" alt="" />
@@ -28,56 +59,65 @@ export default function OffProducts() {
         </div>
         <div className="flex items-center gap-2">
           <div
-            onClick={scrollRight}
-            className="p-3 border border-neutral-gray-4 rounded-lg cursor-pointer"
+            className="p-3 border border-neutral-gray-4 rounded-lg cursor-pointer custom-prev"
+            ref={prevRef}
           >
             <img src="/img/arrow-right-2.svg" alt="" />
           </div>
           <div
-            onClick={scrollLeft}
-            className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer"
+            className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer custom-next"
+            ref={nextRef}
           >
             <img src="/img/arrow-left-4.svg" alt="" />
           </div>
         </div>
       </div>
 
-      <div
-        ref={scrollRef}
-        className="mr-5 flex gap-3 overflow-x-auto scroll-smooth scrollbar-hide lg:gap-6 lg:mr-12"
-      >
-        <ProductItemOff
-          img={"/img/product-off-1.png"}
-          title={"لباس میدی رایا"}
-          finalPrice={"۳,۵۰۲,۰۰۰"}
-          price={"۴,۱۲۰,۰۰۰"}
-          offPercent={"۱۵"}
-          isMore={false}
-        />
-        <ProductItemOff
-          img={"/img/product-off-2.png"}
-          title={"لباس میدی فیال"}
-          finalPrice={"۵,۰۲۲,۰۰۰"}
-          price={"۵,۴۰۰,۰۰۰"}
-          offPercent={"۷"}
-          isMore={true}
-        />
-        <ProductItemOff
-          img={"/img/product-off-3.png"}
-          title={"لباس میدی مدرن مارال"}
-          finalPrice={"۳,۸۶۴,۰۰۰"}
-          price={"۴,۲۰۰,۰۰۰"}
-          offPercent={"۸"}
-          isMore={true}
-        />
-        <ProductItemOff
-          img={"/img/product-off-4.png"}
-          title={"لباس میدی تک شانه نولا"}
-          finalPrice={"۳,۲۳۰,۰۰۰"}
-          price={"۳,۸۰۰,۰۰۰"}
-          offPercent={"۱۵"}
-          isMore={false}
-        />
+      <div className="glide pr-5 lg:pr-12" ref={glideRef}>
+        <div className="glide__track" data-glide-el="track">
+          <ul className="glide__slides">
+            <li className="glide__slide min-w-41.75 lg:min-w-79.5">
+              <ProductItemOff
+                img={"/img/product-off-1.png"}
+                title={"لباس میدی رایا"}
+                finalPrice={"۳,۵۰۲,۰۰۰"}
+                price={"۴,۱۲۰,۰۰۰"}
+                offPercent={"۱۵"}
+                isMore={false}
+              />
+            </li>
+            <li className="glide__slide min-w-41.75 lg:min-w-79.5">
+              <ProductItemOff
+                img={"/img/product-off-2.png"}
+                title={"لباس میدی فیال"}
+                finalPrice={"۵,۰۲۲,۰۰۰"}
+                price={"۵,۴۰۰,۰۰۰"}
+                offPercent={"۷"}
+                isMore={true}
+              />
+            </li>
+            <li className="glide__slide min-w-41.75 lg:min-w-79.5">
+              <ProductItemOff
+                img={"/img/product-off-3.png"}
+                title={"لباس میدی مدرن مارال"}
+                finalPrice={"۳,۸۶۴,۰۰۰"}
+                price={"۴,۲۰۰,۰۰۰"}
+                offPercent={"۸"}
+                isMore={true}
+              />
+            </li>
+            <li className="glide__slide min-w-41.75 lg:min-w-79.5">
+              <ProductItemOff
+                img={"/img/product-off-4.png"}
+                title={"لباس میدی تک شانه نولا"}
+                finalPrice={"۳,۲۳۰,۰۰۰"}
+                price={"۳,۸۰۰,۰۰۰"}
+                offPercent={"۱۵"}
+                isMore={false}
+              />
+            </li>
+          </ul>
+        </div>
       </div>
     </section>
   );

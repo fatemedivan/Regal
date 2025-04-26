@@ -46,7 +46,7 @@ export default function Search({ handleCloseSearch }) {
         onClick={() => handleCloseSearch()}
       />
 
-      <div className="py-6 relative top-0 left-0 right-0 z-50 w-full bg-white">
+      <div className="py-6 absolute top-0 left-0 right-0 z-50 w-full bg-white">
         <div
           onClick={(e) => setIsFocuse(true)}
           className={`ralative mx-5 mb-6 px-4 py-3.75 flex items-center gap-1 rounded-lg border lg:mx-40.5 ${

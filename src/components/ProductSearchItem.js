@@ -4,7 +4,6 @@ import React from "react";
 export default function ProductItemOff({
   img,
   title,
-  price,
   finalPrice,
   offPercent,
   isMore,

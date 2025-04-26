@@ -59,6 +59,7 @@ export default function OffProducts() {
             className="lg:w-8 lg:h-8"
             src="/img/discount-shape.svg"
             alt=""
+            quality={100}
           />
           <h5 className="font-semibold leading-5 lg:text-30 lg:leading-9.5">
             محصولات تخفیف‌دار
@@ -69,13 +70,25 @@ export default function OffProducts() {
             className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer custom-prev"
             ref={prevRef}
           >
-            <Image width={16} height={16} src="/img/arrow-right-3.svg" alt="" />
+            <Image
+              width={16}
+              height={16}
+              quality={100}
+              src="/img/arrow-right-3.svg"
+              alt=""
+            />
           </div>
           <div
             className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer custom-next"
             ref={nextRef}
           >
-            <Image width={16} height={16} src="/img/arrow-left-4.svg" alt="" />
+            <Image
+              width={16}
+              height={16}
+              quality={100}
+              src="/img/arrow-left-4.svg"
+              alt=""
+            />
           </div>
         </div>
       </div>

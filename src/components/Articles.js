@@ -55,6 +55,7 @@ export default function Articles() {
             alt=""
             width={16}
             height={16}
+            quality={100}
           />
         </div>
       </div>
@@ -69,6 +70,7 @@ export default function Articles() {
                 className="rounded-tr-2xl rounded-tl-2xl"
                 layout="responsive"
                 alt="article"
+                quality={100}
               />
               <div className="mr-2 lg:mr-4">
                 <h6 className="text-sm font-semibold leading-4 text-neutral-gray-13 mt-3 mb-1 lg:text-lg lg:font-bold lg:leading-5.5 lg:mt-5 lg:mb-2">
@@ -104,6 +106,7 @@ export default function Articles() {
                 className="rounded-tr-2xl rounded-tl-2xl"
                 layout="responsive"
                 alt="article"
+                quality={100}
               />
               <div className="mr-2 lg:mr-4">
                 <h6 className="text-sm font-semibold leading-4 text-neutral-gray-13 mt-3 mb-1 lg:text-lg lg:font-bold lg:leading-5.5 lg:mt-5 lg:mb-2">
@@ -134,6 +137,7 @@ export default function Articles() {
                 className="rounded-tr-2xl rounded-tl-2xl w-932 h-720"
                 layout="responsive"
                 alt="article"
+                quality={100}
               />
               <div className="mr-2 lg:mr-4">
                 <h6 className="text-sm font-semibold leading-4 text-neutral-gray-13 mt-3 mb-1 lg:text-lg lg:font-bold lg:leading-5.5 lg:mt-5 lg:mb-2">

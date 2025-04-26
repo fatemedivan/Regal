@@ -15,14 +15,20 @@ export default function CommentBox({
   return (
     <div className="min-w-64.5">
       <div className="flex items-center gap-2 mb-4">
-        <Image width={48} height={48} src={img} alt="" />
+        <Image width={48} height={48} quality={100} src={img} alt="" />
 
         <div className="flex justify-between w-full">
           <div>
             <p className="leading-7 text-black">{name}</p>
             <p className="text-neutral-gray-11 text-xs leading-4.5">{city}</p>
           </div>
-          <Image width={20} height={20} src="/img/comment-virgol.svg" alt="" />
+          <Image
+            width={20}
+            height={20}
+            quality={100}
+            src="/img/comment-virgol.svg"
+            alt=""
+          />
         </div>
       </div>
       <div>
@@ -40,6 +46,7 @@ export default function CommentBox({
               key={`empty-${index}`}
               src={src}
               alt="star-empty"
+              quality={100}
             />
           ))}
           {filledStars.map((src, index) => (
@@ -49,6 +56,7 @@ export default function CommentBox({
               key={`filled-${index}`}
               src={src}
               alt="star-filled"
+              quality={100}
             />
           ))}
         </div>

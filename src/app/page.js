@@ -13,6 +13,7 @@ export default function Home() {
             className="mr-auto"
             src="/img/header-desktop-1.png"
             alt=""
+            quality={100}
           />
         </div>
         <div className="text-neutral-gray-13">
@@ -55,23 +56,31 @@ export default function Home() {
           <div className="flex items-center mt-6 mb-8 md:my-8">
             <button className="ml-6.25 text-sm leading-5 rounded-lg bg-cognac-primery text-white flex justify-center items-center py-2.5 gap-2 px-15 md:py-3.25 md:px-6 md:text-[1rem] lg:leading-5.5 cursor-pointer">
               مشاهده کالکشن‌ها
-              <Image width={16} height={16} src="/img/arrow-left2.svg" alt="" />
+              <Image
+                width={16}
+                height={16}
+                quality={100}
+                src="/img/arrow-left2.svg"
+                alt=""
+              />
             </button>
             <Image
-              width={25}
-              height={59}
+              width={45}
+              height={79}
               className="relative mb-7"
               src="/img/Arrow.svg"
               alt=""
+              quality={100}
             />
           </div>
           <div className="relative">
             <Image
               width={14}
               height={14}
-              className="absolute w-14 h-14 -top-7 right-72 lg:right-[55%] lg:w-26 lg:h-26 lg:-top-13"
+              className="absolute w-14 h-14 -top-7 right-[57%] sm:right-74 lg:right-[55%] lg:w-26 lg:h-26 lg:-top-13"
               src="img/header-logo.svg"
               alt=""
+              quality={100}
             />
             <div className="flex gap-3 items-center overflow-x-hidden">
               <Image
@@ -80,6 +89,7 @@ export default function Home() {
                 className="lg:hidden object-cover"
                 src="/img/header-mobile-1.png"
                 alt=""
+                quality={100}
               />
               <Image
                 width={150}
@@ -87,14 +97,16 @@ export default function Home() {
                 className="lg:hidden object-cover"
                 src="/img/header-mobile-2.png"
                 alt=""
+                quality={100}
               />
 
               <Image
                 width={150}
                 height={150}
-                className="min-w-37.5 h-37.5 object-cover lg:hidden rounded-xl"
-                src="/img/header-desktop-4.png"
+                className="object-cover lg:hidden rounded-xl"
+                src="/img/header-mobile-3.png"
                 alt=""
+                quality={100}
               />
               <Image
                 width={254}
@@ -102,6 +114,7 @@ export default function Home() {
                 className="hidden lg:block"
                 src="/img/header-desktop-2.png"
                 alt=""
+                quality={100}
               />
               <Image
                 width={254}
@@ -109,6 +122,7 @@ export default function Home() {
                 className="hidden lg:block"
                 src="/img/header-desktop-3.png"
                 alt=""
+                quality={100}
               />
               <Image
                 width={254}
@@ -116,6 +130,7 @@ export default function Home() {
                 className="hidden lg:block"
                 src="/img/header-desktop-4.png"
                 alt=""
+                quality={100}
               />
               <Image
                 width={54}
@@ -123,12 +138,13 @@ export default function Home() {
                 className="hidden lg:block"
                 src="/img/header-desktop-5.png"
                 alt=""
+                quality={100}
               />
             </div>
           </div>
         </div>
       </header>
-      <section className="container lg:mx-auto px-5 mb-16">
+      <section className="container lg:mx-auto px-5 mb-16  max-w-336 mx-auto">
         <h5 className="font-semibold leading-5 text-black mt-16 mb-6">
           دسته بندی محصولات
         </h5>
@@ -140,6 +156,7 @@ export default function Home() {
                 src="/img/Category-1.png"
                 alt=""
                 fill
+                quality={100}
               />
               <div className="relative z-40 top-57.5 px-2">
                 <h5 className="leading-5 font-semibold text-white">
@@ -161,6 +178,7 @@ export default function Home() {
                 src="/img/Category-3.png"
                 alt=""
                 fill
+                quality={100}
               />
               <div className="relative z-40 top-21.5 px-2">
                 <h5 className="leading-5 font-semibold text-white">سرهمی</h5>
@@ -180,6 +198,7 @@ export default function Home() {
                 src="/img/Category-6.png"
                 alt=""
                 fill
+                quality={100}
               />
               <div className="relative z-40 top-36.5 px-2">
                 <h5 className="leading-5 font-semibold text-white">
@@ -201,6 +220,7 @@ export default function Home() {
                 src="/img/Category-8.png"
                 alt=""
                 fill
+                quality={100}
               />
               <div className="relative z-40 top-37.5 px-2">
                 <h5 className="leading-5 font-semibold text-white">
@@ -225,6 +245,7 @@ export default function Home() {
                 src="/img/Category-2.png"
                 alt=""
                 fill
+                quality={100}
               />
               <div className="relative z-40 top-36.5 px-2">
                 <h5 className="leading-5 font-semibold text-white">شلوار</h5>
@@ -244,6 +265,7 @@ export default function Home() {
                 src="/img/Category-4.png"
                 alt=""
                 fill
+                quality={100}
               />
               <div className="relative z-40 top-24 px-2">
                 <h5 className="leading-5 font-semibold text-white">
@@ -265,6 +287,7 @@ export default function Home() {
                 src="/img/Category-5.png"
                 alt=""
                 fill
+                quality={100}
               />
               <div className="relative z-40 top-35.5 px-2">
                 <h5 className="leading-5 font-semibold text-white">دامن</h5>
@@ -284,6 +307,7 @@ export default function Home() {
                 src="/img/Category-7.png"
                 alt=""
                 fill
+                quality={100}
               />
               <div className="relative z-40 top-57.25 px-2">
                 <h5 className="leading-5 font-semibold text-white">
@@ -310,6 +334,7 @@ export default function Home() {
               className="w-full h-full object-cover"
               width={318}
               height={532}
+              quality={100}
             />
             <div className="absolute bottom-4 mr-4 text-white">
               <h5 className="text-lg font-bold">پیراهن کوتاه</h5>
@@ -331,15 +356,16 @@ export default function Home() {
               className="w-full h-full object-cover"
               width={318}
               height={256}
+              quality={100}
             />
             <div className="absolute bottom-4 mr-4 text-white">
-              <h5 className="text-lg font-bold">سرهمی</h5>
+              <h5 className="text-lg font-bold">شلوار</h5>
               <div className="flex gap-2 mt-2">
                 <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
-                  روزمره
+                  استایل روزمره
                 </span>
                 <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
-                  کالکشن جدید
+                  رسمی
                 </span>
               </div>
             </div>
@@ -351,6 +377,71 @@ export default function Home() {
               className="w-full h-full object-cover"
               width={318}
               height={256}
+              quality={100}
+            />
+            <div className="absolute bottom-4 mr-4 text-white">
+              <h5 className="text-lg font-bold">سرهمی</h5>
+              <div className="flex gap-2 mt-2">
+                <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
+                  روزمره
+                </span>
+                <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
+                  کالکشن‌ جدید
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-start-3 row-span-2 relative rounded-xl overflow-hidden">
+            <Image
+              src="/img/Category-desktop-4.png"
+              alt="دسته‌بندی 4"
+              className="w-full h-full object-cover"
+              width={318}
+              height={164}
+              quality={100}
+            />
+            <div className="absolute bottom-4 mr-4 text-white">
+              <h5 className="text-lg font-bold">کت و جلیقه</h5>
+              <div className="flex gap-2 mt-2">
+                <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
+                  کلاسیک
+                </span>
+                <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
+                  مینیمال
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="col-start-3 row-start-3 row-span-2 relative rounded-xl overflow-hidden">
+            <Image
+              src="/img/Category-desktop-5.png"
+              alt="دسته‌بندی 5"
+              className="w-full h-full object-cover"
+              width={318}
+              height={164}
+              quality={100}
+            />
+            <div className="absolute bottom-4 mr-4 text-white">
+              <h5 className="text-lg font-bold">دامن</h5>
+              <div className="flex gap-2 mt-2">
+                <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
+                  تابستانه
+                </span>
+                <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
+                  پاییزه
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="col-start-3 row-start-5 row-span-2 relative rounded-xl overflow-hidden">
+            <Image
+              src="/img/Category-desktop-6.png"
+              alt="دسته‌بندی 6"
+              className="w-full h-full object-cover"
+              width={318}
+              height={164}
+              quality={100}
             />
             <div className="absolute bottom-4 mr-4 text-white">
               <h5 className="text-lg font-bold">شومیز و بلوز</h5>
@@ -365,13 +456,14 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="col-start-3 row-span-2 relative rounded-xl overflow-hidden">
+          <div className="col-start-4 row-span-2 relative rounded-xl overflow-hidden">
             <Image
-              src="/img/Category-desktop-4.png"
-              alt="دسته‌بندی 4"
+              src="/img/Category-desktop-7.png"
+              alt="دسته‌بندی 7"
               className="w-full h-full object-cover"
               width={318}
               height={164}
+              quality={100}
             />
             <div className="absolute bottom-4 mr-4 text-white">
               <h5 className="text-lg font-bold">تاپ و کراپ</h5>
@@ -385,67 +477,6 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="col-start-3 row-start-3 row-span-2 relative rounded-xl overflow-hidden">
-            <Image
-              src="/img/Category-desktop-5.png"
-              alt="دسته‌بندی 5"
-              className="w-full h-full object-cover"
-              width={318}
-              height={164}
-            />
-            <div className="absolute bottom-4 mr-4 text-white">
-              <h5 className="text-lg font-bold">شلوار</h5>
-              <div className="flex gap-2 mt-2">
-                <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
-                  استایل روزمره
-                </span>
-                <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
-                  رسمی
-                </span>
-              </div>
-            </div>
-          </div>
-          <div className="col-start-3 row-start-5 row-span-2 relative rounded-xl overflow-hidden">
-            <Image
-              src="/img/Category-desktop-6.png"
-              alt="دسته‌بندی 6"
-              className="w-full h-full object-cover"
-              width={318}
-              height={164}
-            />
-            <div className="absolute bottom-4 mr-4 text-white">
-              <h5 className="text-lg font-bold">کت و جلیقه</h5>
-              <div className="flex gap-2 mt-2">
-                <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
-                  کلاسیک
-                </span>
-                <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
-                  مینیمال
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-start-4 row-span-2 relative rounded-xl overflow-hidden">
-            <Image
-              src="/img/Category-desktop-7.png"
-              alt="دسته‌بندی 7"
-              className="w-full h-full object-cover"
-              width={318}
-              height={164}
-            />
-            <div className="absolute bottom-4 mr-4 text-white">
-              <h5 className="text-lg font-bold">دامن</h5>
-              <div className="flex gap-2 mt-2">
-                <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
-                  تابستانه
-                </span>
-                <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
-                  پاییزه
-                </span>
-              </div>
-            </div>
-          </div>
 
           <div className="col-start-4 row-start-3 row-span-4 relative rounded-xl overflow-hidden">
             <Image
@@ -454,6 +485,7 @@ export default function Home() {
               className="w-full h-full object-cover"
               width={318}
               height={348}
+              quality={100}
             />
             <div className="absolute bottom-4 mr-4 text-white">
               <h5 className="text-lg font-bold">ترنچ کت و پالتو</h5>
@@ -488,6 +520,7 @@ export default function Home() {
             className="mb-0.75"
             src="/img/scissor.svg"
             alt=""
+            quality={100}
           />
           شخصی دوزی
         </button>
@@ -498,6 +531,7 @@ export default function Home() {
             className="lg:hidden"
             src="/img/section-2-2.svg"
             alt=""
+            quality={100}
           />
           <Image
             width={167}
@@ -505,6 +539,7 @@ export default function Home() {
             className="lg:hidden"
             src="/img/section-2-1.svg"
             alt=""
+            quality={100}
           />
           <Image
             width={115}
@@ -512,6 +547,7 @@ export default function Home() {
             className="lg:hidden"
             src="/img/section-2-3.svg"
             alt=""
+            quality={100}
           />
           <Image
             className="hidden lg:block"
@@ -519,6 +555,7 @@ export default function Home() {
             alt=""
             width={300}
             height={244}
+            quality={100}
           />
           <Image
             className="hidden lg:block"
@@ -526,6 +563,7 @@ export default function Home() {
             alt=""
             width={250}
             height={348}
+            quality={100}
           />
           <Image
             className="hidden lg:block"
@@ -533,6 +571,7 @@ export default function Home() {
             alt=""
             width={374}
             height={520}
+            quality={100}
           />
           <Image
             className="hidden lg:block"
@@ -540,6 +579,7 @@ export default function Home() {
             alt=""
             width={250}
             height={348}
+            quality={100}
           />
           <Image
             className="hidden lg:block"
@@ -547,6 +587,7 @@ export default function Home() {
             alt=""
             width={300}
             height={244}
+            quality={100}
           />
         </div>
       </section>
@@ -573,6 +614,7 @@ export default function Home() {
                 className="p-2.5 lg:p-4"
                 src="/img/ruler.svg"
                 alt=""
+                quality={100}
               />
               <h6 className="text-neutral-gray-13 text-sm leading-4 font-semibold mt-4 mb-2 lg:text-18 lg:leading-5.5 lg:font-bold lg:mt-6 lg:mb-4">
                 طراحی منحصر به‌فرد
@@ -590,6 +632,7 @@ export default function Home() {
                 className="p-2.5 lg:p-4"
                 src="/img/like.svg"
                 alt=""
+                quality={100}
               />
               <h6 className="text-neutral-gray-13 text-sm leading-4 font-semibold mt-4 mb-2 lg:text-18 lg:leading-5.5 lg:font-bold lg:mt-6 lg:mb-4">
                 دوخت حرفه‌ای و اختصاصی
@@ -606,6 +649,7 @@ export default function Home() {
                 className="p-2.5 lg:p-4"
                 src="/img/magic-star.svg"
                 alt=""
+                quality={100}
               />
               <h6 className="text-neutral-gray-13 text-sm leading-4 font-semibold mt-4 mb-2 lg:text-18 lg:leading-5.5 lg:font-bold lg:mt-6 lg:mb-4">
                 تعهد به کیفیت
@@ -623,6 +667,7 @@ export default function Home() {
                 className="p-2.5 lg:p-4"
                 src="/img/headphone.svg"
                 alt=""
+                quality={100}
               />
               <h6 className="text-neutral-gray-13 text-sm leading-4 font-semibold mt-4 mb-2 lg:text-18 lg:leading-5.5 lg:font-bold lg:mt-6 lg:mb-4">
                 پشتیبانی آنلاین و حضوری
@@ -641,6 +686,7 @@ export default function Home() {
             className="lg:hidden"
             src="/img/about-1.png"
             alt=""
+            quality={100}
           />
           <Image
             className="hidden lg:block mt-29.5 max-w-68.5 max-h-128.5"
@@ -648,6 +694,7 @@ export default function Home() {
             alt=""
             width={273}
             height={514}
+            quality={100}
           />
           <div className="lg:w-68.5">
             <Image
@@ -656,6 +703,7 @@ export default function Home() {
               className="mb-4 lg:hidden"
               src="/img/about-2.png"
               alt=""
+              quality={100}
             />
             <Image
               width={340}
@@ -663,6 +711,7 @@ export default function Home() {
               className="lg:hidden"
               src="/img/about-3.png"
               alt=""
+              quality={100}
             />
             <Image
               className="hidden lg:block min-w-68.5 min-h-62 mb-4"
@@ -670,6 +719,7 @@ export default function Home() {
               alt=""
               width={273}
               height={248}
+              quality={100}
             />
             <Image
               className="hidden lg:block min-w-68.5 min-h-62"
@@ -677,6 +727,7 @@ export default function Home() {
               alt=""
               width={273}
               height={248}
+              quality={100}
             />
           </div>
         </div>

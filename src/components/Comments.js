@@ -68,13 +68,25 @@ export default function Comments() {
             className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer"
             ref={prevRef}
           >
-            <Image width={16} height={16} src="/img/arrow-right-3.svg" alt="" />
+            <Image
+              width={16}
+              height={16}
+              quality={100}
+              src="/img/arrow-right-3.svg"
+              alt=""
+            />
           </div>
           <div
             className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer"
             ref={nextRef}
           >
-            <Image width={16} height={16} src="/img/arrow-left-4.svg" alt="" />
+            <Image
+              width={16}
+              height={16}
+              quality={100}
+              src="/img/arrow-left-4.svg"
+              alt=""
+            />
           </div>
         </div>
       </div>

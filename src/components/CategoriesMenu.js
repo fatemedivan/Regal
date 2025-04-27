@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 
-export default function Categories({ handleCloseCategory }) {
+export default function CategoriesMenu({ handleCloseCategory }) {
   const [isOpenCategoryOne, setIsOpenCategoryOne] = useState(false);
   const [isOpenCategoryTwo, setIsOpenCategoryTwo] = useState(false);
   const [isOpenCategoryThree, setIsOpenCategoryThree] = useState(false);

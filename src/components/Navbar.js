@@ -2,7 +2,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import Search from "@/components/Search";
-import Categories from "./Categories";
+import Categories from "./CategoriesMenu";
 
 export default function Navbar() {
   const [isOpenMenu, setIsOpenMenu] = useState(false);

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 
-export default function ProductItemOff({
+export default function ProductSearchItem({
   img,
   title,
   finalPrice,

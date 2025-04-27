@@ -9,33 +9,28 @@ export default function Articles() {
 
   useEffect(() => {
     if (glideRef.current) {
-      new Glide(glideRef.current, {
-        type: "carousel",
-        startAt: 0,
-        perView: 2,
+      const glide = new Glide(glideRef.current, {
+        type: 'carousel',
+        perView: 3,
         gap: 12,
         direction: "rtl",
-        peek: {
-          before: 0,
-          after: 50,
-        },
         breakpoints: {
-          680: {
-            perView: 2,
-            gap: 12,
+          1440: {
+            perView: 3,
+            gap: 24,
           },
           1024: {
             perView: 3,
             gap: 24,
           },
-          1440: {
-            perView: 3,
-            gap: 24,
+          768: {
+            perView: 2,
+            gap: 12,
           },
         },
-        touchRatio: 1,
-        dragRatio: 1,
-      }).mount();
+      });
+
+      glide.mount();
     }
   }, []);
 

@@ -6,7 +6,7 @@ import ProductItemOff from "@/components/ProductItemOff";
 import Image from "next/image";
 import React, { useState } from "react";
 
-export default function page() {
+export default function Page() {
   const [isOpenFilterMenu, setIsOpenFilterMenu] = useState(false);
   const handleCloseFilter = () => {
     setIsOpenFilterMenu(false);
@@ -112,7 +112,11 @@ export default function page() {
                   src="/img/search-normal-2.svg"
                   alt=""
                 />
-                <input type="text" className="w-full outline-none" placeholder="جستجو کنید" />
+                <input
+                  type="text"
+                  className="w-full outline-none"
+                  placeholder="جستجو کنید"
+                />
               </div>
               <div className="flex items-center 2xl:justify-between flex-wrap gap-x-6 gap-y-8 mt-6">
                 <ProductItemOff

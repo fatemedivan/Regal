@@ -69,7 +69,9 @@ export default function FilterMenuMobile({ handleCloseFilter }) {
           onClick={() => setIsOpenFilterOne(!isOpenFilterOne)}
           className="flex justify-between items-center mb-6 pb-4 border-b border-neutral-gray-4 cursor-pointer"
         >
-          <p className="text-sm font-semibold leading-4 w-full lg:text-[1rem] lg:leading-7">نوع لباس</p>
+          <p className="text-sm font-semibold leading-4 w-full lg:text-[1rem] lg:leading-7">
+            نوع لباس
+          </p>
           {isOpenFilterOne ? (
             <Image width={16} height={16} src="/img/arrow-up.svg" alt="" />
           ) : (
@@ -100,7 +102,9 @@ export default function FilterMenuMobile({ handleCloseFilter }) {
           onClick={() => setIsOpenFilterTwo(!isOpenFilterTwo)}
           className="flex justify-between items-center mb-6 pb-4 border-b border-neutral-gray-4 cursor-pointer"
         >
-          <p className="text-sm font-semibold leading-4 w-full lg:text-[1rem] lg:leading-7">رنگ‌بندی</p>
+          <p className="text-sm font-semibold leading-4 w-full lg:text-[1rem] lg:leading-7">
+            رنگ‌بندی
+          </p>
           {isOpenFilterTwo ? (
             <Image width={16} height={16} src="/img/arrow-up.svg" alt="" />
           ) : (
@@ -127,7 +131,9 @@ export default function FilterMenuMobile({ handleCloseFilter }) {
           onClick={() => setIsOpenFilterThree(!isOpenFilterThree)}
           className="flex justify-between items-center mb-6 pb-4 border-b border-neutral-gray-4 cursor-pointer"
         >
-          <p className="text-sm font-semibold leading-4 w-full lg:text-[1rem] lg:leading-7">سایزبندی</p>
+          <p className="text-sm font-semibold leading-4 w-full lg:text-[1rem] lg:leading-7">
+            سایزبندی
+          </p>
           {isOpenFilterThree ? (
             <Image width={16} height={16} src="/img/arrow-up.svg" alt="" />
           ) : (
@@ -154,7 +160,9 @@ export default function FilterMenuMobile({ handleCloseFilter }) {
           onClick={() => setIsOpenFilterFour(!isOpenFilterFour)}
           className="flex justify-between items-center mb-6 pb-4 border-b border-neutral-gray-4 cursor-pointer"
         >
-          <p className="text-sm font-semibold leading-4 w-full lg:text-[1rem] lg:leading-7">جنس پارچه</p>
+          <p className="text-sm font-semibold leading-4 w-full lg:text-[1rem] lg:leading-7">
+            جنس پارچه
+          </p>
           {isOpenFilterFour ? (
             <Image width={16} height={16} src="/img/arrow-up.svg" alt="" />
           ) : (
@@ -185,7 +193,9 @@ export default function FilterMenuMobile({ handleCloseFilter }) {
           onClick={() => setIsOpenFilterFive(!isOpenFilterFive)}
           className="flex justify-between items-center mb-6 pb-4 border-b border-neutral-gray-4 cursor-pointer"
         >
-          <p className="text-sm font-semibold leading-4 w-full lg:text-[1rem] lg:leading-7">فرم بدن</p>
+          <p className="text-sm font-semibold leading-4 w-full lg:text-[1rem] lg:leading-7">
+            فرم بدن
+          </p>
           {isOpenFilterFive ? (
             <Image width={16} height={16} src="/img/arrow-up.svg" alt="" />
           ) : (
@@ -216,7 +226,9 @@ export default function FilterMenuMobile({ handleCloseFilter }) {
           onClick={() => setIsOpenFilterSix(!isOpenFilterSix)}
           className="flex justify-between items-center mb-6 pb-4 border-b border-neutral-gray-4 cursor-pointer"
         >
-          <p className="text-sm font-semibold leading-4 w-full lg:text-[1rem] lg:leading-7">طرح لباس</p>
+          <p className="text-sm font-semibold leading-4 w-full lg:text-[1rem] lg:leading-7">
+            طرح لباس
+          </p>
           {isOpenFilterSix ? (
             <Image width={16} height={16} src="/img/arrow-up.svg" alt="" />
           ) : (

@@ -112,7 +112,7 @@ export default function page() {
                   src="/img/search-normal-2.svg"
                   alt=""
                 />
-                <input type="text" placeholder="جستجو کنید" />
+                <input type="text" className="w-full outline-none" placeholder="جستجو کنید" />
               </div>
               <div className="flex items-center 2xl:justify-between flex-wrap gap-x-6 gap-y-8 mt-6">
                 <ProductItemOff

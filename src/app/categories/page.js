@@ -41,16 +41,12 @@ export default function page() {
             <p className="text-neutral-gray-8 text-sm leading-5">
               تعداد محصولات : ۵۶ کالا
             </p>
-            <div className="flex items-center gap-2">
-              <div
-                onClick={() => setIsOpenFilterMenu(true)}
-                className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer"
-              >
-                <Image width={16} height={16} src="/img/filter.svg" alt="" />
-              </div>
-              <div className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer">
-                <Image width={16} height={16} src="/img/sort.svg" alt="" />
-              </div>
+
+            <div
+              onClick={() => setIsOpenFilterMenu(true)}
+              className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer"
+            >
+              <Image width={16} height={16} src="/img/filter.svg" alt="" />
             </div>
           </div>
           <div className="flex flex-wrap gap-4 justify-center lg:hidden">

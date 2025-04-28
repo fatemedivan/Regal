@@ -64,7 +64,7 @@ export default function Page() {
             alt=""
             className="lg:min-w-136.5 lg:min-h-138"
           />
-          <div className="absolute top-4 lg:top-6 lg:right-6 right-4 z-20 p-2 lg:p-2.5 rounded-lg flex justify-center items-center bg-[rgba(247,247,248,0.3)]">
+          <div className="absolute top-4 lg:top-6 lg:right-6 right-4 z-20 p-2 lg:p-2.5 rounded-lg flex justify-center items-center bg-[rgba(247,247,248,0.3)] cursor-pointer">
             <Image
               width={16}
               height={16}
@@ -79,10 +79,10 @@ export default function Page() {
               لباس میدی دکلته الی
             </h4>
             <div className="flex justify-center items-center gap-2">
-              <div className="p-3 border border-cognac-tint-8 rounded-lg">
+              <div className="p-3 border border-cognac-tint-8 rounded-lg cursor-pointer">
                 <Image width={16} height={16} src="/img/share.svg" alt="" />
               </div>
-              <div className="p-3 border border-cognac-tint-8 rounded-lg">
+              <div className="p-3 border border-cognac-tint-8 rounded-lg cursor-pointer">
                 <Image width={16} height={16} src="/img/heart-2.svg" alt="" />
               </div>
             </div>
@@ -214,11 +214,11 @@ export default function Page() {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <button className="flex items-center gap-2 border border-cognac-primery rounded-lg px-4 py-3.25 xl:px-6">
+            <button className="flex items-center gap-2 border border-cognac-primery rounded-lg px-4 py-3.25 xl:px-6 cursor-pointer">
               <img className="hidden lg:block" src="/img/check.svg" alt="" />
               <p className="text-5.5 text-cognac-primery">مقایسه محصول</p>
             </button>
-            <button className="flex items-center bg-cognac-primery gap-2 rounded-lg px-4 py-3.25 lg:px-10 xl:px-37">
+            <button className="flex items-center bg-cognac-primery gap-2 rounded-lg px-4 py-3.25 lg:px-10 xl:px-37 cursor-pointer">
               <img
                 className="hidden lg:block"
                 src="/img/shopping-cart-2.svg"

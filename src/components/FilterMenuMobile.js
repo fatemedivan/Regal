@@ -9,7 +9,7 @@ export default function FilterMenuMobile({ handleCloseFilter }) {
       title: "نوع لباس",
       options: ["لباس مجلسی", "پیراهن کوتاه", "کت و شلوار", "شومیز", "شلوار"],
       isOpen: false,
-      type: "text",
+      type: "clothes",
     },
     {
       id: 2,
@@ -47,21 +47,21 @@ export default function FilterMenuMobile({ handleCloseFilter }) {
       title: "جنس پارچه",
       options: ["پنبه", "ساتن", "مخمل", "لینن", "گیپور"],
       isOpen: false,
-      type: "text",
+      type: "fabric",
     },
     {
       id: 5,
       title: "فرم بدن",
       options: ["ساعت شنی", "گلابی", "سیب", "مستطیل", "مثلث وارونه"],
       isOpen: false,
-      type: "text",
+      type: "shape",
     },
     {
       id: 6,
       title: "طرح لباس",
       options: ["ساده", "گل‌دار", "راه‌راه", "طرح‌دار", "براق", "مات"],
       isOpen: false,
-      type: "text",
+      type: "design",
     },
   ]);
 

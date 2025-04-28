@@ -104,6 +104,7 @@ export default function OffProducts() {
                 price={"۴,۱۲۰,۰۰۰"}
                 offPercent={"۱۵"}
                 isMore={false}
+                colors={['#97AAB4','#94999F','#C2B1A5','#F1AB90']}
               />
             </li>
             <li className="glide__slide min-w-41.75 lg:min-w-79.5">
@@ -114,6 +115,7 @@ export default function OffProducts() {
                 price={"۵,۴۰۰,۰۰۰"}
                 offPercent={"۷"}
                 isMore={true}
+                colors={['#94999F','#C2B1A5','#F1AB90']}
               />
             </li>
             <li className="glide__slide min-w-41.75 lg:min-w-79.5">
@@ -124,6 +126,7 @@ export default function OffProducts() {
                 price={"۴,۲۰۰,۰۰۰"}
                 offPercent={"۸"}
                 isMore={true}
+                colors={['#94999F','#C2B1A5','#F1AB90']}
               />
             </li>
             <li className="glide__slide min-w-41.75 lg:min-w-79.5">
@@ -134,6 +137,7 @@ export default function OffProducts() {
                 price={"۳,۸۰۰,۰۰۰"}
                 offPercent={"۱۵"}
                 isMore={false}
+                colors={['#97AAB4','#94999F','#C2B1A5','#F1AB90']}
               />
             </li>
           </ul>

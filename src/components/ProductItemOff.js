@@ -8,6 +8,7 @@ export default function ProductItemOff({
   finalPrice,
   offPercent,
   isMore,
+  colors
 }) {
   return (
     <div className={`min-w-41.75 lg:min-w-79.5`}>
@@ -49,12 +50,10 @@ export default function ProductItemOff({
               ۲+
             </div>
           )}
-          <div
-            className={`w-5 h-5 rounded-sm bg-[#97AAB4] ${isMore && "hidden"}`}
-          ></div>
-          <div className="w-5 h-5 rounded-sm bg-[#94999F]"></div>
-          <div className="w-5 h-5 rounded-sm bg-[#C2B1A5]"></div>
-          <div className="w-5 h-5 rounded-sm bg-[#F1AB90]"></div>
+          {colors.map(color => (
+
+          <div key={color} className={`w-5 h-5 rounded-sm bg-[${color}]`}></div>
+          ))}
         </div>
       </div>
       <div className="flex items-center gap-2 text-black lg:justify-start">

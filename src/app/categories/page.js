@@ -14,7 +14,7 @@ export default function Page() {
   return (
     <div className="container mx-auto">
       {isOpenFilterMenu && (
-        <div className="lg:hidden">
+        <div className="lg:hidden absolute top-0 left-0 right-0 bg-white z-50">
           <FilterMenuMobile handleCloseFilter={handleCloseFilter} />
         </div>
       )}
@@ -56,26 +56,31 @@ export default function Page() {
               title={"لباس میدی رکسان"}
               price={"۲,۸۰۰,۰۰۰"}
               finalPrice={"۲,۳۸۰,۰۰۰"}
+              colors={["#94999F", "#F1AB90"]}
             />
             <ProductItemOff
               img={"/img/category-page-2.png"}
               title={"لباس میدی مدرن راشا"}
               finalPrice={"۲,۹۵۰,۰۰۰"}
+              colors={["#94999F", "#F1AB90"]}
             />
             <ProductItemOff
               img={"/img/category-page-3.png"}
               title={"لباس میدی توری یاس"}
               finalPrice={"۴,۶۵۰,۰۰۰"}
+              colors={["#94999F", "#F1AB90"]}
             />
             <ProductItemOff
               img={"/img/category-page-4.png"}
               title={"لباس مدرن پالما"}
               finalPrice={"۲,۶۳۰,۰۰۰"}
+              colors={["#94999F", "#F1AB90"]}
             />
             <ProductItemOff
               img={"/img/category-page-5.png"}
               title={"لباس میدی دکلته الی"}
               finalPrice={"۳,۲۰۰,۰۰۰"}
+              colors={["#94999F", "#F1AB90"]}
             />
             <ProductItemOff
               img={"/img/category-page-6.png"}
@@ -83,16 +88,19 @@ export default function Page() {
               title={"لباس میدی شیوا"}
               price={"۳,۱۰۰,۰۰۰"}
               finalPrice={"۲,۶۳۵,۰۰۰"}
+              colors={["#94999F", "#F1AB90"]}
             />
             <ProductItemOff
               img={"/img/category-page-7.png"}
               title={"لباس میدی دیوا"}
               finalPrice={"۵,۶۰۰,۰۰۰"}
+              colors={["#94999F", "#F1AB90"]}
             />
             <ProductItemOff
               img={"/img/category-page-8.png"}
               title={"لباس میدی روشا"}
               finalPrice={"۳,۴۰۰,۰۰۰"}
+              colors={["#94999F", "#F1AB90"]}
             />
           </div>
           <div className="hidden lg:flex justify-between gap-6">
@@ -125,26 +133,31 @@ export default function Page() {
                   title={"لباس میدی رکسان"}
                   price={"۲,۸۰۰,۰۰۰"}
                   finalPrice={"۲,۳۸۰,۰۰۰"}
+                  colors={["#97AAB4", "#C2B1A5", "#F1AB90"]}
                 />
                 <ProductItemOff
                   img={"/img/category-page-desktop-2.png"}
                   title={"لباس میدی مدرن راشا"}
                   finalPrice={"۲,۹۵۰,۰۰۰"}
+                  colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
                 />
                 <ProductItemOff
                   img={"/img/category-page-desktop-3.png"}
                   title={"لباس میدی توری یاس"}
                   finalPrice={"۴,۶۵۰,۰۰۰"}
+                  colors={["#97AAB4", "#C2B1A5", "#F1AB90"]}
                 />
                 <ProductItemOff
                   img={"/img/category-page-desktop-4.png"}
                   title={"لباس مدرن پالما"}
                   finalPrice={"۲,۶۳۰,۰۰۰"}
+                  colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
                 />
                 <ProductItemOff
                   img={"/img/category-page-desktop-5.png"}
                   title={"لباس میدی دکلته الی"}
                   finalPrice={"۳,۲۰۰,۰۰۰"}
+                  colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
                 />
                 <ProductItemOff
                   img={"/img/category-page-desktop-6.png"}
@@ -152,21 +165,25 @@ export default function Page() {
                   title={"لباس میدی شیوا"}
                   price={"۳,۱۰۰,۰۰۰"}
                   finalPrice={"۲,۶۳۵,۰۰۰"}
+                  colors={["#97AAB4", "#C2B1A5", "#F1AB90"]}
                 />
                 <ProductItemOff
                   img={"/img/category-page-desktop-7.png"}
                   title={"لباس میدی دیوا"}
                   finalPrice={"۵,۶۰۰,۰۰۰"}
+                  colors={["#97AAB4", "#C2B1A5", "#F1AB90"]}
                 />
                 <ProductItemOff
                   img={"/img/category-page-desktop-8.png"}
                   title={"لباس میدی روشا"}
                   finalPrice={"۳,۴۰۰,۰۰۰"}
+                  colors={["#97AAB4", "#C2B1A5", "#F1AB90"]}
                 />
                 <ProductItemOff
                   img={"/img/category-page-desktop-9.png"}
                   title={"لباس تک شانه ریتا"}
                   finalPrice={"۲,۲۴۰,۰۰۰"}
+                  colors={["#97AAB4", "#C2B1A5", "#F1AB90"]}
                 />
               </div>
               <Pagination />

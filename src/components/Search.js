@@ -225,6 +225,7 @@ export default function Search({ handleCloseSearch }) {
                       title={"لباس میدی رایا"}
                       finalPrice={"۳,۵۰۲,۰۰۰"}
                       isMore={false}
+                      colors={['#97AAB4','#94999F','#C2B1A5','#F1AB90']}
                     />
                   </li>
                   <li className="glide__slide min-w-41.75 lg:min-w-51">
@@ -233,6 +234,7 @@ export default function Search({ handleCloseSearch }) {
                       title={"لباس میدی فیال"}
                       finalPrice={"۵,۰۲۲,۰۰۰"}
                       isMore={true}
+                      colors={['#94999F','#C2B1A5','#F1AB90']}
                     />
                   </li>
                   <li className="glide__slide min-w-41.75 lg:min-w-51">
@@ -241,6 +243,7 @@ export default function Search({ handleCloseSearch }) {
                       title={"لباس میدی مدرن مارال"}
                       finalPrice={"۳,۸۶۴,۰۰۰"}
                       isMore={true}
+                      colors={['#94999F','#C2B1A5','#F1AB90']}
                     />
                   </li>
                   <li className="glide__slide min-w-41.75 lg:min-w-51">
@@ -249,6 +252,7 @@ export default function Search({ handleCloseSearch }) {
                       title={"لباس میدی تک شانه نولا"}
                       finalPrice={"۳,۲۳۰,۰۰۰"}
                       isMore={false}
+                      colors={['#94999F','#C2B1A5','#F1AB90']}
                     />
                   </li>
                   <li className="glide__slide min-w-41.75 lg:min-w-51">
@@ -257,6 +261,7 @@ export default function Search({ handleCloseSearch }) {
                       title={"لباس شب مدرن کاژین"}
                       finalPrice={"۳,۲۳۰,۰۰۰"}
                       isMore={false}
+                      colors={['#97AAB4','#94999F','#C2B1A5','#F1AB90']}
                     />
                   </li>
                 </ul>

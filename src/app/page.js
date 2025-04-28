@@ -158,7 +158,7 @@ export default function Home() {
                 fill
                 quality={100}
               />
-              <div className="relative z-40 top-57.5 px-2">
+              <div className="relative z-30 top-57.5 px-2">
                 <h5 className="leading-5 font-semibold text-white">
                   پیراهن کوتاه
                 </h5>
@@ -180,7 +180,7 @@ export default function Home() {
                 fill
                 quality={100}
               />
-              <div className="relative z-40 top-21.5 px-2">
+              <div className="relative z-30 top-21.5 px-2">
                 <h5 className="leading-5 font-semibold text-white">سرهمی</h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -200,7 +200,7 @@ export default function Home() {
                 fill
                 quality={100}
               />
-              <div className="relative z-40 top-36.5 px-2">
+              <div className="relative z-30 top-36.5 px-2">
                 <h5 className="leading-5 font-semibold text-white">
                   شومیز و بلوز
                 </h5>
@@ -222,7 +222,7 @@ export default function Home() {
                 fill
                 quality={100}
               />
-              <div className="relative z-40 top-37.5 px-2">
+              <div className="relative z-30 top-37.5 px-2">
                 <h5 className="leading-5 font-semibold text-white">
                   تاپ و کراپ
                 </h5>
@@ -247,7 +247,7 @@ export default function Home() {
                 fill
                 quality={100}
               />
-              <div className="relative z-40 top-36.5 px-2">
+              <div className="relative z-30 top-36.5 px-2">
                 <h5 className="leading-5 font-semibold text-white">شلوار</h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -267,7 +267,7 @@ export default function Home() {
                 fill
                 quality={100}
               />
-              <div className="relative z-40 top-24 px-2">
+              <div className="relative z-30 top-24 px-2">
                 <h5 className="leading-5 font-semibold text-white">
                   کت و جلیقه
                 </h5>
@@ -289,7 +289,7 @@ export default function Home() {
                 fill
                 quality={100}
               />
-              <div className="relative z-40 top-35.5 px-2">
+              <div className="relative z-30 top-35.5 px-2">
                 <h5 className="leading-5 font-semibold text-white">دامن</h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -309,7 +309,7 @@ export default function Home() {
                 fill
                 quality={100}
               />
-              <div className="relative z-40 top-57.25 px-2">
+              <div className="relative z-30 top-57.25 px-2">
                 <h5 className="leading-5 font-semibold text-white">
                   ترنچ کت و پالتو
                 </h5>

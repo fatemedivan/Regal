@@ -77,11 +77,9 @@ export default function FilterMenuMobile({ handleCloseFilter }) {
 
   const handleOptionChange = (option, checked, parentFilter) => {
     setSelectedFilters((prev) => {
-      // اول فیلترهای قبلی رو که از همین type هستند حذف کن
       const filteredPrev = prev.filter(
         (item) => item.type !== parentFilter.type
       );
-      // اگر تیک زده شده بود، مقدار جدید رو اضافه کن
       return checked
         ? [
             ...filteredPrev,

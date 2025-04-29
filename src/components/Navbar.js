@@ -3,6 +3,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import Search from "@/components/Search";
 import Categories from "./CategoriesMenu";
+import Link from "next/link";
 
 export default function Navbar() {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
@@ -34,7 +35,9 @@ export default function Navbar() {
           >
             <p className="text-sm leading-5 cursor-pointer">دسته‌بندی‌ها</p>
             <Image
-              className={`cursor-pointer ${isOpenCategory ? 'hidden' : 'block'}`}
+              className={`cursor-pointer ${
+                isOpenCategory ? "hidden" : "block"
+              }`}
               width={16}
               height={16}
               quality={100}
@@ -42,7 +45,9 @@ export default function Navbar() {
               alt=""
             />
             <Image
-              className={`cursor-pointer ${isOpenCategory ? 'block' : 'hidden'}`}
+              className={`cursor-pointer ${
+                isOpenCategory ? "block" : "hidden"
+              }`}
               width={16}
               height={16}
               quality={100}
@@ -78,9 +83,9 @@ export default function Navbar() {
               alt=""
               quality={100}
               onClick={() => {
-                setIsSearching(true)
-                setIsOpenCategory(false)
-                setIsOpenMenu(false)
+                setIsSearching(true);
+                setIsOpenCategory(false);
+                setIsOpenMenu(false);
               }}
             />
           </li>
@@ -129,21 +134,23 @@ export default function Navbar() {
               alt=""
               quality={100}
               onClick={(e) => {
-                setIsSearching(true)
-                setIsOpenCategory(false)
-                setIsOpenMenu(false)
+                setIsSearching(true);
+                setIsOpenCategory(false);
+                setIsOpenMenu(false);
               }}
             />
           </li>
           <li className="p-3">
-            <Image
-              className="cursor-pointer"
-              width={16}
-              height={16}
-              src="/img/shopping-cart.svg"
-              alt=""
-              quality={100}
-            />
+            <Link href={'/shoppingcard'}>
+              <Image
+                className="cursor-pointer"
+                width={16}
+                height={16}
+                src="/img/shopping-cart.svg"
+                alt=""
+                quality={100}
+              />
+            </Link>
           </li>
           <li className="p-3">
             <Image

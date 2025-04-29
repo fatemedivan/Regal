@@ -56,42 +56,49 @@ export default function Page() {
           onClick={() => setIsOpenDeleteModal(true)}
         />
       </div>
-      <div className="relative flex items-center justify-between w-full py-2 border-t-2 border-dashed border-neutral-gray-6 my-8 lg:my-12">
-        <div className="bg-white pl-1.5 relative z-20 -top-7 flex items-center gap-2">
-          <Image
-            className="lg:w-5 lg:h-5"
-            width={24}
-            height={24}
-            src="/img/bag-2.svg"
-            alt=""
-          />
-          <p className="text-cognac-primery text-xl font-bold leading-5.5 hidden lg:block">
-            سبد خرید
-          </p>
+      <div className="relative w-full my-8 lg:my-12">
+        <div className="absolute top-1/2 left-0 w-full flex z-0">
+          <div className="w-1/4 border-t-2 border-dashed border-cognac-primery"></div>
+          <div className="w-3/4 border-t-2 border-dashed border-neutral-gray-6"></div>
         </div>
-        <div className="bg-white p-1.5 relative z-20 -top-7 flex items-center gap-2">
-          <Image
-            className="lg:w-5 lg:h-5"
-            width={24}
-            height={24}
-            src="/img/pen-add.svg"
-            alt=""
-          />
-          <p className="leading-7 text-neutral-gray-6 hidden lg:block">
-            تکمیل اطلاعات
-          </p>
-        </div>
-        <div className="bg-white pr-1.5 relative z-20 -top-7 flex items-center gap-2">
-          <Image
-            className="lg:w-5 lg:h-5"
-            width={24}
-            height={24}
-            src="/img/card-pos.svg"
-            alt=""
-          />
-          <p className="leading-7 text-neutral-gray-6 hidden lg:block">
-            پرداخت
-          </p>
+
+        <div className="relative flex items-center justify-between w-full py-2">
+          <div className="bg-white pl-1.5 relative z-20 flex items-center gap-2">
+            <Image
+              className="lg:w-5 lg:h-5"
+              width={24}
+              height={24}
+              src="/img/bag-2.svg"
+              alt=""
+            />
+            <p className="text-cognac-primery text-xl font-bold leading-5.5 hidden lg:block">
+              سبد خرید
+            </p>
+          </div>
+          <div className="bg-white p-1.5 relative z-20 flex items-center gap-2">
+            <Image
+              className="lg:w-5 lg:h-5"
+              width={24}
+              height={24}
+              src="/img/pen-add.svg"
+              alt=""
+            />
+            <p className="leading-7 text-neutral-gray-6 hidden lg:block">
+              تکمیل اطلاعات
+            </p>
+          </div>
+          <div className="bg-white pr-1.5 relative z-20 flex items-center gap-2">
+            <Image
+              className="lg:w-5 lg:h-5"
+              width={24}
+              height={24}
+              src="/img/card-pos.svg"
+              alt=""
+            />
+            <p className="leading-7 text-neutral-gray-6 hidden lg:block">
+              پرداخت
+            </p>
+          </div>
         </div>
       </div>
 
@@ -336,27 +343,35 @@ export default function Page() {
           />
           <div className="bg-white fixed bottom-0 left-0 right-0 z-60 w-full rounded-tr-3xl rounded-tl-3xl pt-4 px-5 pb-6 lg:w-108 lg:p-6 lg:top-1/2 lg:right-1/2 lg:transform lg:translate-x-1/2 lg:-translate-y-1/2 lg:bottom-auto lg:rounded-3xl">
             <div className="flex justify-between items-center pb-4 border-b border-neutral-gray-4 mb-4 lg:mb-8 lg:border-none">
-              <p className="leading-7 text-black lg:text-lg lg:font-bold lg:leading-5.5">حذف سبد خرید</p>
+              <p className="leading-7 text-black lg:text-lg lg:font-bold lg:leading-5.5">
+                حذف سبد خرید
+              </p>
               <Image
                 width={16}
                 height={16}
                 src="/img/close-icon-filter.svg"
                 className="cursor-pointer lg:w-6 lg:h-6"
                 alt=""
-                onClick={()=> setIsOpenDeleteModal(false)}
+                onClick={() => setIsOpenDeleteModal(false)}
               />
             </div>
             <p className="text-sm leading-7 text-neutral-gray-11 mb-8 lg:mb-10 lg:leading-6">
               آیا از حذف سبد خرید اطمینان دارید؟
             </p>
             <div className="flex items-center gap-4 justify-center flex-wrap">
-              <button onClick={()=> setIsOpenDeleteModal(false)} className="leading-5.5 py-3.25 px-14.75 border border-neutral-gray-8 rounded-lg cursor-pointer lg:px-17">
+              <button
+                onClick={() => setIsOpenDeleteModal(false)}
+                className="leading-5.5 py-3.25 px-14.75 border border-neutral-gray-8 rounded-lg cursor-pointer lg:px-17"
+              >
                 انصراف
               </button>
-              <button onClick={()=> {
-                setIsOpenDeleteModal(false)
-                setBasketItems([])
-              }} className="leading-5.5 bg-error-primery text-white py-3.25 px-16.5 rounded-lg cursor-pointer lg:px-18.75">
+              <button
+                onClick={() => {
+                  setIsOpenDeleteModal(false);
+                  setBasketItems([]);
+                }}
+                className="leading-5.5 bg-error-primery text-white py-3.25 px-16.5 rounded-lg cursor-pointer lg:px-18.75"
+              >
                 حذف
               </button>
             </div>

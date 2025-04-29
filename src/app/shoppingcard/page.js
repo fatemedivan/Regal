@@ -1,4 +1,5 @@
 "use client";
+import ProgressBar from "@/components/ProgressBar";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -56,50 +57,8 @@ export default function Page() {
           onClick={() => setIsOpenDeleteModal(true)}
         />
       </div>
-      <div className="relative w-full my-8 lg:my-12">
-        <div className="absolute top-1/2 left-0 w-full flex z-0">
-          <div className="w-1/4 border-t-2 border-dashed border-cognac-primery"></div>
-          <div className="w-3/4 border-t-2 border-dashed border-neutral-gray-6"></div>
-        </div>
-
-        <div className="relative flex items-center justify-between w-full py-2">
-          <div className="bg-white pl-1.5 relative z-20 flex items-center gap-2">
-            <Image
-              className="lg:w-5 lg:h-5"
-              width={24}
-              height={24}
-              src="/img/bag-2.svg"
-              alt=""
-            />
-            <p className="text-cognac-primery text-xl font-bold leading-5.5 hidden lg:block">
-              سبد خرید
-            </p>
-          </div>
-          <div className="bg-white p-1.5 relative z-20 flex items-center gap-2">
-            <Image
-              className="lg:w-5 lg:h-5"
-              width={24}
-              height={24}
-              src="/img/pen-add.svg"
-              alt=""
-            />
-            <p className="leading-7 text-neutral-gray-6 hidden lg:block">
-              تکمیل اطلاعات
-            </p>
-          </div>
-          <div className="bg-white pr-1.5 relative z-20 flex items-center gap-2">
-            <Image
-              className="lg:w-5 lg:h-5"
-              width={24}
-              height={24}
-              src="/img/card-pos.svg"
-              alt=""
-            />
-            <p className="leading-7 text-neutral-gray-6 hidden lg:block">
-              پرداخت
-            </p>
-          </div>
-        </div>
+      <div className="xl:px-40.5">
+        <ProgressBar progress={"basket"} />
       </div>
 
       <div className="lg:hidden">

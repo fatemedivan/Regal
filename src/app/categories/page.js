@@ -147,10 +147,10 @@ export default function Page() {
                     placeholder="جستجو کنید"
                   />
                 </div>
-                <div className="relative w-auto xl:min-w-80">
+                <div className="relative w-80">
                   <button
                     onClick={() => setIsOpenSort(!isOpenSort)}
-                    className="w-full border border-neutral-gray-4 rounded-lg py-3.5 px-4 pl-8 text-right flex justify-between items-center cursor-pointer"
+                    className="w-full border border-neutral-gray-4 rounded-lg py-5 px-8 text-right flex justify-between items-center cursor-pointer"
                   >
                     <p className="text-neutral-gray-7 text-xs leading-4.5">
                       {selectedOption || "مرتب سازی بر اساس"}

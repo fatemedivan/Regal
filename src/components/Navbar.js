@@ -141,7 +141,7 @@ export default function Navbar() {
             />
           </li>
           <li className="p-3">
-            <Link href={'/shoppingcard'}>
+            <Link href={"/shoppingcard"}>
               <Image
                 className="cursor-pointer"
                 width={16}

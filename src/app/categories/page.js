@@ -3,19 +3,32 @@ import Breadcrumb from "@/components/Breadcrumb";
 import FilterMenuMobile from "@/components/FilterMenuMobile";
 import Pagination from "@/components/Pagination";
 import ProductItemOff from "@/components/ProductItemOff";
+import Sort from "@/components/Sort";
 import Image from "next/image";
 import React, { useState } from "react";
 
 export default function Page() {
   const [isOpenFilterMenu, setIsOpenFilterMenu] = useState(false);
+  const [isOpenSort, setIsOpenSort] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("");
+
   const handleCloseFilter = () => {
     setIsOpenFilterMenu(false);
   };
+  const handleCloseSort = () => {
+    setIsOpenSort(false);
+  };
+
   return (
     <div className="container mx-auto">
       {isOpenFilterMenu && (
         <div className="lg:hidden absolute top-0 left-0 right-0 bg-white z-50">
           <FilterMenuMobile handleCloseFilter={handleCloseFilter} />
+        </div>
+      )}
+      {isOpenSort && (
+        <div className="lg:hidden absolute top-0 left-0 right-0 bg-white z-50">
+          <Sort handleCloseSort={handleCloseSort} />
         </div>
       )}
 
@@ -41,12 +54,19 @@ export default function Page() {
             <p className="text-neutral-gray-8 text-sm leading-5">
               تعداد محصولات : ۵۶ کالا
             </p>
-
-            <div
-              onClick={() => setIsOpenFilterMenu(true)}
-              className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer"
-            >
-              <Image width={16} height={16} src="/img/filter.svg" alt="" />
+            <div className="flex items-center gap-2">
+              <div
+                onClick={() => setIsOpenFilterMenu(true)}
+                className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer"
+              >
+                <Image width={16} height={16} src="/img/filter.svg" alt="" />
+              </div>
+              <div
+                onClick={() => setIsOpenSort(true)}
+                className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer"
+              >
+                <Image width={16} height={16} src="/img/sort.svg" alt="" />
+              </div>
             </div>
           </div>
           <div className="flex flex-wrap gap-4 justify-center lg:hidden">
@@ -113,19 +133,63 @@ export default function Page() {
               </div>
             </div>
             <div>
-              <div className="px-4 py-3.75 rounded-lg border border-neutral-gray-4 flex items-center gap-1 w-full">
-                <Image
-                  width={16}
-                  height={16}
-                  src="/img/search-normal-2.svg"
-                  alt=""
-                />
-                <input
-                  type="text"
-                  className="w-full outline-none"
-                  placeholder="جستجو کنید"
-                />
+              <div className="flex items-center gap-6">
+                <div className="px-4 py-3.75 rounded-lg border border-neutral-gray-4 flex items-center gap-1 w-full">
+                  <Image
+                    width={16}
+                    height={16}
+                    src="/img/search-normal-2.svg"
+                    alt=""
+                  />
+                  <input
+                    type="text"
+                    className="w-full outline-none"
+                    placeholder="جستجو کنید"
+                  />
+                </div>
+                <div className="relative w-auto xl:min-w-80">
+                  <button
+                    onClick={() => setIsOpenSort(!isOpenSort)}
+                    className="w-full border border-neutral-gray-4 rounded-lg py-3.5 px-4 pl-8 text-right flex justify-between items-center cursor-pointer"
+                  >
+                    <p className="text-neutral-gray-7 text-xs leading-4.5">
+                      {selectedOption || "مرتب سازی بر اساس"}
+                    </p>
+                    <Image
+                      src="/img/drop-down.svg"
+                      width={16}
+                      height={16}
+                      alt="dropdown icon"
+                      className={`absolute top-1/2 left-3 -translate-y-1/2 pointer-events-none transition ${
+                        isOpenSort && "rotate-180"
+                      }`}
+                    />
+                  </button>
+
+                  {isOpenSort && (
+                    <ul className="absolute w-full z-20 bg-white border border-neutral-gray-4 mt-1 rounded-lg shadow-lg text-sm">
+                      {[
+                        "جدیدترین",
+                        "قدیمی‌ترین",
+                        "ارزان‌ترین",
+                        "گران‌ترین",
+                      ].map((option) => (
+                        <li
+                          key={option}
+                          onClick={() => {
+                            setSelectedOption(option);
+                            setIsOpenSort(false);
+                          }}
+                          className="px-4 py-2 hover:bg-neutral-gray-2 cursor-pointer text-xs leading-4.5 text-neutral-gray-7"
+                        >
+                          {option}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
               </div>
+
               <div className="flex items-center 2xl:justify-between flex-wrap gap-x-6 gap-y-8 mt-6">
                 <ProductItemOff
                   img={"/img/category-page-desktop-1.png"}

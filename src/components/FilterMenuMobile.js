@@ -109,13 +109,14 @@ export default function FilterMenuMobile({ handleCloseFilter }) {
   return (
     <div className="pb-10">
       {/* Close Button */}
-      <div className="flex items-center gap-2 py-4 pr-5 mb-6 cursor-pointer lg:hidden">
+      <div className="flex items-center gap-2 py-4 pr-5 mb-6 lg:hidden">
         <Image
           width={20}
           height={20}
           src="/img/close-icon-filter.svg"
           onClick={handleCloseFilter}
           alt="بستن"
+          className="cursor-pointer"
         />
         <p className="leading-7 text-neutral-gray-13">فیلترها</p>
       </div>
@@ -258,21 +259,23 @@ export default function FilterMenuMobile({ handleCloseFilter }) {
       <div className="mb-4 flex justify-center items-center gap-4 mt-10 px-5 lg:hidden">
         <button
           onClick={handleClearFilters}
+          disabled={selectedFilters.length === 0 ? true : false}
           className={`px-10 py-3.25 border  ${
             selectedFilters.length
               ? "border-neutral-gray-8 text-neutral-gray-11"
               : "border-neutral-gray-4 text-neutral-gray-4"
-          } rounded-lg`}
+          } rounded-lg cursor-pointer`}
         >
           حذف فیلترها
         </button>
         <button
+          disabled={selectedFilters.length === 0 ? true : false}
           onClick={handleApplyFilters}
           className={`px-11.75 py-3.25 ${
             selectedFilters.length
               ? "bg-[#B19276] text-white"
               : "bg-cognac-tint-2 text-cognac-tint-4"
-          } rounded-lg`}
+          } rounded-lg cursor-pointer`}
         >
           اعمال کنید
         </button>

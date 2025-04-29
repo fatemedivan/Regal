@@ -33,6 +33,7 @@ export default function Page() {
       finalPrice: "۲,۲۵۰,۰۰۰",
     },
   ]);
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   return (
     <div className="container mx-auto px-5 lg:px-12">
       <div className="mt-6 flex justify-between items-center lg:hidden">
@@ -52,6 +53,7 @@ export default function Page() {
           className="cursor-pointer"
           src="/img/trash-2.svg"
           alt=""
+          onClick={() => setIsOpenDeleteModal(true)}
         />
       </div>
       <div className="relative flex items-center justify-between w-full py-2 border-t-2 border-dashed border-neutral-gray-6 my-8 lg:my-12">
@@ -151,7 +153,7 @@ export default function Page() {
       </div>
 
       <div className="lg:flex lg:gap-6">
-        <div className="hidden lg:block rounded-2xl border border-neutral-gray-4 p-8 max-w-222 max-h-max">
+        <div className="hidden lg:block rounded-2xl border border-neutral-gray-4 p-8 max-w-222 max-h-max lg:mb-22">
           <div className="space-y-6">
             <div className="grid grid-cols-4 text-neutral-gray-12 font-bold text-lg leading-5.5">
               <div className="text-right">محصولات</div>
@@ -247,12 +249,19 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="mt-8 lg:border lg:border-neutral-gray-4 lg:rounded-2xl lg:p-8 lg:mt-0 lg:mb-22">
+        <div className="mt-8 lg:border lg:border-neutral-gray-4 lg:rounded-2xl lg:p-8 lg:mt-0 mb-auto">
           <div className="hidden lg:flex justify-between items-center pb-6 mb-6 border-b border-neutral-gray-4">
             <h6 className="text-lg font-bold leading-5.5 text-black">
               سبد خرید
             </h6>
-            <Image width={24} height={24} src="/img/trash-2.svg" alt="" />
+            <Image
+              width={24}
+              height={24}
+              onClick={() => setIsOpenDeleteModal(true)}
+              className="cursor-pointer"
+              src="/img/trash-2.svg"
+              alt=""
+            />
           </div>
           <h5 className="font-semibold leading-5 text-neutral-gray-13 border-b border-neutral-gray-4 pb-4 mb-4 lg:border-none lg:pb-0 lg:font-normal lg:leading-7">
             جزئیات پرداخت
@@ -311,7 +320,7 @@ export default function Page() {
                 </h6>
               </div>
               <div className="flex justify-center items-center">
-                <button className="bg-cognac-primery leading-5.5 text-white rounded-lg py-3.25 px-28.5 xl:px-36 cursor-pointer">
+                <button className="bg-cognac-primery leading-5.5 text-white rounded-lg py-3.25 px-28.5 lg:px-24 xl:px-36 cursor-pointer">
                   ثبت سفارش
                 </button>
               </div>
@@ -319,6 +328,41 @@ export default function Page() {
           </div>
         </div>
       </div>
+      {isOpenDeleteModal && (
+        <>
+          <div
+            className="fixed inset-0 bg-[#1E1E1E] opacity-50 z-50"
+            onClick={() => setIsOpenDeleteModal(false)}
+          />
+          <div className="bg-white fixed bottom-0 left-0 right-0 z-60 w-full rounded-tr-3xl rounded-tl-3xl pt-4 px-5 pb-6 lg:w-108 lg:p-6 lg:top-1/2 lg:right-1/2 lg:transform lg:translate-x-1/2 lg:-translate-y-1/2 lg:bottom-auto lg:rounded-3xl">
+            <div className="flex justify-between items-center pb-4 border-b border-neutral-gray-4 mb-4 lg:mb-8 lg:border-none">
+              <p className="leading-7 text-black lg:text-lg lg:font-bold lg:leading-5.5">حذف سبد خرید</p>
+              <Image
+                width={16}
+                height={16}
+                src="/img/close-icon-filter.svg"
+                className="cursor-pointer lg:w-6 lg:h-6"
+                alt=""
+                onClick={()=> setIsOpenDeleteModal(false)}
+              />
+            </div>
+            <p className="text-sm leading-7 text-neutral-gray-11 mb-8 lg:mb-10 lg:leading-6">
+              آیا از حذف سبد خرید اطمینان دارید؟
+            </p>
+            <div className="flex items-center gap-4 justify-center flex-wrap">
+              <button onClick={()=> setIsOpenDeleteModal(false)} className="leading-5.5 py-3.25 px-14.75 border border-neutral-gray-8 rounded-lg cursor-pointer lg:px-17">
+                انصراف
+              </button>
+              <button onClick={()=> {
+                setIsOpenDeleteModal(false)
+                setBasketItems([])
+              }} className="leading-5.5 bg-error-primery text-white py-3.25 px-16.5 rounded-lg cursor-pointer lg:px-18.75">
+                حذف
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

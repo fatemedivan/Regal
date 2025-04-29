@@ -163,7 +163,7 @@ export default function Page() {
             {basketItems.map((item, index) => (
               <div key={item.id} className="space-y-3">
                 <div
-                  className={`grid grid-cols-4 items-start ${
+                  className={`grid grid-cols-4 items-center ${
                     index !== basketItems.length - 1
                       ? "border-b border-gray-200 pb-6"
                       : ""

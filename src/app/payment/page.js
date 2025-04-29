@@ -102,24 +102,28 @@ export default function Page() {
                   height={64}
                   src="/img/Bank-card-1.svg"
                   alt=""
+                   className="cursor-pointer"
                 />
                 <Image
                   width={64}
                   height={64}
                   src="/img/Bank-card-2.svg"
                   alt=""
+                   className="cursor-pointer"
                 />
                 <Image
                   width={64}
                   height={64}
                   src="/img/Bank-card-3.svg"
                   alt=""
+                   className="cursor-pointer"
                 />
                 <Image
                   width={64}
                   height={64}
                   src="/img/Bank-card-4.svg"
                   alt=""
+                  className="cursor-pointer"
                 />
               </div>
               <p className="text-neutral-gray-9 text-xs leading-4.5">

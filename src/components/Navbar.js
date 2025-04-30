@@ -18,13 +18,16 @@ export default function Navbar() {
   return (
     <>
       <nav className="container relative min-w-full z-50 bg-white flex justify-between items-center p-5 border-b-1 border-neutral-gray-4 lg:py-6.25 lg:px-12 lg:border-none">
-        <Image
-          width={94}
-          height={40}
-          quality={100}
-          src="/img/Logo.svg"
-          alt=""
-        />
+        <Link href={'/'}>
+          <Image
+            width={94}
+            height={40}
+            quality={100}
+            src="/img/Logo.svg"
+            className="cursor-pointer"
+            alt=""
+          />
+        </Link>
         <ul className="hidden lg:flex justify-between items-center gap-12 px-10 py-2.5 text-neutral-gray-11 bg-neutral-gray-1 border-1 border-neutral-gray-3 rounded-100">
           <li>
             <p className="text-sm leading-5 cursor-pointer">صفحه اصلی</p>

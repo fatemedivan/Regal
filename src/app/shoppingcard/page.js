@@ -1,5 +1,6 @@
 "use client";
-import DeleteModal from "@/components/DeleteModal";
+
+import BasketDetails from "@/components/BasketDetails";
 import ProgressBar from "@/components/ProgressBar";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -35,14 +36,7 @@ export default function Page() {
       finalPrice: "۲,۲۵۰,۰۰۰",
     },
   ]);
-  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
-  const handleCloseModal = ()=>{
-    setIsOpenDeleteModal(false)
-  }
-  const handleDeleteBasket = ()=>{
-    setBasketItems([])
-    setIsOpenDeleteModal(false)
-  }
+
   return (
     <div className="container mx-auto px-5 lg:px-12">
       <div className="mt-6 flex justify-between items-center lg:hidden">
@@ -222,87 +216,8 @@ export default function Page() {
             ))}
           </div>
         </div>
-
-        <div className="mt-8 lg:border lg:border-neutral-gray-4 lg:rounded-2xl lg:p-8 lg:mt-0 mb-auto">
-          <div className="hidden lg:flex justify-between items-center pb-6 mb-6 border-b border-neutral-gray-4">
-            <h6 className="text-lg font-bold leading-5.5 text-black">
-              سبد خرید
-            </h6>
-            <Image
-              width={24}
-              height={24}
-              onClick={() => setIsOpenDeleteModal(true)}
-              className="cursor-pointer"
-              src="/img/trash-2.svg"
-              alt=""
-            />
-          </div>
-          <h5 className="font-semibold leading-5 text-neutral-gray-13 border-b border-neutral-gray-4 pb-4 mb-4 lg:border-none lg:pb-0 lg:font-normal lg:leading-7">
-            جزئیات پرداخت
-          </h5>
-          <div>
-            <div className="flex justify-between items-center mb-4">
-              <p className="text-sm leading-6 text-neutral-gray-11">تعداد</p>
-              <p className="text-sm leading-6 text-neutral-gray-10"> 4 عدد</p>
-            </div>
-            <div className="flex justify-between items-center mb-4">
-              <p className="text-sm leading-6 text-neutral-gray-11">
-                قیمت کالاها
-              </p>
-              <p className="text-sm leading-6 text-neutral-gray-10">
-                ۹,۴۹۶,۰۰۰ تومان
-              </p>
-            </div>
-            <div className="flex justify-between items-center mb-4">
-              <p className="text-sm leading-6 text-cognac-primery">تخفیف</p>
-              <p className="text-sm leading-6 text-cognac-primery">
-                ۶۷۰,۰۰۰ تومان
-              </p>
-            </div>
-            <div className="flex justify-between items-center mb-2">
-              <p className="text-sm leading-6 text-neutral-gray-11">
-                هزینه ارسال
-              </p>
-              <p className="text-sm leading-6 text-neutral-gray-10">۰ تومان</p>
-            </div>
-            <div className="flex items-center mb-4 gap-1">
-              <Image width={16} height={16} src="/img/warning-2.svg" alt="" />
-              <p className="text-xs leading-4.5 text-warning-shade-1">
-                هزینه ارسال در ادامه بر اساس آدرس، زمان و نحوه ارسال انتخابی شما
-                محاسبه و به این مبلغ اضافه خواهد شد.
-              </p>
-            </div>
-            <div className="flex justify-between items-center mb-4 border-b pb-4 border-neutral-gray-4">
-              <p className="text-sm leading-6 text-neutral-gray-11">
-                مبلغ قابل پرداخت
-              </p>
-              <p className="text-sm leading-6 text-neutral-gray-10">
-                ۸,۸۲۶,۰۰۰ تومان
-              </p>
-            </div>
-            <p className="text-xs leading-4.5 text-neutral-gray-9 mt-4 mb-6 lg:text-sm lg:leading-5">
-              کالاهای موجود در سبد شما رزرو و ثبت نشده اند. برای ثبت سفارش مراحل
-              بعدی را تکمیل کنید.
-            </p>
-            <div className="border border-neutral-gray-4 rounded-2xl p-5 mb-16 lg:mb-0 lg:border-none lg:p-0">
-              <div className="flex items-center gap-2 mb-4 lg:hidden">
-                <p className="text-neutral-gray-13 text-xs leading-5">
-                  مبلغ قابل پرداخت:
-                </p>
-                <h6 className="text-neutral-gray-13 text-sm font-semibold leading-4">
-                  ۸٬۸۲۶٬۰۰۰ تومان
-                </h6>
-              </div>
-              <div className="flex justify-center items-center">
-                <button className="bg-cognac-primery leading-5.5 text-white rounded-lg py-3.25 px-28.5 lg:px-24 xl:px-36 cursor-pointer">
-                  ثبت سفارش
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <BasketDetails step={1} />
       </div>
-      {isOpenDeleteModal && <DeleteModal handleCloseModal={handleCloseModal} handleDeleteBasket={handleDeleteBasket}/>}
     </div>
   );
 }

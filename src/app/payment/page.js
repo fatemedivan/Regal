@@ -1,4 +1,5 @@
 "use client";
+import BasketDetails from "@/components/BasketDetails";
 import DetailsModal from "@/components/DetailsModal";
 import ProgressBar from "@/components/ProgressBar";
 import Image from "next/image";
@@ -6,10 +7,7 @@ import React, { useState } from "react";
 
 export default function Page() {
   const [payment, setPayment] = useState("online");
-  const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
-  const handleCloseModal = () => {
-    setIsOpenDetailsModal(false);
-  };
+
   return (
     <div className="container mx-auto px-5 pt-6 pb-16 lg:pt-0 lg:px-12">
       <div className="flex justify-between items-center mb-6 lg:hidden ">
@@ -61,14 +59,14 @@ export default function Page() {
                   onChange={() => setPayment("online")}
                   defaultChecked
                 />
-                <span className="w-4 h-4 rounded-full border border-neutral-gray-5 flex items-center justify-center peer-checked:border-cognac-primery cursor-pointer">
-                  <span className="w-3 h-3 inline-block rounded-full bg-cognac-primery opacity-0 peer-checked:opacity-100 transition" />
-                </span>
+                <div className="w-4 h-4 rounded-full border border-neutral-gray-5 flex items-center justify-center peer-checked:border-cognac-primery cursor-pointer">
+                  <div className="w-3 h-3 rounded-full bg-cognac-primery opacity-0 peer-checked:opacity-100 transition" />
+                </div>
                 <div>
                   <p className="text-sm leading-6 text-neutral-gray-11">
                     پرداخت اینترنتی
                   </p>
-                  <p className="text-neutral-gray-9 text-xs leading-4.5">
+                  <p className="text-neutral-gray-9 text-xs leading-4.5 hidden lg:block">
                     توسط پیک رگال ارسال شود.
                   </p>
                 </div>
@@ -81,14 +79,14 @@ export default function Page() {
                   value="store"
                   onChange={() => setPayment("store")}
                 />
-                <span className="w-4 h-4 rounded-full border border-neutral-gray-5 flex items-center justify-center peer-checked:border-cognac-primery cursor-pointer">
-                  <span className="w-3 h-3 rounded-full bg-cognac-primery opacity-0 peer-checked:opacity-100 transition" />
-                </span>
+                <div className="w-4 h-4 rounded-full border border-neutral-gray-5 flex items-center justify-center peer-checked:border-cognac-primery cursor-pointer">
+                  <div className="w-3 h-3 rounded-full bg-cognac-primery opacity-0 peer-checked:opacity-100 transition" />
+                </div>
                 <div>
                   <p className="text-sm leading-6 text-neutral-gray-11">
                     پرداخت در محل فروشگاه
                   </p>
-                  <p className="text-neutral-gray-9 text-xs leading-4.5">
+                  <p className="text-neutral-gray-9 text-xs leading-4.5 hidden lg:block">
                     توسط مشتری در محل فروشگاه دریافت شود.
                   </p>
                 </div>
@@ -160,120 +158,7 @@ export default function Page() {
           )}
         </div>
 
-        <div className="mt-8 lg:border lg:border-neutral-gray-4 lg:rounded-2xl lg:p-8">
-          <div className="hidden lg:block">
-            <h5 className="font-semibold leading-5 text-neutral-gray-13 pb-6.5 mb-6 border-b border-neutral-gray-4">
-              سبد خرید
-            </h5>
-            <div className="pb-6 mb-6 border-b border-neutral-gray-4">
-              <div className="flex justify-between items-center mb-2">
-                <p className="text-sm leading-6 text-neutral-gray-11">
-                  لباس میدی رکسان
-                </p>
-                <p className="text-sm leading-6 text-neutral-gray-11">۱ عدد</p>
-                <p className="text-sm leading-6 text-neutral-gray-11">
-                  ۲,۳۸۰,۰۰۰ تومان
-                </p>
-              </div>
-              <div className="flex justify-between items-center mb-2">
-                <p className="text-sm leading-6 text-neutral-gray-11">
-                  لباس میدی راشا
-                </p>
-                <p className="text-sm leading-6 text-neutral-gray-11">۲ عدد</p>
-                <p className="text-sm leading-6 text-neutral-gray-11">
-                  ۴,۱۹۶,۰۰۰ تومان
-                </p>
-              </div>
-              <div className="flex justify-between items-center">
-                <p className="text-sm leading-6 text-neutral-gray-11">
-                  پیراهن ساحلی
-                </p>
-                <p className="text-sm leading-6 text-neutral-gray-11">۱ عدد</p>
-                <p className="text-sm leading-6 text-neutral-gray-11">
-                  ۲,۲۵۰,۰۰۰ تومان
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="flex justify-between items-center border-b border-neutral-gray-4 pb-4 mb-4 lg:border-none lg:pb-0 ">
-            <h5 className="font-semibold leading-5 text-neutral-gray-13 lg:font-normal lg:leading-7">
-              جزئیات پرداخت
-            </h5>
-            <div
-              className="flex gap-2 items-center lg:hidden"
-              onClick={() => setIsOpenDetailsModal(true)}
-            >
-              <p className="text-cognac-primery text-sm leading-5 cursor-pointer">
-                مشاهده اقلام
-              </p>
-              <Image
-                width={16}
-                height={16}
-                src="/img/arrow-left-5.svg"
-                alt=""
-                className="cursor-pointer"
-              />
-            </div>
-          </div>
-
-          <div>
-            <div className="flex justify-between items-center mb-4">
-              <p className="text-sm leading-6 text-neutral-gray-11">تعداد</p>
-              <p className="text-sm leading-6 text-neutral-gray-10"> 4 عدد</p>
-            </div>
-            <div className="flex justify-between items-center mb-4">
-              <p className="text-sm leading-6 text-neutral-gray-11">
-                قیمت کالاها
-              </p>
-              <p className="text-sm leading-6 text-neutral-gray-10">
-                ۹,۴۹۶,۰۰۰ تومان
-              </p>
-            </div>
-            <div className="flex justify-between items-center mb-4">
-              <p className="text-sm leading-6 text-cognac-primery">تخفیف</p>
-              <p className="text-sm leading-6 text-cognac-primery">
-                ۶۷۰,۰۰۰ تومان
-              </p>
-            </div>
-            <div className="flex justify-between items-center mb-4">
-              <p className="text-sm leading-6 text-neutral-gray-11">
-                هزینه ارسال
-              </p>
-              <p className="text-sm leading-6 text-neutral-gray-10">
-                ۵۰,۰۰۰ تومان
-              </p>
-            </div>
-            <div className="flex justify-between items-center mb-4">
-              <p className="text-sm leading-6 text-neutral-gray-11">
-                مبلغ قابل پرداخت
-              </p>
-              <p className="text-sm leading-6 text-neutral-gray-10">
-                ۸,۸۲۶,۰۰۰ تومان
-              </p>
-            </div>
-
-            <div className="border border-neutral-gray-4 rounded-2xl p-5 mb-16 lg:mb-0 lg:border-none lg:p-0">
-              <div className="flex items-center gap-2 mb-4 lg:hidden">
-                <p className="text-neutral-gray-13 text-xs leading-4.5">
-                  مبلغ قابل پرداخت:
-                </p>
-                <h6 className="text-neutral-gray-13 text-lg leading-5.5 font-bold">
-                  ۸٬۸۲۶٬۰۰۰ تومان
-                </h6>
-              </div>
-              <div className="flex justify-center items-center">
-                <button className="bg-cognac-primery leading-5.5 text-white rounded-lg py-3.25 px-28.5 lg:px-24 xl:px-36 cursor-pointer">
-                  پرداخت
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="lg:hidden">
-          {isOpenDetailsModal && (
-            <DetailsModal handleCloseModal={handleCloseModal} />
-          )}
-        </div>
+        <BasketDetails step={3} />
       </div>
     </div>
   );

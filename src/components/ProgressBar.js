@@ -9,14 +9,14 @@ export default function ProgressBar({ progress }) {
           className={`${progress === "basket" && "w-1/4"} ${
             progress === "payment" && "w-4/4"
           } ${
-            progress === "compeleteData" && "w-3/4"
+            progress === "completeData" && "w-3/4"
           } border-t-2 border-dashed border-cognac-primery`}
         ></div>
         <div
           className={`${progress === "basket" && "w-3/4"} ${
             progress === "payment" && "hidden"
           }  ${
-            progress === "compeleteData" && "w-1/4"
+            progress === "completeData" && "w-1/4"
           } border-t-2 border-dashed border-neutral-gray-6`}
         ></div>
       </div>
@@ -41,7 +41,7 @@ export default function ProgressBar({ progress }) {
         <div className="bg-white p-1.5 relative z-20 flex items-center gap-2">
           <Image
             className={`lg:w-5 lg:h-5 ${
-              (progress === "payment" || progress === "compeleteData") &&
+              (progress === "payment" || progress === "completeData") &&
               "hidden"
             }`}
             width={24}
@@ -51,7 +51,7 @@ export default function ProgressBar({ progress }) {
           />
           <Image
             className={`${
-              progress === "payment" || progress === "compeleteData"
+              progress === "payment" || progress === "completeData"
                 ? "block"
                 : "hidden"
             } lg:w-5 lg:h-5`}
@@ -62,11 +62,11 @@ export default function ProgressBar({ progress }) {
           />
           <p
             className={`leading-7 hidden lg:block ${
-              progress === "compeleteData" || progress === "payment"
+              progress === "completeData" || progress === "payment"
                 ? "text-cognac-primery "
                 : "text-neutral-gray-6"
             } ${
-              progress === "compeleteData" && "text-xl font-bold leading-5.5"
+              progress === "completeData" && "text-xl font-bold leading-5.5"
             }`}
           >
             تکمیل اطلاعات

@@ -1,9 +1,10 @@
 "use client";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 export default function NotFound() {
+  const router = useRouter();
   return (
     <div className="mt-35 mb-6 mx-5 lg:mb-33.75 lg:mt-26">
       <div className="flex justify-center items-center mb-55.5 lg:mb-8">
@@ -21,11 +22,12 @@ export default function NotFound() {
         </div>
       </div>
       <div className="flex justify-center items-center">
-        <Link href={"/"}>
-          <button className="text-sm leading-5 bg-cognac-primery rounded-lg py-3.5 px-20 sm:px-30 text-white cursor-pointer lg:text-[1rem] lg:leading-5.5 lg:px-12">
-            برو به صفحه اصلی
-          </button>
-        </Link>
+        <button
+          onClick={() => router.back()}
+          className="text-sm leading-5 bg-cognac-primery rounded-lg py-3.5 px-20 sm:px-30 text-white cursor-pointer lg:text-[1rem] lg:leading-5.5 lg:px-12"
+        >
+          بازگشت
+        </button>
       </div>
     </div>
   );

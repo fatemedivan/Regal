@@ -1,23 +1,32 @@
 "use client";
-import React, { useState } from "react";
-import DeleteModal from "@/components/DeleteModal";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import DetailsModal from "./DetailsModal";
+import DeleteModal from "./DeleteModal";
 
 export default function BasketDetails({ step }) {
-  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
+  
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const handleCloseDetailsModal = () => {
     setIsOpenDetailsModal(false);
   };
   const handleCloseDeleteModal = () => {
     setIsOpenDeleteModal(false);
   };
-  const handleDeleteBasket = () => {
-    setBasketItems([]);
-    setIsOpenDeleteModal(false);
-  };
+   useEffect(() => {
+        if (isOpenDetailsModal) {
+          document.body.style.overflow = "hidden";
+        } else {
+          document.body.style.overflow = "";
+        }
+    
+        return () => {
+          document.body.style.overflow = "";
+        };
+      }, [isOpenDetailsModal]);
+ 
   return (
     <>
       <div className="mt-8 lg:border lg:border-neutral-gray-4 lg:rounded-2xl lg:p-8 lg:mt-0 mb-auto">
@@ -172,7 +181,7 @@ export default function BasketDetails({ step }) {
             <div className="flex justify-center items-center">
               <Link
                 href={
-                  step === 1 ? "completeData" : step === 2 ? "payment" : "#"
+                  step === 1 ? "complete-data" : step === 2 ? "payment" : "#"
                 }
               >
                 <button className="bg-cognac-primery leading-5.5 text-white rounded-lg py-3.25 px-26 lg:px-24 xl:px-36 cursor-pointer">
@@ -189,14 +198,12 @@ export default function BasketDetails({ step }) {
           </div>
         </div>
       </div>
-      {isOpenDeleteModal && (
-        <DeleteModal
-          handleCloseModal={handleCloseDeleteModal}
-          handleDeleteBasket={handleDeleteBasket}
-        />
-      )}
+      
       {isOpenDetailsModal && (
         <DetailsModal handleCloseModal={handleCloseDetailsModal} />
+      )}
+      {isOpenDeleteModal && (
+        <DeleteModal handleCloseModal={handleCloseDeleteModal} />
       )}
     </>
   );

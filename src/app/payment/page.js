@@ -1,7 +1,6 @@
 "use client";
-import BasketDetails from "@/components/BasketDetails";
-import DetailsModal from "@/components/DetailsModal";
-import ProgressBar from "@/components/ProgressBar";
+import BasketDetailsCard from "@/components/common/BasketDetailsCard";
+import ProgressBar from "@/components/common/ProgressBar";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -54,14 +53,14 @@ export default function Page() {
                 <input
                   type="radio"
                   name="payment"
-                  className="hidden peer outline-none"
+                  className="hidden peer"
                   value="online"
                   onChange={() => setPayment("online")}
                   defaultChecked
                 />
-                <div className="w-4 h-4 rounded-full border border-neutral-gray-5 flex items-center justify-center peer-checked:border-cognac-primery cursor-pointer">
-                  <div className="w-3 h-3 rounded-full bg-cognac-primery opacity-0 peer-checked:opacity-100 transition" />
-                </div>
+                <span className="w-4 h-4 rounded-full border border-neutral-gray-5 flex items-center justify-center peer-checked:border-cognac-primery cursor-pointer group">
+                  <span className="w-3 h-3 rounded-full bg-cognac-primery opacity-0 group-peer-checked:opacity-100 transition" />
+                </span>
                 <div>
                   <p className="text-sm leading-6 text-neutral-gray-11">
                     پرداخت اینترنتی
@@ -79,9 +78,9 @@ export default function Page() {
                   value="store"
                   onChange={() => setPayment("store")}
                 />
-                <div className="w-4 h-4 rounded-full border border-neutral-gray-5 flex items-center justify-center peer-checked:border-cognac-primery cursor-pointer">
-                  <div className="w-3 h-3 rounded-full bg-cognac-primery opacity-0 peer-checked:opacity-100 transition" />
-                </div>
+                <span className="w-4 h-4 rounded-full border border-neutral-gray-5 flex items-center justify-center peer-checked:border-cognac-primery cursor-pointer group">
+                  <span className="w-3 h-3 rounded-full bg-cognac-primery opacity-0 group-peer-checked:opacity-100 transition" />
+                </span>
                 <div>
                   <p className="text-sm leading-6 text-neutral-gray-11">
                     پرداخت در محل فروشگاه
@@ -158,7 +157,7 @@ export default function Page() {
           )}
         </div>
 
-        <BasketDetails step={3} />
+        <BasketDetailsCard step={3} />
       </div>
     </div>
   );

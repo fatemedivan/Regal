@@ -1,11 +1,11 @@
 "use client";
-import Breadcrumb from "@/components/Breadcrumb";
-import FilterMenuMobile from "@/components/FilterMenuMobile";
-import Pagination from "@/components/Pagination";
-import ProductItemOff from "@/components/ProductItemOff";
-import Sort from "@/components/Sort";
+import Breadcrumb from "@/components/common/Breadcrumb";
+import FilterMenu from "@/components/categories/FilterMenu";
+import Pagination from "@/components/common/Pagination";
+import ProductItemOff from "@/components/common/ProductItemOff";
+import Sort from "@/components/categories/Sort";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Page() {
   const [isOpenFilterMenu, setIsOpenFilterMenu] = useState(false);
@@ -18,12 +18,23 @@ export default function Page() {
   const handleCloseSort = () => {
     setIsOpenSort(false);
   };
+  useEffect(() => {
+    if (isOpenFilterMenu || isOpenSort) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpenFilterMenu, isOpenSort]);
 
   return (
     <div className="container mx-auto">
       {isOpenFilterMenu && (
         <div className="lg:hidden absolute top-0 left-0 right-0 bg-white z-50">
-          <FilterMenuMobile handleCloseFilter={handleCloseFilter} />
+          <FilterMenu handleCloseFilter={handleCloseFilter} />
         </div>
       )}
       {isOpenSort && (
@@ -129,7 +140,7 @@ export default function Page() {
                 فیلترها
               </h5>
               <div>
-                <FilterMenuMobile />
+                <FilterMenu />
               </div>
             </div>
             <div>

@@ -1,11 +1,13 @@
 "use client";
 
-import BasketDetails from "@/components/BasketDetails";
-import ProgressBar from "@/components/ProgressBar";
+import BasketDetailsCard from "@/components/common/BasketDetailsCard";
+import ProgressBar from "@/components/common/ProgressBar";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import DeleteModal from "@/components/common/DeleteModal";
 
 export default function Page() {
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [basketItems, setBasketItems] = useState([
     {
       id: 1,
@@ -36,6 +38,25 @@ export default function Page() {
       finalPrice: "۲,۲۵۰,۰۰۰",
     },
   ]);
+  const handleCloseDeleteModal = () => {
+    setIsOpenDeleteModal(false);
+  };
+  const handleDeleteBasket = () => {
+    setBasketItems([]);
+    setIsOpenDeleteModal(false);
+  };
+  //AI
+  useEffect(() => {
+    if (isOpenDeleteModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpenDeleteModal]);
 
   return (
     <div className="container mx-auto px-5 lg:px-12">
@@ -216,8 +237,14 @@ export default function Page() {
             ))}
           </div>
         </div>
-        <BasketDetails step={1} />
+        <BasketDetailsCard step={1} />
       </div>
+      {isOpenDeleteModal && (
+        <DeleteModal
+          handleCloseModal={handleCloseDeleteModal}
+          handleDeleteBasket={handleDeleteBasket}
+        />
+      )}
     </div>
   );
 }

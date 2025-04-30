@@ -7,8 +7,8 @@ import Image from "next/image";
 
 export default function Comments() {
   const glideRef = useRef(null);
-  const prevRef = useRef(null);
-  const nextRef = useRef(null);
+  const prevbtnRef = useRef(null);
+  const nextbtnRef = useRef(null);
   useEffect(() => {
     if (glideRef.current) {
       const glide = new Glide(glideRef.current, {
@@ -41,16 +41,11 @@ export default function Comments() {
       });
 
       glide.mount();
-      if (prevRef.current && nextRef.current) {
-        prevRef.current.addEventListener("click", () => glide.go("<"));
-        nextRef.current.addEventListener("click", () => glide.go(">"));
-      }
+      //AI
+      glideRef.current.glideInstance = glide;
 
       return () => {
-        if (prevRef.current && nextRef.current) {
-          prevRef.current.removeEventListener("click", () => glide.go("<"));
-          nextRef.current.removeEventListener("click", () => glide.go(">"));
-        }
+        glide.destroy();
       };
     }
   }, []);
@@ -66,7 +61,9 @@ export default function Comments() {
         <div className="flex items-center gap-2">
           <div
             className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer"
-            ref={prevRef}
+            ref={prevbtnRef}
+            //AI
+            onClick={() => glideRef.current?.glideInstance?.go("<")}
           >
             <Image
               width={16}
@@ -78,7 +75,9 @@ export default function Comments() {
           </div>
           <div
             className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer"
-            ref={nextRef}
+            ref={nextbtnRef}
+            //AI
+            onClick={() => glideRef.current?.glideInstance?.go(">")}
           >
             <Image
               width={16}

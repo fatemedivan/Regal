@@ -1,8 +1,8 @@
 "use client";
 import Image from "next/image";
-import React, { useState } from "react";
-import Search from "@/components/Search";
-import Categories from "./CategoriesMenu";
+import React, { useEffect, useState } from "react";
+import Search from "@/components/common/Search";
+import Categories from "@/components/common/CategoriesMenu";
 import Link from "next/link";
 
 export default function Navbar() {
@@ -15,10 +15,24 @@ export default function Navbar() {
   const handleCloseCategory = () => {
     setIsOpenCategory(false);
   };
+
+  //AI
+  useEffect(() => {
+    if (isOpenMenu || isSearching) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpenMenu, isSearching]);
+
   return (
     <>
       <nav className="container relative min-w-full z-50 bg-white flex justify-between items-center p-5 border-b-1 border-neutral-gray-4 lg:py-6.25 lg:px-12 lg:border-none">
-        <Link href={'/'}>
+        <Link href={"/"}>
           <Image
             width={94}
             height={40}
@@ -183,7 +197,7 @@ export default function Navbar() {
             className="fixed inset-0 bg-[#1E1E1E] opacity-50 z-40"
             onClick={() => setIsOpenMenu(false)}
           />
-          <div className="absolute top-21.25 left-0 right-0  w-full bg-white px-5 pt-6 pb-10 text-neutral-gray-13 lg:hidden z-50">
+          <div className="fixed top-21.25 left-0 right-0  w-full bg-white px-5 pt-6 pb-10 text-neutral-gray-13 lg:hidden z-50">
             <div className="flex justify-between items-center pb-4 border-b-1 border-neutral-gray-4 cursor-pointer">
               <p className="text-sm leading-5">صفحه اصلی</p>
               <Image

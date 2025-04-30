@@ -208,7 +208,7 @@ export default function Search({ handleCloseSearch }) {
               <div className="text-neutral-gray-11 text-sm leading-5 flex items-center gap-2 px-4">
                 <a href="">مشاهده همه</a>
                 <Image
-                  className="hidden lg:block"
+                  className="hidden lg:block cursor-pointer"
                   width={16}
                   height={16}
                   src="/img/arrow-left-4.svg"

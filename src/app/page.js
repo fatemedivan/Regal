@@ -1,6 +1,6 @@
-import Articles from "@/components/Articles";
-import Comments from "@/components/Comments";
-import OffProducts from "@/components/OffProducts";
+import Articles from "@/components/home/Articles";
+import Comments from "@/components/home/Comments";
+import OffProducts from "@/components/home/OffProducts";
 import Image from "next/image";
 
 export default function Home() {

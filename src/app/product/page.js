@@ -1,6 +1,6 @@
 "use client";
-import Breadcrumb from "@/components/Breadcrumb";
-import ProductItemOff from "@/components/ProductItemOff";
+import Breadcrumb from "@/components/common/Breadcrumb";
+import ProductItemOff from "@/components/common/ProductItemOff";
 import Image from "next/image";
 import React, { useEffect, useRef } from "react";
 import Glide from "@glidejs/glide";
@@ -9,8 +9,8 @@ import "@glidejs/glide/dist/css/glide.core.min.css";
 export default function Page() {
   const sizes = ["XS", "S", "M", "L", "XL", "2XL"];
   const glideRef = useRef(null);
-  const prevRef = useRef(null);
-  const nextRef = useRef(null);
+  const prevbtnRef = useRef(null);
+  const nextbtnRef = useRef(null);
 
   useEffect(() => {
     if (glideRef.current) {
@@ -36,17 +36,11 @@ export default function Page() {
       });
 
       glide.mount();
-
-      if (prevRef.current && nextRef.current) {
-        prevRef.current.addEventListener("click", () => glide.go("<"));
-        nextRef.current.addEventListener("click", () => glide.go(">"));
-      }
+      //AI
+      glideRef.current.glideInstance = glide;
 
       return () => {
-        if (prevRef.current && nextRef.current) {
-          prevRef.current.removeEventListener("click", () => glide.go("<"));
-          nextRef.current.removeEventListener("click", () => glide.go(">"));
-        }
+        glide.destroy();
       };
     }
   }, []);
@@ -176,22 +170,27 @@ export default function Page() {
             <p className="text-sm leading-6 mb-1 text-black">رنگ بندی:</p>
             <div className="flex items-center gap-2">
               <label className="relative cursor-pointer">
-                <input type="checkbox" className="hidden peer" defaultChecked />
+                <input
+                  type="radio"
+                  name="color"
+                  className="hidden peer"
+                  defaultChecked
+                />
                 <div className="w-8 h-8 z-20 rounded-sm bg-[#D4BFA4] flex justify-center items-center relative before:content-[''] before:absolute before:w-1.5 before:h-2.5 before:border-r-2 before:border-b-2 before:border-white before:rotate-45 before:opacity-0 peer-checked:before:opacity-100"></div>
                 <div className="absolute top-[-4px] left-[-4px] w-10 h-10 rounded-md border-2 border-[#D4BFA4] opacity-0 peer-checked:opacity-100"></div>
               </label>
               <label className="relative cursor-pointer">
-                <input type="checkbox" className="hidden peer" />
+                <input type="radio" name="color" className="hidden peer" />
                 <div className="w-8 h-8 z-20 rounded-sm bg-[#97AAB4] flex justify-center items-center relative before:content-[''] before:absolute before:w-1.5 before:h-2.5 before:border-r-2 before:border-b-2 before:border-white before:rotate-45 before:opacity-0 peer-checked:before:opacity-100"></div>
                 <div className="absolute top-[-4px] left-[-4px] w-10 h-10 rounded-md border-2 border-[#97AAB4] opacity-0 peer-checked:opacity-100"></div>
               </label>
               <label className="relative cursor-pointer">
-                <input type="checkbox" className="hidden peer" />
+                <input type="radio" name="color" className="hidden peer" />
                 <div className="w-8 h-8 z-20 rounded-sm bg-[#94999F] flex justify-center items-center relative before:content-[''] before:absolute before:w-1.5 before:h-2.5 before:border-r-2 before:border-b-2 before:border-white before:rotate-45 before:opacity-0 peer-checked:before:opacity-100"></div>
                 <div className="absolute top-[-4px] left-[-4px] w-10 h-10 rounded-md border-2 border-[#94999F] opacity-0 peer-checked:opacity-100"></div>
               </label>
               <label className="relative cursor-pointer">
-                <input type="checkbox" className="hidden peer" />
+                <input type="radio" name="color" className="hidden peer" />
                 <div className="w-8 h-8 z-20 rounded-sm bg-[#C2B1A5] flex justify-center items-center relative before:content-[''] before:absolute before:w-1.5 before:h-2.5 before:border-r-2 before:border-b-2 before:border-white before:rotate-45 before:opacity-0 peer-checked:before:opacity-100"></div>
                 <div className="absolute top-[-4px] left-[-4px] w-10 h-10 rounded-md border-2 border-[#C2B1A5] opacity-0 peer-checked:opacity-100"></div>
               </label>
@@ -202,7 +201,7 @@ export default function Page() {
             <div className="flex items-center gap-2">
               {sizes.map((size, index) => (
                 <label key={index} className="relative cursor-pointer">
-                  <input type="checkbox" className="hidden peer" />
+                  <input type="radio" name="size" className="hidden peer" />
                   <div className="w-8 h-8 text-neutral-gray-11 flex items-center justify-center rounded-sm border border-neutral-gray-4 peer-checked:bg-cognac-shade-4 peer-checked:text-white text-xs leading-4.5 pt-1">
                     {size}
                   </div>
@@ -237,7 +236,9 @@ export default function Page() {
           <div className="flex items-center gap-2">
             <div
               className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer custom-prev"
-              ref={prevRef}
+              ref={prevbtnRef}
+              //AI
+              onClick={() => glideRef.current?.glideInstance?.go("<")}
             >
               <Image
                 width={16}
@@ -249,7 +250,9 @@ export default function Page() {
             </div>
             <div
               className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer custom-next"
-              ref={nextRef}
+              ref={nextbtnRef}
+              //AI
+              onClick={() => glideRef.current?.glideInstance?.go(">")}
             >
               <Image
                 width={16}

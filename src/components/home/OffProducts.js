@@ -2,13 +2,13 @@
 import React, { useEffect, useRef } from "react";
 import Glide from "@glidejs/glide";
 import "@glidejs/glide/dist/css/glide.core.min.css";
-import ProductItemOff from "./ProductItemOff";
+import ProductItemOff from "@/components/common/ProductItemOff";
 import Image from "next/image";
 
 export default function OffProducts() {
   const glideRef = useRef(null);
-  const prevRef = useRef(null);
-  const nextRef = useRef(null);
+  const prevbtnRef = useRef(null);
+  const nextbtnRef = useRef(null);
 
   useEffect(() => {
     if (glideRef.current) {
@@ -35,16 +35,11 @@ export default function OffProducts() {
 
       glide.mount();
 
-      if (prevRef.current && nextRef.current) {
-        prevRef.current.addEventListener("click", () => glide.go("<"));
-        nextRef.current.addEventListener("click", () => glide.go(">"));
-      }
+      //AI
+      glideRef.current.glideInstance = glide;
 
       return () => {
-        if (prevRef.current && nextRef.current) {
-          prevRef.current.removeEventListener("click", () => glide.go("<"));
-          nextRef.current.removeEventListener("click", () => glide.go(">"));
-        }
+        glide.destroy();
       };
     }
   }, []);
@@ -68,7 +63,9 @@ export default function OffProducts() {
         <div className="flex items-center gap-2">
           <div
             className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer custom-prev"
-            ref={prevRef}
+            ref={prevbtnRef}
+            //AI
+            onClick={() => glideRef.current?.glideInstance?.go("<")}
           >
             <Image
               width={16}
@@ -80,7 +77,9 @@ export default function OffProducts() {
           </div>
           <div
             className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer custom-next"
-            ref={nextRef}
+            ref={nextbtnRef}
+            //AI
+            onClick={() => glideRef.current?.glideInstance?.go(">")}
           >
             <Image
               width={16}
@@ -104,7 +103,7 @@ export default function OffProducts() {
                 price={"۴,۱۲۰,۰۰۰"}
                 offPercent={"۱۵"}
                 isMore={false}
-                colors={['#97AAB4','#94999F','#C2B1A5','#F1AB90']}
+                colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
               />
             </li>
             <li className="glide__slide min-w-41.75 lg:min-w-79.5">
@@ -115,7 +114,7 @@ export default function OffProducts() {
                 price={"۵,۴۰۰,۰۰۰"}
                 offPercent={"۷"}
                 isMore={true}
-                colors={['#94999F','#C2B1A5','#F1AB90']}
+                colors={["#94999F", "#C2B1A5", "#F1AB90"]}
               />
             </li>
             <li className="glide__slide min-w-41.75 lg:min-w-79.5">
@@ -126,7 +125,7 @@ export default function OffProducts() {
                 price={"۴,۲۰۰,۰۰۰"}
                 offPercent={"۸"}
                 isMore={true}
-                colors={['#94999F','#C2B1A5','#F1AB90']}
+                colors={["#94999F", "#C2B1A5", "#F1AB90"]}
               />
             </li>
             <li className="glide__slide min-w-41.75 lg:min-w-79.5">
@@ -137,7 +136,7 @@ export default function OffProducts() {
                 price={"۳,۸۰۰,۰۰۰"}
                 offPercent={"۱۵"}
                 isMore={false}
-                colors={['#97AAB4','#94999F','#C2B1A5','#F1AB90']}
+                colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
               />
             </li>
           </ul>

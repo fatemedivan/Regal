@@ -1,11 +1,11 @@
 "use client";
-import AdressCard from "@/components/AdressCard";
-import BasketDetails from "@/components/BasketDetails";
-import DateModal from "@/components/DateModal";
-import ProgressBar from "@/components/ProgressBar";
-import TimeModal from "@/components/TimeModal";
+import AdressCard from "@/components/completeData/AdressCard";
+import BasketDetailsCard from "@/components/common/BasketDetailsCard";
+import DateModal from "@/components/completeData/DateModal";
+import ProgressBar from "@/components/common/ProgressBar";
+import TimeModal from "@/components/completeData/TimeModal";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Page() {
   const [text, setText] = useState("");
@@ -20,6 +20,17 @@ export default function Page() {
   const handleCloseTimeModal = () => {
     setIsShowTimeModal(false);
   };
+  useEffect(() => {
+    if (isShowDateModal || isShowTimeModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isShowDateModal, isShowTimeModal]);
 
   return (
     <div className="container mx-auto px-5 pt-6 pb-16">
@@ -51,9 +62,9 @@ export default function Page() {
               onChange={() => setDeliveryOption("courier")}
               defaultChecked
             />
-            <div className="w-4 h-4 rounded-full border border-neutral-gray-5 flex items-center justify-cente cursor-pointer">
-              <div className="w-3 h-3 rounded-full bg-cognac-primery opacity-0 peer-checked:opacity-100 transition" />
-            </div>
+            <span className="w-4 h-4 rounded-full border border-neutral-gray-5 flex items-center justify-center cursor-pointer group">
+              <span className="w-3 h-3 rounded-full bg-cognac-primery opacity-0 group-peer-checked:opacity-100 transition" />
+            </span>
             <p className="text-sm leading-6 text-neutral-gray-11">
               ارسال توسط پیک
             </p>
@@ -66,9 +77,9 @@ export default function Page() {
               value="person"
               onChange={() => setDeliveryOption("person")}
             />
-            <div className="w-4 h-4 rounded-full border border-neutral-gray-5 flex items-center justify-center cursor-pointer">
-              <div className="w-3 h-3 rounded-full bg-cognac-primery opacity-0 peer-checked:opacity-100 transition" />
-            </div>
+            <span className="w-4 h-4 rounded-full border border-neutral-gray-5 flex items-center justify-center cursor-pointer group">
+              <span className="w-3 h-3 rounded-full bg-cognac-primery opacity-0 group-peer-checked:opacity-100 transition" />
+            </span>
             <p className="text-sm leading-6 text-neutral-gray-11">
               تحویل حضوری
             </p>
@@ -211,7 +222,7 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <BasketDetails step={2} />
+      <BasketDetailsCard step={2} />
       {isShowDateModal && <DateModal handleCloseModal={handleCloseDateModal} />}
       {isShowTimeModal && <TimeModal handleCloseModal={handleCloseTimeModal} />}
     </div>

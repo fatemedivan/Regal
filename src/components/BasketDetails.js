@@ -41,33 +41,25 @@ export default function BasketDetails({ step }) {
               سبد خرید
             </h5>
             <div className="pb-6 mb-6 border-b border-neutral-gray-4">
-              <div className="flex justify-between items-center mb-2">
-                <p className="text-sm leading-6 text-neutral-gray-11">
-                  لباس میدی رکسان
-                </p>
-                <p className="text-sm leading-6 text-neutral-gray-11">۱ عدد</p>
-                <p className="text-sm leading-6 text-neutral-gray-11">
-                  ۲,۳۸۰,۰۰۰ تومان
-                </p>
-              </div>
-              <div className="flex justify-between items-center mb-2">
-                <p className="text-sm leading-6 text-neutral-gray-11">
-                  لباس میدی راشا
-                </p>
-                <p className="text-sm leading-6 text-neutral-gray-11">۲ عدد</p>
-                <p className="text-sm leading-6 text-neutral-gray-11">
-                  ۴,۱۹۶,۰۰۰ تومان
-                </p>
-              </div>
-              <div className="flex justify-between items-center">
-                <p className="text-sm leading-6 text-neutral-gray-11">
-                  پیراهن ساحلی
-                </p>
-                <p className="text-sm leading-6 text-neutral-gray-11">۱ عدد</p>
-                <p className="text-sm leading-6 text-neutral-gray-11">
-                  ۲,۲۵۰,۰۰۰ تومان
-                </p>
-              </div>
+              <table className="w-full text-sm text-neutral-gray-11">
+                <tbody>
+                  <tr>
+                    <td className="py-1">لباس میدی رکسان</td>
+                    <td className="py-1 text-center">۱ عدد</td>
+                    <td className="py-1 text-left">۲,۳۸۰,۰۰۰ تومان</td>
+                  </tr>
+                  <tr>
+                    <td className="py-1">لباس میدی راشا</td>
+                    <td className="py-1 text-center">۲ عدد</td>
+                    <td className="py-1 text-left">۴,۱۹۶,۰۰۰ تومان</td>
+                  </tr>
+                  <tr>
+                    <td className="py-1">پیراهن ساحلی</td>
+                    <td className="py-1 text-center">۱ عدد</td>
+                    <td className="py-1 text-left">۲,۲۵۰,۰۰۰ تومان</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         )}
@@ -183,7 +175,7 @@ export default function BasketDetails({ step }) {
                   step === 1 ? "completeData" : step === 2 ? "payment" : "#"
                 }
               >
-                <button className="bg-cognac-primery leading-5.5 text-white rounded-lg py-3.25 px-28.5 lg:px-24 xl:px-36 cursor-pointer">
+                <button className="bg-cognac-primery leading-5.5 text-white rounded-lg py-3.25 px-26 lg:px-24 xl:px-36 cursor-pointer">
                   {step === 1
                     ? " ثبت سفارش"
                     : step === 2

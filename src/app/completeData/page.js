@@ -7,7 +7,7 @@ import TimeModal from "@/components/TimeModal";
 import Image from "next/image";
 import React, { useState } from "react";
 
-export default function page() {
+export default function Page() {
   const [text, setText] = useState("");
   const [deliveryOption, setDeliveryOption] = useState("courier");
   const maxLenght = 200;

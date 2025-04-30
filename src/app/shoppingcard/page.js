@@ -1,4 +1,5 @@
 "use client";
+import DeleteModal from "@/components/DeleteModal";
 import ProgressBar from "@/components/ProgressBar";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -35,6 +36,13 @@ export default function Page() {
     },
   ]);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
+  const handleCloseModal = ()=>{
+    setIsOpenDeleteModal(false)
+  }
+  const handleDeleteBasket = ()=>{
+    setBasketItems([])
+    setIsOpenDeleteModal(false)
+  }
   return (
     <div className="container mx-auto px-5 lg:px-12">
       <div className="mt-6 flex justify-between items-center lg:hidden">
@@ -294,49 +302,7 @@ export default function Page() {
           </div>
         </div>
       </div>
-      {isOpenDeleteModal && (
-        <>
-          <div
-            className="fixed inset-0 bg-[#1E1E1E] opacity-50 z-50"
-            onClick={() => setIsOpenDeleteModal(false)}
-          />
-          <div className="bg-white fixed bottom-0 left-0 right-0 z-60 w-full rounded-tr-3xl rounded-tl-3xl pt-4 px-5 pb-6 lg:w-108 lg:p-6 lg:top-1/2 lg:right-1/2 lg:transform lg:translate-x-1/2 lg:-translate-y-1/2 lg:bottom-auto lg:rounded-3xl">
-            <div className="flex justify-between items-center pb-4 border-b border-neutral-gray-4 mb-4 lg:mb-8 lg:border-none">
-              <p className="leading-7 text-black lg:text-lg lg:font-bold lg:leading-5.5">
-                حذف سبد خرید
-              </p>
-              <Image
-                width={16}
-                height={16}
-                src="/img/close-icon-filter.svg"
-                className="cursor-pointer lg:w-6 lg:h-6"
-                alt=""
-                onClick={() => setIsOpenDeleteModal(false)}
-              />
-            </div>
-            <p className="text-sm leading-7 text-neutral-gray-11 mb-8 lg:mb-10 lg:leading-6">
-              آیا از حذف سبد خرید اطمینان دارید؟
-            </p>
-            <div className="flex items-center gap-4 justify-center flex-wrap">
-              <button
-                onClick={() => setIsOpenDeleteModal(false)}
-                className="leading-5.5 py-3.25 px-14.75 border border-neutral-gray-8 rounded-lg cursor-pointer lg:px-17"
-              >
-                انصراف
-              </button>
-              <button
-                onClick={() => {
-                  setIsOpenDeleteModal(false);
-                  setBasketItems([]);
-                }}
-                className="leading-5.5 bg-error-primery text-white py-3.25 px-16.5 rounded-lg cursor-pointer lg:px-18.75"
-              >
-                حذف
-              </button>
-            </div>
-          </div>
-        </>
-      )}
+      {isOpenDeleteModal && <DeleteModal handleCloseModal={handleCloseModal} handleDeleteBasket={handleDeleteBasket}/>}
     </div>
   );
 }

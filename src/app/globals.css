@@ -102,6 +102,6 @@
 
 /* for firefox */
 .custom-scrollbar {
-  scrollbar-width: thin;
+  scrollbar-width: auto;
   scrollbar-color: #ceced1 #f2f2f3;
 }

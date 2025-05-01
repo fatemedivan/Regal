@@ -8,15 +8,15 @@ export default function ProductItemOff({
   finalPrice,
   offPercent,
   isMore,
-  colors
+  colors,
 }) {
   return (
-    <div className={`min-w-41.75 lg:min-w-79.5`}>
+    <div className="min-w-41.75 lg:min-w-79.5 relative group">
       <div className={`w-41.75 h-60 lg:w-79.5 lg:h-119 relative object-cover`}>
         <Image
           width={167}
           height={239}
-          className="w-full h-full"
+          className="w-full h-full cursor-pointer"
           src={img}
           alt=""
           quality={100}
@@ -36,6 +36,14 @@ export default function ProductItemOff({
             </div>
           )}
         </div>
+        <div className="absolute z-10 inset-0 bg-[rgba(0,0,0,0.5)] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 ease-in-out rounded-xl">
+          <button className="border border-neutral-gray-8 rounded-lg py-2.5 px-2 lg:px-14 flex items-center justify-center gap-2 cursor-pointer">
+            <img src="/img/shopping-cart-3.svg" alt="" />
+            <p className="text-sm leading-5 text-neutral-gray-3">
+              افزودن به سبد خرید
+            </p>
+          </button>
+        </div>
       </div>
       <div
         className={`lg:flex lg:justify-between lg:items-center lg:mt-3 lg:mb-2 lg:max-w-79.5`}
@@ -50,9 +58,11 @@ export default function ProductItemOff({
               ۲+
             </div>
           )}
-          {colors.map(color => (
-
-          <div key={color} className={`w-5 h-5 rounded-sm bg-[${color}]`}></div>
+          {colors.map((color) => (
+            <div
+              key={color}
+              className={`w-5 h-5 rounded-sm bg-[${color}]`}
+            ></div>
           ))}
         </div>
       </div>

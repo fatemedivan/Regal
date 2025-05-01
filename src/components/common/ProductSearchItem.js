@@ -9,7 +9,7 @@ export default function ProductSearchItem({
   isMore,
 }) {
   return (
-    <div className={`min-w-41.75 lg:min-w-50.5`}>
+    <div className="min-w-41.75 lg:min-w-50.5 relative group">
       <div className={`w-41.75 h-60 lg:w-50.5 lg:h-71 relative object-cover`}>
         <Image
           width={167}
@@ -33,6 +33,14 @@ export default function ProductSearchItem({
               {offPercent}٪
             </div>
           )}
+        </div>
+        <div className="absolute z-10 inset-0 bg-[rgba(0,0,0,0.5)] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 ease-in-out rounded-xl">
+          <button className="border border-neutral-gray-8 rounded-lg py-2.5 px-2 lg:px-6 flex items-center justify-center gap-2 cursor-pointer">
+            <img src="/img/shopping-cart-3.svg" alt="" />
+            <p className="text-sm leading-5 text-neutral-gray-3">
+              افزودن به سبد خرید
+            </p>
+          </button>
         </div>
       </div>
       <div

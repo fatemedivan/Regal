@@ -62,7 +62,7 @@ export default function Page() {
                 </span>
               </div>
               <button className="flex items-center justify-center border border-cognac-primery gap-2 rounded-lg py-3.25 px-20 mt-6 cursor-pointer w-full lg:py-3.75">
-                <Image width={16} height={16} src="/img/Google Logo.svg" alt="" />
+                <Image width={16} height={16} src="/img/Google-logo.svg" alt="" />
                 <p className="text-cognac-primery leading-5.5 lg:text-lg lg:leading-6.5 cursor-pointer">
                   ورود با گوگل
                 </p>

@@ -81,6 +81,27 @@
   --text-30:1.875rem;
   --shadow-shape: 0px 4px 4px rgba(0, 0, 0, 0.25;);
 }
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f2f2f3;
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -o-border-radius: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #ceced1; 
+  border-radius: 6px;
+}
+
+/* for firefox */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #ceced1 #f2f2f3;
 }

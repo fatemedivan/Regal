@@ -187,7 +187,7 @@ export default function Page() {
                       </p>
                     </div>
                     {isShowDateModal && (
-                      <ul className="bg-white absolute w-full top-14 right-0 rounded-lg  border border-neutral-gray-4 p-4 overflow-y-scroll max-h-48 hidden lg:block">
+                      <ul className="bg-white absolute w-full top-14 right-0 rounded-lg  border border-neutral-gray-4 p-4 overflow-y-scroll max-h-48 hidden lg:block custom-scrollbar">
                         {date.map((date, index) => (
                           <li
                             key={index}
@@ -222,7 +222,7 @@ export default function Page() {
                       </p>
                     </div>
                     {isShowTimeModal && (
-                      <ul className="bg-white absolute w-full top-14 right-0 rounded-lg border border-neutral-gray-4 p-4 overflow-y-scroll max-h-48 hidden lg:block">
+                      <ul className="bg-white absolute w-full top-14 right-0 rounded-lg border border-neutral-gray-4 p-4 overflow-y-scroll max-h-48 hidden lg:block custom-scrollbar">
                         {time.map((time, index) => (
                           <li
                             key={index}

@@ -6,8 +6,10 @@ import ProgressBar from "@/components/common/ProgressBar";
 import TimeModal from "@/components/completeData/TimeModal";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+  const router = useRouter();
   const maxLenght = 200;
   const [text, setText] = useState("");
   const [deliveryOption, setDeliveryOption] = useState("courier");
@@ -39,21 +41,20 @@ export default function Page() {
   //AI
   useEffect(() => {
     const isMobile = window.matchMedia("(max-width: 1023px)").matches;
-  
+
     if (isMobile && (isShowDateModal || isShowTimeModal)) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
     }
-  
+
     return () => {
       document.body.style.overflow = "";
     };
   }, [isShowDateModal, isShowTimeModal]);
-  
 
   return (
-    <div className="container mx-auto px-5 pb-16 lg:px-12 lg:pb-22">
+    <div className="container mx-auto px-5 pt-6 pb-16 lg:pt-0 lg:px-12 lg:pb-22">
       <div className="flex justify-between items-center mb-8 lg:hidden">
         <Image
           width={24}
@@ -61,9 +62,10 @@ export default function Page() {
           className="cursor-pointer"
           src="/img/arrow-right-6.svg"
           alt=""
+          onClick={() => router.back()}
         />
         <p className="font-semibold text-xl leading-6 text-neutral-gray-13">
-          پرداخت
+          تکمیل اطلاعات
         </p>
         <div></div>
       </div>
@@ -306,7 +308,7 @@ export default function Page() {
                     src="/img/map-2.svg"
                     alt=""
                   />
-                  <div className="absolute rounded-xl top-12 right-2 bg-white border border-cognac-primery p-3.5 cursor-pointer xl:top-22">
+                  <div className="absolute rounded-xl bottom-2 right-2 bg-white border border-cognac-primery p-3.5 cursor-pointer lg:top-12 lg:bottom-0  xl:top-22">
                     <Image width={20} height={20} src="/img/gps.svg" alt="" />
                   </div>
                 </div>

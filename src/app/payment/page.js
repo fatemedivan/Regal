@@ -2,20 +2,22 @@
 import BasketDetailsCard from "@/components/common/BasketDetailsCard";
 import ProgressBar from "@/components/common/ProgressBar";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 export default function Page() {
   const [payment, setPayment] = useState("online");
-
+  const router = useRouter();
   return (
     <div className="container mx-auto px-5 pt-6 pb-16 lg:pt-0 lg:px-12">
-      <div className="flex justify-between items-center mb-6 lg:hidden ">
+      <div className="flex justify-between items-center mb-6 lg:hidden">
         <Image
           width={24}
           height={24}
           className="cursor-pointer"
           src="/img/arrow-right-6.svg"
           alt=""
+          onClick={() => router.back()}
         />
         <p className="font-semibold text-xl leading-6 text-neutral-gray-13">
           پرداخت

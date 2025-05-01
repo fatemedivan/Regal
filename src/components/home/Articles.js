@@ -24,7 +24,7 @@ export default function Articles() {
             gap: 24,
           },
           1024: {
-            perView: 3,
+            perView: 2,
             gap: 24,
           },
           768: {
@@ -61,7 +61,7 @@ export default function Articles() {
       <div className="glide mt-6 pr-4 lg:mt-8 lg:px-12" ref={glideRef}>
         <div className="glide__track" data-glide-el="track">
           <ul className="glide__slides">
-            <li className="glide__slide lg:max-w-108 lg:min-w-108">
+            <li className="glide__slide">
               <Image
                 src={"/img/article-1.svg"}
                 width={432}
@@ -97,7 +97,7 @@ export default function Articles() {
                 </div>
               </div>
             </li>
-            <li className="glide__slide lg:max-w-108 lg:min-w-108">
+            <li className="glide__slide">
               <Image
                 src={"/img/article-2.svg"}
                 width={432}
@@ -128,12 +128,12 @@ export default function Articles() {
                 </div>
               </div>
             </li>
-            <li className="glide__slide lg:max-w-108 lg:min-w-108">
+            <li className="glide__slide">
               <Image
                 src={"/img/article-3.svg"}
                 width={432}
                 height={220}
-                className="rounded-tr-2xl rounded-tl-2xl w-932 h-720"
+                className="rounded-tr-2xl rounded-tl-2xl"
                 layout="responsive"
                 alt="article"
                 quality={100}

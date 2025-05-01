@@ -5,8 +5,10 @@ import ProgressBar from "@/components/common/ProgressBar";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import DeleteModal from "@/components/common/DeleteModal";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+  const router = useRouter()
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [basketItems, setBasketItems] = useState([
     {
@@ -67,6 +69,7 @@ export default function Page() {
           className="cursor-pointer"
           src="/img/arrow-right-6.svg"
           alt=""
+          onClick={()=> router.back()}
         />
         <h3 className="text-[20px] font-semibold leading-6 text-neutral-gray-13">
           سبد خرید

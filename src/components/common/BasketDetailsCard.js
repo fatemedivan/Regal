@@ -29,7 +29,7 @@ export default function BasketDetails({ step }) {
  
   return (
     <>
-      <div className="mt-8 lg:border lg:border-neutral-gray-4 lg:rounded-2xl lg:p-8 lg:mt-0 mb-auto">
+      <div className="mt-8 lg:border lg:border-neutral-gray-4 lg:rounded-2xl lg:p-8 lg:mt-0 mb-auto lg:max-w-108">
         {step === 1 ? (
           <div className="hidden lg:flex justify-between items-center pb-6 mb-6 border-b border-neutral-gray-4">
             <h6 className="text-lg font-bold leading-5.5 text-black">

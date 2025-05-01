@@ -58,8 +58,8 @@ export default function Page() {
                   onChange={() => setPayment("online")}
                   defaultChecked
                 />
-                <span className="w-4 h-4 rounded-full border border-neutral-gray-5 flex items-center justify-center peer-checked:border-cognac-primery cursor-pointer group">
-                  <span className="w-3 h-3 rounded-full bg-cognac-primery opacity-0 group-peer-checked:opacity-100 transition" />
+                <span className="w-4 h-4 rounded-full border border-neutral-gray-5 peer-checked:border-cognac-primery cursor-pointer group relative">
+                  <span className="w-3 h-3 rounded-full bg-cognac-primery opacity-0 group-peer-checked:opacity-100 transition  absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2" />
                 </span>
                 <div>
                   <p className="text-sm leading-6 text-neutral-gray-11">
@@ -78,8 +78,8 @@ export default function Page() {
                   value="store"
                   onChange={() => setPayment("store")}
                 />
-                <span className="w-4 h-4 rounded-full border border-neutral-gray-5 flex items-center justify-center peer-checked:border-cognac-primery cursor-pointer group">
-                  <span className="w-3 h-3 rounded-full bg-cognac-primery opacity-0 group-peer-checked:opacity-100 transition" />
+                <span className="w-4 h-4 rounded-full border border-neutral-gray-5 peer-checked:border-cognac-primery cursor-pointer group relative">
+                  <span className="w-3 h-3 rounded-full bg-cognac-primery opacity-0 group-peer-checked:opacity-100 transition  absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2" />
                 </span>
                 <div>
                   <p className="text-sm leading-6 text-neutral-gray-11">
@@ -118,7 +118,7 @@ export default function Page() {
               <h5 className="font-semibold leading-5 text-black mb-4 lg:font-bold lg:text-lg lg:leading-5.5 lg:mb-6">
                 درگاه پرداخت
               </h5>
-              <div className="flex flex-col justify-center items-center gap-4 lg:gap-6 lg:items-start lg:border lg:border-neutral-gray-4 lg:rounded-2xl lg:p-6">
+              <div className="lg:border lg:border-neutral-gray-4 lg:rounded-2xl lg:p-6">
                 <div className="flex items-center gap-4 lg:gap-10">
                   <Image
                     width={64}
@@ -149,7 +149,7 @@ export default function Page() {
                     className="cursor-pointer"
                   />
                 </div>
-                <p className="text-neutral-gray-9 text-xs leading-4.5">
+                <p className="text-neutral-gray-9 text-xs leading-4.5 mt-4 lg:mt-6 mr-2">
                   پرداخت از طریق کلیه کارتهای عضو شتاب امکان پذیر است.
                 </p>
               </div>

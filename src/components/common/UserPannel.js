@@ -8,7 +8,7 @@ export default function UserPannel({ children, isInEdit }) {
   const pathname = usePathname();
   return (
     <div className="container mx-auto pt-8 px-5 pb-66.5 lg:px-12 lg:pt-12 lg:pb-22 lg:flex lg:gap-4">
-      <div>
+      <div className="lg:min-w-79.5">
         <div className="flex justify-between border border-neutral-gray-4 rounded-xl p-4">
           <div className="flex items-center gap-4">
             <Image

@@ -35,9 +35,9 @@ export default function UserPannel({ children, isInEdit }) {
         <div className="border border-neutral-gray-4 rounded-xl px-7 py-5 mt-4">
           <div
             className={`flex items-center gap-2 mb-5 pb-5  border-b border-neutral-gray-4 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:pb-3 lg:mb-0 lg:rounded-lg  lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer ${
-              pathname.includes("/user-dashboard/user-pannel") ||
-              (pathname.includes("/user-dashboard/edit-user-pannel") &&
-                "lg:bg-neutral-gray-1 lg:border-r-4")
+             (pathname.includes("/user-dashboard/user-pannel") ||
+              pathname.includes("/user-dashboard/edit-user-pannel")) &&
+                "lg:bg-neutral-gray-1 lg:border-r-4"
             }`}
           >
             {pathname.includes("/user-dashboard/user-pannel") ||

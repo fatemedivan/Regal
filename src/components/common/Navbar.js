@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Search from "@/components/common/Search";
 import Categories from "@/components/common/CategoriesMenu";
 import Link from "next/link";
+import useLockScroll from "@/Hook/UseLockScroll";
 
 export default function Navbar() {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
@@ -16,19 +17,7 @@ export default function Navbar() {
     setIsOpenCategory(false);
   };
 
-  //AI
-  useEffect(() => {
-    if (isOpenMenu || isSearching) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpenMenu, isSearching]);
-
+  useLockScroll([isOpenCategory, isOpenMenu])
   return (
     <>
       <nav className="container relative min-w-full z-50 bg-white flex justify-between items-center p-5 border-b-1 border-neutral-gray-4 lg:py-6.25 lg:px-12 lg:border-none">
@@ -82,14 +71,16 @@ export default function Navbar() {
 
         <ul className="flex justify-center items-center lg:hidden">
           <li className="p-3.5">
-            <Image
-              className="cursor-pointer"
-              width={16}
-              height={16}
-              quality={100}
-              src="/img/user.svg"
-              alt=""
-            />
+            <Link href={"/user-dashboard/edit-user-pannel"}>
+              <Image
+                className="cursor-pointer"
+                width={16}
+                height={16}
+                quality={100}
+                src="/img/user.svg"
+                alt=""
+              />
+            </Link>
           </li>
           <li className="p-3.5">
             <Image

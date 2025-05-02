@@ -16,6 +16,10 @@ export default function Search({ handleCloseSearch }) {
         perView: 5,
         gap: 12,
         direction: "rtl",
+        peek:{
+          before: 0,
+          after: 50
+        },
         breakpoints: {
           1440: {
             perView: 6,

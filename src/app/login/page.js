@@ -25,8 +25,9 @@ export default function Page() {
             <div className="border border-neutral-gray-4 rounded-lg flex w-full">
               <input
                 type="text"
+                dir="ltr"
                 placeholder="شماره موبایل"
-                className="placeholder:text-xs placeholder:leading-4.5 placeholder:text-neutral-gray-7 w-full outline-none py-3.75 pr-4 lg:text-sm lg:leading-5"
+                className="placeholder:text-right placeholder:text-xs placeholder:leading-4.5 placeholder:text-neutral-gray-7 w-full outline-none py-3.75 px-4 lg:text-sm lg:leading-5"
               />
               <div className="bg-neutral-gray-2 text-neutral-gray-7 p-4 border-r border-neutral-gray-4 rounded-tl-lg rounded-bl-lg max-w-13 text-xs leading-4.5">
                 ۹۸+
@@ -35,11 +36,12 @@ export default function Page() {
             <div className="border border-neutral-gray-4 rounded-lg mt-4 w-full">
               <input
                 type="password"
+                dir="ltr"
                 placeholder="رمز عبور"
-                className="placeholder:text-xs placeholder:leading-4.5 placeholder:text-neutral-gray-7 w-full outline-none py-3.75 pr-4 lg:text-sm lg:leading-5"
+                className="placeholder:text-right placeholder:text-xs placeholder:leading-4.5 placeholder:text-neutral-gray-7 w-full outline-none py-3.75 px-4 lg:text-sm lg:leading-5"
               />
             </div>
-            <div className="flex gap-2 mt-5">
+            <div className="flex items-center gap-2 mt-5">
               <label className="relative">
                 <input type="checkbox" className="peer hidden" defaultChecked />
                 <div className='w-6 h-6 rounded-sm border border-neutral-gray-5 relative flex items-center justify-center cursor-pointer before:content-[""] before:absolute before:w-1.5 before:h-2.5 before:border-r-2 before:border-b-2 before:border-neutral-gray-10 before:rotate-45 before:opacity-0 peer-checked:before:opacity-100'></div>
@@ -71,7 +73,7 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <Image width={546} height={690} src="/img/login.png" className="hidden lg:block w-[45%] object-cover" alt="" />
+      <Image width={546} height={690} quality={100} src="/img/login.png" className="hidden lg:block w-[45%] object-cover" alt="" />
     </div>
   );
 }

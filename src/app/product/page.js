@@ -19,6 +19,10 @@ export default function Page() {
         perView: 4,
         gap: 12,
         direction: "rtl",
+        peek:{
+          before: 0,
+          after: 50
+        },
         breakpoints: {
           1440: {
             perView: 4,
@@ -26,7 +30,7 @@ export default function Page() {
           },
           1024: {
             perView: 4,
-            gap: 24,
+            gap: 12,
           },
           768: {
             perView: 4,
@@ -310,7 +314,7 @@ export default function Page() {
 
           <div className="glide" ref={glideRef}>
             <div className="glide__track" data-glide-el="track">
-              <ul className="glide__slides">
+              <ul className="glide__slides scroll-smooth">
                 <li className="glide__slide min-w-41.75 lg:min-w-79.5">
                   <ProductItemOff
                     img={"/img/product-off-1.png"}

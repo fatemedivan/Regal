@@ -19,7 +19,9 @@ export default function Page() {
     setIsOpenSort(false);
   };
   useEffect(() => {
-    if (isOpenFilterMenu || isOpenSort) {
+    const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+
+    if (isMobile && isOpenFilterMenu || isOpenSort) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";

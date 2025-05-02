@@ -5,7 +5,8 @@ import Pagination from "@/components/common/Pagination";
 import ProductItemOff from "@/components/common/ProductItemOff";
 import Sort from "@/components/categories/Sort";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import useLockScroll from "@/Hook/UseLockScroll";
 
 export default function Page() {
   const [isOpenFilterMenu, setIsOpenFilterMenu] = useState(false);
@@ -18,20 +19,7 @@ export default function Page() {
   const handleCloseSort = () => {
     setIsOpenSort(false);
   };
-  useEffect(() => {
-    const isMobile = window.matchMedia("(max-width: 1023px)").matches;
-
-    if (isMobile && isOpenFilterMenu || isOpenSort) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpenFilterMenu, isOpenSort]);
-
+  useLockScroll([isOpenSort, isOpenFilterMenu], true);
   return (
     <>
       <Breadcrumb />

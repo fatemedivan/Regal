@@ -3,9 +3,10 @@
 import BasketDetailsCard from "@/components/common/BasketDetailsCard";
 import ProgressBar from "@/components/common/ProgressBar";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import DeleteModal from "@/components/common/DeleteModal";
 import { useRouter } from "next/navigation";
+import useLockScroll from "@/Hook/UseLockScroll";
 
 export default function Page() {
   const router = useRouter()
@@ -47,19 +48,7 @@ export default function Page() {
     setBasketItems([]);
     setIsOpenDeleteModal(false);
   };
-  //AI
-  useEffect(() => {
-    if (isOpenDeleteModal) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpenDeleteModal]);
-
+ useLockScroll([isOpenDeleteModal], false)
   return (
     <div className="container mx-auto px-5 lg:px-12">
       <div className="mt-6 flex justify-between items-center lg:hidden">

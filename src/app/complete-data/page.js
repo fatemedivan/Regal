@@ -5,8 +5,9 @@ import DateModal from "@/components/completeData/DateModal";
 import ProgressBar from "@/components/common/ProgressBar";
 import TimeModal from "@/components/completeData/TimeModal";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
 import { useRouter } from "next/navigation";
+import useLockScroll from "@/Hook/UseLockScroll";
 
 export default function Page() {
   const router = useRouter();
@@ -38,21 +39,8 @@ export default function Page() {
   const handleCloseTimeModal = () => {
     setIsShowTimeModal(false);
   };
-  //AI
-  useEffect(() => {
-    const isMobile = window.matchMedia("(max-width: 1023px)").matches;
-
-    if (isMobile && (isShowDateModal || isShowTimeModal)) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isShowDateModal, isShowTimeModal]);
-
+  useLockScroll([isShowDateModal, isShowTimeModal], true)
+  
   return (
     <div className="container mx-auto px-5 pt-6 pb-16 lg:pt-0 lg:px-12 lg:pb-22">
       <div className="flex justify-between items-center mb-8 lg:hidden">

@@ -8,6 +8,8 @@ export default function UserPannel({ children, rout }) {
   const pathname = usePathname();
   const [isShownOrderTypes, setIsShownOrderTypes] = useState(false);
   const [selectedOrderType, setSelectedOrderType] = useState("همه");
+  const [isOpenSort, setIsOpenSort] = useState(false);
+  const [selectedOptionSort, setSelectedOptionSort] = useState("");
 
   const orderTypes = [
     { label: "همه", value: "all" },
@@ -88,12 +90,26 @@ export default function UserPannel({ children, rout }) {
               </p>
             </div>
           </Link>
-          <div className="flex items-center gap-2 mb-5 pb-5 border-b border-neutral-gray-4 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:pb-3 lg:mb-0  lg:rounded-lg lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer">
-            <Image width={20} height={20} src="/img/heart-3.svg" alt="" />
-            <p className="text-sm leading-6 text-neutral-gray-11">
-              علاقمندی‌ها
-            </p>
-          </div>
+          <Link href={"/user-dashboard/favourites"}>
+            <div className={`flex items-center gap-2 mb-5 pb-5 border-b border-neutral-gray-4 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:pb-3 lg:mb-0  lg:rounded-lg lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer ${
+                pathname.includes("/user-dashboard/favourites") &&
+                "lg:bg-neutral-gray-1 lg:border-r-4"
+              }`}>
+              {pathname.includes("/user-dashboard/favourites") ? (
+                <Image
+                  width={20}
+                  height={20}
+                  src="/img/heart-bold.svg"
+                  alt=""
+                />
+              ) : (
+                <Image width={20} height={20} src="/img/heart.svg" alt="" />
+              )}
+              <p className="text-sm leading-6 text-neutral-gray-11">
+                علاقمندی‌ها
+              </p>
+            </div>
+          </Link>
           <div className="flex items-center gap-2 mb-5 pb-5 border-b border-neutral-gray-4 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:pb-3 lg:mb-0  lg:rounded-lg lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer">
             <Image width={20} height={20} src="/img/location-2.svg" alt="" />
             <p className="text-sm leading-6 text-neutral-gray-11">
@@ -108,17 +124,15 @@ export default function UserPannel({ children, rout }) {
       </div>
       <div className="hidden lg:block border border-neutral-gray-4 rounded-xl pt-6 px-6 flex-1">
         <div className="pb-6 border-b border-neutral-gray-4 flex justify-between items-center">
-          {rout === "edit" || rout === "profile" ? (
-            <h6 className="text-neutral-gray-13 text-lg font-bold leading-5.5 py-3">
-              اطلاعات حساب کاربری
-            </h6>
-          ) : rout === "order" ? (
-            <h6 className="text-neutral-gray-13 text-lg font-bold leading-5.5">
-              تاریخچه سفارشات
-            </h6>
-          ) : (
-            ""
-          )}
+          <h6 className="text-neutral-gray-13 text-lg font-bold leading-5.5 py-3">
+            {rout === "edit" || rout === "profile"
+              ? " اطلاعات حساب کاربری"
+              : rout === "order"
+              ? " تاریخچه سفارشات"
+              : rout === "favourites"
+              ? " لیست علاقه‌مندی‌ها"
+              : ""}
+          </h6>
 
           {rout === "profile" ? (
             <Link href={"/user-dashboard/edit-profile"}>
@@ -196,6 +210,45 @@ export default function UserPannel({ children, rout }) {
                     </label>
                   ))}
                 </div>
+              )}
+            </div>
+          ) : rout === "favourites" ? (
+            <div className="relative min-w-64">
+              <button
+                onClick={() => setIsOpenSort(!isOpenSort)}
+                className="w-full border border-neutral-gray-4 rounded-lg py-5 pl-8 pr-6 text-right flex justify-between items-center cursor-pointer"
+              >
+                <p className="text-neutral-gray-7 text-xs leading-4.5">
+                  {selectedOptionSort || "مرتب سازی بر اساس"}
+                </p>
+                <Image
+                  src="/img/drop-down.svg"
+                  width={16}
+                  height={16}
+                  alt="dropdown icon"
+                  className={`absolute top-1/2 left-3 -translate-y-1/2 pointer-events-none transition ${
+                    isOpenSort && "rotate-180"
+                  }`}
+                />
+              </button>
+
+              {isOpenSort && (
+                <ul className="absolute w-full z-20 bg-white border border-neutral-gray-4 mt-1 rounded-lg shadow-lg text-sm">
+                  {["جدیدترین", "قدیمی‌ترین", "ارزان‌ترین", "گران‌ترین"].map(
+                    (option) => (
+                      <li
+                        key={option}
+                        onClick={() => {
+                          setSelectedOptionSort(option);
+                          setIsOpenSort(false);
+                        }}
+                        className="px-4 py-2 hover:bg-neutral-gray-2 cursor-pointer text-xs leading-4.5 text-neutral-gray-7"
+                      >
+                        {option}
+                      </li>
+                    )
+                  )}
+                </ul>
               )}
             </div>
           ) : (

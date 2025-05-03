@@ -191,18 +191,64 @@ export default function Page() {
       <div className="hidden lg:block">
         <UserPannel rout={"order"}>
           {isHadOrders ? (
-            <OrderDetailsCardDesktop
-              status={"جاری"}
-              deliveryType={"ارسال با پیک"}
-              address={
-                "تهران، نیاوران، تنگستان چهارم، مجتمع حیات سبز، طبقه چهارم، واحد ۱۳۲"
-              }
-              payment={'۱.۵۶۹.۰۰۰'}
-              discount={'۱۹۰.۰۰۰'}
-              shippingcost={'۱۹۰.۰۰۰'}
-              date={'پنجشنبه ۵ مهر ۱۴۰۳ ، ۱۳:۴۵'}
-              time={'۱۳:۱۰'}
-            />
+            <div className="my-6">
+              <OrderDetailsCardDesktop
+                status={"جاری"}
+                deliveryType={"ارسال با پیک"}
+                address={
+                  "تهران، نیاوران، تنگستان چهارم، مجتمع حیات سبز، طبقه چهارم، واحد ۱۳۲"
+                }
+                payment={"۱.۵۶۹.۰۰۰"}
+                discount={"۱۹۰.۰۰۰"}
+                shippingcost={"۱۹۰.۰۰۰"}
+                date={"پنجشنبه ۵ مهر ۱۴۰۳ ، ۱۳:۴۵"}
+                time={"۱۳:۱۰"}
+              />
+              <OrderDetailsCardDesktop
+                status={"جاری"}
+                deliveryType={"ارسال با پیک"}
+                address={
+                  "تهران، نیاوران، تنگستان چهارم، مجتمع حیات سبز، طبقه چهارم، واحد ۱۳۲"
+                }
+                payment={"۲.۳۲۵.۰۰۰"}
+                discount={"۲۱۰.۰۰۰"}
+                shippingcost={"۱۹۰.۰۰۰"}
+                date={"دوشنبه ۲ مرداد ۱۴۰۳ ، ۱۱:۴۵"}
+              />
+              <OrderDetailsCardDesktop
+                status={"تحویل شده"}
+                deliveryType={"تحویل حضوری"}
+                address={
+                  "تهران، نیاوران، تنگستان چهارم، مجتمع حیات سبز، طبقه چهارم، واحد ۱۳۲"
+                }
+                payment={"۳.۱۰۰.۰۰۰"}
+                discount={"۲۵۰.۰۰۰"}
+                shippingcost={"۱۹۰.۰۰۰"}
+                date={"شنبه ۳۰ تیر ۱۴۰۳ ، ۱۰:۵۵"}
+              />
+              <OrderDetailsCardDesktop
+                status={"لغو شده"}
+                deliveryType={"تحویل حضوری"}
+                address={
+                  "تهران، نیاوران، تنگستان چهارم، مجتمع حیات سبز، طبقه چهارم، واحد ۱۳۲"
+                }
+                payment={"۱.۱۱۰.۰۰۰"}
+                discount={"۱۵۰.۰۰۰"}
+                shippingcost={"۱۹۰.۰۰۰"}
+                date={"پنجشنبه ۱۰ تیر ۱۴۰۳ ، ۱۱:۵۰"}
+              />
+              <OrderDetailsCardDesktop
+                status={"مرجوع شده"}
+                deliveryType={"ارسال با پیک"}
+                address={
+                  "تهران، نیاوران، تنگستان چهارم، مجتمع حیات سبز، طبقه چهارم، واحد ۱۳۲"
+                }
+                payment={"۱.۳۰۰.۰۰۰"}
+                discount={"۱۷۵.۰۰۰"}
+                shippingcost={"۱۹۰.۰۰۰"}
+                date={"پنجشنبه ۱ تیر ۱۴۰۳ ، ۱۳:۲۵"}
+              />
+            </div>
           ) : (
             <div className="flex flex-col justify-center items-center gap-8 my-12.5">
               <Image

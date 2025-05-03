@@ -1,5 +1,5 @@
 "use client";
-import UserPannel from "@/components/common/UserPannel";
+import UserPannel from "@/components/profile/UserPannel";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -168,9 +168,9 @@ export default function Page() {
       </div>
 
       <div className="hidden lg:block">
-        <UserPannel isInEdit={true}>
+        <UserPannel rout={"edit"}>
           <div>
-            <div className="flex items-center gap-6.25">
+            <div className="flex items-center gap-6.25 mt-6">
               <div className="relative w-1/2 border border-neutral-gray-4 px-4 py-3.75 rounded-lg mb-4">
                 <input
                   type="text"
@@ -296,7 +296,7 @@ export default function Page() {
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-2 mt-38">
+          <div className="flex items-center justify-end gap-2 mt-38 mb-6">
             <button className="bg-white text-cognac-tint-7 border border-cognac-tint-7 py-3.25 px-22 rounded-lg cursor-pointer">
               انصراف
             </button>

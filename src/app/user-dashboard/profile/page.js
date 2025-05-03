@@ -1,18 +1,17 @@
-'use client'
-import UserPannel from "@/components/common/UserPannel";
+"use client";
+import UserPannel from "@/components/profile/UserPannel";
 import React, { useState } from "react";
 
 export default function Page() {
   const [userData, setUserData] = useState({
-    firstName: 'ارزو',
-    lastName: 'علیزاده',
-    phone: '۹۱۲۱۲۳۴۵۶۷',
-    email: 'rwish1377@gmail.com'
-
-  })
+    firstName: "ارزو",
+    lastName: "علیزاده",
+    phone: "۹۱۲۱۲۳۴۵۶۷",
+    email: "rwish1377@gmail.com",
+  });
   return (
-    <UserPannel isInEdit={false}>
-      <div className="flex items-center gap-32">
+    <UserPannel rout={"profile"}>
+      <div className="flex items-center gap-32 mt-6">
         <div>
           <ul>
             <li className="text-neutral-gray-13 leading-7 mb-4">نام</li>
@@ -28,16 +27,16 @@ export default function Page() {
         <div>
           <ul>
             <li className="text-neutral-gray-11 text-sm leading-6 mb-4">
-             {userData ? userData.firstName : ' نام وارد نشده است' }
+              {userData ? userData.firstName : " نام وارد نشده است"}
             </li>
             <li className="text-neutral-gray-11 text-sm leading-6 mb-4">
-              {userData ? userData.lastName : 'نام‌خانوادگی وارد نشده است'}
+              {userData ? userData.lastName : "نام‌خانوادگی وارد نشده است"}
             </li>
             <li className="text-neutral-gray-11 text-sm leading-6 mb-4">
               {userData.phone}
             </li>
             <li className="text-neutral-gray-11 text-sm leading-6">
-             {userData ? userData.email : ' آدرس ایمیل وارد نشده است'}
+              {userData ? userData.email : " آدرس ایمیل وارد نشده است"}
             </li>
           </ul>
         </div>

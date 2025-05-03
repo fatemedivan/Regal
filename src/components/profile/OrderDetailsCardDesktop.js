@@ -46,7 +46,7 @@ export default function OrderDetailsCardDesktop({
             {deliveryType}
           </div>
           <div
-            className={` text-xs leading-4.5 py-0.5 px-2 rounded-100  ${
+            className={` text-xs leading-4.5 py-0.5 px-2 rounded-100 text-nowrap ${
               status === "جاری"
                 ? "border border-neutral-gray-4 bg-neutral-gray-1 text-neutral-gray-11"
                 : status === "تحویل شده"

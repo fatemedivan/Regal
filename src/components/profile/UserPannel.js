@@ -1,11 +1,20 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function UserPannel({ children, rout }) {
   const pathname = usePathname();
+  const [isShownOrderTypes, setIsShownOrderTypes] = useState(false);
+  const [selectedOrderType, setSelectedOrderType] = useState("همه");
+
+  const orderTypes = [
+    { label: "همه", value: "all" },
+    { label: "جاری", value: "active" },
+    { label: "تحویل شده", value: "delivered" },
+    { label: "مرجوع شده", value: "returned" },
+  ];
   return (
     <div className="container mx-auto pt-8 px-5 pb-66.5 lg:px-12 lg:pt-12 lg:pb-22 lg:flex lg:gap-4">
       <div className="xl:min-w-79.5">
@@ -121,27 +130,73 @@ export default function UserPannel({ children, rout }) {
               </div>
             </Link>
           ) : rout === "order" ? (
-            <div className="relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg flex items-center justify-between cursor-pointer min-w-64">
-              <div className="py-1.75 px-3 flex justify-center items-center gap-2 rounded-100 bg-neutral-gray-2">
-                <p className="text-neutral-gray-11 text-xs leading-4.5">همه</p>
+            <div className="relative ">
+              <div
+                onClick={() => setIsShownOrderTypes(!isShownOrderTypes)}
+                className="border border-neutral-gray-4 px-4 py-3.75 rounded-lg flex items-center justify-between cursor-pointer min-w-64"
+              >
+                <div className="py-1.75 px-3 flex justify-center items-center gap-2 rounded-100 bg-neutral-gray-2">
+                  <p className="text-neutral-gray-11 text-xs leading-4.5">
+                    {selectedOrderType}
+                  </p>
+                  <Image
+                    width={16}
+                    height={16}
+                    src="/img/close-square.svg"
+                    alt=""
+                  />
+                </div>
+                <label
+                  className={`absolute right-4 -top-2.5 bg-white px-1 text-xs text-neutral-gray-7 leading-4.5 transition-all`}
+                >
+                  نوع سفارش
+                </label>
                 <Image
                   width={16}
                   height={16}
-                  src="/img/close-square.svg"
+                  src="/img/arrow-down-4.svg"
+                  className={`transition duration-200 ease-in-out ${
+                    isShownOrderTypes ? "rotate-180" : "rotate-0"
+                  }`}
                   alt=""
                 />
               </div>
-              <label
-                className={`absolute right-4 -top-2.5 bg-white px-1 text-xs text-neutral-gray-7 leading-4.5 transition-all`}
-              >
-                نوع سفارش
-              </label>
-              <Image
-                width={16}
-                height={16}
-                src="/img/arrow-down-4.svg"
-                alt=""
-              />
+              {isShownOrderTypes && (
+                <div className="w-full absolute top-18 right-0 p-4 rounded-lg border border-neutral-gray-4 bg-white transition duration-200 ease-in-out">
+                  {orderTypes.map((type, index) => (
+                    <label
+                      key={index}
+                      className="cursor-pointer flex items-center justify-between mb-6"
+                    >
+                      <input
+                        type="checkbox"
+                        name="ordertype"
+                        value={selectedOrderType}
+                        className="hidden peer"
+                        onChange={() => {
+                          setSelectedOrderType(type.label);
+                        }}
+                        checked={
+                          selectedOrderType === "همه" ||
+                          selectedOrderType === type.label
+                        }
+                      />
+                      <p className="text-neutral-gray-11 text-sm leading-5">
+                        {type.label}
+                      </p>
+                      <div
+                        className="w-5 h-5 border border-neutral-gray-10 rounded-sm relative flex items-center justify-center
+                                   before:content-[''] before:absolute before:w-1.5 before:h-2.5 before:border-r-2 before:border-b-2 
+                                   before:border-neutral-gray-10 before:rotate-45 before:opacity-0 peer-checked:before:opacity-100 pb-1"
+                      >
+                        {type.value === "all" && selectedOrderType !== "همه"
+                          ? "ـــ"
+                          : ""}
+                      </div>
+                    </label>
+                  ))}
+                </div>
+              )}
             </div>
           ) : (
             <></>

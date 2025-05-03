@@ -12,7 +12,7 @@ export default function Page() {
   const router = useRouter();
   const [isHadOrders, setIsHadOrders] = useState(true);
   const [isOpenTypeOrder, setIsOpenTypeOrder] = useState(false);
-  const [selectedOrderType, setSelectedOrderType] = useState(["همه"]);
+  const [selectedOrderType, setSelectedOrderType] = useState("همه");
   const orderTypes = [
     { label: "همه", value: "all" },
     { label: "جاری", value: "active" },
@@ -20,6 +20,7 @@ export default function Page() {
     { label: "مرجوع شده", value: "returned" },
   ];
   useLockScroll([isOpenTypeOrder]);
+
   return (
     <>
       <div className="container mx-auto px-5 py-6 lg:hidden">
@@ -157,32 +158,38 @@ export default function Page() {
               />
             </div>
             <div>
-              <div>
-                {orderTypes.map((type, index) => (
-                  <label
-                    key={index}
-                    className="cursor-pointer flex items-center justify-between mb-6"
-                  >
-                    <input
-                      type="checkbox"
-                      name="ordertype"
-                      value={selectedOrderType}
-                      className="hidden peer"
-                      onChange={() => {
-                        setSelectedOrderType(type.label);
-                      }}
-                    />
-                    <p className="text-neutral-gray-11 text-sm leading-5">
-                      {type.label}
-                    </p>
-                    <div
-                      className="w-5 h-5 border border-neutral-gray-10 rounded-sm relative flex items-center justify-center
+              {orderTypes.map((type, index) => (
+                <label
+                  key={index}
+                  className="cursor-pointer flex items-center justify-between mb-6"
+                >
+                  <input
+                    type="checkbox"
+                    name="ordertype"
+                    value={selectedOrderType}
+                    className="hidden peer"
+                    onChange={() => {
+                      setSelectedOrderType(type.label);
+                    }}
+                    checked={
+                      selectedOrderType === "همه" ||
+                      selectedOrderType === type.label
+                    }
+                  />
+                  <p className="text-neutral-gray-11 text-sm leading-5">
+                    {type.label}
+                  </p>
+                  <div
+                    className="w-5 h-5 border border-neutral-gray-10 rounded-sm relative flex items-center justify-center
                      before:content-[''] before:absolute before:w-1.5 before:h-2.5 before:border-r-2 before:border-b-2 
                      before:border-neutral-gray-10 before:rotate-45 before:opacity-0 peer-checked:before:opacity-100 pb-1"
-                    ></div>
-                  </label>
-                ))}
-              </div>
+                  >
+                    {type.value === "all" && selectedOrderType !== "همه"
+                      ? "ـــ"
+                      : ""}
+                  </div>
+                </label>
+              ))}
             </div>
           </div>
         </div>

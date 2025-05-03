@@ -2,6 +2,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import OrderDetailsModal from "./OrderDetailsModal";
+import ProgressBarProfile from "./ProgressBarProfile";
 
 export default function OrderDetailsCard({
   status,
@@ -13,9 +14,9 @@ export default function OrderDetailsCard({
   receivingTime,
 }) {
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
-  const handleCloseDetailsModal = ()=>{
-    setIsOpenDetailsModal(false)
-  }
+  const handleCloseDetailsModal = () => {
+    setIsOpenDetailsModal(false);
+  };
   return (
     <div className="p-3 border border-neutral-gray-4 rounded-xl mb-4">
       <div className="flex justify-between items-center mb-3.5">
@@ -64,23 +65,7 @@ export default function OrderDetailsCard({
         <p className="text-neutral-gray-11 text-xs leading-4.5">{address}</p>
       </div>
       {status === "جاری" && deliveryType !== "تحویل حضوری" && (
-        <div className="relative w-full">
-          <div className="absolute w-full flex">
-            <div className="w-1/4 border-t-2 border-dashed border-cognac-primery"></div>
-            <div className="w-3/4 border-t-2 border-dashed border-neutral-gray-6"></div>
-          </div>
-          <div className="w-full flex justify-between items-center absolute -top-4">
-            <div className="bg-white pl-2">
-              <Image width={24} height={24} src="/img/box.svg" alt="" />
-            </div>
-            <div className="bg-white px-2">
-              <Image width={24} height={24} src="/img/truck-fast.svg" alt="" />
-            </div>
-            <div className="bg-white pr-2">
-              <Image width={24} height={24} src="/img/tick-square.svg" alt="" />
-            </div>
-          </div>
-        </div>
+        <ProgressBarProfile />
       )}
 
       <div
@@ -96,7 +81,9 @@ export default function OrderDetailsCard({
         </button>
       </div>
 
-      {isOpenDetailsModal && <OrderDetailsModal handleCloseModal={handleCloseDetailsModal}/>}
+      {isOpenDetailsModal && (
+        <OrderDetailsModal handleCloseModal={handleCloseDetailsModal} />
+      )}
     </div>
   );
 }

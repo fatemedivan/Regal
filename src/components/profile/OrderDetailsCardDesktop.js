@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import ProgressBarProfile from "./ProgressBarProfile";
 
 export default function OrderDetailsCardDesktop({
   status,
@@ -72,9 +73,18 @@ export default function OrderDetailsCardDesktop({
           </p>
         </div>
       </div>
-      <div className="flex items-center gap-1 mb-4">
+      <div
+        className={`flex items-center gap-1 ${
+          status === "جاری" && deliveryType !== "تحویل حضوری" ? "mb-8" : "mb-4"
+        }`}
+      >
         <Image width={20} height={20} src="/img/calendar.svg" alt="" />
         <p className="text-neutral-gray-11 text-sm leading-5">{date}</p>
+      </div>
+      <div className="mb-4 pb-4 border-b border-dashed border-neutral-gray-4">
+        {status === "جاری" && deliveryType !== "تحویل حضوری" && (
+          <ProgressBarProfile />
+        )}
       </div>
     </div>
   );

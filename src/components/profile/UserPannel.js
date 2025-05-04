@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import DeleteModal from "@/components/common/DeleteModal";
 
 export default function UserPannel({ children, rout }) {
   const pathname = usePathname();
@@ -10,7 +11,16 @@ export default function UserPannel({ children, rout }) {
   const [selectedOrderType, setSelectedOrderType] = useState("همه");
   const [isOpenSort, setIsOpenSort] = useState(false);
   const [selectedOptionSort, setSelectedOptionSort] = useState("");
+  const [isOpenLogoutModal, setIsOpenLogoutModal] = useState(false);
+  console.log(isOpenLogoutModal);
 
+  const handleCloseLogoutModal = () => {
+    setIsOpenLogoutModal(false);
+  };
+  const handleLogout = () => {
+    console.log("you loged out");
+    setIsOpenLogoutModal(false);
+  };
   const orderTypes = [
     { label: "همه", value: "all" },
     { label: "جاری", value: "active" },
@@ -91,10 +101,12 @@ export default function UserPannel({ children, rout }) {
             </div>
           </Link>
           <Link href={"/user-dashboard/favourites"}>
-            <div className={`flex items-center gap-2 mb-5 pb-5 border-b border-neutral-gray-4 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:pb-3 lg:mb-0  lg:rounded-lg lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer ${
+            <div
+              className={`flex items-center gap-2 mb-5 pb-5 border-b border-neutral-gray-4 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:pb-3 lg:mb-0  lg:rounded-lg lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer ${
                 pathname.includes("/user-dashboard/favourites") &&
                 "lg:bg-neutral-gray-1 lg:border-r-4"
-              }`}>
+              }`}
+            >
               {pathname.includes("/user-dashboard/favourites") ? (
                 <Image
                   width={20}
@@ -116,7 +128,10 @@ export default function UserPannel({ children, rout }) {
               آدرس‌های من
             </p>
           </div>
-          <div className="flex items-center gap-2 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:mb-0  lg:rounded-lg lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer">
+          <div
+            onClick={() => setIsOpenLogoutModal(true)}
+            className="flex items-center gap-2 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:mb-0  lg:rounded-lg lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer"
+          >
             <Image width={20} height={20} src="/img/logout.svg" alt="" />
             <p className="text-sm leading-6 text-error-primery">خروج</p>
           </div>
@@ -257,6 +272,15 @@ export default function UserPannel({ children, rout }) {
         </div>
         <div>{children}</div>
       </div>
+      {isOpenLogoutModal && (
+        <DeleteModal
+          handleCloseModal={handleCloseLogoutModal}
+          handleAction={handleLogout}
+          title={"خروج از حساب کاربری"}
+          subtitle={"آیا میخواهید از حساب کاربری خود خارج شوید؟"}
+          actiontitle={"خروج"}
+        />
+      )}
     </div>
   );
 }

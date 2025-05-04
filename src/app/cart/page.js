@@ -234,7 +234,10 @@ export default function Page() {
       {isOpenDeleteModal && (
         <DeleteModal
           handleCloseModal={handleCloseDeleteModal}
-          handleDeleteBasket={handleDeleteBasket}
+          handleAction={handleDeleteBasket}
+          title={'حذف سبد خرید'}
+          subtitle={'آیا از حذف سبد خرید اطمینان دارید؟'}
+          actiontitle={'حذف'}
         />
       )}
     </div>

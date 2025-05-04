@@ -16,8 +16,9 @@ export default function Navbar() {
   const handleCloseCategory = () => {
     setIsOpenCategory(false);
   };
+ 
 
-  useLockScroll([isOpenCategory, isOpenMenu])
+  useLockScroll([isOpenCategory, isOpenMenu]);
   return (
     <>
       <nav className="container relative min-w-full z-50 bg-white flex justify-between items-center p-5 border-b-1 border-neutral-gray-4 lg:py-6.25 lg:px-12 lg:border-none">
@@ -71,7 +72,7 @@ export default function Navbar() {
 
         <ul className="flex justify-center items-center lg:hidden">
           <li className="p-3.5">
-            <Link href={"/user-dashboard/edit-user-pannel"}>
+            <Link href={"/user-dashboard/profile"}>
               <Image
                 className="cursor-pointer"
                 width={16}

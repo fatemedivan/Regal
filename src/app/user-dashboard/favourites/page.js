@@ -4,11 +4,14 @@ import FavouriteProduct from "@/components/profile/FavouriteProduct";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+
 
 export default function Page() {
   const [isHadFavourite, setIsHadFavourite] = useState(true);
   const [isOpenSort, setIsOpenSort] = useState(false);
   const [selectedOptionSort, setSelectedOptionSort] = useState("");
+  const router = useRouter()
   return (
     <>
       <div className="container mx-auto px-5 py-6 lg:hidden">

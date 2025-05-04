@@ -16,7 +16,6 @@ export default function Navbar() {
   const handleCloseCategory = () => {
     setIsOpenCategory(false);
   };
- 
 
   useLockScroll([isOpenCategory, isOpenMenu]);
   return (
@@ -171,16 +170,18 @@ export default function Navbar() {
               alt=""
             />
           </li>
-          <li className="p-3">
-            <Image
-              className="cursor-pointer"
-              width={16}
-              height={16}
-              quality={100}
-              src="/img/user.svg"
-              alt=""
-            />
-          </li>
+          <Link href={"/user-dashboard/profile"}>
+            <li className="p-3">
+              <Image
+                className="cursor-pointer"
+                width={16}
+                height={16}
+                quality={100}
+                src="/img/user.svg"
+                alt=""
+              />
+            </li>
+          </Link>
         </ul>
       </nav>
       {isOpenMenu && (

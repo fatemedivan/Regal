@@ -21,7 +21,7 @@ export default function Page() {
         direction: "rtl",
         peek:{
           before: 0,
-          after: 50
+          after: 30
         },
         breakpoints: {
           1440: {

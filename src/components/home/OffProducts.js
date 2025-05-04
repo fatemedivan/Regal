@@ -17,6 +17,10 @@ export default function OffProducts() {
         perView: 4,
         gap: 12,
         direction: "rtl",
+        peek:{
+          before: 0,
+          after: 130
+        },
         breakpoints: {
           1440: {
             perView: 4,

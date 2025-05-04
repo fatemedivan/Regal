@@ -61,7 +61,7 @@ export default function Articles() {
       <div className="glide mt-6 pr-4 lg:mt-8 lg:px-12" ref={glideRef}>
         <div className="glide__track" data-glide-el="track">
           <ul className="glide__slides">
-            <li className="glide__slide">
+            <li className="glide__slide min-w-64.5">
               <Image
                 src={"/img/article-1.svg"}
                 width={432}
@@ -97,7 +97,7 @@ export default function Articles() {
                 </div>
               </div>
             </li>
-            <li className="glide__slide">
+            <li className="glide__slide min-w-64.5">
               <Image
                 src={"/img/article-2.svg"}
                 width={432}
@@ -128,7 +128,7 @@ export default function Articles() {
                 </div>
               </div>
             </li>
-            <li className="glide__slide">
+            <li className="glide__slide min-w-64.5">
               <Image
                 src={"/img/article-3.svg"}
                 width={432}

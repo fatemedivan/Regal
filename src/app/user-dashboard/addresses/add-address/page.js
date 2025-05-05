@@ -7,7 +7,7 @@ import "leaflet/dist/leaflet.css";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-export default function AddAddressModal({ handleCloseModal }) {
+export default function Page({ handleCloseModal }) {
   const router = useRouter()
   const mapRef = useRef(null);
   const leafletMapRef = useRef(null);

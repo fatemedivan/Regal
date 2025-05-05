@@ -8,7 +8,7 @@ export default function Search({ handleCloseSearch }) {
   const glideRef = useRef(null);
   const [isSearching, setIsSearching] = useState(false);
   const [searchText, setSearchText] = useState("");
-  const [isFocuse, setIsFocuse] = useState(false);
+
   useEffect(() => {
     if (glideRef.current) {
       const glide = new Glide(glideRef.current, {
@@ -16,9 +16,9 @@ export default function Search({ handleCloseSearch }) {
         perView: 5,
         gap: 12,
         direction: "rtl",
-        peek:{
+        peek: {
           before: 0,
-          after: 50
+          after: 50,
         },
         breakpoints: {
           1440: {
@@ -52,29 +52,31 @@ export default function Search({ handleCloseSearch }) {
 
       <div className="py-6 absolute top-0 left-0 right-0 z-50 w-full bg-white">
         <div
-          onClick={(e) => setIsFocuse(true)}
           className={`ralative mx-5 mb-6 px-4 py-3.75 flex items-center gap-1 rounded-lg border lg:mx-40.5 ${
-            isFocuse ? "border-neutral-gray-11" : "border-neutral-gray-4"
+            isSearching ? "border-neutral-gray-11" : "border-neutral-gray-4"
           }`}
         >
-          {isFocuse && (
-            <div
-              className={`absolute top-6 right-[5%] lg:right-45 px-1 bg-white -translate-y-1/2`}
-            >
-              <span className="text-xs leading-5 text-neutral-gray-10">
-                جستجو
-              </span>
-            </div>
-          )}
+          <div
+            className={`absolute top-6 right-[5%] lg:right-45 px-1 bg-white ${
+              isSearching ? "block" : "hidden"
+            } -translate-y-1/2`}
+          >
+            <span className="text-xs leading-5 text-neutral-gray-10">
+              جستجو
+            </span>
+          </div>
+
           <Image width={16} height={16} src="/img/search-normal-2.svg" alt="" />
           <input
             type="text"
             placeholder="محصول مورد نظر خود را جستجو کنید..."
-            className="placeholder-neutral-700 w-full outline-none"
+            className="placeholder:text-neutral-gray-7 w-full outline-none"
             onChange={(e) => {
               setIsSearching(true);
               setSearchText(e.target.value);
             }}
+            onFocus={() => setIsSearching(true)}
+            onBlur={() => setIsSearching(false)}
             value={searchText}
           />
           {isSearching && searchText !== "" && (
@@ -229,7 +231,7 @@ export default function Search({ handleCloseSearch }) {
                       title={"لباس میدی رایا"}
                       finalPrice={"۳,۵۰۲,۰۰۰"}
                       isMore={false}
-                      colors={['#97AAB4','#94999F','#C2B1A5','#F1AB90']}
+                      colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
                     />
                   </li>
                   <li className="glide__slide min-w-41.75 lg:min-w-51">
@@ -238,7 +240,7 @@ export default function Search({ handleCloseSearch }) {
                       title={"لباس میدی فیال"}
                       finalPrice={"۵,۰۲۲,۰۰۰"}
                       isMore={true}
-                      colors={['#94999F','#C2B1A5','#F1AB90']}
+                      colors={["#94999F", "#C2B1A5", "#F1AB90"]}
                     />
                   </li>
                   <li className="glide__slide min-w-41.75 lg:min-w-51">
@@ -247,7 +249,7 @@ export default function Search({ handleCloseSearch }) {
                       title={"لباس میدی مدرن مارال"}
                       finalPrice={"۳,۸۶۴,۰۰۰"}
                       isMore={true}
-                      colors={['#94999F','#C2B1A5','#F1AB90']}
+                      colors={["#94999F", "#C2B1A5", "#F1AB90"]}
                     />
                   </li>
                   <li className="glide__slide min-w-41.75 lg:min-w-51">
@@ -256,7 +258,7 @@ export default function Search({ handleCloseSearch }) {
                       title={"لباس میدی تک شانه نولا"}
                       finalPrice={"۳,۲۳۰,۰۰۰"}
                       isMore={false}
-                      colors={['#94999F','#C2B1A5','#F1AB90']}
+                      colors={["#94999F", "#C2B1A5", "#F1AB90"]}
                     />
                   </li>
                   <li className="glide__slide min-w-41.75 lg:min-w-51">
@@ -265,7 +267,7 @@ export default function Search({ handleCloseSearch }) {
                       title={"لباس شب مدرن کاژین"}
                       finalPrice={"۳,۲۳۰,۰۰۰"}
                       isMore={false}
-                      colors={['#97AAB4','#94999F','#C2B1A5','#F1AB90']}
+                      colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
                     />
                   </li>
                 </ul>

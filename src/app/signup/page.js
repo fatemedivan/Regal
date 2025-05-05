@@ -35,13 +35,6 @@ export default function page() {
             </div>
             <div className="border border-neutral-gray-4 rounded-lg mt-4 w-full">
               <input
-                type="text"
-                placeholder="تام کاربری"
-                className="placeholder:text-right placeholder:text-xs placeholder:leading-4.5 placeholder:text-neutral-gray-7 w-full outline-none py-3.75 px-4 lg:text-sm lg:leading-5"
-              />
-            </div>
-            <div className="border border-neutral-gray-4 rounded-lg mt-4 w-full">
-              <input
                 type="password"
                 dir="ltr"
                 placeholder="رمز عبور"

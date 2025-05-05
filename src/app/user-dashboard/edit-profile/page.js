@@ -10,6 +10,7 @@ export default function Page() {
   const [phone, setPhone] = useState("۹۱۲۱۲۳۴۵۶۷");
   const [email, setEmail] = useState("اrwish1377@gmail.com");
   const [isEdited, setIsEdited] = useState(false);
+  const router = useRouter();
   //AI
   const [isFocused, setIsFocused] = useState({
     firstName: false,
@@ -17,9 +18,6 @@ export default function Page() {
     phone: false,
     email: false,
   });
-
-  const router = useRouter();
-  //AI
   const floatLabel = (value, focus) =>
     value || focus ? "-top-2.5" : "top-4.5";
 

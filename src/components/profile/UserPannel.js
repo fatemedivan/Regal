@@ -12,7 +12,6 @@ export default function UserPannel({ children, rout }) {
   const [isOpenSort, setIsOpenSort] = useState(false);
   const [selectedOptionSort, setSelectedOptionSort] = useState("");
   const [isOpenLogoutModal, setIsOpenLogoutModal] = useState(false);
-  console.log(isOpenLogoutModal);
 
   const handleCloseLogoutModal = () => {
     setIsOpenLogoutModal(false);
@@ -46,7 +45,7 @@ export default function UserPannel({ children, rout }) {
               </p>
             </div>
           </div>
-          <Link href={"/user-dashboard/edit-user-pannel"}>
+          <Link href={"/user-dashboard/edit-profile"}>
             <div className="flex items-start gap-2 lg:hidden">
               <Image width={16} height={16} src="/img/edit-3.svg" alt="" />
               <p className="text-cognac-primery text-sm leading-5">ویرایش</p>
@@ -122,12 +121,34 @@ export default function UserPannel({ children, rout }) {
               </p>
             </div>
           </Link>
-          <div className="flex items-center gap-2 mb-5 pb-5 border-b border-neutral-gray-4 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:pb-3 lg:mb-0  lg:rounded-lg lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer">
-            <Image width={20} height={20} src="/img/location-2.svg" alt="" />
-            <p className="text-sm leading-6 text-neutral-gray-11">
-              آدرس‌های من
-            </p>
-          </div>
+          <Link href={"/user-dashboard/addresses"}>
+            <div
+              className={`flex items-center gap-2 mb-5 pb-5 border-b border-neutral-gray-4 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:pb-3 lg:mb-0  lg:rounded-lg lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer ${
+                pathname.includes("/user-dashboard/addresses") &&
+                "lg:bg-neutral-gray-1 lg:border-r-4"
+              }`}
+            >
+              {pathname.includes("/user-dashboard/addresses") ? (
+                <Image
+                  width={20}
+                  height={20}
+                  src="/img/location-bold.svg"
+                  alt=""
+                />
+              ) : (
+                <Image
+                  width={20}
+                  height={20}
+                  src="/img/location-2.svg"
+                  alt=""
+                />
+              )}
+
+              <p className="text-sm leading-6 text-neutral-gray-11">
+                آدرس‌های من
+              </p>
+            </div>
+          </Link>
           <div
             onClick={() => setIsOpenLogoutModal(true)}
             className="flex items-center gap-2 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:mb-0  lg:rounded-lg lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer"
@@ -146,6 +167,8 @@ export default function UserPannel({ children, rout }) {
               ? " تاریخچه سفارشات"
               : rout === "favourites"
               ? " لیست علاقه‌مندی‌ها"
+              : rout === "addresses"
+              ? "لیست آدرس‌ها"
               : ""}
           </h6>
 

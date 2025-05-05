@@ -163,18 +163,19 @@ export default function Page() {
           </div>
           <div className="flex items-center justify-center mt-6 px-5 pb-6">
             <div className="p-5 rounded-2xl border border-neutral-gray-4 max-w-max">
-              <button
-                className="bg-cognac-primery rounded-lg py-3.5 px-28 text-white text-sm cursor-pointer"
-                onClick={() => {
-                  if (coords && address) {
-                    console.log("مختصات انتخاب‌شده:", coords);
-                    console.log("آدرس انتخاب‌شده:", address);
-                    router.push("/user-dashboard/details-address");
-                  }
-                }}
-              >
-                افزودن آدرس
-              </button>
+              <Link href={"/user-dashboard/details-address"}>
+                <button
+                  className="bg-cognac-primery rounded-lg py-3.5 px-28 text-white text-sm cursor-pointer"
+                  onClick={() => {
+                    if (coords && address) {
+                      console.log("مختصات انتخاب‌شده:", coords);
+                      console.log("آدرس انتخاب‌شده:", address);
+                    }
+                  }}
+                >
+                  افزودن آدرس
+                </button>
+              </Link>
             </div>
           </div>
         </>

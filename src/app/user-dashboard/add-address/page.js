@@ -2,8 +2,6 @@
 
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -19,50 +17,54 @@ export default function Page({ handleCloseModal }) {
   const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
-    if (!mapRef.current || leafletMapRef.current) return;
-
-    // ایجاد نقشه فقط یک‌بار
-    const map = L.map(mapRef.current, {
-      zoomControl: false,
-      attributionControl: false,
-    }).setView([35.6892, 51.389], 13);
-    leafletMapRef.current = map;
-
-    L.tileLayer(
-      "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-      {
-        attribution: "",
-      }
-    ).addTo(map);
-
-    // هندل کلیک روی نقشه
-    map.on("click", async (e) => {
-      const { lat, lng } = e.latlng;
-      setCoords({ lat, lng });
-
-      if (markerRef.current) {
-        markerRef.current.setLatLng([lat, lng]);
-      } else {
-        markerRef.current = L.marker([lat, lng], {
-          icon: L.icon({
-            iconUrl: "/img/location-sign.svg",
-            iconSize: [30, 40],
-            iconAnchor: [15, 40],
-          }),
-        }).addTo(map);
-      }
-
-      try {
-        const res = await fetch(
-          `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
-        );
-        const data = await res.json();
-        setAddress(data.display_name);
-      } catch {
-        setAddress("دریافت آدرس ممکن نشد");
-      }
-    });
+    (async () => {
+      await import("leaflet/dist/leaflet.css");
+      const L = await import("leaflet");
+  
+      if (!mapRef.current || leafletMapRef.current) return;
+  
+      const map = L.map(mapRef.current, {
+        zoomControl: false,
+        attributionControl: false,
+      }).setView([35.6892, 51.389], 13);
+      leafletMapRef.current = map;
+  
+      L.tileLayer(
+        "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+        {
+          attribution: "",
+        }
+      ).addTo(map);
+  
+      map.on("click", async (e) => {
+        const { lat, lng } = e.latlng;
+        setCoords({ lat, lng });
+  
+        if (markerRef.current) {
+          markerRef.current.setLatLng([lat, lng]);
+        } else {
+          markerRef.current = L.marker([lat, lng], {
+            icon: L.icon({
+              iconUrl: "/img/location-sign.svg",
+              iconSize: [30, 40],
+              iconAnchor: [15, 40],
+            }),
+          }).addTo(map);
+        }
+  
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
+          );
+          const data = await res.json();
+          setAddress(data.display_name);
+        } catch {
+          setAddress("دریافت آدرس ممکن نشد");
+        }
+      });
+    })();
   }, []);
+  
 
   return (
     <div>

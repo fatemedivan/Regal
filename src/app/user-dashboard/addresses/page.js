@@ -35,7 +35,7 @@ export default function Page() {
           <p className="text-sm leading-6 text-neutral-gray-9">
             شما در حال حاضر هیچ آدرسی ثبت نکرده‌اید!
           </p>
-          <Link href={'add-address'}>
+          <Link href={'/user-dashboard/add-address'}>
           <div className="mt-60 flex items-center justify-center">
             <button
               className="bg-cognac-primery rounded-lg py-3.25 px-28.5 text-white leading-5.5 cursor-pointer"
@@ -48,7 +48,7 @@ export default function Page() {
       </div>
 
       <div className="hidden lg:block">
-        <UserPannel rout={"addresses"}>
+        <UserPannel rout={"/userdashboard/add-address"}>
           <div className="flex flex-col justify-center items-center gap-8 my-12.5">
             <Image
               width={128}
@@ -59,7 +59,7 @@ export default function Page() {
             <p className="leading-7 text-neutral-gray-9">
               شما در حال حاضر هیچ آدرسی ثبت نکرده‌اید!
             </p>
-            <Link href={'add-address'}>
+            <Link href={'/user-dashboard/add-address'}>
             <button
               className="bg-cognac-primery rounded-lg py-3.25 px-12 text-white leading-5.5 cursor-pointer"
             >

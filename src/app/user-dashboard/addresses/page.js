@@ -7,10 +7,7 @@ import React, { useState } from "react";
 
 export default function Page() {
   const router = useRouter();
-  const [isOpenAddAddressModal, setIsOPenAddAddressModal] = useState(false);
-  const handleCloseAddressModal = () => {
-    setIsOPenAddAddressModal(false);
-  };
+
   return (
     <>
       <div className="container mx-auto px-5 py-6 lg:hidden">
@@ -41,7 +38,6 @@ export default function Page() {
           <Link href={'/user-dashboard/addresses/add-address'}>
           <div className="mt-60 flex items-center justify-center">
             <button
-              onClick={() => setIsOPenAddAddressModal(true)}
               className="bg-cognac-primery rounded-lg py-3.25 px-28.5 text-white leading-5.5 cursor-pointer"
             >
               افزودن آدرس
@@ -63,13 +59,13 @@ export default function Page() {
             <p className="leading-7 text-neutral-gray-9">
               شما در حال حاضر هیچ آدرسی ثبت نکرده‌اید!
             </p>
-
+            <Link href={'/user-dashboard/addresses/add-address'}>
             <button
-              onClick={() => setIsOPenAddAddressModal(true)}
               className="bg-cognac-primery rounded-lg py-3.25 px-12 text-white leading-5.5 cursor-pointer"
             >
               افزودن آدرس
             </button>
+            </Link>
           </div>
         </UserPannel>
       </div>

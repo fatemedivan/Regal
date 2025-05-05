@@ -1,12 +1,37 @@
+"use client";
 import Image from "next/image";
-import React from "react";
+import Link from "next/link";
+import React, { useState } from "react";
+import DeleteModal from "@/components/common/DeleteModal";
+import AddAddressModal from "../profile/AddAddressModal";
+import DetailsModalAddAddress from "../profile/DetailsModalAddAddress";
 
 export default function AdressCard({ isActive }) {
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
+  const [isOpenAddAddressModal, setIsOpenAddAddressModal] = useState(false);
+  const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
+  const handleCloseDeleteModal = () => {
+    setIsOpenDeleteModal(false);
+  };
+  const handleDeleteAddress = () => {
+    console.log("removed");
+    setIsOpenDeleteModal(false);
+  };
+
+  const handleCloseAddAddressModal = () => {
+    setIsOpenAddAddressModal(false);
+  };
+  const handleOpenDetailsModal = () => {
+    setIsOpenDetailsModal(true);
+  };
+  const handleCloseDetailsModal = () => {
+    setIsOpenDetailsModal(false);
+  };
   return (
     <div
       className={`border ${
         isActive ? "border-cognac-primery" : "border-neutral-gray-4"
-      }  rounded-lg p-6 mb-2 lg:mb-3`}
+      }  rounded-lg p-6 mb-2 lg:mb-4`}
     >
       <div className="flex items-start justify-between gap-3 mb-4 lg:mb-3">
         <div className="flex items-start gap-1">
@@ -19,22 +44,40 @@ export default function AdressCard({ isActive }) {
           <Image
             width={16}
             height={16}
+            onClick={() => setIsOpenDeleteModal(true)}
             className="cursor-pointer lg:w-6 lg:h-6"
             src="/img/trash-3.svg"
             alt=""
           />
+
           <Image
-            width={16}
-            height={16}
-            className="cursor-pointer lg:w-6 lg:h-6"
+            onClick={() => setIsOpenDetailsModal(true)}
+            width={24}
+            height={24}
+            className="cursor-pointer hidden lg:block"
             src="/img/edit-2.svg"
             alt=""
           />
+          <Link href={"/user-dashboard/details-address"}>
+            <Image
+              width={16}
+              height={16}
+              className="cursor-pointer lg:hidden"
+              src="/img/edit-2.svg"
+              alt=""
+            />
+          </Link>
         </div>
       </div>
       <div className="flex items-center gap-2">
         <div className="flex items-center gap-1">
-          <Image width={16} height={16} className="lg:w-5 lg:h-5" src="/img/user-2.svg" alt="" />
+          <Image
+            width={16}
+            height={16}
+            className="lg:w-5 lg:h-5"
+            src="/img/user-2.svg"
+            alt=""
+          />
           <p className="text-neutral-gray-13 text-xs leading-4.5 lg:text-sm lg:leading-5 lg:ml-2">
             آرزو محمدعلیزاده
           </p>
@@ -42,13 +85,37 @@ export default function AdressCard({ isActive }) {
         <div className="flex items-center gap-2">
           <div className="w-1 h-1 rounded-100 bg-neutral-gray-7"></div>
           <div className="flex items-center gap-1">
-            <Image width={16} height={16} className="lg:w-5 lg:h-5" src="/img/call-2.svg" alt="" />
+            <Image
+              width={16}
+              height={16}
+              className="lg:w-5 lg:h-5"
+              src="/img/call-2.svg"
+              alt=""
+            />
             <p className="text-neutral-gray-13 text-xs leading-4.5 lg:text-sm lg:leading-5">
               ۹۸۹۱۲۱۲۳۴۵۶۷+
             </p>
           </div>
         </div>
       </div>
+      {isOpenDeleteModal && (
+        <DeleteModal
+          handleCloseModal={handleCloseDeleteModal}
+          handleAction={handleDeleteAddress}
+          title={"حذف آدرس"}
+          subtitle={"آیا از حذف این آدرس از لیست آدرس‌ها اطمینان دارید؟"}
+          actiontitle={"حذف"}
+        />
+      )}
+      {isOpenAddAddressModal && (
+        <AddAddressModal
+          handleCloseModal={handleCloseAddAddressModal}
+          handleOpenDetailsModal={handleOpenDetailsModal}
+        />
+      )}
+      {isOpenDetailsModal && (
+        <DetailsModalAddAddress handleCloseModal={handleCloseDetailsModal} />
+      )}
     </div>
   );
 }

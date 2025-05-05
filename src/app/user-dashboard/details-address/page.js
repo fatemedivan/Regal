@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
@@ -13,6 +14,7 @@ export default function Page() {
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
   const [isOpenProvince, setIsOpenProvince] = useState(false);
+  const [isEdited, setIsEdited] = useState(false);
 
   //AI
   const [isFocused, setIsFocused] = useState({
@@ -51,21 +53,19 @@ export default function Page() {
           آدرس کامل
         </p>
       </div>
-
-      <div
-        onClick={() => router.back()}
-        className="flex gap-2 items-center mt-4.5 cursor-pointer"
-      >
-        <p className="text-cognac-primery text-sm leading-5">
-          اصلاح آدرس روی نقشه
-        </p>
-        <Image
-          width={16}
-          height={16}
-          src="/img/arrow-left-primery.svg"
-          alt=""
-        />
-      </div>
+      <Link href={"/user-dashboard/add-address"}>
+        <div className="flex gap-2 items-center mt-4.5 cursor-pointer">
+          <p className="text-cognac-primery text-sm leading-5">
+            اصلاح آدرس روی نقشه
+          </p>
+          <Image
+            width={16}
+            height={16}
+            src="/img/arrow-left-primery.svg"
+            alt=""
+          />
+        </div>
+      </Link>
       <div className="mt-6.5">
         <div className="relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg mb-4">
           <input
@@ -77,6 +77,7 @@ export default function Page() {
             onBlur={() => setIsFocused((prev) => ({ ...prev, city: false }))}
             onChange={(e) => {
               setCity(e.target.value);
+              setIsEdited(true);
             }}
             className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent"
           />
@@ -126,6 +127,7 @@ export default function Page() {
                   onClick={() => {
                     setIsOpenProvince(false);
                     setProvince(option);
+                    setIsEdited(true);
                   }}
                   className="px-4 py-2 hover:bg-neutral-gray-2 cursor-pointer text-xs leading-4.5 text-neutral-gray-7"
                 >
@@ -145,6 +147,7 @@ export default function Page() {
             onBlur={() => setIsFocused((prev) => ({ ...prev, details: false }))}
             onChange={(e) => {
               setDetails(e.target.value);
+              setIsEdited(true);
             }}
             className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent"
           />
@@ -172,6 +175,7 @@ export default function Page() {
             }
             onChange={(e) => {
               setPostalCode(e.target.value);
+              setIsEdited(true);
             }}
             className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent"
           />
@@ -236,6 +240,7 @@ export default function Page() {
             }
             onChange={(e) => {
               setLastName(e.target.value);
+              setIsEdited(true);
             }}
             className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent px-4 py-3.25 focus:bg-neutral-gray-2"
           />
@@ -260,6 +265,7 @@ export default function Page() {
             onBlur={() => setIsFocused((prev) => ({ ...prev, phone: false }))}
             onChange={(e) => {
               setPhone(e.target.value);
+              setIsEdited(true);
             }}
             className="placeholder:text-transparent w-full outline-none py-3.75 px-4 text-neutral-gray-7 focus:bg-neutral-gray-2"
           />
@@ -277,7 +283,13 @@ export default function Page() {
           </div>
         </div>
         <div className="flex items-center justify-center">
-          <button className="leading-5.5 bg-cognac-tint-2 text-cognac-tint-4 rounded-lg py-3.25 w-full cursor-pointer">
+          <button
+            className={`leading-5.5 rounded-lg py-3.25 w-full cursor-pointer ${
+              isEdited
+                ? "bg-cognac-primery text-white"
+                : "bg-cognac-tint-2 text-cognac-tint-4"
+            }`}
+          >
             ثبت آدرس
           </button>
         </div>

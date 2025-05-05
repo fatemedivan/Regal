@@ -5,8 +5,8 @@ import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-export default function Page({ handleCloseModal }) {
-  const router = useRouter()
+export default function Page() {
+  const router = useRouter();
   const mapRef = useRef(null);
   const leafletMapRef = useRef(null);
   const markerRef = useRef(null);
@@ -20,38 +20,37 @@ export default function Page({ handleCloseModal }) {
     (async () => {
       await import("leaflet/dist/leaflet.css");
       const L = await import("leaflet");
-  
+
       if (!mapRef.current || leafletMapRef.current) return;
-  
+
       const map = L.map(mapRef.current, {
         zoomControl: false,
         attributionControl: false,
       }).setView([35.6892, 51.389], 13);
       leafletMapRef.current = map;
-  
+
       L.tileLayer(
         "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
         {
           attribution: "",
         }
       ).addTo(map);
-  
+
       map.on("click", async (e) => {
         const { lat, lng } = e.latlng;
         setCoords({ lat, lng });
-  
+
         if (markerRef.current) {
           markerRef.current.setLatLng([lat, lng]);
         } else {
           markerRef.current = L.marker([lat, lng], {
             icon: L.icon({
               iconUrl: "/img/location-sign.svg",
-              iconSize: [30, 40],
-              iconAnchor: [15, 40],
+              iconSize: [24, 32],
             }),
           }).addTo(map);
         }
-  
+
         try {
           const res = await fetch(
             `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
@@ -64,10 +63,9 @@ export default function Page({ handleCloseModal }) {
       });
     })();
   }, []);
-  
 
   return (
-    <div>
+    <div className="lg:hidden">
       <div className="flex justify-between items-center mb-8 px-5 pt-6">
         <Image
           width={24}
@@ -75,7 +73,7 @@ export default function Page({ handleCloseModal }) {
           className="cursor-pointer"
           src="/img/arrow-right-6.svg"
           alt="بستن"
-          onClick={handleCloseModal}
+          onClick={() => router.back()}
         />
         <p className="font-semibold text-xl leading-6 text-neutral-gray-13">
           افزودن آدرس
@@ -115,7 +113,7 @@ export default function Page({ handleCloseModal }) {
             />
           </div>
           {searchQuery && (
-            <Link href={'/user-dashboard/addresses/details-address'}>
+            <Link href={"/user-dashboard/addresses/details-address"}>
               <div className="flex items-center gap-2 border-b border-neutral-gray-4 pb-4 cursor-pointer">
                 <Image
                   width={16}
@@ -171,7 +169,7 @@ export default function Page({ handleCloseModal }) {
                   if (coords && address) {
                     console.log("مختصات انتخاب‌شده:", coords);
                     console.log("آدرس انتخاب‌شده:", address);
-                   router.push('/user-dashboard/details-address')
+                    router.push("/user-dashboard/details-address");
                   }
                 }}
               >
@@ -184,4 +182,3 @@ export default function Page({ handleCloseModal }) {
     </div>
   );
 }
-

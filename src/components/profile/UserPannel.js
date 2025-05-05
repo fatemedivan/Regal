@@ -4,14 +4,28 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import DeleteModal from "@/components/common/DeleteModal";
+import AddAddressModal from "./AddAddressModal";
+import DetailsModalAddAddress from "./DetailsModalAddAddress";
 
-export default function UserPannel({ children, rout }) {
+export default function UserPannel({ children, rout, isHadAddress }) {
   const pathname = usePathname();
   const [isShownOrderTypes, setIsShownOrderTypes] = useState(false);
   const [selectedOrderType, setSelectedOrderType] = useState("همه");
   const [isOpenSort, setIsOpenSort] = useState(false);
   const [selectedOptionSort, setSelectedOptionSort] = useState("");
   const [isOpenLogoutModal, setIsOpenLogoutModal] = useState(false);
+  const [isOpenAddAddressModal, setIsOpenAddAddressModal] = useState(false);
+  const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
+
+  const handleCloseAddAddressModal = () => {
+    setIsOpenAddAddressModal(false);
+  };
+  const handleOpenDetailsModal = () => {
+    setIsOpenDetailsModal(true);
+  };
+  const handleCloseDetailsModal = () => {
+    setIsOpenDetailsModal(false);
+  };
 
   const handleCloseLogoutModal = () => {
     setIsOpenLogoutModal(false);
@@ -289,6 +303,22 @@ export default function UserPannel({ children, rout }) {
                 </ul>
               )}
             </div>
+          ) : rout === "addresses" ? (
+            <div>
+              {isHadAddress && (
+                <div onClick={()=> setIsOpenAddAddressModal(true)} className="flex items-center gap-2 px-6 py-3.25 cursor-pointer">
+                  <Image
+                    width={20}
+                    height={20}
+                    src="/img/add-circle.svg"
+                    alt=""
+                  />
+                  <p className="text-cognac-primery leading-5.5">
+                    افزودن آدرس جدید
+                  </p>
+                </div>
+              )}
+            </div>
           ) : (
             <></>
           )}
@@ -303,6 +333,15 @@ export default function UserPannel({ children, rout }) {
           subtitle={"آیا میخواهید از حساب کاربری خود خارج شوید؟"}
           actiontitle={"خروج"}
         />
+      )}
+      {isOpenAddAddressModal && (
+        <AddAddressModal
+          handleCloseModal={handleCloseAddAddressModal}
+          handleOpenDetailsModal={handleOpenDetailsModal}
+        />
+      )}
+      {isOpenDetailsModal && (
+        <DetailsModalAddAddress handleCloseModal={handleCloseDetailsModal} />
       )}
     </div>
   );

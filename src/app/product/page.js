@@ -19,22 +19,39 @@ export default function Page() {
         perView: 4,
         gap: 12,
         direction: "rtl",
-        peek:{
-          before: 0,
-          after: 30
-        },
         breakpoints: {
           1440: {
-            perView: 4,
+            perView: 3,
             gap: 24,
           },
+          1240:{
+            perView: 3,
+            gap: 12,
+          },
           1024: {
-            perView: 4,
+            perView: 3,
             gap: 12,
           },
           768: {
-            perView: 4,
+            perView: 3,
             gap: 12,
+            peek:{
+              before:0,
+              after: 50
+            }
+          },
+          680: {
+            perView: 2,
+            gap: 12,
+            peek:{
+              before:0,
+              after: 50
+            }
+          },
+          440: {
+            perView: 1.5,
+            gap: 12,
+            
           },
         },
       });
@@ -315,7 +332,7 @@ export default function Page() {
           <div className="glide" ref={glideRef}>
             <div className="glide__track" data-glide-el="track">
               <ul className="glide__slides scroll-smooth">
-                <li className="glide__slide min-w-41.75 lg:min-w-79.5">
+                <li className="glide__slide">
                   <ProductItemOff
                     img={"/img/product-off-1.png"}
                     title={"لباس میدی رایا"}
@@ -324,7 +341,7 @@ export default function Page() {
                     colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
                   />
                 </li>
-                <li className="glide__slide min-w-41.75 lg:min-w-79.5">
+                <li className="glide__slide">
                   <ProductItemOff
                     img={"/img/product-off-2.png"}
                     title={"لباس میدی فیال"}
@@ -333,7 +350,7 @@ export default function Page() {
                     colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
                   />
                 </li>
-                <li className="glide__slide min-w-41.75 lg:min-w-79.5">
+                <li className="glide__slide">
                   <ProductItemOff
                     img={"/img/product-off-3.png"}
                     title={"لباس میدی مدرن مارال"}
@@ -342,7 +359,7 @@ export default function Page() {
                     colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
                   />
                 </li>
-                <li className="glide__slide min-w-41.75 lg:min-w-79.5">
+                <li className="glide__slide">
                   <ProductItemOff
                     img={"/img/product-off-4.png"}
                     title={"لباس میدی تک شانه نولا"}

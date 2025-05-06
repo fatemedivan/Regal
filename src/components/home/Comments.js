@@ -51,7 +51,7 @@ export default function Comments() {
   }, []);
 
   return (
-    <section className="container mx-auto pr-5 py-16 lg:pr-38 lg:py-16 xl:pl-3 relative">
+    <section className="pr-5 py-16 lg:pr-38 lg:py-16 xl:pl-3 relative">
       <div className="mx-5 flex justify-between items-center gap-4 mb-6 lg:mb-10 lg:mr-0 lg:ml-12">
         <h5 className="font-semibold leading-5 text-black lg:text-30 lg:leading-9.5 lg:font-bold">
           رضایت شما

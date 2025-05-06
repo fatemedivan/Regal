@@ -23,17 +23,55 @@ export default function OffProducts() {
         },
         breakpoints: {
           1440: {
-            perView: 4,
-            gap: 24,
-          },
-          1024: {
             perView: 3,
             gap: 24,
+            peek:{
+              before:0,
+              after:50
+            }
+
           },
+          1240: {
+            perView: 2.5,
+            gap: 12,
+            peek:{
+              before:0,
+              after:50
+            }
+          },
+          1024:{
+            perView: 4,
+            gap: 12,
+            peek:{
+              before:0,
+              after:50
+            }
+          },
+          
           768: {
             perView: 3,
             gap: 12,
+            peek:{
+              before:0,
+              after:50
+            }
           },
+          580:{
+            perView: 2,
+            gap:6,
+            peek: {
+              before: 0,
+              after: 40
+            }
+          },
+          440:{
+            perView: 1.5,
+            gap:12,
+            peek: {
+              before: 0,
+              after: 0
+            }
+          }
         },
       });
 
@@ -49,7 +87,7 @@ export default function OffProducts() {
   }, []);
 
   return (
-    <section className="container mx-auto mt-17 mb-16 lg:mt-22">
+    <section className="mt-17 mb-16 lg:mt-22">
       <div className="mx-5 mb-6 flex justify-between items-center lg:mx-12 lg:mb-10">
         <div className="flex items-center gap-2">
           <Image
@@ -99,7 +137,7 @@ export default function OffProducts() {
       <div className="glide pr-5 lg:pr-12" ref={glideRef}>
         <div className="glide__track" data-glide-el="track">
           <ul className="glide__slides">
-            <li className="glide__slide min-w-41.75 lg:min-w-79.5">
+            <li className="glide__slide">
               <ProductItemOff
                 img={"/img/product-off-1.png"}
                 title={"لباس میدی رایا"}
@@ -110,7 +148,7 @@ export default function OffProducts() {
                 colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
               />
             </li>
-            <li className="glide__slide min-w-41.75 lg:min-w-79.5">
+            <li className="glide__slide">
               <ProductItemOff
                 img={"/img/product-off-2.png"}
                 title={"لباس میدی فیال"}
@@ -121,7 +159,7 @@ export default function OffProducts() {
                 colors={["#94999F", "#C2B1A5", "#F1AB90"]}
               />
             </li>
-            <li className="glide__slide min-w-41.75 lg:min-w-79.5">
+            <li className="glide__slide">
               <ProductItemOff
                 img={"/img/product-off-3.png"}
                 title={"لباس میدی مدرن مارال"}
@@ -132,7 +170,7 @@ export default function OffProducts() {
                 colors={["#94999F", "#C2B1A5", "#F1AB90"]}
               />
             </li>
-            <li className="glide__slide min-w-41.75 lg:min-w-79.5">
+            <li className="glide__slide">
               <ProductItemOff
                 img={"/img/product-off-4.png"}
                 title={"لباس میدی تک شانه نولا"}

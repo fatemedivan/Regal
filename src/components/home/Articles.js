@@ -10,26 +10,40 @@ export default function Articles() {
   useEffect(() => {
     if (glideRef.current) {
       const glide = new Glide(glideRef.current, {
-        type: 'carousel',
+        type: "carousel",
         perView: 3,
         gap: 12,
         direction: "rtl",
-        peek:{
+        peek: {
           before: 0,
-          after: 0
+          after: 0,
         },
         breakpoints: {
           1440: {
             perView: 3,
             gap: 24,
+            
           },
           1024: {
-            perView: 3,
+            perView: 2,
             gap: 24,
+            peek: {
+              before: 0,
+              after: 50,
+            },
           },
-          768: {
+          640: {
             perView: 2,
             gap: 12,
+            peek: {
+              before: 0,
+              after: 50,
+            },
+          },
+          480: {
+            perView: 1.5,
+            gap: 12,
+           
           },
         },
       });
@@ -39,8 +53,9 @@ export default function Articles() {
   }, []);
 
   return (
-    <section className="container mx-auto py-8 mt-16 lg:py-16 lg:mt-22">
-      <div className="mx-5 flex justify-between items-center lg:mx-12">
+
+    <section className="py-8 pr-5 lg:px-12 mt-16 lg:py-16 lg:mt-22">
+      <div className="flex justify-between items-center pl-5">
         <h5 className="font-semibold leading-5 text-black lg:text-30 lg:leading-9.5 lg:font-bold">
           مقالات مد و استایل زنانه
         </h5>
@@ -58,10 +73,10 @@ export default function Articles() {
           />
         </div>
       </div>
-      <div className="glide mt-6 pr-4 lg:mt-8 lg:px-12" ref={glideRef}>
+      <div className="glide mt-6 lg:mt-8" ref={glideRef}>
         <div className="glide__track" data-glide-el="track">
           <ul className="glide__slides">
-            <li className="glide__slide min-w-64.5">
+            <li className="glide__slide">
               <Image
                 src={"/img/article-1.svg"}
                 width={432}
@@ -96,7 +111,7 @@ export default function Articles() {
                 </div>
               </div>
             </li>
-            <li className="glide__slide min-w-64.5">
+            <li className="glide__slide">
               <Image
                 src={"/img/article-2.svg"}
                 width={432}
@@ -126,7 +141,7 @@ export default function Articles() {
                 </div>
               </div>
             </li>
-            <li className="glide__slide min-w-64.5">
+            <li className="glide__slide">
               <Image
                 src={"/img/article-3.svg"}
                 width={432}

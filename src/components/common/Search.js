@@ -13,20 +13,17 @@ export default function Search({ handleCloseSearch }) {
     if (glideRef.current) {
       const glide = new Glide(glideRef.current, {
         type: "carousel",
-        perView: 5,
+        perView: 4,
         gap: 12,
         direction: "rtl",
-        peek: {
-          before: 0,
-          after: 50,
-        },
+        
         breakpoints: {
           1440: {
-            perView: 6,
+            perView: 4,
             gap: 24,
           },
           1280: {
-            perView: 4,
+            perView: 3,
             gap: 24,
           },
           1024: {
@@ -34,8 +31,21 @@ export default function Search({ handleCloseSearch }) {
             gap: 24,
           },
           768: {
-            perView: 4,
+            perView: 3,
             gap: 12,
+          },
+          680:{
+            perView: 2,
+            gap: 12,
+            peek:{
+              before:0,
+              after:50
+            }
+          },
+          480:{
+            perView: 1.5,
+            gap: 12,
+            
           },
         },
       });
@@ -44,7 +54,7 @@ export default function Search({ handleCloseSearch }) {
     }
   }, []);
   return (
-    <>
+    <div className="container mx-auto">
       <div
         className="fixed inset-0 bg-[#1E1E1E] opacity-50 z-40"
         onClick={() => handleCloseSearch()}
@@ -225,7 +235,7 @@ export default function Search({ handleCloseSearch }) {
             <div className="glide max-w-full" ref={glideRef}>
               <div className="glide__track" data-glide-el="track">
                 <ul className="glide__slides">
-                  <li className="glide__slide min-w-41.75 lg:min-w-51">
+                  <li className="glide__slide">
                     <ProductSearchItem
                       img={"/img/product-off-1.png"}
                       title={"لباس میدی رایا"}
@@ -234,7 +244,7 @@ export default function Search({ handleCloseSearch }) {
                       colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
                     />
                   </li>
-                  <li className="glide__slide min-w-41.75 lg:min-w-51">
+                  <li className="glide__slide">
                     <ProductSearchItem
                       img={"/img/product-off-2.png"}
                       title={"لباس میدی فیال"}
@@ -243,7 +253,7 @@ export default function Search({ handleCloseSearch }) {
                       colors={["#94999F", "#C2B1A5", "#F1AB90"]}
                     />
                   </li>
-                  <li className="glide__slide min-w-41.75 lg:min-w-51">
+                  <li className="glide__slide">
                     <ProductSearchItem
                       img={"/img/product-off-3.png"}
                       title={"لباس میدی مدرن مارال"}
@@ -252,7 +262,7 @@ export default function Search({ handleCloseSearch }) {
                       colors={["#94999F", "#C2B1A5", "#F1AB90"]}
                     />
                   </li>
-                  <li className="glide__slide min-w-41.75 lg:min-w-51">
+                  <li className="glide__slide">
                     <ProductSearchItem
                       img={"/img/product-off-4.png"}
                       title={"لباس میدی تک شانه نولا"}
@@ -261,7 +271,7 @@ export default function Search({ handleCloseSearch }) {
                       colors={["#94999F", "#C2B1A5", "#F1AB90"]}
                     />
                   </li>
-                  <li className="glide__slide min-w-41.75 lg:min-w-51">
+                  <li className="glide__slide">
                     <ProductSearchItem
                       img={"/img/search-img-5.png"}
                       title={"لباس شب مدرن کاژین"}
@@ -276,6 +286,6 @@ export default function Search({ handleCloseSearch }) {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

@@ -144,7 +144,7 @@ export default function Page() {
                     />
                     <input
                       type="text"
-                      className="w-full outline-none"
+                      className="w-full outline-none placeholder:text-xs placeholder:leading-4.5 placeholder:text-neutral-gray-7"
                       placeholder="جستجو کنید"
                     />
                   </div>

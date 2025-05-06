@@ -14,12 +14,12 @@ export default function ProductItemOff({
     <div className="min-w-41.75 lg:min-w-79.5 relative group">
       <div className={`w-41.75 h-60 lg:w-79.5 lg:h-119 relative object-cover`}>
         <Image
-          width={167}
-          height={239}
-          className="w-full h-full cursor-pointer"
+          fill
+          className="cursor-pointer"
           src={img}
           alt=""
           quality={100}
+          sizes="(min-width: 1024px) 318px, 167px"
         />
         <div className="absolute w-full top-3 lg:top-4 flex justify-between items-center px-3 lg:px-4">
           <Image

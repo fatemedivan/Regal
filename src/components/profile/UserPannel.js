@@ -113,14 +113,14 @@ export default function UserPannel({ children, rout, isHadAddress }) {
               </p>
             </div>
           </Link>
-          <Link href={"/user-dashboard/favourites"}>
+          <Link href={"/user-dashboard/favorites"}>
             <div
               className={`flex items-center gap-2 mb-5 pb-5 border-b border-neutral-gray-4 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:pb-3 lg:mb-0  lg:rounded-lg lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer ${
-                pathname.includes("/user-dashboard/favourites") &&
+                pathname.includes("/user-dashboard/favorites") &&
                 "lg:bg-neutral-gray-1 lg:border-r-4"
               }`}
             >
-              {pathname.includes("/user-dashboard/favourites") ? (
+              {pathname.includes("/user-dashboard/favorites") ? (
                 <Image
                   width={20}
                   height={20}
@@ -179,7 +179,7 @@ export default function UserPannel({ children, rout, isHadAddress }) {
               ? " اطلاعات حساب کاربری"
               : rout === "order"
               ? " تاریخچه سفارشات"
-              : rout === "favourites"
+              : rout === "favorites"
               ? " لیست علاقه‌مندی‌ها"
               : rout === "addresses"
               ? "لیست آدرس‌ها"
@@ -264,7 +264,7 @@ export default function UserPannel({ children, rout, isHadAddress }) {
                 </div>
               )}
             </div>
-          ) : rout === "favourites" ? (
+          ) : rout === "favorites" ? (
             <div className="relative min-w-64">
               <button
                 onClick={() => setIsOpenSort(!isOpenSort)}

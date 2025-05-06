@@ -108,7 +108,7 @@ export default function Page() {
         )}
       </div>
       <div className="hidden lg:block">
-        <UserPannel rout={"favourites"}>
+        <UserPannel rout={"favorites"}>
           {isHadFavourite ? (
             <div className="w-full flex flex-wrap justify-between gap-4 my-6">
               <FavouriteProduct

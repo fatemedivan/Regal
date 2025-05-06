@@ -16,7 +16,7 @@ export default function Articles() {
         direction: "rtl",
         peek:{
           before: 0,
-          after: 50
+          after: 0
         },
         breakpoints: {
           1440: {
@@ -24,7 +24,7 @@ export default function Articles() {
             gap: 24,
           },
           1024: {
-            perView: 2,
+            perView: 3,
             gap: 24,
           },
           768: {
@@ -39,7 +39,7 @@ export default function Articles() {
   }, []);
 
   return (
-    <section className="container max-w-full py-8 mt-16 lg:py-16 lg:mt-22">
+    <section className="container mx-auto py-8 mt-16 lg:py-16 lg:mt-22">
       <div className="mx-5 flex justify-between items-center lg:mx-12">
         <h5 className="font-semibold leading-5 text-black lg:text-30 lg:leading-9.5 lg:font-bold">
           مقالات مد و استایل زنانه
@@ -67,7 +67,6 @@ export default function Articles() {
                 width={432}
                 height={220}
                 className="rounded-tr-2xl rounded-tl-2xl"
-                layout="responsive"
                 alt="article"
                 quality={100}
               />
@@ -103,7 +102,6 @@ export default function Articles() {
                 width={432}
                 height={220}
                 className="rounded-tr-2xl rounded-tl-2xl"
-                layout="responsive"
                 alt="article"
                 quality={100}
               />
@@ -134,7 +132,6 @@ export default function Articles() {
                 width={432}
                 height={220}
                 className="rounded-tr-2xl rounded-tl-2xl"
-                layout="responsive"
                 alt="article"
                 quality={100}
               />

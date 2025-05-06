@@ -3,8 +3,8 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <div>
-      <div className="bg-black p-5 lg:hidden">
+    <div className="container mx-auto">
+      <div className=" bg-black p-5 lg:hidden">
         <Image
           width={94}
           height={40}

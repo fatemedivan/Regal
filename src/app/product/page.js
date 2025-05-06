@@ -134,33 +134,33 @@ export default function Page() {
                   height={16}
                   src="/img/star-outline.svg"
                   alt=""
-                  className="w-5 h-5"
+                  className="lg:w-5 lg:h-5"
                 />
                 <Image
                   width={16}
                   height={16}
-                  className="w-5 h-5"
+                  className="lg:w-5 lg:h-5"
                   src="/img/star-fill.svg"
                   alt=""
                 />
                 <Image
                   width={16}
                   height={16}
-                  className="w-5 h-5"
+                  className="lg:w-5 lg:h-5"
                   src="/img/star-fill.svg"
                   alt=""
                 />
                 <Image
                   width={16}
                   height={16}
-                  className="w-5 h-5"
+                  className="lg:w-5 lg:h-5"
                   src="/img/star-fill.svg"
                   alt=""
                 />
                 <Image
                   width={16}
                   height={16}
-                  className="w-5 h-5"
+                  className="lg:w-5 lg:h-5"
                   src="/img/star-fill.svg"
                   alt=""
                 />
@@ -178,7 +178,7 @@ export default function Page() {
                 ۹۸۹۰۰۰ تومان
               </p>
             </div>
-            <p className="leading-7 text-neutral-gray-13 mt-4 mb-2 lg:hidden">
+            <p className="leading-6 text-sm text-neutral-gray-13 mt-4 mb-2 lg:hidden">
               لباس میدی دکلته الی یکی از آیتم‌های شیک و جذاب در دنیای مد زنانه
               است که به‌طور خاص برای مهمانی‌ها و مناسبت‌های خاص طراحی شده است.
             </p>

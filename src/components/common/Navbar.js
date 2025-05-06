@@ -20,7 +20,7 @@ export default function Navbar() {
   useLockScroll([isOpenCategory, isOpenMenu]);
   return (
     <>
-      <nav className="container relative min-w-full z-50 bg-white flex justify-between items-center p-5 border-b-1 border-neutral-gray-4 lg:py-6.25 lg:px-12 lg:border-none">
+      <nav className="container mx-auto relative z-50 bg-white flex justify-between items-center p-5 border-b-1 border-neutral-gray-4 lg:py-6.25 lg:px-12 lg:border-none">
         <Link href={"/"}>
           <Image
             width={94}
@@ -44,8 +44,8 @@ export default function Navbar() {
               className={`cursor-pointer ${
                 isOpenCategory ? "hidden" : "block"
               }`}
-              width={16}
-              height={16}
+             width={16}
+             height={16}
               quality={100}
               src="/img/arrow-down.svg"
               alt=""

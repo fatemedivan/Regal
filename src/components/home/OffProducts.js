@@ -19,7 +19,7 @@ export default function OffProducts() {
         direction: "rtl",
         peek:{
           before: 0,
-          after: 130
+          after: 0
         },
         breakpoints: {
           1440: {
@@ -27,11 +27,11 @@ export default function OffProducts() {
             gap: 24,
           },
           1024: {
-            perView: 4,
+            perView: 3,
             gap: 24,
           },
           768: {
-            perView: 4,
+            perView: 3,
             gap: 12,
           },
         },
@@ -49,7 +49,7 @@ export default function OffProducts() {
   }, []);
 
   return (
-    <section className="container max-w-full mt-17 mb-16 lg:mt-22">
+    <section className="container mx-auto mt-17 mb-16 lg:mt-22">
       <div className="mx-5 mb-6 flex justify-between items-center lg:mx-12 lg:mb-10">
         <div className="flex items-center gap-2">
           <Image

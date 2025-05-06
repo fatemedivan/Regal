@@ -6,13 +6,15 @@ import Image from "next/image";
 export default function Home() {
   return (
     <>
-      <header className="container max-w-full overflow-hidden pr-5 pt-8 mb-16 lg:flex justify-end items-center lg:ml-0 lg:gap-6 lg:pr-12 lg:pt-18 lg:mb-22">
+      <header className="container mx-auto overflow-hidden pr-5 pt-8 mb-16 lg:flex justify-end items-center lg:gap-6 lg:pr-12 lg:pt-18 lg:mb-22">
         <div className="relative min-w-120 h-158 hidden lg:block">
           <Image
             fill
-            className="mr-auto"
+            sizes="50vw"
+            className=""
             src="/img/header-desktop-1.png"
             alt=""
+            priority
             quality={100}
           />
         </div>
@@ -66,7 +68,7 @@ export default function Home() {
             </button>
             <Image
               width={45}
-              height={79}
+              height={80}
               className="relative mb-7"
               src="/img/Arrow.svg"
               alt=""
@@ -144,7 +146,7 @@ export default function Home() {
           </div>
         </div>
       </header>
-      <section className="container lg:mx-auto px-5 mb-16  max-w-336 mx-auto">
+      <section className="container mx-auto px-5 mb-16">
         <h5 className="font-semibold leading-5 text-black mt-16 mb-6">
           دسته بندی محصولات
         </h5>
@@ -155,10 +157,11 @@ export default function Home() {
                 className="relative w-full h-auto z-20"
                 src="/img/Category-1.png"
                 alt=""
-                fill
+                width={167}
+                height={284}
                 quality={100}
               />
-              <div className="relative z-30 top-57.5 px-2">
+              <div className="absolute z-30 bottom-1 px-2">
                 <h5 className="leading-5 font-semibold text-white">
                   پیراهن کوتاه
                 </h5>
@@ -177,10 +180,11 @@ export default function Home() {
                 className="relative w-full h-auto z-20"
                 src="/img/Category-3.png"
                 alt=""
-                fill
+                width={167}
+                height={140}
                 quality={100}
               />
-              <div className="relative z-30 top-21.5 px-2">
+              <div className="absolute z-30 bottom-1 px-2">
                 <h5 className="leading-5 font-semibold text-white">سرهمی</h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -197,10 +201,11 @@ export default function Home() {
                 className="relative w-full h-auto z-20"
                 src="/img/Category-6.png"
                 alt=""
-                fill
+                width={167}
+                height={200}
                 quality={100}
               />
-              <div className="relative z-30 top-36.5 px-2">
+              <div className="absolute z-30 bottom-1 px-2">
                 <h5 className="leading-5 font-semibold text-white">
                   شومیز و بلوز
                 </h5>
@@ -219,10 +224,11 @@ export default function Home() {
                 className="relative w-full h-auto z-20"
                 src="/img/Category-8.png"
                 alt=""
-                fill
+                width={167}
+                height={206}
                 quality={100}
               />
-              <div className="relative z-30 top-37.5 px-2">
+              <div className="absolute z-30 bottom-1 px-2">
                 <h5 className="leading-5 font-semibold text-white">
                   تاپ و کراپ
                 </h5>
@@ -244,10 +250,11 @@ export default function Home() {
                 className="relative w-full h-auto z-20"
                 src="/img/Category-2.png"
                 alt=""
-                fill
+                width={167}
+                height={200}
                 quality={100}
               />
-              <div className="relative z-30 top-36.5 px-2">
+              <div className="absolute bottom-1 z-30 px-2">
                 <h5 className="leading-5 font-semibold text-white">شلوار</h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -264,10 +271,11 @@ export default function Home() {
                 className="relative w-full h-auto z-20"
                 src="/img/Category-4.png"
                 alt=""
-                fill
+                width={167}
+                height={150}
                 quality={100}
               />
-              <div className="relative z-30 top-24 px-2">
+              <div className="absolute bottom-1 z-30 px-2">
                 <h5 className="leading-5 font-semibold text-white">
                   کت و جلیقه
                 </h5>
@@ -286,10 +294,11 @@ export default function Home() {
                 className="relative w-full h-auto z-20"
                 src="/img/Category-5.png"
                 alt=""
-                fill
+                width={167}
+                height={196}
                 quality={100}
               />
-              <div className="relative z-30 top-35.5 px-2">
+              <div className="absolute bottom-1 z-30 px-2">
                 <h5 className="leading-5 font-semibold text-white">دامن</h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -306,10 +315,11 @@ export default function Home() {
                 className="relative w-full h-auto z-20"
                 src="/img/Category-7.png"
                 alt=""
-                fill
+                width={167}
+                height={284}
                 quality={100}
               />
-              <div className="relative z-30 top-57.25 px-2">
+              <div className="absolute bottom-1 z-30 px-2">
                 <h5 className="leading-5 font-semibold text-white">
                   ترنچ کت و پالتو
                 </h5>
@@ -501,7 +511,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="bg-neutral-gray-1 py-8 lg:py-16 overflow-x-hidden">
+      <section className="container mx-auto bg-neutral-gray-1 py-8 lg:py-16 overflow-x-hidden">
         <h5 className="font-semibold leading-5 text-center mb-2 lg:font-bold lg:leading-11 lg:text-4xl lg:mb-4">
           <span className="text-cognac-primery">طراحـــــی </span>و دوخــــت بر
           اساس شکل بدن شما
@@ -592,7 +602,7 @@ export default function Home() {
         </div>
       </section>
       <OffProducts />
-      <section className="bg-neutral-gray-1 px-5 py-8 lg:flex lg:justify-center lg:gap-11.5 lg:px-12 lg:py-14">
+      <section className="container mx-auto bg-neutral-gray-1 px-5 py-8 lg:flex lg:justify-center lg:gap-11.5 lg:px-12 lg:py-14">
         <div>
           <div className="sm:text-center">
             <h5 className="font-semibold leading-5 text-black lg:leading-9.5 lg:text-[31px] lg:font-bold">

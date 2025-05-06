@@ -15,7 +15,6 @@ export default function Page() {
   const [isFocused, setIsFocused] = useState({
     firstName: false,
     lastName: false,
-    phone: false,
     email: false,
   });
   const floatLabel = (value, focus) =>
@@ -100,26 +99,10 @@ export default function Page() {
           </div>
 
           <div className="relative border border-neutral-gray-4 bg-neutral-gray-2 rounded-lg flex mb-4">
-            <input
-              type="text"
-              id="phone"
-              dir="ltr"
-              placeholder=" "
-              value={phone}
-              onFocus={() => setIsFocused((prev) => ({ ...prev, phone: true }))}
-              onBlur={() => setIsFocused((prev) => ({ ...prev, phone: false }))}
-              onChange={(e) => {
-                setPhone(e.target.value);
-                setIsEdited(true);
-              }}
-              className="placeholder:text-transparent w-full outline-none py-3.75 px-4 text-neutral-gray-7"
-            />
+            <div className="w-full outline-none py-3.75 px-4 text-neutral-gray-7 text-left">{phone}</div>
             <label
               htmlFor="phone"
-              className={`absolute right-4 bg-transparent px-1 text-xs text-neutral-gray-7 transition-all z-10 ${floatLabel(
-                phone,
-                isFocused.phone
-              )}`}
+              className="absolute right-4 bg-transparent px-1 text-xs text-neutral-gray-7 transition-all z-10 -top-2.5"
             >
               شماره موبایل
             </label>
@@ -230,30 +213,10 @@ export default function Page() {
 
             <div className="flex items-center gap-6.25 mt-4">
               <div className="relative w-1/2 border border-neutral-gray-4 bg-neutral-gray-2 rounded-lg flex mb-4">
-                <input
-                  type="text"
-                  id="phone-desktop"
-                  dir="ltr"
-                  placeholder=" "
-                  value={phone}
-                  onFocus={() =>
-                    setIsFocused((prev) => ({ ...prev, phone: true }))
-                  }
-                  onBlur={() =>
-                    setIsFocused((prev) => ({ ...prev, phone: false }))
-                  }
-                  onChange={(e) => {
-                    setPhone(e.target.value);
-                    setIsEdited(true);
-                  }}
-                  className="placeholder:text-transparent w-full outline-none py-3.75 px-4 text-neutral-gray-7"
-                />
+                <div  className="w-full outline-none py-3.75 px-4 text-neutral-gray-7 text-left">{phone}</div>
                 <label
                   htmlFor="phone-desktop"
-                  className={`absolute right-4 bg-transparent px-1 text-xs text-neutral-gray-7 transition-all z-10 ${floatLabel(
-                    phone,
-                    isFocused.phone
-                  )}`}
+                  className="absolute right-4 bg-transparent px-1 text-xs text-neutral-gray-7 transition-all z-10 -top-2.5"
                 >
                   شماره موبایل
                 </label>

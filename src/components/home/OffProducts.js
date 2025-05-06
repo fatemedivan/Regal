@@ -25,27 +25,18 @@ export default function OffProducts() {
           1440: {
             perView: 3,
             gap: 24,
-            peek:{
-              before:0,
-              after:50
-            }
+           
 
           },
           1240: {
-            perView: 2.5,
+            perView: 3,
             gap: 12,
-            peek:{
-              before:0,
-              after:50
-            }
+            
           },
           1024:{
             perView: 4,
             gap: 12,
-            peek:{
-              before:0,
-              after:50
-            }
+           
           },
           
           768: {
@@ -87,7 +78,7 @@ export default function OffProducts() {
   }, []);
 
   return (
-    <section className="mt-17 mb-16 lg:mt-22">
+    <section className="container mx-auto mt-17 mb-16 lg:mt-22">
       <div className="mx-5 mb-6 flex justify-between items-center lg:mx-12 lg:mb-10">
         <div className="flex items-center gap-2">
           <Image

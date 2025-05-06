@@ -54,7 +54,7 @@ export default function Articles() {
 
   return (
 
-    <section className="py-8 pr-5 lg:px-12 mt-16 lg:py-16 lg:mt-22">
+    <section className="container mx-auto py-8 pr-5 lg:px-12 mt-16 lg:py-16 lg:mt-22">
       <div className="flex justify-between items-center pl-5">
         <h5 className="font-semibold leading-5 text-black lg:text-30 lg:leading-9.5 lg:font-bold">
           مقالات مد و استایل زنانه

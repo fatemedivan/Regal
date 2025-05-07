@@ -6,7 +6,7 @@ import ProductItemOff from "@/components/common/ProductItemOff";
 import Sort from "@/components/products/Sort";
 import Image from "next/image";
 import React, { useState } from "react";
-import useLockScroll from "@/Hook/UseLockScroll";
+import { useScrollLockContext } from "@/context/ScrollLockContext";
 
 export default function Page() {
   const [isOpenFilterMenu, setIsOpenFilterMenu] = useState(false);
@@ -15,11 +15,13 @@ export default function Page() {
 
   const handleCloseFilter = () => {
     setIsOpenFilterMenu(false);
+    setIsLockScroll(false);
   };
   const handleCloseSort = () => {
     setIsOpenSort(false);
+    setIsLockScroll(false);
   };
-  useLockScroll([isOpenSort, isOpenFilterMenu], true);
+  const { isLockScroll, setIsLockScroll } = useScrollLockContext();
   return (
     <>
       <Breadcrumb />
@@ -57,13 +59,19 @@ export default function Page() {
               </p>
               <div className="flex items-center gap-2">
                 <div
-                  onClick={() => setIsOpenFilterMenu(true)}
+                  onClick={() => {
+                    setIsOpenFilterMenu(true);
+                    setIsLockScroll(true);
+                  }}
                   className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer"
                 >
                   <Image width={16} height={16} src="/img/filter.svg" alt="" />
                 </div>
                 <div
-                  onClick={() => setIsOpenSort(true)}
+                  onClick={() => {
+                    setIsOpenSort(true);
+                    setIsLockScroll(true);
+                  }}
                   className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer"
                 >
                   <Image width={16} height={16} src="/img/sort.svg" alt="" />
@@ -150,7 +158,9 @@ export default function Page() {
                   </div>
                   <div className="relative w-80">
                     <button
-                      onClick={() => setIsOpenSort(!isOpenSort)}
+                      onClick={() => {
+                        setIsOpenSort(!isOpenSort);
+                      }}
                       className="w-full border border-neutral-gray-4 rounded-lg py-5 pl-8 pr-6 text-right flex justify-between items-center cursor-pointer"
                     >
                       <p className="text-neutral-gray-7 text-xs leading-4.5">

@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import DeleteModal from "@/components/common/DeleteModal";
 import AddAddressModal from "./AddAddressModal";
 import DetailsModalAddAddress from "./DetailsModalAddAddress";
+import useLockScroll from "@/Hook/UseLockScroll";
 
 export default function UserPannel({ children, rout, isHadAddress }) {
   const pathname = usePathname();
@@ -40,6 +41,7 @@ export default function UserPannel({ children, rout, isHadAddress }) {
     { label: "تحویل شده", value: "delivered" },
     { label: "مرجوع شده", value: "returned" },
   ];
+    useLockScroll([isOpenLogoutModal, isOpenDetailsModal, isOpenAddAddressModal]);
   return (
     <div className="container mx-auto pt-8 px-5 pb-66.5 lg:px-12 lg:pt-12 lg:pb-22 lg:flex lg:gap-4">
       <div className="xl:min-w-79.5">
@@ -59,7 +61,7 @@ export default function UserPannel({ children, rout, isHadAddress }) {
               </p>
             </div>
           </div>
-          <Link href={"/user-dashboard/edit-profile"}>
+          <Link href={"/user/edit"}>
             <div className="flex items-start gap-2 lg:hidden">
               <Image width={16} height={16} src="/img/edit-3.svg" alt="" />
               <p className="text-cognac-primery text-sm leading-5">ویرایش</p>
@@ -67,16 +69,16 @@ export default function UserPannel({ children, rout, isHadAddress }) {
           </Link>
         </div>
         <div className="border border-neutral-gray-4 rounded-xl px-7 py-5 mt-4">
-          <Link href={"/user-dashboard/profile"}>
+          <Link href={"/user/profile"}>
             <div
               className={`flex items-center gap-2 mb-5 pb-5  border-b border-neutral-gray-4 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:pb-3 lg:mb-0 lg:rounded-lg  lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer ${
-                (pathname.includes("/user-dashboard/profile") ||
-                  pathname.includes("/user-dashboard/edit-profile")) &&
+                (pathname.includes("/user/profile") ||
+                  pathname.includes("/user/edit")) &&
                 "lg:bg-neutral-gray-1 lg:border-r-4"
               }`}
             >
-              {pathname.includes("/user-dashboard/profile") ||
-              pathname.includes("/user-dashboard/edit-profile") ? (
+              {pathname.includes("/user/profile") ||
+              pathname.includes("/user/edit") ? (
                 <Image
                   width={20}
                   height={20}
@@ -91,14 +93,14 @@ export default function UserPannel({ children, rout, isHadAddress }) {
               </p>
             </div>
           </Link>
-          <Link href={"/user-dashboard/orders"}>
+          <Link href={"/user/orders"}>
             <div
               className={`flex items-center gap-2 mb-5 pb-5 border-b border-neutral-gray-4 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:pb-3 lg:mb-0  lg:rounded-lg lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer ${
-                pathname.includes("/user-dashboard/orders") &&
+                pathname.includes("/user/orders") &&
                 "lg:bg-neutral-gray-1 lg:border-r-4"
               }`}
             >
-              {pathname.includes("/user-dashboard/orders") ? (
+              {pathname.includes("/user/orders") ? (
                 <Image
                   width={20}
                   height={20}
@@ -113,14 +115,14 @@ export default function UserPannel({ children, rout, isHadAddress }) {
               </p>
             </div>
           </Link>
-          <Link href={"/user-dashboard/favorites"}>
+          <Link href={"/user/favorites"}>
             <div
               className={`flex items-center gap-2 mb-5 pb-5 border-b border-neutral-gray-4 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:pb-3 lg:mb-0  lg:rounded-lg lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer ${
-                pathname.includes("/user-dashboard/favorites") &&
+                pathname.includes("/user/favorites") &&
                 "lg:bg-neutral-gray-1 lg:border-r-4"
               }`}
             >
-              {pathname.includes("/user-dashboard/favorites") ? (
+              {pathname.includes("/user/favorites") ? (
                 <Image
                   width={20}
                   height={20}
@@ -135,14 +137,14 @@ export default function UserPannel({ children, rout, isHadAddress }) {
               </p>
             </div>
           </Link>
-          <Link href={"/user-dashboard/addresses"}>
+          <Link href={"/user/addresses"}>
             <div
               className={`flex items-center gap-2 mb-5 pb-5 border-b border-neutral-gray-4 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:pb-3 lg:mb-0  lg:rounded-lg lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer ${
-                pathname.includes("/user-dashboard/addresses") &&
+                pathname.includes("/user/addresses") &&
                 "lg:bg-neutral-gray-1 lg:border-r-4"
               }`}
             >
-              {pathname.includes("/user-dashboard/addresses") ? (
+              {pathname.includes("/user/addresses") ? (
                 <Image
                   width={20}
                   height={20}
@@ -187,7 +189,7 @@ export default function UserPannel({ children, rout, isHadAddress }) {
           </h6>
 
           {rout === "profile" ? (
-            <Link href={"/user-dashboard/edit-profile"}>
+            <Link href={"/user/edit"}>
               <div className="flex items-center gap-2 px-9 py-3.25">
                 <Image width={16} height={16} src="/img/edit-3.svg" alt="" />
                 <p className="text-cognac-primery leading-5.5">

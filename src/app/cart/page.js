@@ -50,7 +50,7 @@ export default function Page() {
   };
  useLockScroll([isOpenDeleteModal], false)
   return (
-    <div className="container mx-auto px-5 lg:px-12">
+    <div className="container mx-auto px-5 mb-22 lg:px-12">
       <div className="mt-6 flex justify-between items-center lg:hidden">
         <Image
           width={24}

@@ -1,5 +1,5 @@
 "use client";
-import UserPannel from "@/components/profile/UserPannel";
+import UserPannel from "@/components/user/UserPannel";
 import React, { useState } from "react";
 
 export default function Page() {

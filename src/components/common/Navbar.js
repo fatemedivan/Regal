@@ -72,7 +72,7 @@ export default function Navbar() {
 
           <ul className="flex justify-center items-center lg:hidden">
             <li className="p-3.5">
-              <Link href={"/user-dashboard/profile"}>
+              <Link href={"/user/profile"}>
                 <Image
                   className="cursor-pointer"
                   width={16}
@@ -161,7 +161,7 @@ export default function Navbar() {
                 />
               </li>
             </Link>
-            <Link href={'/user-dashboard/favorites'}>
+            <Link href={'/user/favorites'}>
               <li className="p-3">
                 <Image
                   className="cursor-pointer"
@@ -173,7 +173,7 @@ export default function Navbar() {
                 />
               </li>
             </Link>
-            <Link href={"/user-dashboard/profile"}>
+            <Link href={"/user/profile"}>
               <li className="p-3">
                 <Image
                   className="cursor-pointer"

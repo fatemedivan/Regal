@@ -113,7 +113,7 @@ export default function Page() {
             />
           </div>
           {searchQuery && (
-            <Link href={"/user-dashboard/addresses/details-address"}>
+            <Link href={"/user/addresses/details-address"}>
               <div className="flex items-center gap-2 border-b border-neutral-gray-4 pb-4 cursor-pointer">
                 <Image
                   width={16}
@@ -163,7 +163,7 @@ export default function Page() {
           </div>
           <div className="flex items-center justify-center mt-6 px-5 pb-6">
             <div className="p-5 rounded-2xl border border-neutral-gray-4 max-w-max">
-              <Link href={"/user-dashboard/details-address"}>
+              <Link href={"/user/details-address"}>
                 <button
                   className="bg-cognac-primery rounded-lg py-3.5 px-28 text-white text-sm cursor-pointer"
                   onClick={() => {

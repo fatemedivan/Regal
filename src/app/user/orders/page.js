@@ -1,7 +1,7 @@
 "use client";
-import OrderDetailsCard from "@/components/profile/OrderDetailsCard";
-import OrderDetailsCardDesktop from "@/components/profile/OrderDetailsCardDesktop";
-import UserPannel from "@/components/profile/UserPannel";
+import OrderDetailsCard from "@/components/user/OrderDetailsCard";
+import OrderDetailsCardDesktop from "@/components/user/OrderDetailsCardDesktop";
+import UserPannel from "@/components/user/UserPannel";
 import useLockScroll from "@/Hook/UseLockScroll";
 import Image from "next/image";
 import Link from "next/link";

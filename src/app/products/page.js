@@ -1,9 +1,9 @@
 "use client";
 import Breadcrumb from "@/components/common/Breadcrumb";
-import FilterMenu from "@/components/categories/FilterMenu";
+import FilterMenu from "@/components/products/FilterMenu";
 import Pagination from "@/components/common/Pagination";
 import ProductItemOff from "@/components/common/ProductItemOff";
-import Sort from "@/components/categories/Sort";
+import Sort from "@/components/products/Sort";
 import Image from "next/image";
 import React, { useState } from "react";
 import useLockScroll from "@/Hook/UseLockScroll";

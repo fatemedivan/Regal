@@ -6,12 +6,12 @@ import Image from "next/image";
 export default function Home() {
   return (
     <>
-      <header className="overflow-hidden pr-5 pt-8 mb-16 lg:flex justify-end items-center lg:gap-6 lg:pr-12 lg:pt-18 lg:mb-22">
-        <div className="relative min-w-120 h-158 hidden lg:block">
+      <header className="container mx-auto lg:ml-0 overflow-hidden pr-5 pt-8 mb-16 lg:flex justify-end items-center lg:gap-6 lg:pr-12 lg:pt-18 lg:mb-22 xl:mx-auto">
+        <div className="relative min-w-120 h-158 hidden pr-5 lg:block">
           <Image
-            fill
-            sizes="50vw"
-            className=""
+            width={480}
+            height={632}
+            className="object-cover"
             src="/img/header-desktop-1.png"
             alt=""
             priority

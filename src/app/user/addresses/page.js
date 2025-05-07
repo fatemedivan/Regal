@@ -1,9 +1,9 @@
 "use client";
 import DetailsModal from "@/components/common/DetailsModal";
 import AdressCard from "@/components/completeData/AdressCard";
-import AddAddressModal from "@/components/profile/AddAddressModal";
-import DetailsModalAddAddress from "@/components/profile/DetailsModalAddAddress";
-import UserPannel from "@/components/profile/UserPannel";
+import AddAddressModal from "@/components/user/AddAddressModal";
+import DetailsModalAddAddress from "@/components/user/DetailsModalAddAddress";
+import UserPannel from "@/components/user/UserPannel";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -16,7 +16,6 @@ export default function Page() {
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
   console.log(isOpenDetailsModal);
 
-  
   const handleCloseAddAddressModal = () => {
     setIsOpenAddAddressModal(false);
   };
@@ -53,7 +52,7 @@ export default function Page() {
             </div>
             <div className="flex items-center justify-center w-full mt-79.5">
               <button
-                onClick={() => router.push("/user-dashboard/add-address")}
+                onClick={() => router.push("/user/add-address")}
                 className="w-full flex justify-center items-center gap-2 bg-cognac-primery text-white py-3.25 rounded-lg cursor-pointer"
               >
                 <Image
@@ -77,7 +76,7 @@ export default function Page() {
             <p className="text-sm leading-6 text-neutral-gray-9">
               شما در حال حاضر هیچ آدرسی ثبت نکرده‌اید!
             </p>
-            <Link href={"/user-dashboard/add-address"}>
+            <Link href={"/user/add-address"}>
               <div className="mt-60 flex items-center justify-center">
                 <button className="bg-cognac-primery rounded-lg py-3.25 px-28.5 text-white leading-5.5 cursor-pointer">
                   افزودن آدرس
@@ -89,10 +88,7 @@ export default function Page() {
       </div>
 
       <div className="hidden lg:block">
-        <UserPannel
-          rout={"addresses"}
-          isHadAddress={isHadAddress}
-        >
+        <UserPannel rout={"addresses"} isHadAddress={isHadAddress}>
           {isHadAddress ? (
             <div className="mt-4">
               <div className="mb-4">

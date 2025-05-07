@@ -53,7 +53,7 @@ export default function Page() {
           آدرس کامل
         </p>
       </div>
-      <Link href={"/user-dashboard/add-address"}>
+      <Link href={"/user/add-address"}>
         <div className="flex gap-2 items-center mt-4.5 cursor-pointer">
           <p className="text-cognac-primery text-sm leading-5">
             اصلاح آدرس روی نقشه

@@ -1,17 +1,16 @@
 "use client";
-import UserPannel from "@/components/profile/UserPannel";
-import FavouriteProduct from "@/components/profile/FavouriteProduct";
+import UserPannel from "@/components/user/UserPannel";
+import FavouriteProduct from "@/components/user/FavouriteProduct";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
-
 export default function Page() {
   const [isHadFavourite, setIsHadFavourite] = useState(true);
   const [isOpenSort, setIsOpenSort] = useState(false);
   const [selectedOptionSort, setSelectedOptionSort] = useState("");
-  const router = useRouter()
+  const router = useRouter();
   return (
     <>
       <div className="container mx-auto px-5 py-6 lg:hidden">

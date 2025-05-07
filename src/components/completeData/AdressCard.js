@@ -3,8 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import DeleteModal from "@/components/common/DeleteModal";
-import AddAddressModal from "../profile/AddAddressModal";
-import DetailsModalAddAddress from "../profile/DetailsModalAddAddress";
+import AddAddressModal from "../user/AddAddressModal";
+import DetailsModalAddAddress from "../user/DetailsModalAddAddress";
 
 export default function AdressCard({ isActive }) {
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
@@ -62,7 +62,7 @@ export default function AdressCard({ isActive }) {
             <Image
               width={16}
               height={16}
-              className="cursor-pointer lg:hidden"
+              className="cursor-pointer min-w-4 min-h-4 lg:hidden"
               src="/img/edit-2.svg"
               alt=""
             />

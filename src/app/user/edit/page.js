@@ -1,5 +1,5 @@
 "use client";
-import UserPannel from "@/components/profile/UserPannel";
+import UserPannel from "@/components/user/UserPannel";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -99,7 +99,9 @@ export default function Page() {
           </div>
 
           <div className="relative border border-neutral-gray-4 bg-neutral-gray-2 rounded-lg flex mb-4">
-            <div className="w-full outline-none py-3.75 px-4 text-neutral-gray-7 text-left">{phone}</div>
+            <div className="w-full outline-none py-3.75 px-4 text-neutral-gray-7 text-left">
+              {phone}
+            </div>
             <label
               htmlFor="phone"
               className="absolute right-4 bg-transparent px-1 text-xs text-neutral-gray-7 transition-all z-10 -top-2.5"
@@ -213,7 +215,9 @@ export default function Page() {
 
             <div className="flex items-center gap-6.25 mt-4">
               <div className="relative w-1/2 border border-neutral-gray-4 bg-neutral-gray-2 rounded-lg flex mb-4">
-                <div  className="w-full outline-none py-3.75 px-4 text-neutral-gray-7 text-left">{phone}</div>
+                <div className="w-full outline-none py-3.75 px-4 text-neutral-gray-7 text-left">
+                  {phone}
+                </div>
                 <label
                   htmlFor="phone-desktop"
                   className="absolute right-4 bg-transparent px-1 text-xs text-neutral-gray-7 transition-all z-10 -top-2.5"

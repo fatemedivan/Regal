@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Search from "@/components/common/Search";
 import Categories from "@/components/common/CategoriesMenu";
 import Link from "next/link";
-import useLockScroll from "@/Hook/UseLockScroll";
+import { useScrollLockContext } from "@/context/ScrollLockContext";
 
 export default function Navbar() {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
@@ -15,9 +15,11 @@ export default function Navbar() {
   };
   const handleCloseCategory = () => {
     setIsOpenCategory(false);
+    setIsLockScroll(false)
   };
 
-  useLockScroll([isOpenCategory, isOpenMenu]);
+ const { isLockScroll,setIsLockScroll } = useScrollLockContext()
+
   return (
     <div>
       <nav className="relative z-50 bg-white p-5 border-b-1 border-neutral-gray-4 lg:py-6.25 lg:px-12 lg:border-none">
@@ -37,7 +39,9 @@ export default function Navbar() {
               <p className="text-sm leading-5 cursor-pointer">صفحه اصلی</p>
             </li>
             <li
-              onClick={() => setIsOpenCategory(!isOpenCategory)}
+              onClick={() => {setIsOpenCategory(!isOpenCategory)
+                setIsLockScroll(!isLockScroll)
+              }}
               className="flex justify-center items-center gap-2"
             >
               <p className="text-sm leading-5 cursor-pointer">دسته‌بندی‌ها</p>
@@ -93,6 +97,7 @@ export default function Navbar() {
                 quality={100}
                 onClick={() => {
                   setIsSearching(true);
+                  
                   setIsOpenCategory(false);
                   setIsOpenMenu(false);
                 }}
@@ -104,6 +109,7 @@ export default function Navbar() {
                 onClick={(e) => {
                   setIsOpenMenu(false);
                   setIsOpenCategory(false);
+                  setIsLockScroll(false)
                 }}
               >
                 <Image
@@ -120,6 +126,7 @@ export default function Navbar() {
                 className="p-3.5"
                 onClick={() => {
                   setIsOpenMenu(true);
+                  setIsLockScroll(true)
                 }}
               >
                 <Image
@@ -144,6 +151,7 @@ export default function Navbar() {
                 quality={100}
                 onClick={(e) => {
                   setIsSearching(true);
+                 
                   setIsOpenCategory(false);
                   setIsOpenMenu(false);
                 }}
@@ -192,7 +200,9 @@ export default function Navbar() {
         <>
           <div
             className="fixed inset-0 bg-[#1E1E1E] opacity-50 z-40"
-            onClick={() => setIsOpenMenu(false)}
+            onClick={() => {setIsOpenMenu(false)
+              setIsLockScroll(false)
+            }}
           />
           <div className="fixed top-21.25 left-0 right-0  w-full bg-white px-5 pt-6 pb-10 text-neutral-gray-13 lg:hidden z-50">
             <div className="flex justify-between items-center pb-4 border-b-1 border-neutral-gray-4 cursor-pointer">
@@ -208,6 +218,7 @@ export default function Navbar() {
             <div
               onClick={() => {
                 setIsOpenCategory(true);
+                setIsLockScroll(true)
               }}
               className="flex justify-between items-center pb-4 mt-4 border-b-1 border-neutral-gray-4 cursor-pointer"
             >

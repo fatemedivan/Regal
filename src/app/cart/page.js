@@ -6,7 +6,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import DeleteModal from "@/components/common/DeleteModal";
 import { useRouter } from "next/navigation";
-import useLockScroll from "@/Hook/UseLockScroll";
+import { useScrollLockContext } from "@/context/ScrollLockContext";
 
 export default function Page() {
   const router = useRouter()
@@ -43,12 +43,14 @@ export default function Page() {
   ]);
   const handleCloseDeleteModal = () => {
     setIsOpenDeleteModal(false);
+    setIsLockScroll(false)
   };
   const handleDeleteBasket = () => {
     setBasketItems([]);
     setIsOpenDeleteModal(false);
   };
- useLockScroll([isOpenDeleteModal], false)
+  const { setIsLockScroll } = useScrollLockContext()
+ 
   return (
     <div className="container mx-auto px-5 mb-22 lg:px-12">
       <div className="mt-6 flex justify-between items-center lg:hidden">
@@ -60,7 +62,7 @@ export default function Page() {
           alt=""
           onClick={()=> router.back()}
         />
-        <h3 className="text-[20px] font-semibold leading-6 text-neutral-gray-13">
+        <h3 className="text-xl font-semibold leading-6 text-neutral-gray-13">
           سبد خرید
         </h3>
         <Image
@@ -69,7 +71,10 @@ export default function Page() {
           className="cursor-pointer"
           src="/img/trash-2.svg"
           alt=""
-          onClick={() => setIsOpenDeleteModal(true)}
+          onClick={() => {
+            setIsOpenDeleteModal(true)
+            setIsLockScroll(true)
+          }}
         />
       </div>
       <div className="xl:px-40.5">

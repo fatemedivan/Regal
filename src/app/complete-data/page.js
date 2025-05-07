@@ -5,9 +5,9 @@ import DateModal from "@/components/completeData/DateModal";
 import ProgressBar from "@/components/common/ProgressBar";
 import TimeModal from "@/components/completeData/TimeModal";
 import Image from "next/image";
-import React, {useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import useLockScroll from "@/Hook/UseLockScroll";
+import { useScrollLockContext } from "@/context/ScrollLockContext";
 
 export default function Page() {
   const router = useRouter();
@@ -35,12 +35,15 @@ export default function Page() {
   const [mainTime, setMainTime] = useState("ساعت ۹ تا ۱۲");
   const handleCloseDateModal = () => {
     setIsShowDateModal(false);
+    setIsLockScroll(false);
   };
   const handleCloseTimeModal = () => {
     setIsShowTimeModal(false);
+    setIsLockScroll(false);
   };
-  useLockScroll([isShowDateModal, isShowTimeModal], true)
-  
+
+  const { isLockScroll,setIsLockScroll, setMobileOnlyLock } = useScrollLockContext();
+
   return (
     <div className="container mx-auto px-5 pt-6 pb-16 lg:pt-0 lg:px-12 lg:pb-22">
       <div className="flex justify-between items-center mb-8 lg:hidden">
@@ -157,7 +160,11 @@ export default function Page() {
                 </h5>
                 <div className="lg:flex lg:gap-6">
                   <div
-                    onClick={() => setIsShowDateModal(!isShowDateModal)}
+                    onClick={() => {
+                      setIsShowDateModal(!isShowDateModal);
+                      setIsLockScroll(!isLockScroll)
+                      setMobileOnlyLock(true)
+                    }}
                     className="px-4 py-3.75 border border-neutral-gray-4 rounded-lg flex justify-between items-center relative cursor-pointer lg:w-1/2"
                   >
                     <p className="text-xs leading-4.5 text-neutral-gray-13 lg:text-sm lg:leading-5">
@@ -192,7 +199,11 @@ export default function Page() {
                     )}
                   </div>
                   <div
-                    onClick={() => setIsShowTimeModal(!isShowTimeModal)}
+                    onClick={() => {
+                      setIsShowTimeModal(!isShowTimeModal);
+                      setIsLockScroll(!isLockScroll)
+                      setMobileOnlyLock(true)
+                    }}
                     className="px-4 py-3.75 border border-neutral-gray-4 rounded-lg flex justify-between items-center relative mt-3 cursor-pointer lg:mt-0 lg:w-1/2 "
                   >
                     <p className="text-xs leading-4.5 text-neutral-gray-13 lg:text-sm lg:leading-5">

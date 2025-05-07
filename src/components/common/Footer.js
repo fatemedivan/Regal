@@ -4,7 +4,7 @@ import React from "react";
 export default function Footer() {
   return (
     <>
-      <div className="bg-black p-5 lg:hidden">
+      <div className="bg-[#0B0C17] p-5 lg:hidden">
         <div className="container mx-auto">
           <Image
             width={94}
@@ -156,7 +156,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <div className="bg-black px-12 hidden lg:block">
+      <div className="bg-[#0B0C17] px-12 hidden lg:block">
         <div className="container mx-auto">
           <div className="flex items-center border-b-1 border-neutral-gray-12">
             <div className="mb-32">

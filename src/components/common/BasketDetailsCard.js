@@ -4,29 +4,21 @@ import Link from "next/link";
 import Image from "next/image";
 import DetailsModal from "./DetailsModal";
 import DeleteModal from "./DeleteModal";
+import { useScrollLockContext } from "@/context/ScrollLockContext";
 
 export default function BasketDetails({ step }) {
-  
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const handleCloseDetailsModal = () => {
     setIsOpenDetailsModal(false);
+    setIsLockScroll(false);
   };
   const handleCloseDeleteModal = () => {
     setIsOpenDeleteModal(false);
+    setIsLockScroll(false);
   };
-   useEffect(() => {
-        if (isOpenDetailsModal) {
-          document.body.style.overflow = "hidden";
-        } else {
-          document.body.style.overflow = "";
-        }
-    
-        return () => {
-          document.body.style.overflow = "";
-        };
-      }, [isOpenDetailsModal]);
- 
+  
+  const { isLockScroll, setIsLockScroll } = useScrollLockContext();
   return (
     <>
       <div className="mt-8 lg:border lg:border-neutral-gray-4 lg:rounded-2xl lg:p-8 lg:mt-0 mb-auto lg:max-w-108">
@@ -38,7 +30,10 @@ export default function BasketDetails({ step }) {
             <Image
               width={24}
               height={24}
-              onClick={() => setIsOpenDeleteModal(true)}
+              onClick={() => {
+                setIsOpenDeleteModal(true);
+                setIsLockScroll(true);
+              }}
               className="cursor-pointer"
               src="/img/trash-2.svg"
               alt=""
@@ -84,7 +79,10 @@ export default function BasketDetails({ step }) {
               </h5>
               <div
                 className="flex gap-2 items-center lg:hidden"
-                onClick={() => setIsOpenDetailsModal(true)}
+                onClick={() => {
+                  setIsOpenDetailsModal(true);
+                  setIsLockScroll(true);
+                }}
               >
                 <p className="text-cognac-primery text-sm leading-5 cursor-pointer">
                   مشاهده اقلام
@@ -198,12 +196,18 @@ export default function BasketDetails({ step }) {
           </div>
         </div>
       </div>
-      
+
       {isOpenDetailsModal && (
         <DetailsModal handleCloseModal={handleCloseDetailsModal} />
       )}
       {isOpenDeleteModal && (
-        <DeleteModal handleCloseModal={handleCloseDeleteModal} />
+        <DeleteModal
+          subtitle={"آیا از حذف سبد خرید اطمینان دارید؟"}
+          actiontitle={"حذف"}
+          title={"حذف سبد خرید"}
+          handleCloseModal={handleCloseDeleteModal}
+          handleAction={handleCloseDeleteModal}
+        />
       )}
     </>
   );

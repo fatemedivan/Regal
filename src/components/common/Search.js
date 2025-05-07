@@ -61,10 +61,10 @@ export default function Search({ handleCloseSearch }) {
 
       <div className="py-6 absolute top-21 left-0 right-0 z-50 w-full bg-white">
         <div className="container mx-auto">
-          <div>
+          <div className="flex items-center justify-end lg:mx-12.5">
             <img
               onClick={() => handleCloseSearch()}
-              className="pr-5 mb-5 cursor-pointer"
+              className="ml-5 mb-5 cursor-pointer"
               src="/img/Close Icon.svg"
               alt=""
             />

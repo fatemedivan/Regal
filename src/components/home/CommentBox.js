@@ -13,7 +13,7 @@ export default function CommentBox({
   const filledStars = Array(rating).fill("/img/star-fill.svg");
   const emptyStars = Array(totalStars - rating).fill("/img/star-outline.svg");
   return (
-    <div className="min-w-64.5">
+    <div className="min-w-64.5 bg-white">
       <div className="flex items-center gap-2 mb-4">
         <Image width={48} height={48} quality={100} src={img} alt="" />
 

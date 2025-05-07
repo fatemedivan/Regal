@@ -2,7 +2,7 @@
 import OrderDetailsCard from "@/components/user/OrderDetailsCard";
 import OrderDetailsCardDesktop from "@/components/user/OrderDetailsCardDesktop";
 import UserPannel from "@/components/user/UserPannel";
-import useLockScroll from "@/Hook/UseLockScroll";
+import { useScrollLockContext } from "@/context/ScrollLockContext";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -19,7 +19,7 @@ export default function Page() {
     { label: "تحویل شده", value: "delivered" },
     { label: "مرجوع شده", value: "returned" },
   ];
-  useLockScroll([isOpenTypeOrder]);
+    const { isLockScroll,setIsLockScroll } = useScrollLockContext();
 
   return (
     <>
@@ -40,7 +40,9 @@ export default function Page() {
         </div>
 
         <div
-          onClick={() => setIsOpenTypeOrder(!isOpenTypeOrder)}
+          onClick={() => {setIsOpenTypeOrder(!isOpenTypeOrder)
+            setIsLockScroll(!isLockScroll)
+          }}
           className="relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg mb-4 flex items-center justify-between cursor-pointer"
         >
           <div className="flex items-center gap-1">
@@ -143,7 +145,9 @@ export default function Page() {
         <div className="lg:hidden">
           <div
             className="fixed inset-0 bg-[#1E1E1E] opacity-50 z-50"
-            onClick={() => setIsOpenTypeOrder(false)}
+            onClick={() => {setIsOpenTypeOrder(false)
+              setIsLockScroll(false)
+            }}
           />
           <div className="bg-white fixed bottom-0 left-0 right-0 z-60 w-full rounded-tr-3xl rounded-tl-3xl px-5 pt-4 pb-6">
             <div className="flex justify-between items-center pb-4 mb-4 border-b border-neutral-gray-4">
@@ -154,7 +158,9 @@ export default function Page() {
                 src="/img/close-icon-filter.svg"
                 className="cursor-pointer lg:w-6 lg:h-6"
                 alt=""
-                onClick={() => setIsOpenTypeOrder(false)}
+                onClick={() => {setIsOpenTypeOrder(false)
+                  setIsLockScroll(false)
+                }}
               />
             </div>
             <div>

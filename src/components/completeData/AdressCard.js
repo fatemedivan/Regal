@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import DeleteModal from "@/components/common/DeleteModal";
 import AddAddressModal from "../user/AddAddressModal";
 import DetailsModalAddAddress from "../user/DetailsModalAddAddress";
+import { useScrollLockContext } from "@/context/ScrollLockContext";
 
 export default function AdressCard({ isActive }) {
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
@@ -12,21 +13,27 @@ export default function AdressCard({ isActive }) {
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
   const handleCloseDeleteModal = () => {
     setIsOpenDeleteModal(false);
+    setIsLockScroll(false)
   };
   const handleDeleteAddress = () => {
     console.log("removed");
     setIsOpenDeleteModal(false);
+    setIsLockScroll(false)
   };
 
   const handleCloseAddAddressModal = () => {
     setIsOpenAddAddressModal(false);
+    setIsLockScroll(false)
   };
   const handleOpenDetailsModal = () => {
     setIsOpenDetailsModal(true);
+    setIsLockScroll(true)
   };
   const handleCloseDetailsModal = () => {
     setIsOpenDetailsModal(false);
+    setIsLockScroll(false)
   };
+   const { isLockScroll,setIsLockScroll } = useScrollLockContext();
   return (
     <div
       className={`border ${
@@ -44,21 +51,25 @@ export default function AdressCard({ isActive }) {
           <Image
             width={16}
             height={16}
-            onClick={() => setIsOpenDeleteModal(true)}
+            onClick={() => {setIsOpenDeleteModal(true)
+              setIsLockScroll(true)
+            }}
             className="cursor-pointer lg:w-6 lg:h-6"
             src="/img/trash-3.svg"
             alt=""
           />
 
           <Image
-            onClick={() => setIsOpenDetailsModal(true)}
+            onClick={() => {setIsOpenDetailsModal(true)
+              setIsLockScroll(true)
+            }}
             width={24}
             height={24}
             className="cursor-pointer hidden lg:block"
             src="/img/edit-2.svg"
             alt=""
           />
-          <Link href={"/user-dashboard/details-address"}>
+          <Link href={"/user/details-address"}>
             <Image
               width={16}
               height={16}

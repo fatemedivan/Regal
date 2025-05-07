@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import DeleteModal from "@/components/common/DeleteModal";
 import AddAddressModal from "./AddAddressModal";
 import DetailsModalAddAddress from "./DetailsModalAddAddress";
-import useLockScroll from "@/Hook/UseLockScroll";
+import { useScrollLockContext } from "@/context/ScrollLockContext";
 
 export default function UserPannel({ children, rout, isHadAddress }) {
   const pathname = usePathname();
@@ -20,20 +20,25 @@ export default function UserPannel({ children, rout, isHadAddress }) {
 
   const handleCloseAddAddressModal = () => {
     setIsOpenAddAddressModal(false);
+    setIsLockScroll(false)
   };
   const handleOpenDetailsModal = () => {
     setIsOpenDetailsModal(true);
+    setIsLockScroll(true)
   };
   const handleCloseDetailsModal = () => {
     setIsOpenDetailsModal(false);
+    setIsLockScroll(false)
   };
 
   const handleCloseLogoutModal = () => {
     setIsOpenLogoutModal(false);
+    setIsLockScroll(false)
   };
   const handleLogout = () => {
     console.log("you loged out");
     setIsOpenLogoutModal(false);
+    setIsLockScroll(false)
   };
   const orderTypes = [
     { label: "همه", value: "all" },
@@ -41,7 +46,7 @@ export default function UserPannel({ children, rout, isHadAddress }) {
     { label: "تحویل شده", value: "delivered" },
     { label: "مرجوع شده", value: "returned" },
   ];
-    useLockScroll([isOpenLogoutModal, isOpenDetailsModal, isOpenAddAddressModal]);
+   const { isLockScroll,setIsLockScroll } = useScrollLockContext();
   return (
     <div className="container mx-auto pt-8 px-5 pb-66.5 lg:px-12 lg:pt-12 lg:pb-22 lg:flex lg:gap-4">
       <div className="xl:min-w-79.5">
@@ -166,7 +171,9 @@ export default function UserPannel({ children, rout, isHadAddress }) {
             </div>
           </Link>
           <div
-            onClick={() => setIsOpenLogoutModal(true)}
+            onClick={() => {setIsOpenLogoutModal(true)
+              setIsLockScroll(true)
+            }}
             className="flex items-center gap-2 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:mb-0  lg:rounded-lg lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer"
           >
             <Image width={20} height={20} src="/img/logout.svg" alt="" />
@@ -308,7 +315,9 @@ export default function UserPannel({ children, rout, isHadAddress }) {
           ) : rout === "addresses" ? (
             <div>
               {isHadAddress && (
-                <div onClick={()=> setIsOpenAddAddressModal(true)} className="flex items-center gap-2 px-6 py-3.25 cursor-pointer">
+                <div onClick={()=> {setIsOpenAddAddressModal(true)
+                  setIsLockScroll(true)
+                }} className="flex items-center gap-2 px-6 py-3.25 cursor-pointer">
                   <Image
                     width={20}
                     height={20}

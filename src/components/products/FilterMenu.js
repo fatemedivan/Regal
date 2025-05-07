@@ -1,8 +1,11 @@
 "use client";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function FilterMenuMobile({ handleCloseFilter }) {
+  const [isOpenPriceFilter, setIsOpenPriceFilter] = useState(false);
+  const [minPrice, setMinPrice] = useState(1000000);
+  const [maxPrice, setMaxPrice] = useState(5000000);
   const [filters, setFilters] = useState([
     {
       id: 1,
@@ -100,10 +103,36 @@ export default function FilterMenuMobile({ handleCloseFilter }) {
   const handleApplyFilters = () => {
     handleCloseFilter();
   };
+
+  //AI
+  useEffect(() => {
+    const isPriceChanged = minPrice !== 1000000 || maxPrice !== 5000000;
+
+    setSelectedFilters((prev) => {
+      const withoutPrice = prev.filter((item) => item.type !== "price");
+
+      if (!isPriceChanged) return withoutPrice;
+
+      return [
+        ...withoutPrice,
+        {
+          type: "price",
+          filterTitle: "قیمت",
+          option: { min: minPrice, max: maxPrice },
+        },
+      ];
+    });
+  }, [minPrice, maxPrice]);
+  //AI
   const handleRemoveSelected = (option) => {
     setSelectedFilters((prev) =>
-      prev.filter((itemfilter) => itemfilter.option !== option)
+      prev.filter((itemfilter) =>
+        itemfilter.type === "price" ? false : itemfilter.option !== option
+      )
     );
+
+    setMinPrice(1000000);
+    setMaxPrice(5000000);
   };
 
   return (
@@ -153,6 +182,11 @@ export default function FilterMenuMobile({ handleCloseFilter }) {
                     style={{ backgroundColor: item.option }}
                   ></div>
                 </div>
+              ) : item.type === "price" ? (
+                <p className="text-neutral-gray-13 text-sm leading-5">
+                  قیمت: {item.option.min.toLocaleString()} تا{" "}
+                  {item.option.max.toLocaleString()}
+                </p>
               ) : (
                 <p className="text-neutral-gray-13 text-sm leading-5">
                   {item.filterTitle === "سایزبندی" ? "سایز" : item.filterTitle}:{" "}
@@ -222,7 +256,7 @@ export default function FilterMenuMobile({ handleCloseFilter }) {
                         ></div>
                         <div
                           style={{ borderColor: option }}
-                          className="absolute top-[-4px] left-[-4px] w-10 h-10 rounded-md border-2 opacity-0 peer-checked:opacity-100"
+                          className="absolute -top-1 -left-1 w-10 h-10 rounded-md border-2 opacity-0 peer-checked:opacity-100"
                         ></div>
                       </>
                     )}
@@ -232,7 +266,7 @@ export default function FilterMenuMobile({ handleCloseFilter }) {
                           {option}
                         </div>
                         <div
-                          className={`absolute top-[-4px] left-[-4px] w-10 h-10 rounded-lg border-3 border-cognac-shade-4 opacity-0 peer-checked:opacity-100 transition-all`}
+                          className={`absolute -top-1 -left-1 w-10 h-10 rounded-lg border-3 border-cognac-shade-4 opacity-0 peer-checked:opacity-100 transition-all`}
                         ></div>
                       </>
                     )}
@@ -253,8 +287,68 @@ export default function FilterMenuMobile({ handleCloseFilter }) {
             )}
           </li>
         ))}
-      </ul>
+        <li>
+          <div
+            onClick={() => setIsOpenPriceFilter(!isOpenPriceFilter)}
+            className="flex justify-between items-center mb-6 pb-4 border-b border-neutral-gray-4 cursor-pointer"
+          >
+            <p className="text-sm font-semibold leading-4 w-full lg:text-[1rem] lg:leading-7">
+              قیمت
+            </p>
+            <Image
+              width={16}
+              height={16}
+              src={
+                isOpenPriceFilter
+                  ? "/img/arrow-up.svg"
+                  : "/img/arrow-down-3.svg"
+              }
+              alt=""
+            />
+          </div>
+          {isOpenPriceFilter && (
+            <div>
+              <div className="relative w-full">
+                {/* AI */}
 
+                <input
+                  type="range"
+                  min={500000}
+                  max={5000000}
+                  step={500000}
+                  value={minPrice}
+                  onChange={(e) => setMinPrice(Number(e.target.value))}
+                  className="absolute bottom-2.5 w-full h-0.5 bg-transparent appearance-none"
+                />
+
+                <input
+                  type="range"
+                  min={500000}
+                  max={5000000}
+                  step={500000}
+                  value={maxPrice}
+                  onChange={(e) => {
+                    setMaxPrice(Number(e.target.value));
+                  }}
+                  className="w-full h-0.5 bg-neutral-gray-5 rounded-lg appearance-none"
+                />
+              </div>
+
+              <div className="flex items-center gap-2.5 text-neutral-gray-7 w-full mt-4 lg:mt-5">
+                <button className="border border-neutral-gray-5 rounded-lg py-2.75 px-9 text-xs leading-4.5 lg:px-5">
+                  {minPrice.toLocaleString()}{" "}
+                  <span className="mr-1">تومان</span>
+                </button>
+                <span className="leading-5 text-sm">تا</span>
+                <button className="border border-neutral-gray-5 rounded-lg py-2.75 px-9 text-xs leading-4.5 lg:px-5">
+                  {maxPrice.toLocaleString()}{" "}
+                  <span className="mr-1">تومان</span>
+                </button>
+              </div>
+            </div>
+          )}
+        </li>
+      </ul>
       {/* Action Buttons */}
       <div className="mb-4 flex justify-center items-center gap-4 mt-10 px-5 lg:hidden">
         <button

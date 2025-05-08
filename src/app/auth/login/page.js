@@ -20,6 +20,16 @@ export default function Page() {
   const isValidPassword = passwordRegex.test(password);
 
   const handleSubmit = async () => {
+    const lastSignupPhone = sessionStorage.getItem("signupPhone");
+    const lastSignupPassword = sessionStorage.getItem("signupPassword");
+    if (
+      lastSignupPhone &&
+      lastSignupPassword &&
+      (phone !== lastSignupPhone || password !== lastSignupPassword)
+    ) {
+      toast.error("اطلاعات وارد شده با اطلاعات ثبت‌نام اخیر مطابقت ندارد");
+      return;
+    }
     try {
       setIsLoading(true);
       const response = await fetch(`${baseUrl}/auth/login`, {
@@ -35,6 +45,8 @@ export default function Page() {
         setTimeout(() => {
           router.push("/");
         }, 2500);
+        sessionStorage.removeItem("signupPhone");
+        sessionStorage.removeItem("signupPassword");
       } else {
         toast.error("کاربری با این مشخصات وجود ندارد لطفا ثبت نام کنید");
         setTimeout(() => {

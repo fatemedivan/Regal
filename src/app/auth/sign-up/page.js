@@ -30,6 +30,10 @@ export default function Page() {
       setIsLoading(false);
       console.log(response);
       if (response.ok) {
+        
+        sessionStorage.setItem("signupPhone", phone);
+        sessionStorage.setItem("signupPassword", password);
+
         toast.success("با موفقیت ثبت نام شدید لطفا وارد شوید");
         setTimeout(() => {
           router.push("/auth/login");

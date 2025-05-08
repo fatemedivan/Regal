@@ -9,8 +9,10 @@ export default function ProductSearchItem({
   isMore,
 }) {
   return (
-    <div className="min-w-41.75 lg:min-w-50.5 relative group">
-      <div className={`w-41.75 h-60 lg:w-50.5 lg:h-71 relative object-cover`}>
+    <div className="min-w-41.75 lg:min-w-50.5 relative">
+      <div
+        className={`w-41.75 h-60 lg:w-50.5 lg:h-71 relative object-cover group`}
+      >
         <Image
           width={167}
           height={239}
@@ -33,6 +35,11 @@ export default function ProductSearchItem({
               {offPercent}٪
             </div>
           )}
+        </div>
+        <div className="absolute inset-0 bg-[rgba(0,0,0,0.5)] transition duration-200 ease-in-out rounded-xl opacity-0 group-hover:opacity-100 flex items-center justify-center cursor-pointer">
+          <button className="border border-neutral-gray-8 rounded-lg py-2.5 px-4 text-sm leading-5 text-neutral-gray-3 cursor-pointer lg:px-6">
+            مشاهده جزئیات
+          </button>
         </div>
       </div>
       <div

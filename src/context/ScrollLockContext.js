@@ -16,10 +16,12 @@ export const useScrollLockContext = () => {
 
 export const ScrollLockContextProvider = ({ children }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [mobileOnlyLock, setMobileOnlyLock] = useState(false);
 
-  const isMobile = window.innerWidth <= 1024;
-
+  useEffect(() => {
+    setIsMobile(window.innerWidth <= 1024)
+  }, [isMobile]);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 

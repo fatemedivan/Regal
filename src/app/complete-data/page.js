@@ -42,8 +42,7 @@ export default function Page() {
     closeModal();
   };
 
-  const { isModalOpen, openModal, closeModal, setMobileOnlyLock } =
-    useScrollLockContext();
+  const { isModalOpen, openModal, closeModal, setMobileOnlyLock } = useScrollLockContext();
 
   return (
     <div className="container mx-auto px-5 pt-6 pb-16 lg:pt-0 lg:px-12 lg:pb-22">
@@ -164,7 +163,7 @@ export default function Page() {
                     onClick={() => {
                       setIsShowDateModal(!isShowDateModal);
                       isModalOpen ? closeModal() : openModal();
-                      setMobileOnlyLock(true);
+                      setMobileOnlyLock(true)
                     }}
                     className="px-4 py-3.75 border border-neutral-gray-4 rounded-lg flex justify-between items-center relative cursor-pointer lg:w-1/2"
                   >
@@ -203,7 +202,7 @@ export default function Page() {
                     onClick={() => {
                       setIsShowTimeModal(!isShowTimeModal);
                       isModalOpen ? closeModal() : openModal();
-                      setMobileOnlyLock(true);
+                      setMobileOnlyLock(true)
                     }}
                     className="px-4 py-3.75 border border-neutral-gray-4 rounded-lg flex justify-between items-center relative mt-3 cursor-pointer lg:mt-0 lg:w-1/2 "
                   >

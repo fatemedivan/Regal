@@ -13,15 +13,15 @@ export const useScrollLockContext = () => {
   }
   return context;
 };
-
+//AI
 export const ScrollLockContextProvider = ({ children }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [mobileOnlyLock, setMobileOnlyLock] = useState(false);
 
   useEffect(() => {
-    setIsMobile(window.innerWidth <= 1024)
-  }, [isMobile]);
+    setIsMobile(window.innerWidth <= 1024);
+  }, []);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 

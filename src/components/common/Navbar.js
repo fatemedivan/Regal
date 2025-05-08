@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Search from "@/components/common/Search";
 import Categories from "@/components/common/CategoriesMenu";
 import Link from "next/link";
@@ -15,10 +15,15 @@ export default function Navbar() {
   };
   const handleCloseCategory = () => {
     setIsOpenCategory(false);
-    setIsLockScroll(false)
+    setIsLockScroll(false);
+  };
+  const handleCloseMenu = () => {
+    setIsOpenMenu(false);
+    setIsLockScroll(false);
   };
 
- const { isLockScroll,setIsLockScroll, setMobileOnlyLock } = useScrollLockContext()
+  const { isLockScroll, setIsLockScroll, setMobileOnlyLock } =
+    useScrollLockContext();
 
   return (
     <div>
@@ -35,12 +40,16 @@ export default function Navbar() {
             />
           </Link>
           <ul className="hidden lg:flex justify-between items-center gap-12 px-10 py-2.5 text-neutral-gray-11 bg-neutral-gray-1 border-1 border-neutral-gray-3 rounded-100">
-            <li>
-              <p className="text-sm leading-5 cursor-pointer">صفحه اصلی</p>
-            </li>
+            <Link href={"/"}>
+              <li>
+                <p className="text-sm leading-5 cursor-pointer">صفحه اصلی</p>
+              </li>
+            </Link>
+
             <li
-              onClick={() => {setIsOpenCategory(!isOpenCategory)
-                setIsLockScroll(!isLockScroll)
+              onClick={() => {
+                setIsOpenCategory(!isOpenCategory);
+                setIsLockScroll(!isLockScroll);
               }}
               className="flex justify-center items-center gap-2"
             >
@@ -97,8 +106,8 @@ export default function Navbar() {
                 quality={100}
                 onClick={() => {
                   setIsSearching(true);
-                  setIsLockScroll(true)
-                  setMobileOnlyLock(true)
+                  setIsLockScroll(true);
+                  setMobileOnlyLock(true);
                   setIsOpenCategory(false);
                   setIsOpenMenu(false);
                 }}
@@ -109,10 +118,10 @@ export default function Navbar() {
                 className="p-3.5"
                 onClick={(e) => {
                   setIsOpenMenu(false);
-                  setIsSearching(false)
+                  setIsSearching(false);
                   setIsOpenCategory(false);
-                  setIsLockScroll(false)
-                  setMobileOnlyLock(false)
+                  setIsLockScroll(false);
+                  setMobileOnlyLock(false);
                 }}
               >
                 <Image
@@ -129,7 +138,7 @@ export default function Navbar() {
                 className="p-3.5"
                 onClick={() => {
                   setIsOpenMenu(true);
-                  setIsLockScroll(true)
+                  setIsLockScroll(true);
                 }}
               >
                 <Image
@@ -171,7 +180,7 @@ export default function Navbar() {
                 />
               </li>
             </Link>
-            <Link href={'/user/favorites'}>
+            <Link href={"/user/favorites"}>
               <li className="p-3">
                 <Image
                   className="cursor-pointer"
@@ -202,25 +211,34 @@ export default function Navbar() {
         <>
           <div
             className="fixed inset-0 bg-[#1E1E1E] opacity-50 z-40"
-            onClick={() => {setIsOpenMenu(false)
-              setIsLockScroll(false)
+            onClick={() => {
+              setIsOpenMenu(false);
+              setIsLockScroll(false);
             }}
           />
           <div className="fixed top-21.25 left-0 right-0  w-full bg-white px-5 pt-6 pb-10 text-neutral-gray-13 lg:hidden z-50">
-            <div className="flex justify-between items-center pb-4 border-b-1 border-neutral-gray-4 cursor-pointer">
-              <p className="text-sm leading-5">صفحه اصلی</p>
-              <Image
-                width={16}
-                height={16}
-                src="/img/arrow-left-3.svg"
-                alt=""
-                quality={100}
-              />
-            </div>
+            <Link href={"/"}>
+              <div
+                onClick={() => {
+                  setIsOpenMenu(false);
+                  setIsLockScroll(false);
+                }}
+                className="flex justify-between items-center pb-4 border-b-1 border-neutral-gray-4 cursor-pointer"
+              >
+                <p className="text-sm leading-5">صفحه اصلی</p>
+                <Image
+                  width={16}
+                  height={16}
+                  src="/img/arrow-left-3.svg"
+                  alt=""
+                  quality={100}
+                />
+              </div>
+            </Link>
             <div
               onClick={() => {
                 setIsOpenCategory(true);
-                setIsLockScroll(true)
+                setIsLockScroll(true);
               }}
               className="flex justify-between items-center pb-4 mt-4 border-b-1 border-neutral-gray-4 cursor-pointer"
             >
@@ -243,22 +261,33 @@ export default function Navbar() {
                 quality={100}
               />
             </div>
-            <div className="flex justify-between items-center mt-4 cursor-pointer">
-              <p className="text-sm leading-5">درباره ما</p>
-              <Image
-                width={16}
-                height={16}
-                src="/img/arrow-left-3.svg"
-                alt=""
-                quality={100}
-              />
-            </div>
+            <Link href={"/cart"}>
+              <div
+                onClick={() => {
+                  setIsOpenMenu(false);
+                  setIsLockScroll(false);
+                }}
+                className="flex justify-between items-center mt-4 cursor-pointer"
+              >
+                <p className="text-sm leading-5">سبد خرید</p>
+                <Image
+                  width={16}
+                  height={16}
+                  src="/img/arrow-left-3.svg"
+                  alt=""
+                  quality={100}
+                />
+              </div>
+            </Link>
           </div>
         </>
       )}
       {isSearching && <Search handleCloseSearch={handleCloseSearch} />}
       {isOpenCategory && (
-        <Categories handleCloseCategory={handleCloseCategory} />
+        <Categories
+          handleCloseCategory={handleCloseCategory}
+          handleCloseMenu={handleCloseMenu}
+        />
       )}
     </div>
   );

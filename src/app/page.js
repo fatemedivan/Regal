@@ -2,6 +2,7 @@ import Articles from "@/components/home/Articles";
 import Comments from "@/components/home/Comments";
 import OffProducts from "@/components/home/OffProducts";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -57,16 +58,18 @@ export default function Home() {
               </div>
             </div>
             <div className="flex items-center mt-6 mb-8 md:my-8">
-              <button className="ml-6.25 text-sm leading-5 rounded-lg bg-cognac-primery text-white flex justify-center items-center py-2.5 gap-2 px-15 md:py-3.25 md:px-6 md:text-[1rem] lg:leading-5.5 cursor-pointer">
-                مشاهده کالکشن‌ها
-                <Image
-                  width={16}
-                  height={16}
-                  quality={100}
-                  src="/img/arrow-left2.svg"
-                  alt=""
-                />
-              </button>
+              <Link href={"/products"}>
+                <button className="ml-6.25 text-sm leading-5 rounded-lg bg-cognac-primery text-white flex justify-center items-center py-2.5 gap-2 px-15 md:py-3.25 md:px-6 md:text-[1rem] lg:leading-5.5 cursor-pointer">
+                  مشاهده کالکشن‌ها
+                  <Image
+                    width={16}
+                    height={16}
+                    quality={100}
+                    src="/img/arrow-left2.svg"
+                    alt=""
+                  />
+                </button>
+              </Link>
               <Image
                 width={45}
                 height={80}

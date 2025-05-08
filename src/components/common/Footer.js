@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 export default function Footer() {
@@ -22,9 +23,9 @@ export default function Footer() {
             <input
               type="text"
               placeholder="ایمیل خود را وارد کنید..."
-              className="rounded-lg text-neutral-gray-3 border-1 border-neutral-gray-8 pr-6 py-3.5"
+              className="rounded-lg placeholder:text-neutral-gray-3 placeholder:text-sm placeholder:leading-5 border-1 border-neutral-gray-8 pr-6 py-3.5"
             />
-            <button className="px-6 py-3.25 border-1 border-neutral-gray8 text-neutral-gray-3 rounded-[10px] flex justify-center items-center">
+            <button className="px-6 py-3.25 border-1 border-neutral-gray-8 text-neutral-gray-3 rounded-[10px] flex justify-center items-center">
               عضویت
             </button>
           </div>
@@ -50,19 +51,19 @@ export default function Footer() {
                 <h5 className="leading-5 font-semibold">دسته محصولات</h5>
               </li>
               <li className="px-4 py-2.5 text-neutral-gray-3 leading-6 text-sm">
-                <a href="">پیراهن کوتاه</a>
+                <Link href={"/products"}>پیراهن کوتاه</Link>
               </li>
               <li className="px-4 py-2.5 text-neutral-gray-3 leading-6 text-sm">
-                <a href="">شومیز و دامن</a>
+                <Link href={"/products"}>شومیز و دامن</Link>
               </li>
               <li className="px-4 py-2.5 text-neutral-gray-3 leading-6 text-sm">
-                <a href="">شلوار</a>
+                <Link href={"/products"}>شلوار</Link>
               </li>
               <li className="px-4 py-2.5 text-neutral-gray-3 leading-6 text-sm">
-                <a href="">سرهمی</a>
+                <Link href={"/products"}>سرهمی</Link>
               </li>
               <li className="px-4 py-2.5 text-neutral-gray-3 leading-6 text-sm">
-                <a href="">کت و ترنچ کت</a>
+                <Link href={"/products"}>کت و ترنچ کت</Link>
               </li>
             </ul>
           </div>
@@ -176,7 +177,7 @@ export default function Footer() {
                 <input
                   type="text"
                   placeholder="ایمیل خود را وارد کنید..."
-                  className="rounded-lg text-neutral-gray-3 border-1 border-neutral-gray-8 pr-6 pl-22 py-3.5"
+                  className="rounded-lg placeholder:text-neutral-gray-3 placeholder:text-sm placeholder:leading-5 border-1 border-neutral-gray-8 pr-6 pl-22 py-3.5"
                 />
                 <button className="px-6 py-3.25 border-1 border-neutral-gray-8 text-neutral-gray-3 rounded-[10px] text-center leading-5.5">
                   عضویت
@@ -222,19 +223,19 @@ export default function Footer() {
                   </h5>
                 </li>
                 <li className="py-2.5 text-neutral-gray-3 leading-6 text-sm">
-                  <a href="">پیراهن کوتاه</a>
+                  <Link href={"/products"}>پیراهن کوتاه</Link>
                 </li>
                 <li className="py-2.5 text-neutral-gray-3 leading-6 text-sm">
-                  <a href="">شومیز و دامن</a>
+                  <Link href={"/products"}>شومیز و دامن</Link>
                 </li>
                 <li className="py-2.5 text-neutral-gray-3 leading-6 text-sm">
-                  <a href="">شلوار</a>
+                  <Link href={"/products"}>شلوار</Link>
                 </li>
                 <li className="py-2.5 text-neutral-gray-3 leading-6 text-sm">
-                  <a href="">سرهمی</a>
+                  <Link href={"/products"}>سرهمی</Link>
                 </li>
                 <li className="py-2.5 text-neutral-gray-3 leading-6 text-sm">
-                  <a href="">کت و ترنچ کت</a>
+                  <Link href={"/products"}>کت و ترنچ کت</Link>
                 </li>
               </ul>
               <ul>

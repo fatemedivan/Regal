@@ -1,7 +1,11 @@
 import Image from "next/image";
+import Link from "next/link";
 import React, { useState } from "react";
 
-export default function CategoriesMenu({ handleCloseCategory }) {
+export default function CategoriesMenu({
+  handleCloseCategory,
+  handleCloseMenu,
+}) {
   const [data, setData] = useState([
     {
       id: 1,
@@ -95,13 +99,21 @@ export default function CategoriesMenu({ handleCloseCategory }) {
               </li>
               {item.isOpen && (
                 <ul className="mb-6 text-neutral-gray-11 transition-all ease-in-out duration-300">
-                  {item.options.map((option, index) => (
-                    <li key={index}>
-                      <p className="px-4 py-2.5 text-sm leading-5 cursor-pointer">
-                        {option}
-                      </p>
-                    </li>
-                  ))}
+                  <Link href={"/products"}>
+                    {item.options.map((option, index) => (
+                      <li
+                        onClick={() => {
+                          handleCloseCategory();
+                          handleCloseMenu();
+                        }}
+                        key={index}
+                      >
+                        <p className="px-4 py-2.5 text-sm leading-5 cursor-pointer">
+                          {option}
+                        </p>
+                      </li>
+                    ))}
+                  </Link>
                 </ul>
               )}
             </div>
@@ -111,12 +123,14 @@ export default function CategoriesMenu({ handleCloseCategory }) {
           <div>
             <div className="flex gap-7 mb-6">
               <ul>
-                <li className="flex items-center gap-2.5">
-                  <div className="w-1.5 h-1.5 rounded-100 bg-cognac-primery"></div>
-                  <p className="leading-7 text-neutral-gray-13 text-nowrap cursor-pointer">
-                    پیراهن کوتاه
-                  </p>
-                </li>
+                <Link href={"/products"}>
+                  <li onClick={()=> handleCloseCategory()} className="flex items-center gap-2.5">
+                    <div className="w-1.5 h-1.5 rounded-100 bg-cognac-primery"></div>
+                    <p className="leading-7 text-neutral-gray-13 text-nowrap cursor-pointer">
+                      پیراهن کوتاه
+                    </p>
+                  </li>
+                </Link>
                 <li className="cursor-pointer">
                   <p className="leading-5 text-sm text-neutral-gray-11 px-4 py-2.5">
                     مجلسی
@@ -139,12 +153,14 @@ export default function CategoriesMenu({ handleCloseCategory }) {
                 </li>
               </ul>
               <ul>
-                <li className="flex items-center gap-2.5">
-                  <div className="w-1.5 h-1.5 rounded-100 bg-cognac-primery"></div>
-                  <p className="leading-7 text-neutral-gray-13 cursor-pointer">
-                    شلوار
-                  </p>
-                </li>
+                <Link href={"/products"}>
+                  <li onClick={()=> handleCloseCategory()} className="flex items-center gap-2.5">
+                    <div className="w-1.5 h-1.5 rounded-100 bg-cognac-primery"></div>
+                    <p className="leading-7 text-neutral-gray-13 cursor-pointer">
+                      شلوار
+                    </p>
+                  </li>
+                </Link>
                 <li className="cursor-pointer">
                   <p className="leading-5 text-sm text-neutral-gray-11 px-4 py-2.5">
                     کلاسیک
@@ -167,12 +183,14 @@ export default function CategoriesMenu({ handleCloseCategory }) {
                 </li>
               </ul>
               <ul>
-                <li className="flex items-center gap-2.5">
-                  <div className="w-1.5 h-1.5 rounded-100 bg-cognac-primery"></div>
-                  <p className="leading-7 text-neutral-gray-13 text-nowrap cursor-pointer">
-                    کت و جلیقه
-                  </p>
-                </li>
+                <Link href={"/products"}>
+                  <li onClick={()=> handleCloseCategory()} className="flex items-center gap-2.5">
+                    <div className="w-1.5 h-1.5 rounded-100 bg-cognac-primery"></div>
+                    <p className="leading-7 text-neutral-gray-13 text-nowrap cursor-pointer">
+                      کت و جلیقه
+                    </p>
+                  </li>
+                </Link>
                 <li className="cursor-pointer">
                   <p className="leading-5 text-sm text-neutral-gray-11 px-4 py-2.5">
                     جین
@@ -190,12 +208,14 @@ export default function CategoriesMenu({ handleCloseCategory }) {
                 </li>
               </ul>
               <ul>
-                <li className="flex items-center gap-2.5">
-                  <div className="w-1.5 h-1.5 rounded-100 bg-cognac-primery"></div>
-                  <p className="leading-7 text-neutral-gray-13 text-nowrap cursor-pointer">
-                    تاپ و کراپ
-                  </p>
-                </li>
+                <Link href={"/products"}>
+                  <li onClick={()=> handleCloseCategory()} className="flex items-center gap-2.5">
+                    <div className="w-1.5 h-1.5 rounded-100 bg-cognac-primery"></div>
+                    <p className="leading-7 text-neutral-gray-13 text-nowrap cursor-pointer">
+                      تاپ و کراپ
+                    </p>
+                  </li>
+                </Link>
                 <li className="cursor-pointer">
                   <p className="leading-5 text-sm text-neutral-gray-11 px-4 py-2.5">
                     جلو زیپ
@@ -220,12 +240,14 @@ export default function CategoriesMenu({ handleCloseCategory }) {
             </div>
             <div className="flex gap-7">
               <ul>
-                <li className="flex items-center gap-2.5">
-                  <div className="w-1.5 h-1.5 rounded-100 bg-cognac-primery"></div>
-                  <p className="leading-7 text-neutral-gray-13 cursor-pointer">
-                    سرهمی
-                  </p>
-                </li>
+                <Link href={"/products"}>
+                  <li onClick={()=> handleCloseCategory()} className="flex items-center gap-2.5">
+                    <div className="w-1.5 h-1.5 rounded-100 bg-cognac-primery"></div>
+                    <p className="leading-7 text-neutral-gray-13 cursor-pointer">
+                      سرهمی
+                    </p>
+                  </li>
+                </Link>
                 <li className="cursor-pointer">
                   <p className="leading-5 text-sm text-neutral-gray-11 px-4 py-2.5">
                     جین
@@ -243,12 +265,14 @@ export default function CategoriesMenu({ handleCloseCategory }) {
                 </li>
               </ul>
               <ul>
-                <li className="flex items-center gap-2.5">
-                  <div className="w-1.5 h-1.5 rounded-100 bg-cognac-primery"></div>
-                  <p className="leading-7 text-neutral-gray-13 text-nowrap cursor-pointer">
-                    شومیز و بلوز
-                  </p>
-                </li>
+                <Link href={"/products"}>
+                  <li onClick={()=> handleCloseCategory()} className="flex items-center gap-2.5">
+                    <div className="w-1.5 h-1.5 rounded-100 bg-cognac-primery"></div>
+                    <p className="leading-7 text-neutral-gray-13 text-nowrap cursor-pointer">
+                      شومیز و بلوز
+                    </p>
+                  </li>
+                </Link>
                 <li className="cursor-pointer">
                   <p className="leading-5 text-sm text-neutral-gray-11 px-4 py-2.5">
                     بافت
@@ -271,12 +295,14 @@ export default function CategoriesMenu({ handleCloseCategory }) {
                 </li>
               </ul>
               <ul>
-                <li className="flex items-center gap-2.5">
-                  <div className="w-1.5 h-1.5 rounded-100 bg-cognac-primery"></div>
-                  <p className="leading-7 text-neutral-gray-13 text-nowrap cursor-pointer">
-                    ترنچ کت و پالتو
-                  </p>
-                </li>
+                <Link href={"/products"}>
+                  <li onClick={()=> handleCloseCategory()} className="flex items-center gap-2.5">
+                    <div className="w-1.5 h-1.5 rounded-100 bg-cognac-primery"></div>
+                    <p className="leading-7 text-neutral-gray-13 text-nowrap cursor-pointer">
+                      ترنچ کت و پالتو
+                    </p>
+                  </li>
+                </Link>
                 <li className="cursor-pointer">
                   <p className="leading-5 text-sm text-neutral-gray-11 px-4 py-2.5">
                     کلاه‌دار
@@ -299,12 +325,14 @@ export default function CategoriesMenu({ handleCloseCategory }) {
                 </li>
               </ul>
               <ul>
-                <li className="flex items-center gap-2.5">
-                  <div className="w-1.5 h-1.5 rounded-100 bg-cognac-primery"></div>
-                  <p className="leading-7 text-neutral-gray-13 cursor-pointer">
-                    دامن
-                  </p>
-                </li>
+                <Link href={"/products"}>
+                  <li onClick={()=> handleCloseCategory()} className="flex items-center gap-2.5">
+                    <div className="w-1.5 h-1.5 rounded-100 bg-cognac-primery"></div>
+                    <p className="leading-7 text-neutral-gray-13 cursor-pointer">
+                      دامن
+                    </p>
+                  </li>
+                </Link>
                 <li className="cursor-pointer">
                   <p className="leading-5 text-sm text-neutral-gray-11 px-4 py-2.5">
                     راسته
@@ -328,25 +356,31 @@ export default function CategoriesMenu({ handleCloseCategory }) {
               دسته‌بندی‌های پربازدید
             </p>
             <div className="flex gap-6 items-center mt-3 mb-12">
-              <div className="relative w-65 h-96">
-                <Image src="/img/category-desktop-9.png" alt="" fill />
-                <h5 className="absolute bottom-4 right-3.75 text-white font-bold text-[21px] leading-6.5">
-                  پیراهن کوتاه
-                </h5>
-              </div>
+              <Link href={"/products"}>
+                <div onClick={()=> handleCloseCategory()} className="relative w-65 h-96 cursor-pointer">
+                  <Image src="/img/category-desktop-9.png" alt="" fill />
+                  <h5 className="absolute bottom-4 right-3.75 text-white font-bold text-[21px] leading-6.5">
+                    پیراهن کوتاه
+                  </h5>
+                </div>
+              </Link>
               <div>
-                <div className="relative w-65 h-45">
-                  <Image src="/img/category-desktop-10.png" alt="" fill />
-                  <h5 className="absolute bottom-4 right-3.75 z-20 text-white font-bold text-[21px] leading-6.5">
-                    کت و جلیقه
-                  </h5>
-                </div>
-                <div className="relative mt-6 w-65 h-45">
-                  <Image src="/img/category-desktop-11.png" alt="" fill />
-                  <h5 className="absolute bottom-4 right-3.75 z-20 text-white font-bold text-[21px] leading-6.5">
-                    تاپ و کراپ
-                  </h5>
-                </div>
+                <Link href={"/products"}>
+                  <div onClick={()=> handleCloseCategory()} className="relative w-65 h-45 cursor-pointer">
+                    <Image src="/img/category-desktop-10.png" alt="" fill />
+                    <h5 className="absolute bottom-4 right-3.75 z-20 text-white font-bold text-[21px] leading-6.5">
+                      کت و جلیقه
+                    </h5>
+                  </div>
+                </Link>
+                <Link href={"/products"}>
+                  <div onClick={()=> handleCloseCategory()} className="relative mt-6 w-65 h-45 cursor-pointer">
+                    <Image src="/img/category-desktop-11.png" alt="" fill />
+                    <h5 className="absolute bottom-4 right-3.75 z-20 text-white font-bold text-[21px] leading-6.5">
+                      تاپ و کراپ
+                    </h5>
+                  </div>
+                </Link>
               </div>
             </div>
           </div>

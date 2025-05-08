@@ -6,6 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Page() {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL; 
   const router = useRouter();
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
@@ -21,7 +22,7 @@ export default function Page() {
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch("https://regal-api.vercel.app/auth/login", {
+      const response = await fetch(`${baseUrl}/auth/login`, {
         method: "POST",
         body: JSON.stringify({ "phoneNumber": phone, "password": password }),
         headers: { "Content-Type": "application/json" },

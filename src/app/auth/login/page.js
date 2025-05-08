@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -47,9 +47,7 @@ export default function Page() {
       toast.error("خطایی رخ داد");
     }
   };
-useEffect(()=>{
-  toast.success('hello')
-},[])
+
   return (
     <div className="lg:flex">
       <div className="container mx-auto pt-16 px-5 pb-6 lg:px-12 lg:pt-12 lg:pb-29.5 lg:w-[55%]">

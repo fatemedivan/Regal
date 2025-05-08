@@ -18,7 +18,7 @@ export default function Navbar() {
     setIsLockScroll(false)
   };
 
- const { isLockScroll,setIsLockScroll } = useScrollLockContext()
+ const { isLockScroll,setIsLockScroll, setMobileOnlyLock } = useScrollLockContext()
 
   return (
     <div>
@@ -97,19 +97,22 @@ export default function Navbar() {
                 quality={100}
                 onClick={() => {
                   setIsSearching(true);
-                  
+                  setIsLockScroll(true)
+                  setMobileOnlyLock(true)
                   setIsOpenCategory(false);
                   setIsOpenMenu(false);
                 }}
               />
             </li>
-            {isOpenMenu ? (
+            {isOpenMenu || isSearching ? (
               <li
                 className="p-3.5"
                 onClick={(e) => {
                   setIsOpenMenu(false);
+                  setIsSearching(false)
                   setIsOpenCategory(false);
                   setIsLockScroll(false)
+                  setMobileOnlyLock(false)
                 }}
               >
                 <Image
@@ -151,7 +154,6 @@ export default function Navbar() {
                 quality={100}
                 onClick={(e) => {
                   setIsSearching(true);
-                 
                   setIsOpenCategory(false);
                   setIsOpenMenu(false);
                 }}

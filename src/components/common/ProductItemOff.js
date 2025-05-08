@@ -36,6 +36,9 @@ export default function ProductItemOff({
             </div>
           )}
         </div>
+        <div className="absolute inset-0 bg-[rgba(0,0,0,0.5)] transition duration-200 ease-in-out rounded-xl opacity-0 group-hover:opacity-100 flex items-center justify-center cursor-pointer">
+          <button className="border border-neutral-gray-8 rounded-lg py-2.5 px-4 text-sm leading-5 text-neutral-gray-3 cursor-pointer lg:px-14">مشاهده جزئیات</button>
+        </div>
       </div>
       <div
         className={`lg:flex lg:justify-between lg:items-center lg:mt-3 lg:mb-2 lg:max-w-79.5`}

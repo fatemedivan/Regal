@@ -43,9 +43,17 @@ export default function Search({ handleCloseSearch }) {
             },
           },
           480: {
-            perView: 1.5,
+            perView: 2,
             gap: 12,
+            peek: {
+              before: 0,
+              after: 20,
+            },
           },
+          380:{
+            perView: 1.5,
+            gap: 12
+          }
         },
       });
 
@@ -61,14 +69,6 @@ export default function Search({ handleCloseSearch }) {
 
       <div className="py-6 absolute top-21 left-0 right-0 z-50 w-full bg-white">
         <div className="container mx-auto">
-          <div className="flex items-center justify-end lg:mx-12.5">
-            <img
-              onClick={() => handleCloseSearch()}
-              className="ml-5 mb-5 cursor-pointer"
-              src="/img/Close Icon.svg"
-              alt=""
-            />
-          </div>
           <div
             className={`ralative mx-5 mb-6 px-4 py-3.75 flex items-center gap-1 rounded-lg border lg:mx-40.5 ${
               isSearching ? "border-neutral-gray-11" : "border-neutral-gray-4"

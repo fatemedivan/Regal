@@ -15,13 +15,13 @@ export default function Page() {
 
   const handleCloseFilter = () => {
     setIsOpenFilterMenu(false);
-    setIsLockScroll(false);
+    closeModal()
   };
   const handleCloseSort = () => {
     setIsOpenSort(false);
-    setIsLockScroll(false);
+    closeModal()
   };
-  const { isLockScroll, setIsLockScroll } = useScrollLockContext();
+  const { isModalOpen, openModal, closeModal } = useScrollLockContext();
   return (
     <>
       <Breadcrumb />
@@ -61,7 +61,7 @@ export default function Page() {
                 <div
                   onClick={() => {
                     setIsOpenFilterMenu(true);
-                    setIsLockScroll(true);
+                    openModal(true)
                   }}
                   className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer"
                 >
@@ -70,7 +70,7 @@ export default function Page() {
                 <div
                   onClick={() => {
                     setIsOpenSort(true);
-                    setIsLockScroll(true);
+                    openModal()
                   }}
                   className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer"
                 >
@@ -189,7 +189,7 @@ export default function Page() {
                             key={option}
                             onClick={() => {
                               setSelectedOption(option);
-                              setIsOpenSort(false);
+                              closeModal()
                             }}
                             className="px-4 py-2 hover:bg-neutral-gray-2 cursor-pointer text-xs leading-4.5 text-neutral-gray-7"
                           >

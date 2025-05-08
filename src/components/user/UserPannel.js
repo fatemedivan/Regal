@@ -20,25 +20,25 @@ export default function UserPannel({ children, rout, isHadAddress }) {
 
   const handleCloseAddAddressModal = () => {
     setIsOpenAddAddressModal(false);
-    setIsLockScroll(false)
+    openModal()
   };
   const handleOpenDetailsModal = () => {
     setIsOpenDetailsModal(true);
-    setIsLockScroll(true)
+   openModal()
   };
   const handleCloseDetailsModal = () => {
     setIsOpenDetailsModal(false);
-    setIsLockScroll(false)
+    closeModal()
   };
 
   const handleCloseLogoutModal = () => {
     setIsOpenLogoutModal(false);
-    setIsLockScroll(false)
+    closeModal()
   };
   const handleLogout = () => {
     console.log("you loged out");
     setIsOpenLogoutModal(false);
-    setIsLockScroll(false)
+   closeModal()
   };
   const orderTypes = [
     { label: "همه", value: "all" },
@@ -46,7 +46,7 @@ export default function UserPannel({ children, rout, isHadAddress }) {
     { label: "تحویل شده", value: "delivered" },
     { label: "مرجوع شده", value: "returned" },
   ];
-   const { isLockScroll,setIsLockScroll } = useScrollLockContext();
+   const { isModalOpen, openModal, closeModal } = useScrollLockContext();
   return (
     <div className="container mx-auto pt-8 px-5 pb-66.5 lg:px-12 lg:pt-12 lg:pb-22 lg:flex lg:gap-4">
       <div className="xl:min-w-79.5">
@@ -172,7 +172,7 @@ export default function UserPannel({ children, rout, isHadAddress }) {
           </Link>
           <div
             onClick={() => {setIsOpenLogoutModal(true)
-              setIsLockScroll(true)
+              openModal()
             }}
             className="flex items-center gap-2 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:mb-0  lg:rounded-lg lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer"
           >
@@ -316,7 +316,7 @@ export default function UserPannel({ children, rout, isHadAddress }) {
             <div>
               {isHadAddress && (
                 <div onClick={()=> {setIsOpenAddAddressModal(true)
-                  setIsLockScroll(true)
+                  openModal()
                 }} className="flex items-center gap-2 px-6 py-3.25 cursor-pointer">
                   <Image
                     width={20}

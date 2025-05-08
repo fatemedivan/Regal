@@ -35,14 +35,15 @@ export default function Page() {
   const [mainTime, setMainTime] = useState("ساعت ۹ تا ۱۲");
   const handleCloseDateModal = () => {
     setIsShowDateModal(false);
-    setIsLockScroll(false);
+    closeModal();
   };
   const handleCloseTimeModal = () => {
     setIsShowTimeModal(false);
-    setIsLockScroll(false);
+    closeModal();
   };
 
-  const { isLockScroll,setIsLockScroll, setMobileOnlyLock } = useScrollLockContext();
+  const { isModalOpen, openModal, closeModal, setMobileOnlyLock } =
+    useScrollLockContext();
 
   return (
     <div className="container mx-auto px-5 pt-6 pb-16 lg:pt-0 lg:px-12 lg:pb-22">
@@ -162,8 +163,8 @@ export default function Page() {
                   <div
                     onClick={() => {
                       setIsShowDateModal(!isShowDateModal);
-                      setIsLockScroll(!isLockScroll)
-                      setMobileOnlyLock(true)
+                      isModalOpen ? closeModal() : openModal();
+                      setMobileOnlyLock(true);
                     }}
                     className="px-4 py-3.75 border border-neutral-gray-4 rounded-lg flex justify-between items-center relative cursor-pointer lg:w-1/2"
                   >
@@ -201,8 +202,8 @@ export default function Page() {
                   <div
                     onClick={() => {
                       setIsShowTimeModal(!isShowTimeModal);
-                      setIsLockScroll(!isLockScroll)
-                      setMobileOnlyLock(true)
+                      isModalOpen ? closeModal() : openModal();
+                      setMobileOnlyLock(true);
                     }}
                     className="px-4 py-3.75 border border-neutral-gray-4 rounded-lg flex justify-between items-center relative mt-3 cursor-pointer lg:mt-0 lg:w-1/2 "
                   >

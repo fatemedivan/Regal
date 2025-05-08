@@ -13,27 +13,27 @@ export default function AdressCard({ isActive }) {
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
   const handleCloseDeleteModal = () => {
     setIsOpenDeleteModal(false);
-    setIsLockScroll(false)
+    closeModal()
   };
   const handleDeleteAddress = () => {
     console.log("removed");
     setIsOpenDeleteModal(false);
-    setIsLockScroll(false)
+    closeModal()
   };
 
   const handleCloseAddAddressModal = () => {
     setIsOpenAddAddressModal(false);
-    setIsLockScroll(false)
+    closeModal()
   };
   const handleOpenDetailsModal = () => {
     setIsOpenDetailsModal(true);
-    setIsLockScroll(true)
+    openModal()
   };
   const handleCloseDetailsModal = () => {
     setIsOpenDetailsModal(false);
-    setIsLockScroll(false)
+    closeModal()
   };
-   const { isLockScroll,setIsLockScroll } = useScrollLockContext();
+   const { isModalOpen, openModal, closeModal } = useScrollLockContext();
   return (
     <div
       className={`border ${
@@ -52,7 +52,7 @@ export default function AdressCard({ isActive }) {
             width={16}
             height={16}
             onClick={() => {setIsOpenDeleteModal(true)
-              setIsLockScroll(true)
+              openModal()
             }}
             className="cursor-pointer lg:w-6 lg:h-6"
             src="/img/trash-3.svg"
@@ -61,7 +61,7 @@ export default function AdressCard({ isActive }) {
 
           <Image
             onClick={() => {setIsOpenDetailsModal(true)
-              setIsLockScroll(true)
+              openModal()
             }}
             width={24}
             height={24}

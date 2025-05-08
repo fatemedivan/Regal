@@ -15,25 +15,27 @@ export const useScrollLockContext = () => {
 };
 
 export const ScrollLockContextProvider = ({ children }) => {
-  const [isLockScroll, setIsLockScroll] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [mobileOnlyLock, setMobileOnlyLock] = useState(false);
-  useEffect(() => {
-    const isMobile = window.innerWidth <= 1024;
 
-    if (isLockScroll && (!mobileOnlyLock || (mobileOnlyLock && isMobile))) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+  const isMobile = window.innerWidth <= 1024;
 
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isLockScroll]);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   return (
-    <ScrollLockContext.Provider value={{ isLockScroll, setIsLockScroll, mobileOnlyLock, setMobileOnlyLock }}>
-      {children}
+    <ScrollLockContext.Provider
+      value={{ isModalOpen, openModal, closeModal, setMobileOnlyLock }}
+    >
+      <body
+        className={`font-yekan-bakh font-normal ${
+          isModalOpen && (!mobileOnlyLock || (mobileOnlyLock && isMobile))
+            ? "overflow-y-hidden"
+            : ""
+        }`}
+      >
+        {children}
+      </body>
     </ScrollLockContext.Provider>
   );
 };

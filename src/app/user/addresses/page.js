@@ -14,7 +14,6 @@ export default function Page() {
   const [isHadAddress, setIsHadAddress] = useState(true);
   const [isOpenAddAddressModal, setIsOpenAddAddressModal] = useState(false);
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
-  console.log(isOpenDetailsModal);
 
   const handleCloseAddAddressModal = () => {
     setIsOpenAddAddressModal(false);

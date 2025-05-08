@@ -11,14 +11,14 @@ export default function BasketDetails({ step }) {
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const handleCloseDetailsModal = () => {
     setIsOpenDetailsModal(false);
-    setIsLockScroll(false);
+    closeModal()
   };
   const handleCloseDeleteModal = () => {
     setIsOpenDeleteModal(false);
-    setIsLockScroll(false);
+    closeModal()
   };
   
-  const { isLockScroll, setIsLockScroll } = useScrollLockContext();
+  const { isModalOpen, openModal, closeModal } = useScrollLockContext();
   return (
     <>
       <div className="mt-8 lg:border lg:border-neutral-gray-4 lg:rounded-2xl lg:p-8 lg:mt-0 mb-auto lg:max-w-108">
@@ -32,7 +32,7 @@ export default function BasketDetails({ step }) {
               height={24}
               onClick={() => {
                 setIsOpenDeleteModal(true);
-                setIsLockScroll(true);
+                openModal()
               }}
               className="cursor-pointer"
               src="/img/trash-2.svg"
@@ -81,7 +81,7 @@ export default function BasketDetails({ step }) {
                 className="flex gap-2 items-center lg:hidden"
                 onClick={() => {
                   setIsOpenDetailsModal(true);
-                  setIsLockScroll(true);
+                  openModal()
                 }}
               >
                 <p className="text-cognac-primery text-sm leading-5 cursor-pointer">

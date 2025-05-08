@@ -43,13 +43,13 @@ export default function Page() {
   ]);
   const handleCloseDeleteModal = () => {
     setIsOpenDeleteModal(false);
-    setIsLockScroll(false)
+    closeModal()
   };
   const handleDeleteBasket = () => {
     setBasketItems([]);
     setIsOpenDeleteModal(false);
   };
-  const { setIsLockScroll } = useScrollLockContext()
+  const { isModalOpen, openModal, closeModal } = useScrollLockContext()
  
   return (
     <div className="container mx-auto px-5 mb-22 lg:px-12">
@@ -73,7 +73,7 @@ export default function Page() {
           alt=""
           onClick={() => {
             setIsOpenDeleteModal(true)
-            setIsLockScroll(true)
+            openModal()
           }}
         />
       </div>

@@ -11,9 +11,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" dir="rtl">
-      <body className="font-yekan-bakh font-normal">
-        <Layout>{children}</Layout>
-      </body>
+      <Layout>{children}</Layout>
     </html>
   );
 }

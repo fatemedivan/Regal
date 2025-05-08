@@ -19,7 +19,7 @@ export default function Page() {
     { label: "تحویل شده", value: "delivered" },
     { label: "مرجوع شده", value: "returned" },
   ];
-    const { isLockScroll,setIsLockScroll } = useScrollLockContext();
+    const { isModalOpen, openModal, closeModal } = useScrollLockContext();
 
   return (
     <>
@@ -41,7 +41,7 @@ export default function Page() {
 
         <div
           onClick={() => {setIsOpenTypeOrder(!isOpenTypeOrder)
-            setIsLockScroll(!isLockScroll)
+            isModalOpen ? closeModal() : openModal()
           }}
           className="relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg mb-4 flex items-center justify-between cursor-pointer"
         >
@@ -146,7 +146,7 @@ export default function Page() {
           <div
             className="fixed inset-0 bg-[#1E1E1E] opacity-50 z-50"
             onClick={() => {setIsOpenTypeOrder(false)
-              setIsLockScroll(false)
+              closeModal()
             }}
           />
           <div className="bg-white fixed bottom-0 left-0 right-0 z-60 w-full rounded-tr-3xl rounded-tl-3xl px-5 pt-4 pb-6">
@@ -159,7 +159,7 @@ export default function Page() {
                 className="cursor-pointer lg:w-6 lg:h-6"
                 alt=""
                 onClick={() => {setIsOpenTypeOrder(false)
-                  setIsLockScroll(false)
+                  closeModal()
                 }}
               />
             </div>

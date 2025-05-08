@@ -119,3 +119,6 @@ input[type="range"]::-moz-range-thumb {
   position: relative;
   z-index: 2;
 }
+.Toastify__toast{
+  font-family: 'yekan bakh' !important;
+}

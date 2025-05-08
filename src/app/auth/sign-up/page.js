@@ -1,10 +1,52 @@
+"use client";
 import Image from "next/image";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
-export default function page() {
+export default function Page() {
+  const router = useRouter();
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [isFocusedPhone, setIsFocusePhone] = useState(false);
+  const [isFocusedPassword, setIsFocusePassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const phoneRegex = /^9\d{9}$/;
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,32}$/;
+
+  const isValidPhone = phoneRegex.test(phone);
+  const isValidPassword = passwordRegex.test(password);
+
+  const handleSubmit = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch("https://regal-api.vercel.app/auth/signup", {
+        method: "POST",
+        body: JSON.stringify({ "phoneNumber": phone, "password": password }),
+        headers: { "Content-Type": "application/json" },
+      });
+      setIsLoading(false);
+      console.log(response);
+      if (response.ok) {
+        toast.success("با موفقیت ثبت نام شدید لطفا وارد شوید");
+        setTimeout(() => {
+          router.push("/auth/login");
+        }, 2500);
+      } else {
+        toast.error("ثبت نام با خطا مواجه شد لطفا دوباره امتحان کنید");
+      }
+    } catch (err) {
+      console.log("error", err);
+      setIsLoading(false);
+      toast.error("خطایی رخ داد");
+    }
+  };
+
   return (
     <div className="lg:flex">
       <div className="container mx-auto pt-16 px-5 pb-6 lg:px-12 lg:pt-12 lg:pb-29.5 lg:w-[55%]">
+        <ToastContainer autoClose={2000} className={'mt-21'}/>
         <div className="w-full lg:w-116 lg:mx-auto">
           <div className="flex flex-col items-center justify-center mb-14">
             <Image
@@ -20,27 +62,79 @@ export default function page() {
           </div>
           <div>
             <p className="font-semibold leading-5 text-neutral-gray-13 mb-4 lg:text-lg lg:leading-5.5 lg:font-bold">
-              عضویت یا ورود
+              عضویت
             </p>
-            <div className="border border-neutral-gray-4 rounded-lg flex w-full">
+            <div
+              className={`border ${
+                isFocusedPhone && !isValidPhone
+                  ? "border-error-primery"
+                  : "border-neutral-gray-4"
+              } rounded-lg flex w-full transition duration-200 ease-in-out relative`}
+            >
               <input
                 type="text"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                onFocus={() => setIsFocusePhone(true)}
                 dir="ltr"
                 placeholder="شماره موبایل"
-                className="placeholder:text-right placeholder:text-xs placeholder:leading-4.5 placeholder:text-neutral-gray-7 w-full outline-none py-3.75 px-4 lg:text-sm lg:leading-5"
+                className={`placeholder:text-right placeholder:text-xs placeholder:leading-4.5 ${
+                  isFocusedPhone
+                    ? "placeholder:text-error-primery"
+                    : "placeholder:text-neutral-gray-7"
+                } w-full outline-none py-3.75 px-4 lg:text-sm lg:leading-5`}
               />
+              <div
+                className={`absolute -top-2 right-3 bg-white px-1 text-neutral-gray-10 text-xs leading-4.5 transition duration-200 ease-in-out ${
+                  phone.length ? "block" : "hidden"
+                }`}
+              >
+                شماره موبایل
+              </div>
               <div className="bg-neutral-gray-2 text-neutral-gray-7 p-4 border-r border-neutral-gray-4 rounded-tl-lg rounded-bl-lg max-w-13 text-xs leading-4.5">
                 ۹۸+
               </div>
             </div>
-            <div className="border border-neutral-gray-4 rounded-lg mt-4 w-full">
+            {isFocusedPhone && !isValidPhone && (
+              <p className="text-xs leading-4.5 mt-4 transition duration-200 ease-in-out text-error-primery">
+                {phone.length && !isValidPhone
+                  ? " شماره موبایل باید با ۹ شروع شده و ۱۰ رقم باشد"
+                  : "شماره موبایل را وارد کنید"}
+              </p>
+            )}
+
+            <div
+              className={`border rounded-lg mt-4 w-full ${
+                isFocusedPassword && !isValidPassword
+                  ? "border-error-primery"
+                  : "border-neutral-gray-4"
+              } relative `}
+            >
               <input
-                type="password"
+                type="text"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onFocus={() => setIsFocusePassword(true)}
                 dir="ltr"
                 placeholder="رمز عبور"
                 className="placeholder:text-right placeholder:text-xs placeholder:leading-4.5 placeholder:text-neutral-gray-7 w-full outline-none py-3.75 px-4 lg:text-sm lg:leading-5"
               />
+              <div
+                className={`absolute -top-2 right-3 bg-white px-1 text-neutral-gray-10 text-xs leading-4.5 transition duration-200 ease-in-out ${
+                  password.length ? "block" : "hidden"
+                }`}
+              >
+                رمز عبور
+              </div>
             </div>
+            {isFocusedPassword && !isValidPassword && (
+              <p className="text-xs leading-4.5 mt-4 transition duration-200 ease-in-out text-error-primery">
+                {password.length
+                  ? "رمز عبور باید حداقل ۸ و حداکثر ۳۲ کاراکتر باشد و شامل حروف بزرگ و کوچک انگلیسی و عدد و کاراکتر باشد"
+                  : "رمز عبور را وارد کنید"}
+              </p>
+            )}
+
             <div className="flex items-center gap-2 mt-5">
               <label className="relative">
                 <input type="checkbox" className="peer hidden" defaultChecked />
@@ -55,8 +149,24 @@ export default function page() {
               </p>
             </div>
             <div className="mt-56 flex flex-col justify-center items-center lg:items-start lg:mt-7.5">
-              <button className="leading-5.5 bg-neutral-gray-4 text-neutral-gray-5 rounded-lg py-3.25 px-25 cursor-pointer w-full lg:text-lg lg:leading-6.5 lg:py-3.75">
-                تایید و ادامه
+              <button
+                disabled={!(isValidPassword && isValidPhone)}
+                onClick={() => handleSubmit()}
+                className={`leading-5.5 rounded-lg py-3.25 px-25 cursor-pointer w-full lg:text-lg lg:leading-6.5 lg:py-3.75 flex items-center justify-center ${
+                  isValidPassword && isValidPhone
+                    ? "bg-cognac-primery text-white"
+                    : "bg-neutral-gray-4 text-neutral-gray-5"
+                }`}
+              >
+                {isLoading ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[0ms]"></div>
+                    <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[150ms]"></div>
+                    <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[300ms]"></div>
+                  </div>
+                ) : (
+                  "تایید و ادامه"
+                )}
               </button>
               <div className="border-t border-neutral-gray-4 relative mt-6 w-full">
                 <span className="bg-white px-2 text-sm leading-6 text-neutral-gray-7 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 lg:text-[1rem] lg:leading-7">

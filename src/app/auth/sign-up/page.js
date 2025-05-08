@@ -8,8 +8,8 @@ export default function Page() {
   const router = useRouter();
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [isFocusedPhone, setIsFocusePhone] = useState(false);
-  const [isFocusedPassword, setIsFocusePassword] = useState(false);
+  const [isBluredPhone, setIsBluredPhone] = useState(false);
+  const [isBluredPassword, setIsBluredPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const phoneRegex = /^9\d{9}$/;
   const passwordRegex =
@@ -46,7 +46,7 @@ export default function Page() {
   return (
     <div className="lg:flex">
       <div className="container mx-auto pt-16 px-5 pb-6 lg:px-12 lg:pt-12 lg:pb-29.5 lg:w-[55%]">
-        <ToastContainer autoClose={2000} className={'mt-21'}/>
+        <ToastContainer autoClose={2000} className={"mt-21"} />
         <div className="w-full lg:w-116 lg:mx-auto">
           <div className="flex flex-col items-center justify-center mb-14">
             <Image
@@ -66,7 +66,7 @@ export default function Page() {
             </p>
             <div
               className={`border ${
-                isFocusedPhone && !isValidPhone
+                isBluredPhone && !isValidPhone
                   ? "border-error-primery"
                   : "border-neutral-gray-4"
               } rounded-lg flex w-full transition duration-200 ease-in-out relative`}
@@ -75,14 +75,11 @@ export default function Page() {
                 type="text"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                onFocus={() => setIsFocusePhone(true)}
+                onBlur={() => setIsBluredPhone(true)}
                 dir="ltr"
+                maxLength={10}
                 placeholder="شماره موبایل"
-                className={`placeholder:text-right placeholder:text-xs placeholder:leading-4.5 ${
-                  isFocusedPhone
-                    ? "placeholder:text-error-primery"
-                    : "placeholder:text-neutral-gray-7"
-                } w-full outline-none py-3.75 px-4 lg:text-sm lg:leading-5`}
+                className={`placeholder:text-right placeholder:text-xs placeholder:leading-4.5 placeholder:text-neutral-gray-7 w-full outline-none py-3.75 px-4 lg:text-sm lg:leading-5`}
               />
               <div
                 className={`absolute -top-2 right-3 bg-white px-1 text-neutral-gray-10 text-xs leading-4.5 transition duration-200 ease-in-out ${
@@ -95,17 +92,16 @@ export default function Page() {
                 ۹۸+
               </div>
             </div>
-            {isFocusedPhone && !isValidPhone && (
+            {isBluredPhone && !isValidPhone && (
               <p className="text-xs leading-4.5 mt-4 transition duration-200 ease-in-out text-error-primery">
-                {phone.length && !isValidPhone
-                  ? " شماره موبایل باید با ۹ شروع شده و ۱۰ رقم باشد"
-                  : "شماره موبایل را وارد کنید"}
-              </p>
+                شماره موبایل را بدون ۰ وارد کنید و شماره موبایل باید ۱۰ رقم و انگلیسی وارد شود
+               </p>
+
             )}
 
             <div
               className={`border rounded-lg mt-4 w-full ${
-                isFocusedPassword && !isValidPassword
+                isBluredPassword && !isValidPassword
                   ? "border-error-primery"
                   : "border-neutral-gray-4"
               } relative `}
@@ -114,7 +110,8 @@ export default function Page() {
                 type="text"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                onFocus={() => setIsFocusePassword(true)}
+                onBlur={() => setIsBluredPassword(true)}
+                maxLength={32}
                 dir="ltr"
                 placeholder="رمز عبور"
                 className="placeholder:text-right placeholder:text-xs placeholder:leading-4.5 placeholder:text-neutral-gray-7 w-full outline-none py-3.75 px-4 lg:text-sm lg:leading-5"
@@ -127,11 +124,10 @@ export default function Page() {
                 رمز عبور
               </div>
             </div>
-            {isFocusedPassword && !isValidPassword && (
+            {isBluredPassword && !isValidPassword && (
               <p className="text-xs leading-4.5 mt-4 transition duration-200 ease-in-out text-error-primery">
-                {password.length
-                  ? "رمز عبور باید حداقل ۸ و حداکثر ۳۲ کاراکتر باشد و شامل حروف بزرگ و کوچک انگلیسی و عدد و کاراکتر باشد"
-                  : "رمز عبور را وارد کنید"}
+                رمز عبور باید حداقل ۸ و حداکثر ۳۲ کاراکتر باشد و شامل حروف بزرگ
+                و کوچک انگلیسی و عدد و کاراکتر باشد
               </p>
             )}
 

@@ -339,6 +339,7 @@ export default function Page() {
                     finalPrice={"۳,۵۰۲,۰۰۰"}
                     isMore={false}
                     colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
+                    id={1}
                   />
                 </li>
                 <li className="glide__slide">
@@ -348,6 +349,7 @@ export default function Page() {
                     finalPrice={"۵,۰۲۲,۰۰۰"}
                     isMore={false}
                     colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
+                    id={2}
                   />
                 </li>
                 <li className="glide__slide">
@@ -357,6 +359,7 @@ export default function Page() {
                     finalPrice={"۳,۸۶۴,۰۰۰"}
                     isMore={false}
                     colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
+                    id={3}
                   />
                 </li>
                 <li className="glide__slide">
@@ -366,6 +369,7 @@ export default function Page() {
                     finalPrice={"۳,۲۳۰,۰۰۰"}
                     isMore={false}
                     colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
+                    id={4}
                   />
                 </li>
               </ul>

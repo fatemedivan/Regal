@@ -16,8 +16,14 @@ export default function ProductItemOff({
 }) {
   const router = useRouter();
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const token = localStorage.getItem("token");
-  const [producFavoriteId, setProducFavoriteId] = useState(null)
+  const [token, setToken] = useState(null);
+  const [producFavoriteId, setProducFavoriteId] = useState(null);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken);
+  }, []);
+
   const addProductToFavorites = async (id) => {
     if (!token) {
       setTimeout(() => {
@@ -28,20 +34,20 @@ export default function ProductItemOff({
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
       });
-      const result = await res.json()
-      setProducFavoriteId(result.productId)
+      const result = await res.json();
+      setProducFavoriteId(result.productId);
     }
   };
 
   const removeProductFromFavorites = async (id) => {
     const res = await fetch(`${baseUrl}/products/${id}/favorite`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-     if (res.ok) {
-      setProducFavoriteId(null)
-     }
-  }
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (res.ok) {
+      setProducFavoriteId(null);
+    }
+  };
 
   return (
     <>
@@ -66,7 +72,7 @@ export default function ProductItemOff({
                 src="/img/Favorite-icon-2.svg"
                 alt=""
                 quality={100}
-                onClick={()=> removeProductFromFavorites(id)}
+                onClick={() => removeProductFromFavorites(id)}
               />
             ) : (
               <Image

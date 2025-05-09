@@ -12,8 +12,14 @@ export default function ProductSearchItem({
 }) {
   const router = useRouter();
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const token = localStorage.getItem("token");
-  const [productFavoriteId, setProductFavoriteId] = useState(null);
+  const [token, setToken] = useState(null);
+  const [producFavoriteId, setProducFavoriteId] = useState(null);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken);
+  }, []);
+
   const addProductToFavorites = async (id) => {
     if (!token) {
       setTimeout(() => {
@@ -25,8 +31,7 @@ export default function ProductSearchItem({
         headers: { Authorization: `Bearer ${token}` },
       });
       const result = await res.json();
-      setProductFavoriteId(result.productId);
-      console.log(res);
+      setProducFavoriteId(result.productId);
     }
   };
 
@@ -35,10 +40,8 @@ export default function ProductSearchItem({
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
-    console.log(res);
-
     if (res.ok) {
-      setProductFavoriteId(null);
+      setProducFavoriteId(null);
     }
   };
   return (

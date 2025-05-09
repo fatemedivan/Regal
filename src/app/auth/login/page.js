@@ -41,7 +41,7 @@ export default function Page() {
       console.log(result);
       
       if (result.token) {
-        document.cookie = `token=${result.token}; path=/`
+        document.cookie = `token=${result.token}; path=/; max-age=${60 * 60 * 24 * 30}`
         localStorage.setItem('token', result.token)
         toast.success("با موفقیت وارد شدید");
         setTimeout(() => {

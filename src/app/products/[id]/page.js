@@ -5,12 +5,25 @@ import Image from "next/image";
 import React, { useEffect, useRef } from "react";
 import Glide from "@glidejs/glide";
 import "@glidejs/glide/dist/css/glide.core.min.css";
+import { useParams } from "next/navigation";
 
 export default function Page() {
   const sizes = ["XS", "S", "M", "L", "XL", "2XL"];
   const glideRef = useRef(null);
   const prevbtnRef = useRef(null);
   const nextbtnRef = useRef(null);
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const { id } = useParams()
+  
+  useEffect(()=>{
+    const getProduct = async ()=>{
+      const res = await fetch(`${baseUrl}/products/:${id}`)
+      console.log(res);
+      const data = await res.json()
+      console.log(data);
+    }
+    getProduct()
+  },[])
 
   useEffect(() => {
     if (glideRef.current) {

@@ -17,13 +17,15 @@ export default function ProductItemOff({
   const router = useRouter();
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const [token, setToken] = useState(null);
-  const [producFavoriteId, setProducFavoriteId] = useState(null);
+  const [producFavoriteId, setProducFavoriteId] = useState([]);
 
+  //get token
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     setToken(storedToken);
   }, []);
 
+  //add favorite product
   const addProductToFavorites = async (id) => {
     if (!token) {
       setTimeout(() => {
@@ -35,19 +37,33 @@ export default function ProductItemOff({
         headers: { Authorization: `Bearer ${token}` },
       });
       const result = await res.json();
-      setProducFavoriteId(result.productId);
+      setProducFavoriteId((prev) => [...prev, id]);
     }
   };
 
+  //remove favorite product
   const removeProductFromFavorites = async (id) => {
     const res = await fetch(`${baseUrl}/products/${id}/favorite`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
     if (res.ok) {
-      setProducFavoriteId(null);
+      setProducFavoriteId((prev) => prev.filter((pid) => pid !== id));
     }
   };
+  //get favorite products
+  useEffect(() => {
+    if (!token) return;
+    const getfavoritesProducts = async () => {
+      const res = await fetch(`${baseUrl}/user/favorites?orderBy=latest`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const result = await res.json();
+      const favoriteIds = result.map((product) => product.id);
+      setProducFavoriteId(favoriteIds);
+    };
+    getfavoritesProducts();
+  }, [token]);
 
   return (
     <>
@@ -64,7 +80,7 @@ export default function ProductItemOff({
             sizes="(min-width: 1024px) 318px, 167px"
           />
           <div className="absolute w-full top-3 lg:top-4 flex justify-between items-center px-3 lg:px-4">
-            {producFavoriteId === id ? (
+            {producFavoriteId.includes(id) ? (
               <Image
                 width={24}
                 height={24}

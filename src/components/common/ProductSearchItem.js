@@ -15,11 +15,13 @@ export default function ProductSearchItem({
   const [token, setToken] = useState(null);
   const [producFavoriteId, setProducFavoriteId] = useState(null);
 
+  //get token
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     setToken(storedToken);
   }, []);
 
+  //add favorite product
   const addProductToFavorites = async (id) => {
     if (!token) {
       setTimeout(() => {
@@ -31,19 +33,34 @@ export default function ProductSearchItem({
         headers: { Authorization: `Bearer ${token}` },
       });
       const result = await res.json();
-      setProducFavoriteId(result.productId);
+      setProducFavoriteId((prev) => [...prev, id]);
     }
   };
 
+  //remove favorite product
   const removeProductFromFavorites = async (id) => {
     const res = await fetch(`${baseUrl}/products/${id}/favorite`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
     if (res.ok) {
-      setProducFavoriteId(null);
+      setProducFavoriteId((prev) => prev.filter((pid) => pid !== id));
     }
   };
+  //get favorite products
+  useEffect(() => {
+    if (!token) return;
+    const getfavoritesProducts = async () => {
+      const res = await fetch(`${baseUrl}/user/favorites?orderBy=latest`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const result = await res.json();
+      const favoriteIds = result.map((product) => product.id);
+      setProducFavoriteId(favoriteIds);
+    };
+    getfavoritesProducts();
+  }, [token]);
+
   return (
     <div className="min-w-41.75 lg:max-w-51 relative">
       <div

@@ -73,7 +73,7 @@ export default function Footer() {
                 width={16}
                 height={16}
                 quality={100}
-                src="img/location.svg"
+                src="/img/location.svg"
                 alt=""
               />
               تهران،‌ خیابان ولیعصر نرسیده به میدان ونک، پلاک ۲۰
@@ -83,7 +83,7 @@ export default function Footer() {
                 width={16}
                 height={16}
                 quality={100}
-                src="img/clock.svg"
+                src="/img/clock.svg"
                 alt=""
               />
               شنبه تا چهارشنبه 9 صبح الی 18
@@ -93,7 +93,7 @@ export default function Footer() {
                 width={16}
                 height={16}
                 quality={100}
-                src="img/call-calling.svg"
+                src="/img/call-calling.svg"
                 alt=""
               />
               ۰۲۱ - ۱۲۳۴ ۵۶۷۹ | ۰۲۱ - ۱۲۳۴ ۵۶۷۸
@@ -103,7 +103,7 @@ export default function Footer() {
                 width={16}
                 height={16}
                 quality={100}
-                src="img/sms.svg"
+                src="/img/sms.svg"
                 alt=""
               />
               Info@regal.com
@@ -119,7 +119,7 @@ export default function Footer() {
                   width={20}
                   height={20}
                   quality={100}
-                  src="img/Telegram.svg"
+                  src="/img/Telegram.svg"
                   alt=""
                 />
               </div>
@@ -128,7 +128,7 @@ export default function Footer() {
                   width={20}
                   height={20}
                   quality={100}
-                  src="img/Whatsapp.svg"
+                  src="/img/Whatsapp.svg"
                   alt=""
                 />
               </div>
@@ -137,7 +137,7 @@ export default function Footer() {
                   width={20}
                   height={20}
                   quality={100}
-                  src="img/instagram.svg"
+                  src="/img/instagram.svg"
                   alt=""
                 />
               </div>
@@ -148,7 +148,7 @@ export default function Footer() {
               width={16}
               height={16}
               quality={100}
-              src="img/copyright.svg"
+              src="/img/copyright.svg"
               alt=""
             />
             <p className="mr-2 text-neutral-gray-9 leading-4.5 text-xs">

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function ProductSearchItem({
   id,
@@ -58,7 +58,7 @@ export default function ProductSearchItem({
           quality={100}
         />
         <div className="absolute w-full top-3 lg:top-4 flex justify-between items-center px-3 lg:px-4">
-          {productFavoriteId === id ? (
+          {producFavoriteId === id ? (
             <div
               onClick={() => {
                 removeProductFromFavorites(id);

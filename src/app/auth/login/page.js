@@ -41,7 +41,8 @@ export default function Page() {
       console.log(result);
       
       if (result.token) {
-        localStorage.setItem("token", result.token);
+        document.cookie = `token=${result.token}; path=/`
+        localStorage.setItem('token', result.token)
         toast.success("با موفقیت وارد شدید");
         setTimeout(() => {
           router.push("/");

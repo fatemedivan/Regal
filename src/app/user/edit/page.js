@@ -1,14 +1,14 @@
 "use client";
 import UserPannel from "@/components/user/UserPannel";
+import { useAuthContext } from "@/context/AuthContext";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Page() {
-  const [firstName, setFirstName] = useState("ارزو");
-  const [lastName, setLastName] = useState("علیزاده");
-  const [phone, setPhone] = useState("۹۱۲۱۲۳۴۵۶۷");
-  const [email, setEmail] = useState("اrwish1377@gmail.com");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
   const [isEdited, setIsEdited] = useState(false);
   const router = useRouter();
   //AI
@@ -19,6 +19,8 @@ export default function Page() {
   });
   const floatLabel = (value, focus) =>
     value || focus ? "-top-2.5" : "top-4.5";
+
+  const { phoneNumber } = useAuthContext();
 
   return (
     <>
@@ -100,7 +102,7 @@ export default function Page() {
 
           <div className="relative border border-neutral-gray-4 bg-neutral-gray-2 rounded-lg flex mb-4">
             <div className="w-full outline-none py-3.75 px-4 text-neutral-gray-7 text-left">
-              {phone}
+              {phoneNumber}
             </div>
             <label
               htmlFor="phone"
@@ -216,7 +218,7 @@ export default function Page() {
             <div className="flex items-center gap-6.25 mt-4">
               <div className="relative w-1/2 border border-neutral-gray-4 bg-neutral-gray-2 rounded-lg flex mb-4">
                 <div className="w-full outline-none py-3.75 px-4 text-neutral-gray-7 text-left">
-                  {phone}
+                  {phoneNumber}
                 </div>
                 <label
                   htmlFor="phone-desktop"

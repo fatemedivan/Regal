@@ -1,5 +1,6 @@
+import { useAuthContext } from "@/context/AuthContext";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function DetailsModalAddAddress({ handleCloseModal }) {
   const [city, setCity] = useState("");
@@ -22,6 +23,12 @@ export default function DetailsModalAddAddress({ handleCloseModal }) {
   });
   const floatLabel = (value, focus) =>
     value || focus ? "-top-2.5" : "top-4.5";
+
+  const { phoneNumber } = useAuthContext();
+  useEffect(() => {
+    setPhone(phoneNumber);
+  }, [phoneNumber]);
+
   return (
     <>
       <div
@@ -286,7 +293,7 @@ export default function DetailsModalAddAddress({ handleCloseModal }) {
                 setPhone(e.target.value);
                 setIsEdited(true);
               }}
-              className="placeholder:text-transparent w-full outline-none py-3.75 px-4 text-neutral-gray-7 focus:bg-neutral-gray-2"
+              className="placeholder:text-transparent w-full outline-none py-3.75 px-4 text-neutral-gray-7 bg-neutral-gray-2"
             />
             <label
               htmlFor="phone-desktop"
@@ -304,8 +311,8 @@ export default function DetailsModalAddAddress({ handleCloseModal }) {
 
           <div className="flex items-center justify-center">
             <button
-            onClick={()=> handleCloseModal()}
-            disabled={!isEdited}
+              onClick={() => handleCloseModal()}
+              disabled={!isEdited}
               className={`leading-5.5 rounded-lg py-3.25 w-full cursor-pointer ${
                 isEdited
                   ? "bg-cognac-primery text-white"

@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 
 export default function Page() {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL; 
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const router = useRouter();
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
@@ -24,14 +24,13 @@ export default function Page() {
       setIsLoading(true);
       const response = await fetch(`${baseUrl}/auth/signup`, {
         method: "POST",
-        body: JSON.stringify({ "phoneNumber": phone, "password": password }),
+        body: JSON.stringify({ phoneNumber: phone, password: password }),
         headers: { "Content-Type": "application/json" },
       });
-      const result = await response.json()
+      const result = await response.json();
       setIsLoading(false);
       console.log(result);
       if (response.ok) {
-        
         sessionStorage.setItem("signupPhone", phone);
         sessionStorage.setItem("signupPassword", password);
 
@@ -40,7 +39,14 @@ export default function Page() {
           router.push("/auth/login");
         }, 2500);
       } else {
-        toast.error(result.message[0]);
+        if (result.message === "شماره تلفن وارد شده تکراری می‌باشد.") {
+          toast.error(result.message);
+          setTimeout(() => {
+            router.push("/auth/login");
+          }, 2500);
+        } else {
+          toast.error(result.message[0]);
+        }
       }
     } catch (err) {
       console.log("error", err);
@@ -48,7 +54,6 @@ export default function Page() {
       toast.error("خطایی رخ داد");
     }
   };
-  
 
   return (
     <div className="lg:flex">
@@ -101,9 +106,8 @@ export default function Page() {
             </div>
             {isBluredPhone && !isValidPhone && (
               <p className="text-xs leading-4.5 mt-4 transition duration-200 ease-in-out text-error-primery">
-               شماره موبایل را بدون ۰ و با اعداد انگلیسی وارد کنید
-               </p>
-
+                شماره موبایل را بدون ۰ و با اعداد انگلیسی وارد کنید
+              </p>
             )}
 
             <div
@@ -168,7 +172,7 @@ export default function Page() {
                     <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[300ms]"></div>
                   </div>
                 ) : (
-                   "تایید"
+                  "تایید"
                 )}
               </button>
               <div className="border-t border-neutral-gray-4 relative mt-6 w-full">

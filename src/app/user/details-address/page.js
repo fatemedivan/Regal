@@ -1,8 +1,9 @@
 "use client";
+import { useAuthContext } from "@/context/AuthContext";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Page() {
   const router = useRouter();
@@ -29,6 +30,10 @@ export default function Page() {
   const floatLabel = (value, focus) =>
     value || focus ? "-top-2.5" : "top-4.5";
 
+   const {phoneNumber} = useAuthContext()
+    useEffect(() => {
+     setPhone(phoneNumber)
+    }, [phoneNumber])
   return (
     <div className="container mx-auto px-5 py-6">
       <div className="flex justify-between items-center mb-9">
@@ -267,7 +272,7 @@ export default function Page() {
               setPhone(e.target.value);
               setIsEdited(true);
             }}
-            className="placeholder:text-transparent w-full outline-none py-3.75 px-4 text-neutral-gray-7 focus:bg-neutral-gray-2"
+            className="placeholder:text-transparent w-full outline-none py-3.75 px-4 text-neutral-gray-7 bg-neutral-gray-2"
           />
           <label
             htmlFor="phone-desktop"

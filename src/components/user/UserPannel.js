@@ -7,6 +7,7 @@ import DeleteModal from "@/components/common/DeleteModal";
 import AddAddressModal from "./AddAddressModal";
 import DetailsModalAddAddress from "./DetailsModalAddAddress";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
+import { useAuthContext } from "@/context/AuthContext";
 
 export default function UserPannel({ children, rout, isHadAddress }) {
   const pathname = usePathname();
@@ -47,6 +48,7 @@ export default function UserPannel({ children, rout, isHadAddress }) {
     { label: "مرجوع شده", value: "returned" },
   ];
    const { isModalOpen, openModal, closeModal } = useScrollLockContext();
+     const {phoneNumber} = useAuthContext()
   return (
     <div className="container mx-auto pt-8 px-5 pb-66.5 lg:px-12 lg:pt-12 lg:pb-22 lg:flex lg:gap-4">
       <div className="xl:min-w-79.5">
@@ -62,7 +64,7 @@ export default function UserPannel({ children, rout, isHadAddress }) {
             <div>
               <p className="leading-7 text-neutral-gray-13">کاربر رگال</p>
               <p className="text-neutral-gray-11 leading-6 text-sm mt-1">
-                ۰۹۱۶۲۴۳۵۷۳۷
+                {phoneNumber}
               </p>
             </div>
           </div>

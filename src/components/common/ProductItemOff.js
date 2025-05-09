@@ -1,8 +1,11 @@
+"use client";
 import Image from "next/image";
-import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function ProductItemOff({
+  id,
   img,
   title,
   price,
@@ -11,8 +14,37 @@ export default function ProductItemOff({
   isMore,
   colors,
 }) {
+  const router = useRouter();
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const token = localStorage.getItem("token");
+  const [producFavoriteId, setProducFavoriteId] = useState(null)
+  const addProductToFavorites = async (id) => {
+    if (!token) {
+      setTimeout(() => {
+        router.push("/auth/sign-up");
+      }, 2500);
+    } else {
+      const res = await fetch(`${baseUrl}/products/${id}/favorite`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const result = await res.json()
+      setProducFavoriteId(result.productId)
+    }
+  };
+
+  const removeProductFromFavorites = async (id) => {
+    const res = await fetch(`${baseUrl}/products/${id}/favorite`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+     if (res.ok) {
+      setProducFavoriteId(null)
+     }
+  }
+
   return (
-    <Link href={'/product'}>
+    <>
       <div className="min-w-41.75 lg:min-w-79.5 relative">
         <div
           className={`w-41.75 h-60 lg:w-79.5 lg:h-119 relative object-cover group`}
@@ -26,25 +58,39 @@ export default function ProductItemOff({
             sizes="(min-width: 1024px) 318px, 167px"
           />
           <div className="absolute w-full top-3 lg:top-4 flex justify-between items-center px-3 lg:px-4">
-            <Image
-              width={24}
-              height={24}
-              className="cursor-pointer"
-              src="/img/favorite-icon.svg"
-              alt=""
-              quality={100}
-            />
+            {producFavoriteId === id ? (
+              <Image
+                width={24}
+                height={24}
+                className="cursor-pointer"
+                src="/img/Favorite-icon-2.svg"
+                alt=""
+                quality={100}
+                onClick={()=> removeProductFromFavorites(id)}
+              />
+            ) : (
+              <Image
+                onClick={() => addProductToFavorites(id)}
+                width={24}
+                height={24}
+                className="cursor-pointer"
+                src="/img/favorite-icon.svg"
+                alt=""
+                quality={100}
+              />
+            )}
+
             {offPercent && (
               <div className="bg-cognac-primery px-2 py-0.5 lg:px-3 lg:py-1 rounded-100 text-white text-xs leading-4.5">
                 {offPercent}٪
               </div>
             )}
           </div>
-          <div className="absolute inset-0 bg-[rgba(0,0,0,0.5)] transition duration-200 ease-in-out rounded-xl opacity-0 group-hover:opacity-100 flex items-center justify-center cursor-pointer">
+          {/* <div className="absolute inset-0 bg-[rgba(0,0,0,0.5)] transition duration-200 ease-in-out rounded-xl opacity-0 group-hover:opacity-100 flex items-center justify-center cursor-pointer">
             <button className="border border-neutral-gray-8 rounded-lg py-2.5 px-4 text-sm leading-5 text-neutral-gray-3 cursor-pointer lg:px-14">
               مشاهده جزئیات
             </button>
-          </div>
+          </div> */}
         </div>
         <div
           className={`lg:flex lg:justify-between lg:items-center lg:mt-3 lg:mb-2 lg:max-w-79.5`}
@@ -61,8 +107,9 @@ export default function ProductItemOff({
             )}
             {colors.map((color) => (
               <div
+                style={{ backgroundColor: color }}
                 key={color}
-                className={`w-5 h-5 rounded-sm bg-[${color}]`}
+                className={`w-5 h-5 rounded-sm`}
               ></div>
             ))}
           </div>
@@ -77,6 +124,6 @@ export default function ProductItemOff({
           </p>
         </div>
       </div>
-    </Link>
+    </>
   );
 }

@@ -1,15 +1,31 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Glide from "@glidejs/glide";
 import "@glidejs/glide/dist/css/glide.core.min.css";
 import ProductItemOff from "@/components/common/ProductItemOff";
 import Image from "next/image";
 
 export default function OffProducts() {
+  const [discountedProducts, setDiscountedProducts] = useState([]);
   const glideRef = useRef(null);
   const prevbtnRef = useRef(null);
   const nextbtnRef = useRef(null);
-
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const res = await fetch(`${baseUrl}/products/discounted`);
+        const result = await res.json();
+        if (result) {
+          setDiscountedProducts(result);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getProducts();
+  }, []);
+  console.log(discountedProducts);
   useEffect(() => {
     if (glideRef.current) {
       const glide = new Glide(glideRef.current, {
@@ -17,52 +33,48 @@ export default function OffProducts() {
         perView: 4,
         gap: 12,
         direction: "rtl",
-        peek:{
+        peek: {
           before: 0,
-          after: 0
+          after: 0,
         },
         breakpoints: {
           1440: {
             perView: 3,
             gap: 24,
-           
-
           },
           1240: {
             perView: 3,
             gap: 12,
-            
           },
-          1024:{
+          1024: {
             perView: 4,
             gap: 12,
-           
           },
-          
+
           768: {
             perView: 3,
             gap: 12,
-            peek:{
-              before:0,
-              after:50
-            }
+            peek: {
+              before: 0,
+              after: 50,
+            },
           },
-          580:{
+          580: {
             perView: 2,
-            gap:6,
+            gap: 6,
             peek: {
               before: 0,
-              after: 40
-            }
+              after: 40,
+            },
           },
-          440:{
+          440: {
             perView: 1.5,
-            gap:12,
+            gap: 12,
             peek: {
               before: 0,
-              after: 0
-            }
-          }
+              after: 0,
+            },
+          },
         },
       });
 
@@ -75,7 +87,8 @@ export default function OffProducts() {
         glide.destroy();
       };
     }
-  }, []);
+  }, [discountedProducts]);
+
 
   return (
     <section className="container mx-auto mt-17 mb-16 lg:mt-22">
@@ -128,50 +141,20 @@ export default function OffProducts() {
       <div className="glide pr-5 lg:pr-12" ref={glideRef}>
         <div className="glide__track" data-glide-el="track">
           <ul className="glide__slides">
-            <li className="glide__slide">
-              <ProductItemOff
-                img={"/img/product-off-1.png"}
-                title={"لباس میدی رایا"}
-                finalPrice={"۳,۵۰۲,۰۰۰"}
-                price={"۴,۱۲۰,۰۰۰"}
-                offPercent={"۱۵"}
-                isMore={false}
-                colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
-              />
-            </li>
-            <li className="glide__slide">
-              <ProductItemOff
-                img={"/img/product-off-2.png"}
-                title={"لباس میدی فیال"}
-                finalPrice={"۵,۰۲۲,۰۰۰"}
-                price={"۵,۴۰۰,۰۰۰"}
-                offPercent={"۷"}
-                isMore={true}
-                colors={["#94999F", "#C2B1A5", "#F1AB90"]}
-              />
-            </li>
-            <li className="glide__slide">
-              <ProductItemOff
-                img={"/img/product-off-3.png"}
-                title={"لباس میدی مدرن مارال"}
-                finalPrice={"۳,۸۶۴,۰۰۰"}
-                price={"۴,۲۰۰,۰۰۰"}
-                offPercent={"۸"}
-                isMore={true}
-                colors={["#94999F", "#C2B1A5", "#F1AB90"]}
-              />
-            </li>
-            <li className="glide__slide">
-              <ProductItemOff
-                img={"/img/product-off-4.png"}
-                title={"لباس میدی تک شانه نولا"}
-                finalPrice={"۳,۲۳۰,۰۰۰"}
-                price={"۳,۸۰۰,۰۰۰"}
-                offPercent={"۱۵"}
-                isMore={false}
-                colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
-              />
-            </li>
+            {discountedProducts.map((product) => (
+              <li key={product.id} className="glide__slide">
+                <ProductItemOff
+                id={product.id}
+                  img={"/img/product-off-1.png"}
+                  title={product.title}
+                  finalPrice={product.latestPrice}
+                  price={Math.round(product.latestPrice / (1 - (product.discount / 100)))}
+                  offPercent={product.discount}
+                  isMore={false}
+                  colors={product.ProductColor.map(item => item.color)}
+                />
+              </li>
+            ))}
           </ul>
         </div>
       </div>

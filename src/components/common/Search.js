@@ -13,12 +13,12 @@ export default function Search({ handleCloseSearch }) {
     if (glideRef.current) {
       const glide = new Glide(glideRef.current, {
         type: "carousel",
-        perView: 4,
+        perView: 5,
         gap: 12,
         direction: "rtl",
 
         breakpoints: {
-          1440: {
+          1530: {
             perView: 4,
             gap: 24,
           },

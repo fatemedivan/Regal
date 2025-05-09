@@ -184,7 +184,7 @@ export default function Page() {
                 <Image
                   width={16}
                   height={16}
-                  src="/img/Google-logo.svg"
+                  src="/img/google-logo.svg"
                   alt=""
                 />
                 <p className="text-cognac-primery leading-5.5 lg:text-lg lg:leading-6.5 cursor-pointer">

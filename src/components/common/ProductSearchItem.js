@@ -11,7 +11,7 @@ export default function ProductSearchItem({
 }) {
   return (
     <Link href={'/product'}>
-      <div className="min-w-41.75 lg:min-w-50.5 relative">
+      <div className="min-w-41.75 lg:max-w-51 relative">
         <div
           className={`w-41.75 h-60 lg:w-50.5 lg:h-71 relative object-cover group`}
         >

@@ -151,7 +151,17 @@ export default function Navbar() {
           </ul>
           <ul className="hidden lg:flex justify-center items-center gap-1">
             <li className="p-3">
-              <Image
+              {isSearching ? <Image
+                className="cursor-pointer"
+                width={16}
+                height={16}
+                src="/img/Close Icon.svg"
+                alt=""
+                quality={100}
+                onClick={(e) => {
+                  setIsSearching(false)
+                }}
+              /> : <Image
                 className="cursor-pointer"
                 width={16}
                 height={16}
@@ -163,7 +173,8 @@ export default function Navbar() {
                   setIsOpenCategory(false);
                   setIsOpenMenu(false);
                 }}
-              />
+              />}
+              
             </li>
             <Link href={"/cart"}>
               <li className="p-3">

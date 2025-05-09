@@ -122,3 +122,13 @@ input[type="range"]::-moz-range-thumb {
 .Toastify__toast{
   font-family: 'yekan bakh' !important;
 }
+/* Toastify custom styles */
+@media (max-width: 640px) {
+  .custom-toast-container .Toastify__toast {
+    width: 80% !important;
+    margin-top: 80px;
+    margin-left: auto;
+    margin-right: 0;
+    min-width: unset !important;
+  }
+}

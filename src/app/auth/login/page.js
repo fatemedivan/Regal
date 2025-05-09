@@ -38,17 +38,18 @@ export default function Page() {
         headers: { "Content-Type": "application/json" },
       });
       const result = await response.json();
-
+      console.log(result);
+      
       if (result.token) {
         localStorage.setItem("token", result.token);
-        toast.success("با موفقیت وارد  شدید");
+        toast.success("با موفقیت وارد شدید");
         setTimeout(() => {
           router.push("/");
         }, 2500);
         sessionStorage.removeItem("signupPhone");
         sessionStorage.removeItem("signupPassword");
       } else {
-        toast.error("کاربری با این مشخصات وجود ندارد لطفا ثبت نام کنید");
+        toast.error(result.message);
         setTimeout(() => {
           router.push("/auth/sign-up");
         }, 2500);
@@ -60,11 +61,12 @@ export default function Page() {
       toast.error("خطایی رخ داد");
     }
   };
+ 
 
   return (
     <div className="lg:flex">
       <div className="container mx-auto pt-16 px-5 pb-6 lg:px-12 lg:pt-12 lg:pb-29.5 lg:w-[55%]">
-        <ToastContainer autoClose={2000} className={"mt-21"} />
+        <ToastContainer autoClose={2000} className={"custom-toast-container"} />
         <div className="w-full lg:w-116 lg:mx-auto">
           <div className="flex flex-col items-center justify-center mb-14">
             <Image
@@ -112,8 +114,7 @@ export default function Page() {
             </div>
             {isBluredPhone && !isValidPhone && (
               <p className="text-xs leading-4.5 mt-4 transition duration-200 ease-in-out text-error-primery">
-                شماره موبایل را بدون ۰ وارد کنید و شماره موبایل باید ۱۰ رقم و
-                انگلیسی وارد شود
+               شماره موبایل را بدون ۰ و با اعداد انگلیسی وارد کنید
               </p>
             )}
 
@@ -149,19 +150,7 @@ export default function Page() {
               </p>
             )}
 
-            <div className="flex items-center gap-2 mt-5">
-              <label className="relative">
-                <input type="checkbox" className="peer hidden" defaultChecked />
-                <div className='w-6 h-6 rounded-sm border border-neutral-gray-5 relative flex items-center justify-center cursor-pointer before:content-[""] before:absolute before:w-1.5 before:h-2.5 before:border-r-2 before:border-b-2 before:border-neutral-gray-10 before:rotate-45 before:opacity-0 peer-checked:before:opacity-100'></div>
-              </label>
-              <p className="text-neutral-gray-9 text-xs leading-4.5 lg:text-sm lg:leading-5">
-                با ورود و ثبت‌نام در سایت، با{" "}
-                <a href="#" className="text-info-primery">
-                  قوانین رگال
-                </a>{" "}
-                موافقت می‌کنم.
-              </p>
-            </div>
+            
             <div className="mt-56 flex flex-col justify-center items-center lg:items-start lg:mt-7.5">
               <button
                 disabled={!(isValidPassword && isValidPhone)}
@@ -179,7 +168,7 @@ export default function Page() {
                     <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[300ms]"></div>
                   </div>
                 ) : (
-                  "تایید و ادامه"
+                  "تایید"
                 )}
               </button>
               <div className="border-t border-neutral-gray-4 relative mt-6 w-full">

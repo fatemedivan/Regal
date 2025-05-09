@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import DeleteModal from "@/components/common/DeleteModal";
 import AddAddressModal from "./AddAddressModal";
 import DetailsModalAddAddress from "./DetailsModalAddAddress";
@@ -10,6 +10,7 @@ import { useScrollLockContext } from "@/context/ScrollLockContext";
 import { useAuthContext } from "@/context/AuthContext";
 
 export default function UserPannel({ children, rout, isHadAddress }) {
+  const router = useRouter()
   const pathname = usePathname();
   const [isShownOrderTypes, setIsShownOrderTypes] = useState(false);
   const [selectedOrderType, setSelectedOrderType] = useState("همه");
@@ -37,7 +38,9 @@ export default function UserPannel({ children, rout, isHadAddress }) {
     closeModal()
   };
   const handleLogout = () => {
-    console.log("you loged out");
+    localStorage.removeItem('token')
+    document.cookie = `token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC`
+    router.push('/auth/sign-up')
     setIsOpenLogoutModal(false);
    closeModal()
   };

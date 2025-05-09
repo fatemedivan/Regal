@@ -4,7 +4,7 @@ import OffProducts from "@/components/home/OffProducts";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Home() {
+export default function Home () {
   return (
     <>
       <header className="overflow-hidden pr-5 pt-8 mb-16 lg:pr-12 lg:pt-18 lg:mb-22">

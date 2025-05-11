@@ -15,16 +15,23 @@ export default function Page() {
 
   const handleCloseFilter = () => {
     setIsOpenFilterMenu(false);
-    closeModal()
+    closeModal();
   };
   const handleCloseSort = () => {
     setIsOpenSort(false);
-    closeModal()
+    closeModal();
   };
   const { isModalOpen, openModal, closeModal } = useScrollLockContext();
   return (
     <>
-      <Breadcrumb />
+      <Breadcrumb
+        items={[
+          { label: "صفحه اصلی" },
+          { label: "دسته‌بندی محصولات" },
+          { label: "لباس مجلسی" },
+          { label: "لباس مجلسی میدی" },
+        ]}
+      />
       <div className="container mx-auto">
         {isOpenFilterMenu && (
           <div className="lg:hidden absolute top-0 left-0 right-0 bg-white z-50">
@@ -61,7 +68,7 @@ export default function Page() {
                 <div
                   onClick={() => {
                     setIsOpenFilterMenu(true);
-                    openModal(true)
+                    openModal(true);
                   }}
                   className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer"
                 >
@@ -70,7 +77,7 @@ export default function Page() {
                 <div
                   onClick={() => {
                     setIsOpenSort(true);
-                    openModal()
+                    openModal();
                   }}
                   className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer"
                 >
@@ -189,7 +196,7 @@ export default function Page() {
                             key={option}
                             onClick={() => {
                               setSelectedOption(option);
-                              closeModal()
+                              closeModal();
                             }}
                             className="px-4 py-2 hover:bg-neutral-gray-2 cursor-pointer text-xs leading-4.5 text-neutral-gray-7"
                           >

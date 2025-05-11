@@ -83,7 +83,16 @@ export default function Page() {
 
   return (
     <>
-      <Breadcrumb />
+      {product.category?.name && (
+        <Breadcrumb
+          items={[
+            { label: "صفحه اصلی" },
+            { label: "دسته‌بندی محصولات" },
+            { label: product.category.name },
+            { label: product.title }, // یا عنوان محصول
+          ]}
+        />
+      )}
       <div className="mx-auto px-5 container">
         <div className="lg:flex gap-6 my-12">
           <div className="flex flex-col gap-4 lg:flex-row-reverse lg:gap-6">

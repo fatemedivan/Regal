@@ -4,8 +4,11 @@ import OffProducts from "@/components/home/OffProducts";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function Home () { 
-  
+export default async function Home() {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const res = await fetch(`${baseUrl}/categories`);
+  const data = await res.json();
+
   return (
     <>
       <header className="overflow-hidden pr-5 pt-8 mb-16 lg:pr-12 lg:pt-18 lg:mb-22">
@@ -169,7 +172,7 @@ export default async function Home () {
               />
               <div className="absolute z-30 bottom-1 px-2">
                 <h5 className="leading-5 font-semibold text-white">
-                  پیراهن کوتاه
+                  {data[0].name}
                 </h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -191,7 +194,9 @@ export default async function Home () {
                 quality={100}
               />
               <div className="absolute z-30 bottom-1 px-2">
-                <h5 className="leading-5 font-semibold text-white">سرهمی</h5>
+                <h5 className="leading-5 font-semibold text-white">
+                  {data[1].name}
+                </h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
                     <p className="text-xs leading-4.5">روزمره</p>
@@ -213,7 +218,7 @@ export default async function Home () {
               />
               <div className="absolute z-30 bottom-1 px-2">
                 <h5 className="leading-5 font-semibold text-white">
-                  شومیز و بلوز
+                  {data[2].name}
                 </h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -236,7 +241,7 @@ export default async function Home () {
               />
               <div className="absolute z-30 bottom-1 px-2">
                 <h5 className="leading-5 font-semibold text-white">
-                  تاپ و کراپ
+                  {data[3].name}
                 </h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -261,7 +266,9 @@ export default async function Home () {
                 quality={100}
               />
               <div className="absolute bottom-1 z-30 px-2">
-                <h5 className="leading-5 font-semibold text-white">شلوار</h5>
+                <h5 className="leading-5 font-semibold text-white">
+                  {data[4].name}
+                </h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
                     <p className="text-xs leading-4.5">استایل روزمره</p>
@@ -283,7 +290,7 @@ export default async function Home () {
               />
               <div className="absolute bottom-1 z-30 px-2">
                 <h5 className="leading-5 font-semibold text-white">
-                  کت و جلیقه
+                  {data[5].name}
                 </h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -305,7 +312,9 @@ export default async function Home () {
                 quality={100}
               />
               <div className="absolute bottom-1 z-30 px-2">
-                <h5 className="leading-5 font-semibold text-white">دامن</h5>
+                <h5 className="leading-5 font-semibold text-white">
+                  {data[6].name}
+                </h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
                     <p className="text-xs leading-4.5">تابستانه</p>
@@ -327,7 +336,7 @@ export default async function Home () {
               />
               <div className="absolute bottom-1 z-30 px-2">
                 <h5 className="leading-5 font-semibold text-white">
-                  ترنچ کت و پالتو
+                  {data[7].name}
                 </h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -353,7 +362,7 @@ export default async function Home () {
               quality={100}
             />
             <div className="absolute bottom-4 mr-4 text-white">
-              <h5 className="text-lg font-bold">پیراهن کوتاه</h5>
+              <h5 className="text-lg font-bold">{data[0].name}</h5>
               <div className="flex gap-2 mt-2">
                 <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
                   دخترانه
@@ -375,7 +384,7 @@ export default async function Home () {
               quality={100}
             />
             <div className="absolute bottom-4 mr-4 text-white">
-              <h5 className="text-lg font-bold">شلوار</h5>
+              <h5 className="text-lg font-bold">{data[1].name}</h5>
               <div className="flex gap-2 mt-2">
                 <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
                   استایل روزمره
@@ -396,7 +405,7 @@ export default async function Home () {
               quality={100}
             />
             <div className="absolute bottom-4 mr-4 text-white">
-              <h5 className="text-lg font-bold">سرهمی</h5>
+              <h5 className="text-lg font-bold">{data[2].name}</h5>
               <div className="flex gap-2 mt-2">
                 <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
                   روزمره
@@ -418,7 +427,7 @@ export default async function Home () {
               quality={100}
             />
             <div className="absolute bottom-4 mr-4 text-white">
-              <h5 className="text-lg font-bold">کت و جلیقه</h5>
+              <h5 className="text-lg font-bold">{data[3].name}</h5>
               <div className="flex gap-2 mt-2">
                 <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
                   کلاسیک
@@ -439,7 +448,7 @@ export default async function Home () {
               quality={100}
             />
             <div className="absolute bottom-4 mr-4 text-white">
-              <h5 className="text-lg font-bold">دامن</h5>
+              <h5 className="text-lg font-bold">{data[4].name}</h5>
               <div className="flex gap-2 mt-2">
                 <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
                   تابستانه
@@ -460,7 +469,7 @@ export default async function Home () {
               quality={100}
             />
             <div className="absolute bottom-4 mr-4 text-white">
-              <h5 className="text-lg font-bold">شومیز و بلوز</h5>
+              <h5 className="text-lg font-bold">{data[5].name}</h5>
               <div className="flex gap-2 mt-2">
                 <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
                   تمام فصول
@@ -482,7 +491,7 @@ export default async function Home () {
               quality={100}
             />
             <div className="absolute bottom-4 mr-4 text-white">
-              <h5 className="text-lg font-bold">تاپ و کراپ</h5>
+              <h5 className="text-lg font-bold">{data[6].name}</h5>
               <div className="flex gap-2 mt-2">
                 <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
                   مجلسی
@@ -504,7 +513,7 @@ export default async function Home () {
               quality={100}
             />
             <div className="absolute bottom-4 mr-4 text-white">
-              <h5 className="text-lg font-bold">ترنچ کت و پالتو</h5>
+              <h5 className="text-lg font-bold">{data[7].name}</h5>
               <div className="flex gap-2 mt-2">
                 <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
                   گرم و سبگ

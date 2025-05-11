@@ -6,28 +6,47 @@ import React, { useEffect, useRef, useState } from "react";
 import Glide from "@glidejs/glide";
 import "@glidejs/glide/dist/css/glide.core.min.css";
 import { useParams } from "next/navigation";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function Page() {
   const sizes = ["XS", "S", "M", "L", "XL", "2XL"];
   const glideRef = useRef(null);
   const prevbtnRef = useRef(null);
   const nextbtnRef = useRef(null);
+  const [token, setToken] = useState(null);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const { id } = useParams();
   const [product, setProduct] = useState({});
   const [currentImgSrc, setCurrentImgSrc] = useState("");
+  const [isLiked, setIsLiked] = useState(false);
+
+  //get products
   useEffect(() => {
     const getProduct = async () => {
       const res = await fetch(`${baseUrl}/products/${id}`);
-      console.log(res);
-      const data = await res.json();
-      setProduct(data);
-      setCurrentImgSrc(data?.images?.[0]?.src);
-      console.log(data);
+      if (res.ok) {
+        const data = await res.json();
+        setProduct(data);
+        setCurrentImgSrc(data?.images?.[0]?.src);
+        console.log(data);
+        
+        if (data.Favorite.lenght) {
+          setIsLiked(true);
+        }
+      }
     };
     getProduct();
   }, []);
 
+  //get token
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
+
+  //handle sliders
   useEffect(() => {
     if (glideRef.current) {
       const glide = new Glide(glideRef.current, {
@@ -81,15 +100,54 @@ export default function Page() {
     }
   }, []);
 
+  const likeProduct = async (id) => {
+    if (!token) {
+      toast.warning("باید ابتدا ثبت نام کنید");
+    } else {
+      try {
+        const res = await fetch(`${baseUrl}/products/${id}/favorite`, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.ok) {
+          setIsLiked(true);
+        } else {
+          toast.error("ناموفق");
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error("خطایی رخ داد");
+      }
+    }
+  };
+
+  const disLikeProduct = async (id) => {
+    try {
+      const res = await fetch(`${baseUrl}/products/${id}/favorite`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        setIsLiked(false);
+      } else {
+        toast.error("ناموفق");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("خطایی رخ داد");
+    }
+  };
+
   return (
     <>
+      <ToastContainer autoClose={2000} className={"custom-toast-container"} />
       {product.category?.name && (
         <Breadcrumb
           items={[
             { label: "صفحه اصلی" },
             { label: "دسته‌بندی محصولات" },
             { label: product.category.name },
-            { label: product.title }, // یا عنوان محصول
+            { label: product.title },
           ]}
         />
       )}
@@ -152,8 +210,27 @@ export default function Page() {
                 <div className="p-3 border border-cognac-tint-8 rounded-lg cursor-pointer">
                   <Image width={16} height={16} src="/img/share.svg" alt="" />
                 </div>
-                <div className="p-3 border border-cognac-tint-8 rounded-lg cursor-pointer">
-                  <Image width={16} height={16} src="/img/heart-2.svg" alt="" />
+                <div className="p-3 border border-cognac-tint-8 rounded-lg">
+                  {isLiked ? (
+                    <Image
+                      onClick={() => disLikeProduct(id)}
+                      width={16}
+                      height={16}
+                      className="cursor-pointer"
+                      src="/img/Favorite-icon-2.svg"
+                      alt=""
+                      quality={100}
+                    />
+                  ) : (
+                    <Image
+                      onClick={() => likeProduct(id)}
+                      width={16}
+                      height={16}
+                      className="cursor-pointer"
+                      src="/img/heart-2.svg"
+                      alt=""
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -202,6 +279,7 @@ export default function Page() {
             <div className="hidden lg:flex items-center my-7">
               <p className="line-through font-normal leading-7 text-neutral-gray-9">
                 {product.latestPrice &&
+                  product.discount > 0 &&
                   Math.round(
                     product.latestPrice / (1 - product.discount / 100)
                   )}

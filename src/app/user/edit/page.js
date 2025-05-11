@@ -4,13 +4,21 @@ import { useAuthContext } from "@/context/AuthContext";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Page() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [isEdited, setIsEdited] = useState(false);
+  const [token, setToken] = useState("");
+  const [isLoading, setIsLoaading] = useState(false);
   const router = useRouter();
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const isValidEmail = emailRegex.test(email);
+  const isValidFirstName = firstName.length > 3 && firstName.length <= 12;
+  const isValidLastName = lastName.length > 3 && lastName.length <= 20;
   //AI
   const [isFocused, setIsFocused] = useState({
     firstName: false,
@@ -22,8 +30,30 @@ export default function Page() {
 
   const { phoneNumber } = useAuthContext();
 
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken);
+  }, []);
+
+  const editUser = async () => {
+    const res = await fetch(`${baseUrl}/user`, {
+      method: "PATCH",
+      body: {
+        "name": firstName,
+        "family": lastName,
+        "email": email,
+      },
+       headers: { Authorization: `Bearer ${token}` },
+    });
+    console.log(res);
+    const result = await res.json()
+    console.log(result);
+    
+  };
+  
   return (
     <>
+      <ToastContainer autoClose={2000} className={"custom-toast-container"} />
       <div className="container mx-auto px-5 py-6 lg:hidden">
         <div className="flex justify-between items-center mb-8 lg:hidden">
           <Image
@@ -43,6 +73,7 @@ export default function Page() {
           <div className="relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg mb-4">
             <input
               type="text"
+              maxLength={12}
               id="firstName"
               placeholder=" "
               value={firstName}
@@ -55,7 +86,6 @@ export default function Page() {
               }
               onChange={(e) => {
                 setFirstName(e.target.value);
-                setIsEdited(true);
               }}
               className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent"
             />
@@ -74,6 +104,7 @@ export default function Page() {
           <div className="relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg mb-4">
             <input
               type="text"
+              maxLength={20}
               id="lastName"
               placeholder=" "
               value={lastName}
@@ -85,7 +116,6 @@ export default function Page() {
               }
               onChange={(e) => {
                 setLastName(e.target.value);
-                setIsEdited(true);
               }}
               className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent"
             />
@@ -126,7 +156,6 @@ export default function Page() {
               onBlur={() => setIsFocused((prev) => ({ ...prev, email: false }))}
               onChange={(e) => {
                 setEmail(e.target.value);
-                setIsEdited(true);
               }}
               className="placeholder:text-transparent w-full outline-none text-neutral-gray-7"
             />
@@ -143,8 +172,23 @@ export default function Page() {
         </div>
 
         <div className="w-full mt-66.5">
-          <button className="bg-cognac-tint-2 text-cognac-tint-4 py-3.25 px-31.5 rounded-lg w-full mb-4 cursor-pointer">
-            ذخیره تغییرات
+          <button
+            onClick={() => editUser()}
+            className={`${
+              isValidFirstName && isValidLastName
+                ? "bg-cognac-primery text-white"
+                : "bg-cognac-tint-2 text-cognac-tint-4"
+            } py-3.25 px-31.5 rounded-lg w-full mb-4 cursor-pointer`}
+          >
+            {isLoading ? (
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[0ms]"></div>
+                <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[150ms]"></div>
+                <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[300ms]"></div>
+              </div>
+            ) : (
+              "ذخیره تغییرات"
+            )}
           </button>
           <button className="bg-white text-cognac-tint-7 border border-cognac-tint-7 py-3.25 px-37.5 rounded-lg w-full cursor-pointer">
             انصراف
@@ -160,6 +204,7 @@ export default function Page() {
                 <input
                   type="text"
                   id="firstName-desktop"
+                  maxLength={12}
                   placeholder=" "
                   value={firstName}
                   onFocus={() =>
@@ -170,7 +215,6 @@ export default function Page() {
                   }
                   onChange={(e) => {
                     setFirstName(e.target.value);
-                    setIsEdited(true);
                   }}
                   className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent"
                 />
@@ -189,6 +233,7 @@ export default function Page() {
                 <input
                   type="text"
                   id="lastName-desktop"
+                  maxLength={20}
                   placeholder=" "
                   value={lastName}
                   onFocus={() =>
@@ -199,7 +244,6 @@ export default function Page() {
                   }
                   onChange={(e) => {
                     setLastName(e.target.value);
-                    setIsEdited(true);
                   }}
                   className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent"
                 />
@@ -246,7 +290,6 @@ export default function Page() {
                   }
                   onChange={(e) => {
                     setEmail(e.target.value);
-                    setIsEdited(true);
                   }}
                   className="placeholder:text-transparent w-full outline-none text-neutral-gray-7"
                 />
@@ -268,13 +311,23 @@ export default function Page() {
               انصراف
             </button>
             <button
+              disabled={!(isValidFirstName && isValidLastName)}
+              onClick={() => editUser()}
               className={`${
-                isEdited
+                isValidFirstName && isValidLastName
                   ? "bg-cognac-primery text-white"
                   : "bg-cognac-tint-2 text-cognac-tint-4"
               } py-3.25 px-16 rounded-lg cursor-pointer`}
             >
-              ذخیره تغییرات
+              {isLoading ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[0ms]"></div>
+                  <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[150ms]"></div>
+                  <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[300ms]"></div>
+                </div>
+              ) : (
+                "ذخیره تغییرات"
+              )}
             </button>
           </div>
         </UserPannel>

@@ -287,6 +287,7 @@ export default function Search({ handleCloseSearch }) {
                             (item) => item.color
                           )}
                           id={product.id}
+                          favorites={product.Favorite}
                         />
                       </li>
                     ))}

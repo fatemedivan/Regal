@@ -17,7 +17,7 @@ export default function ProductItemOff({
   const router = useRouter();
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const [token, setToken] = useState(null);
-  const [producFavoriteId, setProducFavoriteId] = useState([]);
+  const [productsFavoriteId, setProductsFavoriteId] = useState([]);
 
   //get token
   useEffect(() => {
@@ -27,43 +27,41 @@ export default function ProductItemOff({
 
   //add favorite product
   const addProductToFavorites = async (id) => {
-    if (!token) {
-      setTimeout(() => {
-        router.push("/auth/sign-up");
-      }, 2500);
-    } else {
-      const res = await fetch(`${baseUrl}/products/${id}/favorite`, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const result = await res.json();
-      setProducFavoriteId((prev) => [...prev, id]);
+    try {
+      if (!token) {
+        setTimeout(() => {
+          router.push("/auth/sign-up");
+        }, 2500);
+      } else {
+        const res = await fetch(`${baseUrl}/products/${id}/favorite`, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.ok) {
+          setProductsFavoriteId((prev) => [...prev, id]);
+        }
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
   //remove favorite product
   const removeProductFromFavorites = async (id) => {
-    const res = await fetch(`${baseUrl}/products/${id}/favorite`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (res.ok) {
-      setProducFavoriteId((prev) => prev.filter((pid) => pid !== id));
-    }
-  };
-  //get favorite products
-  useEffect(() => {
-    if (!token) return;
-    const getfavoritesProducts = async () => {
-      const res = await fetch(`${baseUrl}/user/favorites?orderBy=latest`, {
+    try {
+      const res = await fetch(`${baseUrl}/products/${id}/favorite`, {
+        method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
-      const result = await res.json();
-      const favoriteIds = result.map((product) => product.id);
-      setProducFavoriteId(favoriteIds);
-    };
-    getfavoritesProducts();
-  }, [token]);
+      if (res.ok) {
+        setProductsFavoriteId((prev) =>
+          prev.filter((productId) => productId !== id)
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -80,7 +78,7 @@ export default function ProductItemOff({
             sizes="(min-width: 1024px) 318px, 167px"
           />
           <div className="absolute w-full top-3 lg:top-4 flex justify-between items-center px-3 lg:px-4">
-            {producFavoriteId.includes(id) ? (
+            {productsFavoriteId.includes(id) ? (
               <Image
                 width={24}
                 height={24}

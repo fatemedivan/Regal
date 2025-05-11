@@ -5,9 +5,21 @@ import "@glidejs/glide/dist/css/glide.core.min.css";
 import ProductSearchItem from "./ProductSearchItem";
 
 export default function Search({ handleCloseSearch }) {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const glideRef = useRef(null);
   const [isSearching, setIsSearching] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const [popularProducts, setPopularProducts] = useState([]);
+
+  useEffect(() => {
+    const getPopularProducts = async () => {
+      const res = await fetch(`${baseUrl}/products/popular`);
+      const data = await res.json();
+      setPopularProducts(data);
+      console.log(data);
+    };
+    getPopularProducts();
+  }, []);
 
   useEffect(() => {
     if (glideRef.current) {
@@ -50,16 +62,16 @@ export default function Search({ handleCloseSearch }) {
               after: 20,
             },
           },
-          380:{
+          380: {
             perView: 1.5,
-            gap: 12
-          }
+            gap: 12,
+          },
         },
       });
 
       glide.mount();
     }
-  }, []);
+  }, [popularProducts]);
   return (
     <div>
       <div
@@ -264,56 +276,20 @@ export default function Search({ handleCloseSearch }) {
               <div className="glide max-w-full" ref={glideRef}>
                 <div className="glide__track" data-glide-el="track">
                   <ul className="glide__slides">
-                    <li className="glide__slide">
-                      <ProductSearchItem
-                        img={"/img/product-off-1.png"}
-                        title={"لباس میدی رایا"}
-                        finalPrice={"۳,۵۰۲,۰۰۰"}
-                        isMore={false}
-                        colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
-                        id={1}
-                      />
-                    </li>
-                    <li className="glide__slide">
-                      <ProductSearchItem
-                        img={"/img/product-off-2.png"}
-                        title={"لباس میدی فیال"}
-                        finalPrice={"۵,۰۲۲,۰۰۰"}
-                        isMore={true}
-                        colors={["#94999F", "#C2B1A5", "#F1AB90"]}
-                        id={2}
-                      />
-                    </li>
-                    <li className="glide__slide">
-                      <ProductSearchItem
-                        img={"/img/product-off-3.png"}
-                        title={"لباس میدی مدرن مارال"}
-                        finalPrice={"۳,۸۶۴,۰۰۰"}
-                        isMore={true}
-                        colors={["#94999F", "#C2B1A5", "#F1AB90"]}
-                        id={3}
-                      />
-                    </li>
-                    <li className="glide__slide">
-                      <ProductSearchItem
-                        img={"/img/product-off-4.png"}
-                        title={"لباس میدی تک شانه نولا"}
-                        finalPrice={"۳,۲۳۰,۰۰۰"}
-                        isMore={false}
-                        colors={["#94999F", "#C2B1A5", "#F1AB90"]}
-                        id={4}
-                      />
-                    </li>
-                    <li className="glide__slide">
-                      <ProductSearchItem
-                        img={"/img/search-img-5.png"}
-                        title={"لباس شب مدرن کاژین"}
-                        finalPrice={"۳,۲۳۰,۰۰۰"}
-                        isMore={false}
-                        colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
-                        id={5}
-                      />
-                    </li>
+                    {popularProducts.map((product) => (
+                      <li key={product.id} className="glide__slide">
+                        <ProductSearchItem
+                          img={"/img/product-off-1.png"}
+                          title={product.title}
+                          finalPrice={product.latestPrice}
+                          isMore={false}
+                          colors={product.ProductColor.map(
+                            (item) => item.color
+                          )}
+                          id={product.id}
+                        />
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </div>

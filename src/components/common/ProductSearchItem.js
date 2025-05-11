@@ -9,57 +9,55 @@ export default function ProductSearchItem({
   finalPrice,
   offPercent,
   isMore,
+  colors,
 }) {
   const router = useRouter();
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const [token, setToken] = useState(null);
-  const [producFavoriteId, setProducFavoriteId] = useState(null);
+  const [productsFavoriteId, setProductsFavoriteId] = useState([]);
 
-  //get token
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
-    setToken(storedToken);
+    if (storedToken) {
+      setToken(storedToken);
+    }
   }, []);
 
-  //add favorite product
-  const addProductToFavorites = async (id) => {
+  const addProductToFavorite = async (id) => {
     if (!token) {
       setTimeout(() => {
         router.push("/auth/sign-up");
       }, 2500);
     } else {
-      const res = await fetch(`${baseUrl}/products/${id}/favorite`, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const result = await res.json();
-      setProducFavoriteId((prev) => [...prev, id]);
+      try {
+        const res = await fetch(`${baseUrl}/products/${id}/favorite`, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.ok) {
+          setProductsFavoriteId((prev) => [...prev, id]);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
-  //remove favorite product
   const removeProductFromFavorites = async (id) => {
-    const res = await fetch(`${baseUrl}/products/${id}/favorite`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (res.ok) {
-      setProducFavoriteId((prev) => prev.filter((pid) => pid !== id));
-    }
-  };
-  //get favorite products
-  useEffect(() => {
-    if (!token) return;
-    const getfavoritesProducts = async () => {
-      const res = await fetch(`${baseUrl}/user/favorites?orderBy=latest`, {
+    try {
+      const res = await fetch(`${baseUrl}/products/${id}/favorite`, {
+        method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
-      const result = await res.json();
-      const favoriteIds = result.map((product) => product.id);
-      setProducFavoriteId(favoriteIds);
-    };
-    getfavoritesProducts();
-  }, [token]);
+      if (res.ok) {
+        setProductsFavoriteId((prev) =>
+          prev.filter((productId) => productId !== id)
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="min-w-41.75 lg:max-w-51 relative">
@@ -75,13 +73,8 @@ export default function ProductSearchItem({
           quality={100}
         />
         <div className="absolute w-full top-3 lg:top-4 flex justify-between items-center px-3 lg:px-4">
-          {producFavoriteId === id ? (
-            <div
-              onClick={() => {
-                removeProductFromFavorites(id);
-                console.log("clicked");
-              }}
-            >
+          {productsFavoriteId.includes(id) ? (
+            <div onClick={() => removeProductFromFavorites(id)}>
               <Image
                 width={24}
                 height={24}
@@ -94,7 +87,8 @@ export default function ProductSearchItem({
           ) : (
             <div
               onClick={() => {
-                addProductToFavorites(id);
+                addProductToFavorite(id);
+                console.log("clicked");
               }}
             >
               <Image
@@ -136,9 +130,13 @@ export default function ProductSearchItem({
           <div
             className={`w-5 h-5 rounded-sm bg-[#97AAB4] ${isMore && "hidden"}`}
           ></div>
-          <div className="w-5 h-5 rounded-sm bg-[#94999F]"></div>
-          <div className="w-5 h-5 rounded-sm bg-[#C2B1A5]"></div>
-          <div className="w-5 h-5 rounded-sm bg-[#F1AB90]"></div>
+          {colors.map((color) => (
+            <div
+              style={{ backgroundColor: color }}
+              key={color}
+              className={`w-5 h-5 rounded-sm`}
+            ></div>
+          ))}
         </div>
       </div>
 

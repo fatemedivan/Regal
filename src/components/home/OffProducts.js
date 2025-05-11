@@ -11,6 +11,7 @@ export default function OffProducts() {
   const prevbtnRef = useRef(null);
   const nextbtnRef = useRef(null);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  
   useEffect(() => {
     const getProducts = async () => {
       try {
@@ -25,7 +26,7 @@ export default function OffProducts() {
     };
     getProducts();
   }, []);
-  console.log(discountedProducts);
+
   useEffect(() => {
     if (glideRef.current) {
       const glide = new Glide(glideRef.current, {

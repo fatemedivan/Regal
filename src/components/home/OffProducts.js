@@ -20,7 +20,7 @@ export default function OffProducts() {
         if (result) {
           setDiscountedProducts(result);
         }
-        console.log(result);
+        console.log('off result',result);
       } catch (error) {
         console.log(error);
       }
@@ -161,6 +161,7 @@ export default function OffProducts() {
                   offPercent={product.discount}
                   isMore={false}
                   colors={product.ProductColor.map((item) => item.color)}
+                  favorites={product.Favorite}
                 />
               </li>
             ))}

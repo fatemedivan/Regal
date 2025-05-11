@@ -13,6 +13,7 @@ export default function ProductItemOff({
   offPercent,
   isMore,
   colors,
+  favorites,
 }) {
   const router = useRouter();
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -24,6 +25,10 @@ export default function ProductItemOff({
     const storedToken = localStorage.getItem("token");
     setToken(storedToken);
   }, []);
+
+  useEffect(() => {
+    setProductsFavoriteId(favorites || []);
+  }, [favorites]);
 
   //add favorite product
   const addProductToFavorites = async (id) => {
@@ -37,6 +42,9 @@ export default function ProductItemOff({
           method: "POST",
           headers: { Authorization: `Bearer ${token}` },
         });
+        const result = await res.json();
+        console.log("in prodct off", result);
+        console.log("in prodct off", res);
         if (res.ok) {
           setProductsFavoriteId((prev) => [...prev, id]);
         }
@@ -45,6 +53,7 @@ export default function ProductItemOff({
       console.log(error);
     }
   };
+  console.log(productsFavoriteId);
 
   //remove favorite product
   const removeProductFromFavorites = async (id) => {

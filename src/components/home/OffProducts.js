@@ -11,7 +11,7 @@ export default function OffProducts() {
   const prevbtnRef = useRef(null);
   const nextbtnRef = useRef(null);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  
+
   useEffect(() => {
     const getProducts = async () => {
       try {
@@ -20,6 +20,7 @@ export default function OffProducts() {
         if (result) {
           setDiscountedProducts(result);
         }
+        console.log(result);
       } catch (error) {
         console.log(error);
       }
@@ -90,7 +91,6 @@ export default function OffProducts() {
     }
   }, [discountedProducts]);
 
-
   return (
     <section className="container mx-auto mt-17 mb-16 lg:mt-22">
       <div className="mx-5 mb-6 flex justify-between items-center lg:mx-12 lg:mb-10">
@@ -142,17 +142,25 @@ export default function OffProducts() {
       <div className="glide pr-5 lg:pr-12" ref={glideRef}>
         <div className="glide__track" data-glide-el="track">
           <ul className="glide__slides">
-            {discountedProducts.map((product) => (
+            {discountedProducts.map((product,index) => (
               <li key={product.id} className="glide__slide">
                 <ProductItemOff
-                id={product.id}
-                  img={"/img/product-off-1.png"}
+                  id={product.id}
+                  img={
+                    product.images &&
+                    product.images.length > 0 &&
+                    product.images[index]?.src
+                      ? product.images[index].src
+                      : "/img/product-off-1.png"
+                  }
                   title={product.title}
                   finalPrice={product.latestPrice}
-                  price={Math.round(product.latestPrice / (1 - (product.discount / 100)))}
+                  price={Math.round(
+                    product.latestPrice / (1 - product.discount / 100)
+                  )}
                   offPercent={product.discount}
                   isMore={false}
-                  colors={product.ProductColor.map(item => item.color)}
+                  colors={product.ProductColor.map((item) => item.color)}
                 />
               </li>
             ))}

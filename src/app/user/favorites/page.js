@@ -3,16 +3,65 @@ import UserPannel from "@/components/user/UserPannel";
 import FavouriteProduct from "@/components/user/FavouriteProduct";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function Page() {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const [isHadFavourite, setIsHadFavourite] = useState(true);
   const [isOpenSort, setIsOpenSort] = useState(false);
   const [selectedOptionSort, setSelectedOptionSort] = useState("");
+  const [token, setToken] = useState("");
+  const [favoriteProductes, setFavoriteProductes] = useState([]);
   const router = useRouter();
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
+
+  useEffect(() => {
+    const getFavoriteProducts = async () => {
+      try {
+        const res = await fetch(`${baseUrl}/user/favorites`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setFavoriteProductes(data);
+          setIsHadFavourite(true);
+          console.log(data);
+        }
+      } catch (error) {
+        toast.error("خطایی رخ داد");
+      }
+    };
+    getFavoriteProducts();
+  }, [token]);
+
+  // const disLikeProduct = async (id) => {
+  //   try {
+  //     const res = await fetch(`${baseUrl}/products/${id}/favorite`, {
+  //       method: "DELETE",
+  //       headers: { Authorization: `Bearer ${token}` },
+  //     });
+  //     if (res.ok) {
+  //       setIsLiked(false);
+  //     } else {
+  //       toast.error("ناموفق");
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //     toast.error("خطایی رخ داد");
+  //   }
+  // };
+
   return (
     <>
+      <ToastContainer autoClose={2000} className={"custom-toast-container"} />
       <div className="container mx-auto px-5 py-6 lg:hidden">
         <div className="flex justify-between items-center mb-8">
           <Image
@@ -68,22 +117,17 @@ export default function Page() {
         </div>
         {isHadFavourite ? (
           <div className="flex flex-wrap gap-4">
-            <FavouriteProduct
-              img={"/img/product-off-1.png"}
-              title={"لباس میدی رایا"}
-              finalPrice={"۳,۵۰۲,۰۰۰"}
-              isMore={false}
-              colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
-            />
-            <FavouriteProduct
-              img={"/img/favourite-product.svg"}
-              title={"لباس میدی مدرن مارال"}
-              finalPrice={"۳,۸۶۴,۰۰۰"}
-              price={"۴,۲۰۰,۰۰۰"}
-              offPercent={"۸"}
-              isMore={false}
-              colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
-            />
+            {favoriteProductes &&
+              favoriteProductes.map((product) => (
+                <FavouriteProduct
+                  key={product.id}
+                  img={"/img/product-off-1.png"}
+                  title={product.title}
+                  finalPrice={product.latestPrice}
+                  isMore={false}
+                  colors={product.ProductColor.map((item) => item.color)}
+                />
+              ))}
           </div>
         ) : (
           <div className="flex flex-col justify-center items-center gap-6 mt-28">
@@ -109,30 +153,18 @@ export default function Page() {
       <div className="hidden lg:block">
         <UserPannel rout={"favorites"}>
           {isHadFavourite ? (
-            <div className="w-full flex flex-wrap justify-between gap-4 my-6">
-              <FavouriteProduct
-                img={"/img/product-off-1.png"}
-                title={"لباس میدی رایا"}
-                finalPrice={"۳,۵۰۲,۰۰۰"}
-                isMore={false}
-                colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
-              />
-              <FavouriteProduct
-                img={"/img/favourite-product.jpg"}
-                title={"لباس میدی مدرن مارال"}
-                finalPrice={"۳,۸۶۴,۰۰۰"}
-                price={"۴,۲۰۰,۰۰۰"}
-                offPercent={"۸"}
-                isMore={false}
-                colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
-              />
-              <FavouriteProduct
-                img={"/img/product-off-4.png"}
-                title={"لباس میدی تک شانه نولا"}
-                finalPrice={"۳,۲۳۰,۰۰۰"}
-                isMore={false}
-                colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
-              />
+            <div className="w-full flex flex-wrap gap-4 my-6">
+              {favoriteProductes &&
+                favoriteProductes.map((product) => (
+                  <FavouriteProduct
+                    key={product.id}
+                    img={"/img/product-off-1.png"}
+                    title={product.title}
+                    finalPrice={product.lastPrice}
+                    isMore={false}
+                    colors={product.ProductColor.map((item) => item.color)}
+                  />
+                ))}
             </div>
           ) : (
             <div className="flex flex-col justify-center items-center gap-8 my-12.5">

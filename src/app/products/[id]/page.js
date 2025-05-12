@@ -20,24 +20,6 @@ export default function Page() {
   const [currentImgSrc, setCurrentImgSrc] = useState("");
   const [isLiked, setIsLiked] = useState(false);
 
-  //get products
-  useEffect(() => {
-    const getProduct = async () => {
-      const res = await fetch(`${baseUrl}/products/${id}`);
-      if (res.ok) {
-        const data = await res.json();
-        setProduct(data);
-        setCurrentImgSrc(data?.images?.[0]?.src);
-        console.log(data);
-        
-        if (data.Favorite.lenght) {
-          setIsLiked(true);
-        }
-      }
-    };
-    getProduct();
-  }, []);
-
   //get token
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -45,6 +27,27 @@ export default function Page() {
       setToken(storedToken);
     }
   }, []);
+
+  //get product
+  useEffect(() => {
+    if (!token) return;
+    const getProduct = async () => {
+      const res = await fetch(`${baseUrl}/products/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setProduct(data);
+        setCurrentImgSrc(data?.images?.[0]?.src);
+        console.log(data);
+
+        if (data.Favorite.length) {
+          setIsLiked(true);
+        }
+      }
+    };
+    getProduct();
+  }, [token]);
 
   //handle sliders
   useEffect(() => {

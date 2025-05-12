@@ -1,3 +1,4 @@
+'use client'
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import Glide from "@glidejs/glide";
@@ -9,9 +10,18 @@ export default function Search({ handleCloseSearch }) {
   const glideRef = useRef(null);
   const [isSearching, setIsSearching] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const [token, setToken] = useState(null);
   const [popularProducts, setPopularProducts] = useState([]);
 
   useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!token) return;
     const getPopularProducts = async () => {
       const res = await fetch(`${baseUrl}/products/popular`);
       const data = await res.json();
@@ -19,7 +29,7 @@ export default function Search({ handleCloseSearch }) {
       console.log(data);
     };
     getPopularProducts();
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     if (glideRef.current) {

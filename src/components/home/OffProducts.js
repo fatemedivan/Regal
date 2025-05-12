@@ -11,11 +11,22 @@ export default function OffProducts() {
   const prevbtnRef = useRef(null);
   const nextbtnRef = useRef(null);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const [token, setToken] = useState('')
 
   useEffect(() => {
-    const getProducts = async () => {
+      const storedToken = localStorage.getItem("token");
+      if (storedToken) {
+        setToken(storedToken);
+      }
+    }, []);
+
+  useEffect(() => {
+    if (!token) return;
+    const getDiscountedProducts = async () => {
       try {
-        const res = await fetch(`${baseUrl}/products/discounted`);
+        const res = await fetch(`${baseUrl}/products/discounted`,{
+          headers :  { Authorization: `Bearer ${token}` },
+        });
         const result = await res.json();
         if (result) {
           setDiscountedProducts(result);
@@ -25,8 +36,8 @@ export default function OffProducts() {
         console.log(error);
       }
     };
-    getProducts();
-  }, []);
+    getDiscountedProducts();
+  }, [token]);
 
   useEffect(() => {
     if (glideRef.current) {

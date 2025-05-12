@@ -9,9 +9,7 @@ export default function Categories() {
     const getCategories = async () => {
       const res = await fetch(`${baseUrl}/categories`);
       if (res.ok) {
-        const data = await res.json();
-        console.log(data);
-        
+        const data = await res.json();  
         setData(data);
       }
     };

@@ -27,7 +27,7 @@ export default function ProductSearchItem({
             quality={100}
           />
           <div className="absolute w-full top-3 lg:top-4 flex justify-between items-center px-3 lg:px-4">
-            {favorites && favorites.lenght ? (
+            {favorites && favorites.length ? (
               <Image
                 width={24}
                 height={24}

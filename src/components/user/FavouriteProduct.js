@@ -53,7 +53,9 @@ export default function ProductItemOff({
           {colors.map((color) => (
             <div
               key={color}
-              className={`w-5 h-5 rounded-sm bg-[${color}]`}
+              style={{backgroundColor : color}}
+              className={`w-5 h-5 rounded-sm
+                `}
             ></div>
           ))}
         </div>

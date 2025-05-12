@@ -24,15 +24,19 @@ export default function Page() {
   }, []);
 
   const getFavoriteProducts = async () => {
+    if (!token) return;
     try {
       const res = await fetch(`${baseUrl}/user/favorites`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
         const data = await res.json();
-        setFavoriteProductes(data);
-        setIsHadFavourite(true);
-        console.log(data);
+        if (data.length > 0) {
+          setFavoriteProductes(data);
+          setIsHadFavourite(true);
+        } else {
+          setIsHadFavourite(false);
+        }
       }
     } catch (error) {
       toast.error("خطایی رخ داد");
@@ -40,7 +44,9 @@ export default function Page() {
   };
 
   useEffect(() => {
-    getFavoriteProducts();
+    if (token) {
+      getFavoriteProducts();
+    }
   }, [token]);
 
   const disLikeProduct = async (id) => {

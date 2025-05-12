@@ -13,12 +13,15 @@ export default function Page() {
   const [email, setEmail] = useState("");
   const [token, setToken] = useState("");
   const [isLoading, setIsLoaading] = useState(false);
+  const [isBluredFirstName, setIsBluredFirstName] = useState(false);
+  const [isBluredLastName, setIsBluredLastName] = useState(false);
+  const [isBluredEmail, setIsBluredEmail] = useState(false);
   const router = useRouter();
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const isValidEmail = emailRegex.test(email);
-  const isValidFirstName = firstName.length > 3 && firstName.length <= 12;
-  const isValidLastName = lastName.length > 3 && lastName.length <= 20;
+  const isValidFirstName = firstName.length >= 3 && firstName.length <= 12;
+  const isValidLastName = lastName.length >= 3 && lastName.length <= 20;
   //AI
   const [isFocused, setIsFocused] = useState({
     firstName: false,
@@ -36,21 +39,30 @@ export default function Page() {
   }, []);
 
   const editUser = async () => {
-    const res = await fetch(`${baseUrl}/user`, {
-      method: "PATCH",
-      body: {
-        "name": firstName,
-        "family": lastName,
-        "email": email,
-      },
-       headers: { Authorization: `Bearer ${token}` },
-    });
-    console.log(res);
-    const result = await res.json()
-    console.log(result);
-    
+    setIsLoaading(true)
+    try {
+      const res = await fetch(`${baseUrl}/user`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          "name": firstName,
+          "family": lastName,
+          "email": email,
+        }),
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log(res);
+      if (!res.ok) {
+        toast.error("ناموفق");
+      }
+      const result = await res.json();
+      console.log(result);
+      setIsLoaading(false)
+    } catch (error) {
+      toast.error("خطایی رخ داد");
+      setIsLoaading(false)
+    }
   };
-  
+
   return (
     <>
       <ToastContainer autoClose={2000} className={"custom-toast-container"} />
@@ -70,7 +82,11 @@ export default function Page() {
           <div></div>
         </div>
         <div>
-          <div className="relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg mb-4">
+          <div
+            className={`relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg ${
+              isBluredFirstName && !isValidFirstName ? "mb-0" : "mb-4"
+            }`}
+          >
             <input
               type="text"
               maxLength={12}
@@ -81,9 +97,10 @@ export default function Page() {
               onFocus={() =>
                 setIsFocused((prev) => ({ ...prev, firstName: true }))
               }
-              onBlur={() =>
-                setIsFocused((prev) => ({ ...prev, firstName: false }))
-              }
+              onBlur={() => {
+                setIsFocused((prev) => ({ ...prev, firstName: false }));
+                setIsBluredFirstName(true);
+              }}
               onChange={(e) => {
                 setFirstName(e.target.value);
               }}
@@ -100,8 +117,17 @@ export default function Page() {
               نام
             </label>
           </div>
+          {isBluredFirstName && !isValidFirstName && (
+            <p className="text-xs leading-4.5 mt-4 transition duration-200 ease-in-out text-error-primery mb-4 lg:hidden">
+              اسم باید حداقل ۳ و حداکثر ۱۲ کاراکتر باشد
+            </p>
+          )}
 
-          <div className="relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg mb-4">
+          <div
+            className={`relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg mb-4 ${
+              isBluredLastName && !isValidLastName ? "mb-0" : "mb-4"
+            }`}
+          >
             <input
               type="text"
               maxLength={20}
@@ -111,9 +137,10 @@ export default function Page() {
               onFocus={() =>
                 setIsFocused((prev) => ({ ...prev, lastName: true }))
               }
-              onBlur={() =>
-                setIsFocused((prev) => ({ ...prev, lastName: false }))
-              }
+              onBlur={() => {
+                setIsFocused((prev) => ({ ...prev, lastName: false }));
+                setIsBluredLastName(true);
+              }}
               onChange={(e) => {
                 setLastName(e.target.value);
               }}
@@ -129,7 +156,11 @@ export default function Page() {
               نام خانوادگی
             </label>
           </div>
-
+          {isBluredLastName && !isValidLastName && (
+            <p className="text-xs leading-4.5 mt-4 transition duration-200 ease-in-out text-error-primery mb-4 lg:hidden">
+              نام خانوادگی باید حداقل ۳ و حداکثر ۱۲ کاراکتر باشد
+            </p>
+          )}
           <div className="relative border border-neutral-gray-4 bg-neutral-gray-2 rounded-lg flex mb-4">
             <div className="w-full outline-none py-3.75 px-4 text-neutral-gray-7 text-left">
               {phoneNumber}
@@ -145,7 +176,11 @@ export default function Page() {
             </div>
           </div>
 
-          <div className="relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg mb-4">
+          <div
+            className={`relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg ${
+              isBluredEmail && !isValidEmail ? "mb-0" : "mb-4"
+            }`}
+          >
             <input
               type="text"
               id="email"
@@ -153,7 +188,10 @@ export default function Page() {
               placeholder=" "
               value={email}
               onFocus={() => setIsFocused((prev) => ({ ...prev, email: true }))}
-              onBlur={() => setIsFocused((prev) => ({ ...prev, email: false }))}
+              onBlur={() => {
+                setIsFocused((prev) => ({ ...prev, email: false }));
+                setIsBluredEmail(true);
+              }}
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
@@ -170,10 +208,15 @@ export default function Page() {
             </label>
           </div>
         </div>
-
+        {isBluredEmail && !isValidEmail && (
+          <p className="text-xs leading-4.5 mt-4 transition duration-200 ease-in-out text-error-primery mb-4 lg:hidden">
+            ایمیل را با فرمت abc@gmail.com وارد کنید
+          </p>
+        )}
         <div className="w-full mt-66.5">
           <button
             onClick={() => editUser()}
+            disabled={!(isValidFirstName && isValidLastName && token)}
             className={`${
               isValidFirstName && isValidLastName
                 ? "bg-cognac-primery text-white"
@@ -210,9 +253,10 @@ export default function Page() {
                   onFocus={() =>
                     setIsFocused((prev) => ({ ...prev, firstName: true }))
                   }
-                  onBlur={() =>
-                    setIsFocused((prev) => ({ ...prev, firstName: false }))
-                  }
+                  onBlur={() => {
+                    setIsFocused((prev) => ({ ...prev, firstName: false }));
+                    setIsBluredFirstName(true);
+                  }}
                   onChange={(e) => {
                     setFirstName(e.target.value);
                   }}
@@ -228,7 +272,11 @@ export default function Page() {
                   نام
                 </label>
               </div>
-
+              {/* {isBluredFirstName && !isValidFirstName && (
+                <p className="text-xs leading-4.5 mt-4 transition duration-200 ease-in-out text-error-primery">
+                  اسم باید حداقل ۳ و حداکثر ۱۲ کاراکتر باشد
+                </p>
+              )} */}
               <div className="relative w-1/2 border border-neutral-gray-4 px-4 py-3.75 rounded-lg mb-4">
                 <input
                   type="text"
@@ -239,9 +287,10 @@ export default function Page() {
                   onFocus={() =>
                     setIsFocused((prev) => ({ ...prev, lastName: true }))
                   }
-                  onBlur={() =>
-                    setIsFocused((prev) => ({ ...prev, lastName: false }))
-                  }
+                  onBlur={() => {
+                    setIsFocused((prev) => ({ ...prev, lastName: false }));
+                    setIsBluredLastName(true);
+                  }}
                   onChange={(e) => {
                     setLastName(e.target.value);
                   }}
@@ -258,6 +307,11 @@ export default function Page() {
                 </label>
               </div>
             </div>
+            {/* {isBluredFirstName && !isValidFirstName && (
+              <p className="text-xs leading-4.5 mt-4 transition duration-200 ease-in-out text-error-primery">
+                اسم باید حداقل ۳ و حداکثر ۱۲ کاراکتر باشد
+              </p>
+            )} */}
 
             <div className="flex items-center gap-6.25 mt-4">
               <div className="relative w-1/2 border border-neutral-gray-4 bg-neutral-gray-2 rounded-lg flex mb-4">
@@ -285,9 +339,10 @@ export default function Page() {
                   onFocus={() =>
                     setIsFocused((prev) => ({ ...prev, email: true }))
                   }
-                  onBlur={() =>
-                    setIsFocused((prev) => ({ ...prev, email: false }))
-                  }
+                  onBlur={() => {
+                    setIsFocused((prev) => ({ ...prev, email: false }));
+                    setIsBluredEmail(true);
+                  }}
                   onChange={(e) => {
                     setEmail(e.target.value);
                   }}
@@ -305,7 +360,11 @@ export default function Page() {
               </div>
             </div>
           </div>
-
+          {/* {isBluredEmail && !isValidEmail && (
+            <p className="text-xs leading-4.5 mt-4 transition duration-200 ease-in-out text-error-primery">
+              ایمیل را با فرمت abc@gmail.com وارد کنید
+            </p>
+          )} */}
           <div className="flex items-center justify-end gap-2 mt-38 mb-6">
             <button className="bg-white text-cognac-tint-7 border border-cognac-tint-7 py-3.25 px-22 rounded-lg cursor-pointer">
               انصراف

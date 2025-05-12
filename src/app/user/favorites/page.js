@@ -29,6 +29,11 @@ export default function Page() {
       const res = await fetch(`${baseUrl}/user/favorites`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      if (res.status === 404) {
+        setFavoriteProductes([]);
+        setIsHadFavourite(false);
+        return;
+      }
       if (res.ok) {
         const data = await res.json();
         if (data.length > 0) {
@@ -37,6 +42,7 @@ export default function Page() {
         } else {
           setIsHadFavourite(false);
         }
+        console.log(data);
       }
     } catch (error) {
       toast.error("خطایی رخ داد");

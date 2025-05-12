@@ -10,11 +10,12 @@ export default function ProductSearchItem({
   offPercent,
   isMore,
   colors,
-  favorites
+  favorites,
+  handleCloseSearch
 }) {
   return (
     <div className="min-w-41.75 lg:max-w-51 relative">
-      <Link href={`/products/${id}`}>
+      <Link href={`/products/${id}`} onClick={()=>handleCloseSearch()}>
         <div
           className={`w-41.75 h-60 lg:w-50.5 lg:h-71 relative object-cover group`}
         >

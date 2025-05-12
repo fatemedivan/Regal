@@ -2,6 +2,7 @@ import Image from "next/image";
 import React from "react";
 
 export default function ProductItemOff({
+  id,
   img,
   title,
   price,
@@ -9,6 +10,7 @@ export default function ProductItemOff({
   offPercent,
   isMore,
   colors,
+  disLikeProduct,
 }) {
   return (
     <div className="min-w-41.75 lg:min-w-79.5">
@@ -23,6 +25,7 @@ export default function ProductItemOff({
         />
         <div className="absolute w-full top-3 lg:top-4 flex justify-between items-center px-3 lg:px-4">
           <Image
+            onClick={() => disLikeProduct(id)}
             width={24}
             height={24}
             className="cursor-pointer"
@@ -53,7 +56,7 @@ export default function ProductItemOff({
           {colors.map((color) => (
             <div
               key={color}
-              style={{backgroundColor : color}}
+              style={{ backgroundColor: color }}
               className={`w-5 h-5 rounded-sm
                 `}
             ></div>
@@ -71,7 +74,13 @@ export default function ProductItemOff({
       </div>
       <div className="w-41.75 lg:w-79.5 mt-3">
         <button className="border rounded-lg border-cognac-tint-7 text-cognac-primery py-2.5 w-full lg:flex lg:justify-center lg:gap-2 cursor-pointer">
-        <Image width={16} height={16} className="hidden lg:block" src="/img/shopping-cart-primery.svg" alt="" />
+          <Image
+            width={16}
+            height={16}
+            className="hidden lg:block"
+            src="/img/shopping-cart-primery.svg"
+            alt=""
+          />
           <p className="lg:flex">
             اضافه به سبد<span className="hidden lg:block">خرید </span>
           </p>

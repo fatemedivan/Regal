@@ -289,6 +289,7 @@ export default function Search({ handleCloseSearch }) {
                     {popularProducts.map((product) => (
                       <li key={product.id} className="glide__slide">
                         <ProductSearchItem
+                        handleCloseSearch={handleCloseSearch}
                           img={"/img/product-off-1.png"}
                           title={product.title}
                           finalPrice={product.latestPrice}

@@ -23,41 +23,42 @@ export default function Page() {
     }
   }, []);
 
-  useEffect(() => {
-    const getFavoriteProducts = async () => {
-      try {
-        const res = await fetch(`${baseUrl}/user/favorites`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (res.ok) {
-          const data = await res.json();
-          setFavoriteProductes(data);
-          setIsHadFavourite(true);
-          console.log(data);
-        }
-      } catch (error) {
-        toast.error("خطایی رخ داد");
+  const getFavoriteProducts = async () => {
+    try {
+      const res = await fetch(`${baseUrl}/user/favorites`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setFavoriteProductes(data);
+        setIsHadFavourite(true);
+        console.log(data);
       }
-    };
+    } catch (error) {
+      toast.error("خطایی رخ داد");
+    }
+  };
+
+  useEffect(() => {
     getFavoriteProducts();
   }, [token]);
 
-  // const disLikeProduct = async (id) => {
-  //   try {
-  //     const res = await fetch(`${baseUrl}/products/${id}/favorite`, {
-  //       method: "DELETE",
-  //       headers: { Authorization: `Bearer ${token}` },
-  //     });
-  //     if (res.ok) {
-  //       setIsLiked(false);
-  //     } else {
-  //       toast.error("ناموفق");
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //     toast.error("خطایی رخ داد");
-  //   }
-  // };
+  const disLikeProduct = async (id) => {
+    try {
+      const res = await fetch(`${baseUrl}/products/${id}/favorite`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) {
+        toast.error("ناموفق");
+      } else {
+        getFavoriteProducts();
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("خطایی رخ داد");
+    }
+  };
 
   return (
     <>
@@ -121,11 +122,13 @@ export default function Page() {
               favoriteProductes.map((product) => (
                 <FavouriteProduct
                   key={product.id}
+                  id={product.id}
                   img={"/img/product-off-1.png"}
                   title={product.title}
                   finalPrice={product.latestPrice}
                   isMore={false}
                   colors={product.ProductColor.map((item) => item.color)}
+                  disLikeProduct={disLikeProduct}
                 />
               ))}
           </div>
@@ -158,11 +161,13 @@ export default function Page() {
                 favoriteProductes.map((product) => (
                   <FavouriteProduct
                     key={product.id}
+                    id={product.id}
                     img={"/img/product-off-1.png"}
                     title={product.title}
                     finalPrice={product.lastPrice}
                     isMore={false}
                     colors={product.ProductColor.map((item) => item.color)}
+                    disLikeProduct={disLikeProduct}
                   />
                 ))}
             </div>

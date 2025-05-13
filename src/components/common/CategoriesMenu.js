@@ -1,11 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 export default function CategoriesMenu({
   handleCloseCategory,
   handleCloseMenu,
 }) {
+  const router = useRouter();
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const [categoriesData, setCategoriesData] = useState([]);
   const handleToggle = (id) => {
@@ -19,7 +21,9 @@ export default function CategoriesMenu({
     const getCategoriesItems = async () => {
       const res = await fetch(`${baseUrl}/categories`);
       const data = await res.json();
-      console.log(data);
+      console.log("category data", data);
+      console.log(res);
+
       //AI
       const updatedData = data.map((item) => ({
         ...item,
@@ -45,7 +49,7 @@ export default function CategoriesMenu({
                   onClick={() => handleToggle(category.id)}
                   className="flex justify-between items-center border-b border-neutral-gray-4 mb-4 pb-4 cursor-pointer"
                 >
-                  <p className="text-sm leading-6">{category.name}</p>
+                  <p className="text-sm leading-6">{category.slug}</p>
                   <Image
                     onClick={() => handleToggle(category.id)}
                     className={`${
@@ -67,22 +71,23 @@ export default function CategoriesMenu({
                 </li>
                 {category.isOpen && (
                   <ul className="mb-6 text-neutral-gray-11 transition-all ease-in-out duration-300">
-                    <Link href={"/products"}>
-                      {category.subcategories &&
-                        category.subcategories.map((subcategory) => (
-                          <li
-                            onClick={() => {
-                              handleCloseCategory();
-                              handleCloseMenu();
-                            }}
-                            key={subcategory.id}
-                          >
-                            <p className="px-4 py-2.5 text-sm leading-5 cursor-pointer">
-                              {subcategory.name}
-                            </p>
-                          </li>
-                        ))}
-                    </Link>
+                    {category.subcategories &&
+                      category.subcategories.map((subcategory) => (
+                        <li
+                          key={subcategory.id}
+                          onClick={() => {
+                            router.push(
+                              `/products?categoryId=${subcategory.parentId}`
+                            );
+                            handleCloseCategory();
+                            handleCloseMenu();
+                          }}
+                        >
+                          <p className="px-4 py-2.5 text-sm leading-5 cursor-pointer">
+                            {subcategory.slug}
+                          </p>
+                        </li>
+                      ))}
                   </ul>
                 )}
               </div>
@@ -94,21 +99,32 @@ export default function CategoriesMenu({
               {categoriesData &&
                 categoriesData.slice(0, 4).map((category) => (
                   <ul key={category.id}>
-                    <Link href={"/products"}>
-                      <li
-                        onClick={() => handleCloseCategory()}
-                        className="flex items-center gap-2.5"
-                      >
-                        <div className="w-1.5 h-1.5 rounded-100 bg-cognac-primery"></div>
-                        <p className="leading-7 text-neutral-gray-13 text-nowrap cursor-pointer">
-                          {category.name}
-                        </p>
-                      </li>
-                    </Link>
+                    <li
+                      onClick={() => {
+                        router.push(`/products?categoryId=${category.id}`);
+                        handleCloseCategory();
+                      }}
+                      className="flex items-center gap-2.5"
+                    >
+                      <div className="w-1.5 h-1.5 rounded-100 bg-cognac-primery"></div>
+                      <p className="leading-7 text-neutral-gray-13 text-nowrap cursor-pointer">
+                        {category.slug}
+                      </p>
+                    </li>
+
                     {category.subcategories.map((subCategory) => (
-                      <li key={subCategory.id} className="cursor-pointer">
+                      <li
+                        onClick={() => {
+                          router.push(
+                            `/products?categoryId=${category.parentId}`
+                          );
+                          handleCloseCategory();
+                        }}
+                        key={subCategory.id}
+                        className="cursor-pointer"
+                      >
                         <p className="leading-5 text-sm text-neutral-gray-11 px-4 py-2.5">
-                          {subCategory.name}
+                          {subCategory.slug}
                         </p>
                       </li>
                     ))}
@@ -119,21 +135,32 @@ export default function CategoriesMenu({
               {categoriesData &&
                 categoriesData.slice(5, 9).map((category) => (
                   <ul key={category.id}>
-                    <Link href={"/products"}>
-                      <li
-                        onClick={() => handleCloseCategory()}
-                        className="flex items-center gap-2.5"
-                      >
-                        <div className="w-1.5 h-1.5 rounded-100 bg-cognac-primery"></div>
-                        <p className="leading-7 text-neutral-gray-13 text-nowrap cursor-pointer">
-                          {category.name}
-                        </p>
-                      </li>
-                    </Link>
+                    <li
+                      onClick={() => {
+                        router.push(`/products?categoryId=${category.id}`);
+                        handleCloseCategory();
+                      }}
+                      className="flex items-center gap-2.5"
+                    >
+                      <div className="w-1.5 h-1.5 rounded-100 bg-cognac-primery"></div>
+                      <p className="leading-7 text-neutral-gray-13 text-nowrap cursor-pointer">
+                        {category.slug}
+                      </p>
+                    </li>
+
                     {category.subcategories.map((subCategory) => (
-                      <li key={subCategory.id} className="cursor-pointer">
+                      <li
+                        onClick={() => {
+                          router.push(
+                            `/products?categoryId=${category.parentId}`
+                          );
+                          handleCloseCategory();
+                        }}
+                        key={subCategory.id}
+                        className="cursor-pointer"
+                      >
                         <p className="leading-5 text-sm text-neutral-gray-11 px-4 py-2.5">
-                          {subCategory.name}
+                          {subCategory.slug}
                         </p>
                       </li>
                     ))}
@@ -146,40 +173,45 @@ export default function CategoriesMenu({
               دسته‌بندی‌های پربازدید
             </p>
             <div className="flex gap-6 items-center mt-3 mb-12">
-              <Link href={"/products"}>
+              <div
+                onClick={() => {
+                  router.push("/products?categoryId=1");
+                  handleCloseCategory();
+                }}
+                className="relative w-65 h-96 cursor-pointer"
+              >
+                <Image src="/img/category-desktop-9.png" alt="" fill />
+                <h5 className="absolute bottom-4 right-3.75 text-white font-bold text-[21px] leading-6.5">
+                  پیراهن کوتاه
+                </h5>
+              </div>
+
+              <div>
                 <div
-                  onClick={() => handleCloseCategory()}
-                  className="relative w-65 h-96 cursor-pointer"
+                  onClick={() => {
+                    router.push("/products?categoryId=2");
+                    handleCloseCategory();
+                  }}
+                  className="relative w-65 h-45 cursor-pointer"
                 >
-                  <Image src="/img/category-desktop-9.png" alt="" fill />
-                  <h5 className="absolute bottom-4 right-3.75 text-white font-bold text-[21px] leading-6.5">
-                    پیراهن کوتاه
+                  <Image src="/img/category-desktop-10.png" alt="" fill />
+                  <h5 className="absolute bottom-4 right-3.75 z-20 text-white font-bold text-[21px] leading-6.5">
+                    کت و جلیقه
                   </h5>
                 </div>
-              </Link>
-              <div>
-                <Link href={"/products"}>
-                  <div
-                    onClick={() => handleCloseCategory()}
-                    className="relative w-65 h-45 cursor-pointer"
-                  >
-                    <Image src="/img/category-desktop-10.png" alt="" fill />
-                    <h5 className="absolute bottom-4 right-3.75 z-20 text-white font-bold text-[21px] leading-6.5">
-                      کت و جلیقه
-                    </h5>
-                  </div>
-                </Link>
-                <Link href={"/products"}>
-                  <div
-                    onClick={() => handleCloseCategory()}
-                    className="relative mt-6 w-65 h-45 cursor-pointer"
-                  >
-                    <Image src="/img/category-desktop-11.png" alt="" fill />
-                    <h5 className="absolute bottom-4 right-3.75 z-20 text-white font-bold text-[21px] leading-6.5">
-                      تاپ و کراپ
-                    </h5>
-                  </div>
-                </Link>
+
+                <div
+                  onClick={() => {
+                    router.push("/products?categoryId=3");
+                    handleCloseCategory();
+                  }}
+                  className="relative mt-6 w-65 h-45 cursor-pointer"
+                >
+                  <Image src="/img/category-desktop-11.png" alt="" fill />
+                  <h5 className="absolute bottom-4 right-3.75 z-20 text-white font-bold text-[21px] leading-6.5">
+                    تاپ و کراپ
+                  </h5>
+                </div>
               </div>
             </div>
           </div>

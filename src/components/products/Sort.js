@@ -2,7 +2,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 
-export default function Sort({ handleCloseSort, setSelectedOption ,selectedOption, getProductsByOrder}) {
+export default function Sort({ handleCloseSort, setSelectedOption ,selectedOption, getProductsByOrder,handleSortChange}) {
   const [sortOption, setSortOption] = useState([
    {id:1, title: "جدیدترین", value: "earliest"} ,
    {id:2, title: "قدیمی‌ترین", value: "latest" } ,
@@ -17,7 +17,7 @@ export default function Sort({ handleCloseSort, setSelectedOption ,selectedOptio
           width={20}
           height={20}
           src="/img/close-icon-filter.svg"
-          onClick={handleCloseSort}
+          onClick={()=>handleCloseSort()}
           alt="بستن"
           className="cursor-pointer"
         />
@@ -31,7 +31,7 @@ export default function Sort({ handleCloseSort, setSelectedOption ,selectedOptio
               name="sortOption"
               className="hidden peer"
               value={option}
-              onChange={() => setSelectedOption(option)}
+              onChange={() => handleSortChange(option)}
             />
             <div
               className="w-5 h-5 border border-neutral-gray-4 rounded-sm relative flex items-center justify-center

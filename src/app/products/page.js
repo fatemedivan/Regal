@@ -7,9 +7,9 @@ import Sort from "@/components/products/Sort";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
-export default function Page() {
+export default function Page({ searchParams }) {
   const router = useRouter();
   const [isOpenFilterMenu, setIsOpenFilterMenu] = useState(false);
   const [isOpenSort, setIsOpenSort] = useState(false);
@@ -18,10 +18,9 @@ export default function Page() {
   const [selectedOption, setSelectedOption] = useState({});
   const [products, setProducts] = useState([]);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const searchParams = useSearchParams();
-  const search = searchParams?.get("search");
-  const categoryId = searchParams?.get("categoryId");
-  const orderBy = searchParams?.get("orderBy");
+ const search = searchParams?.search;
+  const categoryId = searchParams?.categoryId;
+  const orderBy = searchParams?.orderBy;
 
   const sortOptions = [
     { id: 1, title: "جدیدترین", value: "earliest" },

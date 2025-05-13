@@ -5,14 +5,24 @@ import Pagination from "@/components/common/Pagination";
 import ProductItemOff from "@/components/common/ProductItemOff";
 import Sort from "@/components/products/Sort";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
 
 export default function Page() {
   const [isOpenFilterMenu, setIsOpenFilterMenu] = useState(false);
   const [isOpenSort, setIsOpenSort] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedOption, setSelectedOption] = useState({});
+  const [token, setToken] = useState(null);
+  const [products, setProducts] = useState([]);
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
+  const sortOptions = [
+   {id:1, title: "جدیدترین", value: "earliest"} ,
+   {id:2, title: "قدیمی‌ترین", value: "latest" } ,
+   {id:3, title:  "ارزان‌ترین", value: "cheapest"},
+   {id:4, title: "گران‌ترین", value: "expensive"}
+     
+  ];
   const handleCloseFilter = () => {
     setIsOpenFilterMenu(false);
     closeModal();
@@ -21,7 +31,50 @@ export default function Page() {
     setIsOpenSort(false);
     closeModal();
   };
-  const { isModalOpen, openModal, closeModal } = useScrollLockContext();
+  const { openModal, closeModal } = useScrollLockContext();
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!token) return;
+    const getProducts = async () => {
+      try {
+        const res = await fetch(`${baseUrl}/products`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        console.log(res);
+        if (res.ok) {
+          const data = await res.json();
+          setProducts(data.products);
+          console.log(data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getProducts();
+  }, [token]);
+
+  const getProductsByOrder = async () => {
+    if (!token) return;
+    try {
+      const res = await fetch(`${baseUrl}/products?orderBy=${selectedOption.value}`,{
+        headers : {Authorization : `Bearer ${token}`}
+      });
+      if (res.ok) {
+        const data = await res.json()
+        setProducts(data.products)
+        console.log(data);  
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <Breadcrumb
@@ -40,7 +93,7 @@ export default function Page() {
         )}
         {isOpenSort && (
           <div className="lg:hidden absolute top-0 left-0 right-0 bg-white z-50">
-            <Sort handleCloseSort={handleCloseSort} />
+            <Sort setSelectedOption={setSelectedOption} selectedOption={selectedOption} handleCloseSort={handleCloseSort} getProductsByOrder={getProductsByOrder} />
           </div>
         )}
         <div>
@@ -85,59 +138,23 @@ export default function Page() {
                 </div>
               </div>
             </div>
-            <div className="flex flex-wrap gap-4 justify-center lg:hidden">
-              <ProductItemOff
-                img={"/img/category-page-1.png"}
-                offPercent={"۱۵"}
-                title={"لباس میدی رکسان"}
-                price={"۲,۸۰۰,۰۰۰"}
-                finalPrice={"۲,۳۸۰,۰۰۰"}
-                colors={["#94999F", "#F1AB90"]}
-              />
-              <ProductItemOff
-                img={"/img/category-page-2.png"}
-                title={"لباس میدی مدرن راشا"}
-                finalPrice={"۲,۹۵۰,۰۰۰"}
-                colors={["#94999F", "#F1AB90"]}
-              />
-              <ProductItemOff
-                img={"/img/category-page-3.png"}
-                title={"لباس میدی توری یاس"}
-                finalPrice={"۴,۶۵۰,۰۰۰"}
-                colors={["#94999F", "#F1AB90"]}
-              />
-              <ProductItemOff
-                img={"/img/category-page-4.png"}
-                title={"لباس مدرن پالما"}
-                finalPrice={"۲,۶۳۰,۰۰۰"}
-                colors={["#94999F", "#F1AB90"]}
-              />
-              <ProductItemOff
-                img={"/img/category-page-5.png"}
-                title={"لباس میدی دکلته الی"}
-                finalPrice={"۳,۲۰۰,۰۰۰"}
-                colors={["#94999F", "#F1AB90"]}
-              />
-              <ProductItemOff
-                img={"/img/category-page-6.png"}
-                offPercent={"۱۵"}
-                title={"لباس میدی شیوا"}
-                price={"۳,۱۰۰,۰۰۰"}
-                finalPrice={"۲,۶۳۵,۰۰۰"}
-                colors={["#94999F", "#F1AB90"]}
-              />
-              <ProductItemOff
-                img={"/img/category-page-7.png"}
-                title={"لباس میدی دیوا"}
-                finalPrice={"۵,۶۰۰,۰۰۰"}
-                colors={["#94999F", "#F1AB90"]}
-              />
-              <ProductItemOff
-                img={"/img/category-page-8.png"}
-                title={"لباس میدی روشا"}
-                finalPrice={"۳,۴۰۰,۰۰۰"}
-                colors={["#94999F", "#F1AB90"]}
-              />
+            <div className="flex flex-wrap gap-4  lg:hidden">
+              {products.length > 0 &&
+                products.map((product) => (
+                  <ProductItemOff
+                    id={product.id}
+                    key={product.id}
+                    img={"/img/category-page-2.png"}
+                    offPercent={product.discount}
+                    title={product.title}
+                    price={Math.round(
+                      product.latestPrice / (1 - product.discount / 100)
+                    )}
+                    finalPrice={product.latestPrice}
+                    colors={product.ProductColor.map((item) => item.color)}
+                    favorites={product.Favorite}
+                  />
+                ))}
             </div>
             <div className="hidden lg:flex justify-between gap-6">
               <div>
@@ -171,7 +188,7 @@ export default function Page() {
                       className="w-full border border-neutral-gray-4 rounded-lg py-5 pl-8 pr-6 text-right flex justify-between items-center cursor-pointer"
                     >
                       <p className="text-neutral-gray-7 text-xs leading-4.5">
-                        {selectedOption || "مرتب سازی بر اساس"}
+                        {selectedOption.title || "مرتب سازی بر اساس"}
                       </p>
                       <Image
                         src="/img/drop-down.svg"
@@ -186,21 +203,18 @@ export default function Page() {
 
                     {isOpenSort && (
                       <ul className="absolute w-full z-20 bg-white border border-neutral-gray-4 mt-1 rounded-lg shadow-lg text-sm">
-                        {[
-                          "جدیدترین",
-                          "قدیمی‌ترین",
-                          "ارزان‌ترین",
-                          "گران‌ترین",
-                        ].map((option) => (
+                        {sortOptions.map((option) => (
                           <li
-                            key={option}
+                            key={option.id}
                             onClick={() => {
                               setSelectedOption(option);
+                              getProductsByOrder()
+                              setIsOpenSort(false)
                               closeModal();
                             }}
                             className="px-4 py-2 hover:bg-neutral-gray-2 cursor-pointer text-xs leading-4.5 text-neutral-gray-7"
                           >
-                            {option}
+                            {option.title}
                           </li>
                         ))}
                       </ul>
@@ -209,64 +223,22 @@ export default function Page() {
                 </div>
 
                 <div className="flex items-center 2xl:justify-between flex-wrap gap-x-6 gap-y-8 mt-6">
-                  <ProductItemOff
-                    img={"/img/category-page-desktop-1.png"}
-                    offPercent={"۱۵"}
-                    title={"لباس میدی رکسان"}
-                    price={"۲,۸۰۰,۰۰۰"}
-                    finalPrice={"۲,۳۸۰,۰۰۰"}
-                    colors={["#97AAB4", "#C2B1A5", "#F1AB90"]}
-                  />
-                  <ProductItemOff
-                    img={"/img/category-page-desktop-2.png"}
-                    title={"لباس میدی مدرن راشا"}
-                    finalPrice={"۲,۹۵۰,۰۰۰"}
-                    colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
-                  />
-                  <ProductItemOff
-                    img={"/img/category-page-desktop-3.png"}
-                    title={"لباس میدی توری یاس"}
-                    finalPrice={"۴,۶۵۰,۰۰۰"}
-                    colors={["#97AAB4", "#C2B1A5", "#F1AB90"]}
-                  />
-                  <ProductItemOff
-                    img={"/img/category-page-desktop-4.png"}
-                    title={"لباس مدرن پالما"}
-                    finalPrice={"۲,۶۳۰,۰۰۰"}
-                    colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
-                  />
-                  <ProductItemOff
-                    img={"/img/category-page-desktop-5.png"}
-                    title={"لباس میدی دکلته الی"}
-                    finalPrice={"۳,۲۰۰,۰۰۰"}
-                    colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
-                  />
-                  <ProductItemOff
-                    img={"/img/category-page-desktop-6.png"}
-                    offPercent={"۱۵"}
-                    title={"لباس میدی شیوا"}
-                    price={"۳,۱۰۰,۰۰۰"}
-                    finalPrice={"۲,۶۳۵,۰۰۰"}
-                    colors={["#97AAB4", "#C2B1A5", "#F1AB90"]}
-                  />
-                  <ProductItemOff
-                    img={"/img/category-page-desktop-7.png"}
-                    title={"لباس میدی دیوا"}
-                    finalPrice={"۵,۶۰۰,۰۰۰"}
-                    colors={["#97AAB4", "#C2B1A5", "#F1AB90"]}
-                  />
-                  <ProductItemOff
-                    img={"/img/category-page-desktop-8.png"}
-                    title={"لباس میدی روشا"}
-                    finalPrice={"۳,۴۰۰,۰۰۰"}
-                    colors={["#97AAB4", "#C2B1A5", "#F1AB90"]}
-                  />
-                  <ProductItemOff
-                    img={"/img/category-page-desktop-9.png"}
-                    title={"لباس تک شانه ریتا"}
-                    finalPrice={"۲,۲۴۰,۰۰۰"}
-                    colors={["#97AAB4", "#C2B1A5", "#F1AB90"]}
-                  />
+                  {products.length > 0 &&
+                    products.map((product) => (
+                      <ProductItemOff
+                        id={product.id}
+                        key={product.id}
+                        img={"/img/category-page-2.png"}
+                        offPercent={product.discount}
+                        title={product.title}
+                        price={Math.round(
+                          product.latestPrice / (1 - product.discount / 100)
+                        )}
+                        finalPrice={product.latestPrice}
+                        colors={product.ProductColor.map((item) => item.color)}
+                        favorites={product.Favorite}
+                      />
+                    ))}
                 </div>
                 <Pagination />
               </div>

@@ -44,9 +44,9 @@ export default function Page() {
       const res = await fetch(`${baseUrl}/user`, {
         method: "PATCH",
         body: JSON.stringify({
-          name: firstName,
-          family: lastName,
-          email: email,
+          "name": firstName,
+          "family": lastName,
+          "email": email,
         }),
         headers: {
           Authorization: `Bearer ${token}`,
@@ -56,11 +56,12 @@ export default function Page() {
       console.log("response : ", res);
       if (!res.ok) {
         toast.error(res.message);
+      }else{
+        toast.success('با موفقیت ذخیره شد')
       }
-      const result = await res.json();
-      console.log("result : ", result);
       setIsLoaading(false);
     } catch (error) {
+      console.log(error);
       toast.error("خطایی رخ داد");
       setIsLoaading(false);
     }
@@ -231,7 +232,7 @@ export default function Page() {
             } py-3.25 px-31.5 rounded-lg w-full mb-4 cursor-pointer`}
           >
             {isLoading ? (
-              <div className="flex justify-center items-center gap-2">
+              <div className="flex justify-center items-center gap-2  py-1.5">
                 <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[0ms]"></div>
                 <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[150ms]"></div>
                 <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[300ms]"></div>
@@ -399,7 +400,7 @@ export default function Page() {
               } py-3.25 px-16 rounded-lg cursor-pointer`}
             >
               {isLoading ? (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 py-1.5">
                   <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[0ms]"></div>
                   <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[150ms]"></div>
                   <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[300ms]"></div>

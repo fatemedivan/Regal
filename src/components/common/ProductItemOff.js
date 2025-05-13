@@ -51,10 +51,12 @@ export default function ProductItemOff({
                 />
               )}
 
-              {offPercent && (
+              {offPercent > 0 ? (
                 <div className="bg-cognac-primery px-2 py-0.5 lg:px-3 lg:py-1 rounded-100 text-white text-xs leading-4.5">
                   {offPercent}٪
                 </div>
+              ) : (
+                <></>
               )}
             </div>
             <div className="absolute inset-0 bg-[rgba(0,0,0,0.5)] transition duration-200 ease-in-out rounded-lg opacity-0 group-hover:opacity-100 flex items-center justify-center cursor-pointer">
@@ -86,9 +88,12 @@ export default function ProductItemOff({
             </div>
           </div>
           <div className="flex items-center gap-2 text-black lg:justify-start">
-            <p className="text-neutral-gray-8 text-xs leading-4.5 lg:text-sm lg:leading-4.5 lg:line-through">
-              {price}
-            </p>
+            {(price && finalPrice) && offPercent !== 0 && (
+              <p className="text-neutral-gray-8 text-xs leading-4.5 lg:text-sm lg:leading-4.5 lg:line-through">
+                {price}
+              </p>
+            )}
+
             <p className="text-sm leading-6 lg:text-[1rem] lg:leading-7">
               {" "}
               <span className="ml-1">{finalPrice}</span>تومان

@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import Glide from "@glidejs/glide";
@@ -12,6 +12,9 @@ export default function Search({ handleCloseSearch }) {
   const [searchText, setSearchText] = useState("");
   const [token, setToken] = useState(null);
   const [popularProducts, setPopularProducts] = useState([]);
+  const [searchProducts, setSearchProducts] = useState([]);
+  const [isEmptySearch, setIsEmptySearch] = useState(true);
+  const [isNotFound, setIsNotFound] = useState(false);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -26,10 +29,31 @@ export default function Search({ handleCloseSearch }) {
       const res = await fetch(`${baseUrl}/products/popular`);
       const data = await res.json();
       setPopularProducts(data);
-      console.log(data);
+      console.log("populae data", data);
     };
     getPopularProducts();
-  }, [token]);
+  }, [token, isEmptySearch]);
+
+  const getProductsBySearch = async () => {
+    try {
+      const res = await fetch(`${baseUrl}/products?search=${searchText}`);
+      console.log(res);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.products.length) {
+          setSearchProducts(data.products);
+          console.log(data);
+          setIsNotFound(false);
+        }
+      }
+      if (res.status === 404) {
+        setSearchProducts([]);
+        setIsNotFound(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     if (glideRef.current) {
@@ -80,6 +104,7 @@ export default function Search({ handleCloseSearch }) {
       });
 
       glide.mount();
+      return () => glide.destroy();
     }
   }, [popularProducts]);
   return (
@@ -92,12 +117,12 @@ export default function Search({ handleCloseSearch }) {
       <div className="py-6 absolute top-21 left-0 right-0 z-50 w-full bg-white">
         <div className="container mx-auto">
           <div
-            className={`ralative mx-5 mb-6 px-4 py-3.75 flex items-center gap-1 rounded-lg border lg:mx-40.5 ${
+            className={`relative mx-5 mb-6 px-4 py-3.75 flex items-center gap-1 rounded-lg border lg:mx-40.5 ${
               isSearching ? "border-neutral-gray-11" : "border-neutral-gray-4"
             }`}
           >
             <div
-              className={`absolute top-6 right-[5%] lg:right-45 px-1 bg-white ${
+              className={`absolute -top-0.5 right-3 px-1 bg-white ${
                 isSearching ? "block" : "hidden"
               } -translate-y-1/2`}
             >
@@ -119,16 +144,20 @@ export default function Search({ handleCloseSearch }) {
               onChange={(e) => {
                 setIsSearching(true);
                 setSearchText(e.target.value);
+                getProductsBySearch();
+                e.target.value
+                  ? setIsEmptySearch(false)
+                  : setIsEmptySearch(true);
               }}
               onFocus={() => setIsSearching(true)}
-              onBlur={() => setIsSearching(false)}
               value={searchText}
             />
             {isSearching && searchText !== "" && (
               <Image
-                onClick={(e) => {
+                onClick={() => {
                   setIsSearching(false);
                   setSearchText("");
+                  setIsEmptySearch(true)
                 }}
                 width={16}
                 height={16}
@@ -139,23 +168,15 @@ export default function Search({ handleCloseSearch }) {
             )}
           </div>
 
-          {isSearching && searchText ? (
+          {isSearching && searchText && !isNotFound ? (
             <div className="mr-5 border-b border-b-neutral-gray-4 pb-6 lg:hidden">
               <p className="text-neutral-gray-13 mb-2 text-sm leading-6 lg:text-[1rem] lg:leading-7 lg:mb-5.5">
                 پیشنهادات
               </p>
               <ul>
-                <li className="mb-2 text-xs leading-4.5">
-                  لباس میدی مدرن راشا
-                </li>
-                <li className="mb-2 text-xs leading-4.5">لباس میدی توری یاس</li>
-                <li className="mb-2 text-xs leading-4.5">
-                  لباس میدی مدرن پالما
-                </li>
-                <li className="mb-2 text-xs leading-4.5">
-                  لباس میدی دکلته الی
-                </li>
-                <li className="mb-2 text-xs leading-4.5">لباس میدی شیوا</li>
+                {searchProducts.slice(0,4).map(product => (
+                  <li key={product.id} className="mb-2 text-xs leading-4.5">{product.title}</li>
+                ))}
               </ul>
             </div>
           ) : (
@@ -236,75 +257,98 @@ export default function Search({ handleCloseSearch }) {
               searchText && "flex justify-between"
             } pr-5 lg:px-40.5`}
           >
-            {isSearching && searchText && (
+            {isSearching && searchText && !isNotFound && (
               <div className="hidden lg:block min-w-38.5 lg:ml-18.5 mt-6">
                 <p className="text-neutral-gray-13 mb-2 text-sm leading-6 lg:text-[1rem] lg:leading-7 lg:mb-5.5">
                   پیشنهادات
                 </p>
                 <ul>
-                  <li className="mb-2 text-sm leading-6">
-                    لباس میدی مدرن راشا
-                  </li>
-                  <li className="mb-2 text-sm leading-6">لباس میدی توری یاس</li>
-                  <li className="mb-2 text-sm leading-6">
-                    لباس میدی مدرن پالما
-                  </li>
-                  <li className="mb-2 text-sm leading-6">
-                    لباس میدی دکلته الی
-                  </li>
-                  <li className="mb-2 text-sm leading-6">لباس میدی شیوا</li>
-                </ul>
+                {searchProducts.slice(0,4).map(product => (
+                  <li key={product.id} className="mb-2 text-xs leading-4.5">{product.title}</li>
+                ))}
+              </ul>
               </div>
             )}
+
             <div
               className={`${
                 searchText && "lg:max-w-120 xl:max-w-180 2xl:max-w-222"
               } max-w-full`}
             >
-              <div className="mt-6 mb-4 flex justify-between items-center">
-                {isSearching && searchText ? (
-                  <p className="text-neutral-gray-13 text-sm leading-6">
-                    نمایش ۴ نتیجه از ۲۴ نتیجه
-                  </p>
-                ) : (
-                  <p className="text-neutral-gray-13 text-sm leading-6">
-                    محبوب‌ترین‌ها
-                  </p>
-                )}
+              {!isNotFound && (
+                <div className="mt-6 mb-4 flex justify-between items-center">
+                  {isSearching && searchText ? (
+                    <p className="text-neutral-gray-13 text-sm leading-6">
+                      نمایش ۴ نتیجه از ۲۴ نتیجه
+                    </p>
+                  ) : (
+                    <p className="text-neutral-gray-13 text-sm leading-6">
+                      محبوب‌ترین‌ها
+                    </p>
+                  )}
 
-                <div className="text-neutral-gray-11 text-sm leading-5 flex items-center gap-2 px-4">
-                  <a href="">مشاهده همه</a>
-                  <Image
-                    className="hidden lg:block cursor-pointer"
-                    width={16}
-                    height={16}
-                    src="/img/arrow-left-4.svg"
-                    alt=""
-                  />
+                  <div className="text-neutral-gray-11 text-sm leading-5 flex items-center gap-2 px-4">
+                    <a href="">مشاهده همه</a>
+                    <Image
+                      className="hidden lg:block cursor-pointer"
+                      width={16}
+                      height={16}
+                      src="/img/arrow-left-4.svg"
+                      alt=""
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="glide max-w-full" ref={glideRef}>
-                <div className="glide__track" data-glide-el="track">
-                  <ul className="glide__slides">
-                    {popularProducts.map((product) => (
-                      <li key={product.id} className="glide__slide">
-                        <ProductSearchItem
+              )}
+
+              {isNotFound && searchText && (
+                <p className="text-neutral-gray-13 text-sm leading-6 mt-2">
+                  محصولی یافت نشد
+                </p>
+              )}
+
+              {isSearching && searchText && (
+                <div className="flex items-center flex-wrap gap-3">
+                  {searchProducts.slice(0, 4).map((product) => (
+                    <div key={product.id}>
+                      <ProductSearchItem
                         handleCloseSearch={handleCloseSearch}
-                          img={"/img/product-off-1.png"}
-                          title={product.title}
-                          finalPrice={product.latestPrice}
-                          isMore={false}
-                          colors={product.ProductColor.map(
-                            (item) => item.color
-                          )}
-                          id={product.id}
-                          favorites={product.Favorite}
-                        />
-                      </li>
-                    ))}
-                  </ul>
+                        img={"/img/product-off-1.png"}
+                        title={product.title}
+                        finalPrice={product.latestPrice}
+                        isMore={false}
+                        colors={product.ProductColor.map((item) => item.color)}
+                        id={product.id}
+                        favorites={product.Favorite}
+                      />
+                    </div>
+                  ))}
                 </div>
-              </div>
+              )}
+
+              {!searchText && (
+                <div className="glide max-w-full" ref={glideRef}>
+                  <div className="glide__track" data-glide-el="track">
+                    <ul className="glide__slides">
+                      {popularProducts.map((product) => (
+                        <li key={product.id} className="glide__slide">
+                          <ProductSearchItem
+                            handleCloseSearch={handleCloseSearch}
+                            img={"/img/product-off-1.png"}
+                            title={product.title}
+                            finalPrice={product.latestPrice}
+                            isMore={false}
+                            colors={product.ProductColor.map(
+                              (item) => item.color
+                            )}
+                            id={product.id}
+                            favorites={product.Favorite}
+                          />
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

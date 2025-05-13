@@ -4,8 +4,10 @@ import React, { useEffect, useRef, useState } from "react";
 import Glide from "@glidejs/glide";
 import "@glidejs/glide/dist/css/glide.core.min.css";
 import ProductSearchItem from "./ProductSearchItem";
+import { useRouter } from "next/navigation";
 
 export default function Search({ handleCloseSearch }) {
+  const router = useRouter();
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const glideRef = useRef(null);
   const [isSearching, setIsSearching] = useState(false);
@@ -157,7 +159,7 @@ export default function Search({ handleCloseSearch }) {
                 onClick={() => {
                   setIsSearching(false);
                   setSearchText("");
-                  setIsEmptySearch(true)
+                  setIsEmptySearch(true);
                 }}
                 width={16}
                 height={16}
@@ -174,8 +176,10 @@ export default function Search({ handleCloseSearch }) {
                 پیشنهادات
               </p>
               <ul>
-                {searchProducts.slice(0,4).map(product => (
-                  <li key={product.id} className="mb-2 text-xs leading-4.5">{product.title}</li>
+                {searchProducts.slice(0, 4).map((product) => (
+                  <li key={product.id} className="mb-2 text-xs leading-4.5">
+                    {product.title}
+                  </li>
                 ))}
               </ul>
             </div>
@@ -263,10 +267,12 @@ export default function Search({ handleCloseSearch }) {
                   پیشنهادات
                 </p>
                 <ul>
-                {searchProducts.slice(0,4).map(product => (
-                  <li key={product.id} className="mb-2 text-xs leading-4.5">{product.title}</li>
-                ))}
-              </ul>
+                  {searchProducts.slice(0, 4).map((product) => (
+                    <li key={product.id} className="mb-2 text-xs leading-4.5">
+                      {product.title}
+                    </li>
+                  ))}
+                </ul>
               </div>
             )}
 
@@ -287,8 +293,14 @@ export default function Search({ handleCloseSearch }) {
                     </p>
                   )}
 
-                  <div className="text-neutral-gray-11 text-sm leading-5 flex items-center gap-2 px-4">
-                    <a href="">مشاهده همه</a>
+                  <div
+                    onClick={() => {
+                      router.push(`/products?search=${searchText}`);
+                      handleCloseSearch();
+                    }}
+                    className="text-neutral-gray-11 text-sm leading-5 flex items-center gap-2 px-4 cursor-pointer"
+                  >
+                    <p>مشاهده همه</p>
                     <Image
                       className="hidden lg:block cursor-pointer"
                       width={16}

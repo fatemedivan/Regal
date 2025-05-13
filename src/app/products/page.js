@@ -7,22 +7,25 @@ import Sort from "@/components/products/Sort";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+  const router = useRouter();
   const [isOpenFilterMenu, setIsOpenFilterMenu] = useState(false);
   const [isOpenSort, setIsOpenSort] = useState(false);
   const [selectedOption, setSelectedOption] = useState({});
   const [token, setToken] = useState(null);
   const [products, setProducts] = useState([]);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const { search } = router.query || {};
 
   const sortOptions = [
-   {id:1, title: "جدیدترین", value: "earliest"} ,
-   {id:2, title: "قدیمی‌ترین", value: "latest" } ,
-   {id:3, title:  "ارزان‌ترین", value: "cheapest"},
-   {id:4, title: "گران‌ترین", value: "expensive"}
-     
+    { id: 1, title: "جدیدترین", value: "earliest" },
+    { id: 2, title: "قدیمی‌ترین", value: "latest" },
+    { id: 3, title: "ارزان‌ترین", value: "cheapest" },
+    { id: 4, title: "گران‌ترین", value: "expensive" },
   ];
+  const { openModal, closeModal } = useScrollLockContext();
   const handleCloseFilter = () => {
     setIsOpenFilterMenu(false);
     closeModal();
@@ -31,7 +34,6 @@ export default function Page() {
     setIsOpenSort(false);
     closeModal();
   };
-  const { openModal, closeModal } = useScrollLockContext();
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -39,6 +41,23 @@ export default function Page() {
       setToken(storedToken);
     }
   }, []);
+
+  useEffect(() => {
+    if (search) {
+      const getSearchedProducts = async () => {
+        try {
+          const res = await fetch(`${baseUrl}/products?search=${search}`);
+          if (res.ok) {
+            const data = await res.json();
+            setProducts(data.products);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      getSearchedProducts();
+    }
+  }, [search]);
 
   useEffect(() => {
     if (!token) return;
@@ -63,13 +82,16 @@ export default function Page() {
   const getProductsByOrder = async () => {
     if (!token) return;
     try {
-      const res = await fetch(`${baseUrl}/products?orderBy=${selectedOption.value}`,{
-        headers : {Authorization : `Bearer ${token}`}
-      });
+      const res = await fetch(
+        `${baseUrl}/products?orderBy=${selectedOption.value}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       if (res.ok) {
-        const data = await res.json()
-        setProducts(data.products)
-        console.log(data);  
+        const data = await res.json();
+        setProducts(data.products);
+        console.log(data);
       }
     } catch (error) {
       console.log(error);
@@ -93,7 +115,12 @@ export default function Page() {
         )}
         {isOpenSort && (
           <div className="lg:hidden absolute top-0 left-0 right-0 bg-white z-50">
-            <Sort setSelectedOption={setSelectedOption} selectedOption={selectedOption} handleCloseSort={handleCloseSort} getProductsByOrder={getProductsByOrder} />
+            <Sort
+              setSelectedOption={setSelectedOption}
+              selectedOption={selectedOption}
+              handleCloseSort={handleCloseSort}
+              getProductsByOrder={getProductsByOrder}
+            />
           </div>
         )}
         <div>
@@ -208,8 +235,8 @@ export default function Page() {
                             key={option.id}
                             onClick={() => {
                               setSelectedOption(option);
-                              getProductsByOrder()
-                              setIsOpenSort(false)
+                              getProductsByOrder();
+                              setIsOpenSort(false);
                               closeModal();
                             }}
                             className="px-4 py-2 hover:bg-neutral-gray-2 cursor-pointer text-xs leading-4.5 text-neutral-gray-7"

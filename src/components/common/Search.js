@@ -5,6 +5,7 @@ import Glide from "@glidejs/glide";
 import "@glidejs/glide/dist/css/glide.core.min.css";
 import ProductSearchItem from "./ProductSearchItem";
 import { useRouter } from "next/navigation";
+import { useScrollLockContext } from "@/context/ScrollLockContext";
 
 export default function Search({ handleCloseSearch }) {
   const router = useRouter();
@@ -17,7 +18,7 @@ export default function Search({ handleCloseSearch }) {
   const [searchProducts, setSearchProducts] = useState([]);
   const [isEmptySearch, setIsEmptySearch] = useState(true);
   const [isNotFound, setIsNotFound] = useState(false);
-
+  const { closeModal } = useScrollLockContext();
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
@@ -297,6 +298,7 @@ export default function Search({ handleCloseSearch }) {
                     onClick={() => {
                       router.push(`/products?search=${searchText}`);
                       handleCloseSearch();
+                      closeModal()
                     }}
                     className="text-neutral-gray-11 text-sm leading-5 flex items-center gap-2 px-4 cursor-pointer"
                   >

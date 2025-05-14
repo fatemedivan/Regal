@@ -1,12 +1,14 @@
 "use client";
 import BasketDetailsCard from "@/components/common/BasketDetailsCard";
 import ProgressBar from "@/components/common/ProgressBar";
+import { useBasketContext } from "@/context/BasketContext";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 export default function Page() {
   const [payment, setPayment] = useState("online");
+  const { countOfProduct, totalPric, cart } = useBasketContext();
   const router = useRouter();
   return (
     <div className="container mx-auto px-5 pt-6 pb-16 lg:pt-0 lg:px-12">
@@ -159,7 +161,12 @@ export default function Page() {
           )}
         </div>
 
-        <BasketDetailsCard step={3} />
+        <BasketDetailsCard
+          step={3}
+          totalPric={totalPric}
+          count={countOfProduct}
+          cart={cart}
+        />
       </div>
     </div>
   );

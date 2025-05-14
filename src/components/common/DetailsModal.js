@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 
-export default function DetailsModal({ handleCloseModal }) {
+export default function DetailsModal({ handleCloseModal, cart }) {
   return (
     <>
       <div
@@ -20,34 +20,23 @@ export default function DetailsModal({ handleCloseModal }) {
             onClick={() => handleCloseModal()}
           />
         </div>
-        <div className="">
-          <div className="flex justify-between items-center mb-2">
-            <p className="text-sm leading-6 text-neutral-gray-11">
-              لباس میدی رکسان
-            </p>
-            <p className="text-sm leading-6 text-neutral-gray-11">۱ عدد</p>
-            <p className="text-sm leading-6 text-neutral-gray-10">
-              ۲,۳۸۰,۰۰۰ تومان
-            </p>
-          </div>
-          <div className="flex justify-between items-center mb-2">
-            <p className="text-sm leading-6 text-neutral-gray-11">
-              لباس میدی راشا
-            </p>
-            <p className="text-sm leading-6 text-neutral-gray-11">۲ عدد</p>
-            <p className="text-sm leading-6 text-neutral-gray-10">
-              ۴,۱۹۶,۰۰۰ تومان
-            </p>
-          </div>
-          <div className="flex justify-between items-center">
-            <p className="text-sm leading-6 text-neutral-gray-11">
-              پیراهن ساحلی
-            </p>
-            <p className="text-sm leading-6 text-neutral-gray-11">۱ عدد</p>
-            <p className="text-sm leading-6 text-neutral-gray-10">
-              ۲,۲۵۰,۰۰۰ تومان
-            </p>
-          </div>
+        <div>
+          {cart.map((cartItem) => (
+            <div
+              key={cartItem.id}
+              className="flex justify-between items-center mb-2"
+            >
+              <p className="text-sm leading-6 text-neutral-gray-11">
+                لباس میدی رکسان
+              </p>
+              <p className="text-sm leading-6 text-neutral-gray-11">
+                {cartItem.quantity} عدد
+              </p>
+              <p className="text-sm leading-6 text-neutral-gray-10">
+                {Math.round(cartItem.Entity.price)} تومان
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </>

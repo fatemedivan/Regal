@@ -12,10 +12,10 @@ import { toast, ToastContainer } from "react-toastify";
 
 export default function Page() {
   const router = useRouter();
-  const { removeFromCart } = useBasketContext();
+  const { removeFromCart, getCart, cart, countOfProduct, totalPric } =
+    useBasketContext();
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [token, setToken] = useState("");
-  const [cart, setCart] = useState([]);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
@@ -24,27 +24,6 @@ export default function Page() {
       setToken(storedToken);
     }
   }, []);
-
-  useEffect(() => {
-    if (!token) return;
-    getCart();
-  }, [token]);
-
-  const getCart = async () => {
-    try {
-      const res = await fetch(`${baseUrl}/cart`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      console.log(res);
-      if (res.ok) {
-        const data = await res.json();
-        console.log("cart", data);
-        setCart(data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const increaseQuantity = async (id) => {
     try {
@@ -55,7 +34,7 @@ export default function Page() {
       console.log(res);
       if (res.ok) {
         toast.success("با موفقیت افزایش یافت");
-        getCart()
+        await getCart();
       } else {
         toast.error("ناموفق");
       }
@@ -74,7 +53,7 @@ export default function Page() {
       console.log(res);
       if (res.ok) {
         toast.success("با موفقیت کاهش یافت");
-        getCart()
+        await getCart();
       } else {
         toast.error("ناموفق");
       }
@@ -89,7 +68,6 @@ export default function Page() {
     closeModal();
   };
   const handleDeleteBasket = () => {
-    setCart([]);
     setIsOpenDeleteModal(false);
   };
   const { openModal, closeModal } = useScrollLockContext();
@@ -191,7 +169,7 @@ export default function Page() {
                         {item.percentOff && (
                           <div className="flex items-center gap-1">
                             <p className="text-sm leading-4.5 text-neutral-gray-7 line-through">
-                              {item.Entity.price}
+                              {item.Entity.price.toLocaleString()}
                             </p>
                             <div className="px-2 py-0.5 bg-cognac-primery rounded-100 text-white text-sm leading-5">
                               {item.percentOff}
@@ -199,7 +177,7 @@ export default function Page() {
                           </div>
                         )}
                         <p className="text-neutral-gray-11 text-sm leading-5 mt-1">
-                          {item.Entity.price} تومان
+                          {item.Entity.price.toLocaleString()} تومان
                         </p>
                       </div>
                       <div className="flex items-center gap-4">
@@ -218,9 +196,8 @@ export default function Page() {
                         <button className="p-3 rounded-lg  border border-neutral-gray-8">
                           {item.quantity === 1 ? (
                             <Image
-                              onClick={() => {
-                                removeFromCart(item.entityId);
-                                getCart();
+                              onClick={async () => {
+                                await removeFromCart(item.entityId);
                               }}
                               width={16}
                               height={16}
@@ -231,7 +208,7 @@ export default function Page() {
                           ) : (
                             <Image
                               onClick={() => {
-                                decreaseQuantity(item.entityId);  
+                                decreaseQuantity(item.entityId);
                               }}
                               width={16}
                               height={16}
@@ -301,7 +278,7 @@ export default function Page() {
                           {item.percentOff && (
                             <div className="flex items-center gap-1">
                               <p className="text-sm leading-6 text-neutral-gray-7 line-through">
-                                {item.Entity.price}
+                                {item.Entity.price.toLocaleString()}
                               </p>
                               <div className="px-3 py-1 bg-cognac-primery rounded-100 text-white text-sm leading-5">
                                 {item.percentOff}
@@ -309,7 +286,7 @@ export default function Page() {
                             </div>
                           )}
                           <p className="text-neutral-gray-10 text-sm leading-6">
-                            {item.Entity.price} تومان
+                            {item.Entity.price.toLocaleString()} تومان
                           </p>
                         </div>
                       </div>
@@ -331,9 +308,8 @@ export default function Page() {
                           <button className="p-3 rounded-lg border border-neutral-gray-8">
                             {item.quantity === 1 ? (
                               <Image
-                                onClick={() => {
-                                  removeFromCart(item.entityId);
-                                  getCart();
+                                onClick={async () => {
+                                  await removeFromCart(item.entityId);
                                 }}
                                 width={16}
                                 height={16}
@@ -359,7 +335,8 @@ export default function Page() {
 
                       <div className="flex justify-end items-center">
                         <p className="text-sm leading-6 text-neutral-gray-10">
-                          {item.Entity.price * item.quantity} تومان
+                          {(item.Entity.price * item.quantity).toLocaleString()}{" "}
+                          تومان
                         </p>
                       </div>
                     </div>
@@ -367,7 +344,12 @@ export default function Page() {
                 ))}
               </div>
             </div>
-            <BasketDetailsCard step={1} />
+            <BasketDetailsCard
+              step={1}
+              count={countOfProduct}
+              totalPric={totalPric}
+              cart={cart}
+            />
           </div>
           {isOpenDeleteModal && (
             <DeleteModal

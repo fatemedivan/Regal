@@ -8,6 +8,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
+import { useBasketContext } from "@/context/BasketContext";
 
 export default function Page() {
   const router = useRouter();
@@ -16,7 +17,6 @@ export default function Page() {
   const [deliveryOption, setDeliveryOption] = useState("courier");
   const [isShowDateModal, setIsShowDateModal] = useState(false);
   const [isShowTimeModal, setIsShowTimeModal] = useState(false);
-  //make this state true to see adress card
   const [isHadAdress, setIsHadAdress] = useState(false);
   const [date, setDate] = useState([
     "شنبه ۲۱ آبان ۱۴۰۳",
@@ -42,7 +42,9 @@ export default function Page() {
     closeModal();
   };
 
-  const { isModalOpen, openModal, closeModal, setMobileOnlyLock } = useScrollLockContext();
+  const { isModalOpen, openModal, closeModal, setMobileOnlyLock } =
+    useScrollLockContext();
+  const { countOfProduct, totalPric, cart } = useBasketContext();
 
   return (
     <div className="container mx-auto px-5 pt-6 pb-16 lg:pt-0 lg:px-12 lg:pb-22">
@@ -122,7 +124,10 @@ export default function Page() {
                       <h5 className="font-semibold leading-5 text-black lg:font-bold lg:text-lg lg:leading-5.5">
                         لیست آدرس‌ها
                       </h5>
-                      <div className="flex items-center gap-2 lg:p-4">
+                      <div
+                        onClick={() => router.push("/user/addresses")}
+                        className="flex items-center gap-2 lg:p-4"
+                      >
                         <Image
                           width={16}
                           height={16}
@@ -147,7 +152,10 @@ export default function Page() {
                       <p className="text-neutral-gray-9 leading-6 text-sm lg:text-[1rem] lg:leading-7">
                         شما در حال حاضر هیچ آدرسی ثبت نکرده‌اید!
                       </p>
-                      <button className="text-white bg-cognac-primery rounded-lg leading-5.5 py-3.25 px-9.5 lg:text-sm lg:leading-5 lg:px-7.25 lg:py-2.5 cursor-pointer">
+                      <button
+                        onClick={() => router.push("/user/addresses")}
+                        className="text-white bg-cognac-primery rounded-lg leading-5.5 py-3.25 px-9.5 lg:text-sm lg:leading-5 lg:px-7.25 lg:py-2.5 cursor-pointer"
+                      >
                         افزودن آدرس
                       </button>
                     </div>
@@ -162,7 +170,7 @@ export default function Page() {
                   <div
                     onClick={() => {
                       setIsShowDateModal(!isShowDateModal);
-                      setMobileOnlyLock(true)
+                      setMobileOnlyLock(true);
                       isModalOpen ? closeModal() : openModal();
                     }}
                     className="px-4 py-3.75 border border-neutral-gray-4 rounded-lg flex justify-between items-center relative cursor-pointer lg:w-1/2"
@@ -201,7 +209,7 @@ export default function Page() {
                   <div
                     onClick={() => {
                       setIsShowTimeModal(!isShowTimeModal);
-                      setMobileOnlyLock(true)
+                      setMobileOnlyLock(true);
                       isModalOpen ? closeModal() : openModal();
                     }}
                     className="px-4 py-3.75 border border-neutral-gray-4 rounded-lg flex justify-between items-center relative mt-3 cursor-pointer lg:mt-0 lg:w-1/2 "
@@ -338,7 +346,12 @@ export default function Page() {
           </div>
         </div>
         <div>
-          <BasketDetailsCard step={2} />
+          <BasketDetailsCard
+            step={2}
+            totalPric={totalPric}
+            count={countOfProduct}
+            cart={cart}
+          />
         </div>
       </div>
       <div className="lg:hidden">

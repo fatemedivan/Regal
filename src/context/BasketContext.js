@@ -14,6 +14,9 @@ export const useBasketContext = () => {
 export const BasketContextProvider = ({ children }) => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const [token, setToken] = useState("");
+  const [totalPric, setTotalPrice] = useState(null);
+  const [cart, setCart] = useState([]);
+  const [countOfProduct, setCountOfPrroduct] = useState(0);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -27,8 +30,8 @@ export const BasketContextProvider = ({ children }) => {
       const res = await fetch(`${baseUrl}/cart/${productId}`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
-      })
-      console.log(res)
+      });
+      console.log(res);
       if (res.status === 201) {
         toast.success("با موفقیت به سبد خرید اضافه شد");
       } else if (res.status === 401) {
@@ -50,6 +53,7 @@ export const BasketContextProvider = ({ children }) => {
       });
       if (res.ok) {
         toast.success("با موفقیت حذف شد");
+        await getCart();
       } else {
         toast.error("ناموفق");
       }
@@ -58,9 +62,52 @@ export const BasketContextProvider = ({ children }) => {
       toast.error("خطایی رخ داد");
     }
   };
+  useEffect(() => {
+    if (token) {
+      getCart();
+    }
+  }, [token]);
 
+  const getCart = async () => {
+    try {
+      const res = await fetch(`${baseUrl}/cart`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log(res);
+      if (res.ok) {
+        const data = await res.json();
+        console.log("new cart data:", data);
+        setCart(data);
+        const total = Math.floor(
+          data.reduce((sum, cartItem) => {
+            return sum + cartItem.quantity * cartItem.Entity.price;
+          }, 0)
+        );
+
+        setTotalPrice(total.toLocaleString());
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    const totalCount = cart.reduce(
+      (sum, cartItem) => sum + cartItem.quantity,
+      0
+    );
+    setCountOfPrroduct(totalCount);
+  }, [cart]);
   return (
-    <BasketContext.Provider value={{ addToCart, removeFromCart }}>
+    <BasketContext.Provider
+      value={{
+        addToCart,
+        removeFromCart,
+        getCart,
+        cart,
+        totalPric,
+        countOfProduct,
+      }}
+    >
       {children}
     </BasketContext.Provider>
   );

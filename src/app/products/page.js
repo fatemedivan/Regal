@@ -1,5 +1,5 @@
 import React from "react";
-import Products from "@/components/common/Products";
+import Products from "@/components/products/Products";
 
 export default async function Page({ searchParams }) {
   const search = searchParams.search;

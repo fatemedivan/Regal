@@ -1,11 +1,11 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import Pagination from "./Pagination";
-import ProductItemOff from "./ProductItemOff";
+import Pagination from "../common/Pagination";
+import ProductItemOff from "../common/ProductItemOff";
 import Image from "next/image";
-import Sort from "../products/Sort";
-import Breadcrumb from "./Breadcrumb";
+import Sort from "./Sort";
+import Breadcrumb from "../common/Breadcrumb";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
 import FilterMenu from "@/components/products/FilterMenu";
 
@@ -25,6 +25,7 @@ export default function Products({ search, orderBy, categoryId }) {
   const [products, setProducts] = useState([]);
   const [totalPages, setTotalPages] = useState(null);
   const [currentPage, setCurrentPage] = useState(pageParam);
+  const [searchValue, setSearchValue] = useState("");
 
   const sortOptions = [
     { id: 1, title: "جدیدترین", value: "earliest" },
@@ -177,6 +178,45 @@ export default function Products({ search, orderBy, categoryId }) {
       console.log(error);
     }
   };
+  //handle search in products
+  useEffect(() => {
+    if (searchValue.trim() === "") return;
+    const params = new URLSearchParams(searchParamsHook.toString());
+    params.set("search", searchValue);
+    params.set("page", currentPage);
+    router.push(`?${params.toString()}`);
+
+    const getSearchedProducts = async () => {
+      try {
+        const res = await fetch(
+          `${baseUrl}/products?search=${searchValue}&page=${currentPage}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        if (res.ok) {
+          const data = await res.json();
+          if (data.products.length === 0) {
+            setNotFound(true);
+          } else {
+            setProducts(data.products);
+            setTotalPages(data.latestPage);
+            setNotFound(false);
+            console.log(data);
+          }
+        }
+        if (res.status === 404) {
+          setNotFound(true);
+          setProducts([]);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getSearchedProducts();
+  }, [searchValue, token, currentPage, searchParamsHook]);
+
   return (
     <div>
       <Breadcrumb
@@ -284,105 +324,106 @@ export default function Products({ search, orderBy, categoryId }) {
                 ))}
             </div>
             <div className="hidden lg:flex justify-between gap-6">
-              {notFound ? (
-                <div className="text-center w-full text-red-500 text-3xl font-bold mt-10">
-                  محصولی یافت نشد
+              <div>
+                <h5 className="text-xl font-bold leading-6.5 text-neutral-gray-13 mb-12">
+                  فیلترها
+                </h5>
+                <div>
+                  <FilterMenu />
                 </div>
-              ) : (
-                <>
-                  <div>
-                    <h5 className="text-xl font-bold leading-6.5 text-neutral-gray-13 mb-12">
-                      فیلترها
-                    </h5>
-                    <div>
-                      <FilterMenu />
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-6">
-                      <div className="px-4 py-3.75 rounded-lg border border-neutral-gray-4 flex items-center gap-1 w-full">
-                        <Image
-                          width={16}
-                          height={16}
-                          src="/img/search-normal-2.svg"
-                          alt=""
-                        />
-                        <input
-                          type="text"
-                          className="w-full outline-none placeholder:text-xs placeholder:leading-4.5 placeholder:text-neutral-gray-7"
-                          placeholder="جستجو کنید"
-                        />
-                      </div>
-                      <div className="relative w-80">
-                        <button
-                          onClick={() => {
-                            setIsOpenSort(!isOpenSort);
-                          }}
-                          className="w-full border border-neutral-gray-4 rounded-lg py-5 pl-8 pr-6 text-right flex justify-between items-center cursor-pointer"
-                        >
-                          <p className="text-neutral-gray-7 text-xs leading-4.5">
-                            {selectedOption.title || "مرتب سازی بر اساس"}
-                          </p>
-                          <Image
-                            src="/img/drop-down.svg"
-                            width={16}
-                            height={16}
-                            alt="dropdown icon"
-                            className={`absolute top-1/2 left-3 -translate-y-1/2 pointer-events-none transition ${
-                              isOpenSort && "rotate-180"
-                            }`}
-                          />
-                        </button>
-
-                        {isOpenSort && (
-                          <ul className="absolute w-full z-20 bg-white border border-neutral-gray-4 mt-1 rounded-lg shadow-lg text-sm">
-                            {sortOptions.map((option) => (
-                              <li
-                                key={option.id}
-                                onClick={() => {
-                                  handleSortChange(option);
-                                  getProductsByOrder();
-                                  setIsOpenSort(false);
-                                  closeModal();
-                                }}
-                                className="px-4 py-2 hover:bg-neutral-gray-2 cursor-pointer text-xs leading-4.5 text-neutral-gray-7"
-                              >
-                                {option.title}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="flex items-center 2xl:justify-between flex-wrap gap-x-6 gap-y-8 mt-6">
-                      {products.length > 0 &&
-                        products.map((product) => (
-                          <ProductItemOff
-                            id={product.id}
-                            key={product.id}
-                            img={"/img/category-page-2.png"}
-                            offPercent={product.discount}
-                            title={product.title}
-                            price={Math.round(
-                              product.latestPrice / (1 - product.discount / 100)
-                            )}
-                            finalPrice={product.latestPrice}
-                            colors={product.ProductColor.map(
-                              (item) => item.color
-                            )}
-                            favorites={product.Favorite}
-                          />
-                        ))}
-                    </div>
-                    <Pagination
-                      currentPage={currentPage}
-                      totalPages={totalPages}
-                      onPageChange={handlePageChange}
+              </div>
+              <div>
+                <div className="flex items-center gap-6">
+                  <div className="px-4 py-3.75 rounded-lg border border-neutral-gray-4 flex items-center gap-1 w-full">
+                    <Image
+                      width={16}
+                      height={16}
+                      src="/img/search-normal-2.svg"
+                      alt=""
+                    />
+                    <input
+                      type="text"
+                      value={searchValue}
+                      onChange={(e) => {
+                        setSearchValue(e.target.value);
+                      }}
+                      className="w-full outline-none placeholder:text-xs placeholder:leading-4.5 placeholder:text-neutral-gray-7"
+                      placeholder="جستجو کنید"
                     />
                   </div>
-                </>
-              )}
+                  <div className="relative w-80">
+                    <button
+                      onClick={() => {
+                        setIsOpenSort(!isOpenSort);
+                      }}
+                      className="w-full border border-neutral-gray-4 rounded-lg py-5 pl-8 pr-6 text-right flex justify-between items-center cursor-pointer"
+                    >
+                      <p className="text-neutral-gray-7 text-xs leading-4.5">
+                        {selectedOption.title || "مرتب سازی بر اساس"}
+                      </p>
+                      <Image
+                        src="/img/drop-down.svg"
+                        width={16}
+                        height={16}
+                        alt="dropdown icon"
+                        className={`absolute top-1/2 left-3 -translate-y-1/2 pointer-events-none transition ${
+                          isOpenSort && "rotate-180"
+                        }`}
+                      />
+                    </button>
+
+                    {isOpenSort && (
+                      <ul className="absolute w-full z-20 bg-white border border-neutral-gray-4 mt-1 rounded-lg shadow-lg text-sm">
+                        {sortOptions.map((option) => (
+                          <li
+                            key={option.id}
+                            onClick={() => {
+                              handleSortChange(option);
+                              getProductsByOrder();
+                              setIsOpenSort(false);
+                              closeModal();
+                            }}
+                            className="px-4 py-2 hover:bg-neutral-gray-2 cursor-pointer text-xs leading-4.5 text-neutral-gray-7"
+                          >
+                            {option.title}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+                {notFound && (
+                  <div className="text-center w-full text-red-500 text-3xl font-bold mt-10">
+                    محصولی یافت نشد
+                  </div>
+                )}
+                <div className="flex items-center 2xl:justify-between flex-wrap gap-x-6 gap-y-8 mt-6">
+                  {products.length > 0 &&
+                    products.map((product) => (
+                      <ProductItemOff
+                        id={product.id}
+                        key={product.id}
+                        img={"/img/category-page-2.png"}
+                        offPercent={product.discount}
+                        title={product.title}
+                        price={Math.round(
+                          product.latestPrice / (1 - product.discount / 100)
+                        )}
+                        finalPrice={product.latestPrice}
+                        colors={product.ProductColor.map((item) => item.color)}
+                        favorites={product.Favorite}
+                      />
+                    ))}
+                </div>
+                {!notFound && (
+                  <Pagination
+                    currentPage={currentPage}
+                    products={products}
+                    latestPage={totalPages}
+                    onPageChange={handlePageChange}
+                  />
+                )}
+              </div>
             </div>
           </div>
         </div>

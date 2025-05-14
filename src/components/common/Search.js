@@ -147,7 +147,7 @@ export default function Search({ handleCloseSearch }) {
               onChange={(e) => {
                 setIsSearching(true);
                 setSearchText(e.target.value);
-                getProductsBySearch();
+                 getProductsBySearch();
                 e.target.value
                   ? setIsEmptySearch(false)
                   : setIsEmptySearch(true);

@@ -4,14 +4,17 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { ScrollLockContextProvider } from "@/context/ScrollLockContext";
 import { AuthContextProvider } from "@/context/AuthContext";
+import { BasketContextProvider } from "@/context/BasketContext";
 
 export default function Layout({ children }) {
   return (
     <AuthContextProvider>
       <ScrollLockContextProvider>
-        <Navbar />
-        {children}
-        <Footer />
+        <BasketContextProvider>
+          <Navbar />
+          {children}
+          <Footer />
+        </BasketContextProvider>
       </ScrollLockContextProvider>
     </AuthContextProvider>
   );

@@ -7,6 +7,7 @@ import Glide from "@glidejs/glide";
 import "@glidejs/glide/dist/css/glide.core.min.css";
 import { useParams } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
+import { useBasketContext } from "@/context/BasketContext";
 
 export default function Page() {
   const sizes = ["XS", "S", "M", "L", "XL", "2XL"];
@@ -19,7 +20,7 @@ export default function Page() {
   const [product, setProduct] = useState({});
   const [currentImgSrc, setCurrentImgSrc] = useState("");
   const [isLiked, setIsLiked] = useState(false);
-
+  const {addToCart} = useBasketContext() 
   //get token
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -368,7 +369,7 @@ export default function Page() {
                 <img className="hidden lg:block" src="/img/check.svg" alt="" />
                 <p className="text-5.5 text-cognac-primery">مقایسه محصول</p>
               </button>
-              <button className="flex items-center bg-cognac-primery gap-2 rounded-lg px-4 py-3.25 lg:px-10 xl:px-37 cursor-pointer">
+              <button onClick={()=>addToCart(product.id)} className="flex items-center bg-cognac-primery gap-2 rounded-lg px-4 py-3.25 lg:px-10 xl:px-37 cursor-pointer">
                 <img
                   className="hidden lg:block"
                   src="/img/shopping-cart-2.svg"

@@ -26,7 +26,7 @@ export default function Categories() {
       </h5>
       <div className="flex flex-wrap gap-4 lg:hidden">
         <div className="flex flex-col gap-4">
-          <Link href={"/products?categoryId=1"}>
+          <Link href={"/products?categoryId=1&page=1"}>
             <div className="h-71 relative w-41.75">
               <Image
                 className="relative w-full h-auto z-20"
@@ -51,7 +51,7 @@ export default function Categories() {
               </div>
             </div>
           </Link>
-          <Link href={"/products?categoryId=2"}>
+          <Link href={"/products?categoryId=2&page=1"}>
             <div className="h-35 relative w-41.75">
               <Image
                 className="relative w-full h-auto z-20"
@@ -76,7 +76,7 @@ export default function Categories() {
               </div>
             </div>
           </Link>
-          <Link href={"/products?categoryId=3"}>
+          <Link href={"/products?categoryId=3&page=1"}>
             <div className="h-50 relative w-41.75">
               <Image
                 className="relative w-full h-auto z-20"
@@ -101,7 +101,7 @@ export default function Categories() {
               </div>
             </div>
           </Link>
-          <Link href={"/products?categoryId=4"}>
+          <Link href={"/products?categoryId=4&page=1"}>
             <div className="h-51.5 relative w-41.75">
               <Image
                 className="relative w-full h-auto z-20"
@@ -129,7 +129,7 @@ export default function Categories() {
         </div>
 
         <div className="flex flex-col gap-4">
-          <Link href={"/products?categoryId=5"}>
+          <Link href={"/products?categoryId=5&page=1"}>
             <div className="h-50 relative w-41.75">
               <Image
                 className="relative w-full h-auto z-20"
@@ -154,7 +154,7 @@ export default function Categories() {
               </div>
             </div>
           </Link>
-          <Link href={"/products?categoryId=6"}>
+          <Link href={"/products?categoryId=6&page=1"}>
             <div className="h-37.5 relative w-41.75">
               <Image
                 className="relative w-full h-auto z-20"
@@ -179,7 +179,7 @@ export default function Categories() {
               </div>
             </div>
           </Link>
-          <Link href={"/products?categoryId=7"}>
+          <Link href={"/products?categoryId=7&page=1"}>
             <div className="h-49 relative w-41.75">
               <Image
                 className="relative w-full h-auto z-20"
@@ -204,7 +204,7 @@ export default function Categories() {
               </div>
             </div>
           </Link>
-          <Link href={"/products?categoryId=8"}>
+          <Link href={"/products?categoryId=8&page=1"}>
             <div className="h-71 relative w-41.75">
               <Image
                 className="relative w-full h-auto z-20"
@@ -233,7 +233,7 @@ export default function Categories() {
       </div>
 
       <div className="hidden lg:grid grid-cols-4 grid-rows-6 gap-5">
-        <div onClick={()=> router.push('/products?categoryId=1')} className="col-span-1 row-span-6 relative rounded-xl overflow-hidden cursor-pointer">
+        <div onClick={()=> router.push('/products?categoryId=1&page=1')} className="col-span-1 row-span-6 relative rounded-xl overflow-hidden cursor-pointer">
           <Image
             src="/img/Category-desktop-1.png"
             alt="دسته‌بندی 1"
@@ -254,7 +254,7 @@ export default function Categories() {
             </div>
           </div>
         </div>
-        <div onClick={()=> router.push('/products?categoryId=2')} className="col-start-2 row-span-3 relative rounded-xl overflow-hidden cursor-pointer">
+        <div onClick={()=> router.push('/products?categoryId=2&page=1')} className="col-start-2 row-span-3 relative rounded-xl overflow-hidden cursor-pointer">
           <Image
             src="/img/Category-desktop-2.png"
             alt="دسته‌بندی 2"
@@ -275,7 +275,7 @@ export default function Categories() {
             </div>
           </div>
         </div>
-        <div onClick={()=> router.push('/products?categoryId=3')} className="col-start-2 row-start-4 row-span-3 relative rounded-xl overflow-hidden cursor-pointer">
+        <div onClick={()=> router.push('/products?categoryId=3&page=1')} className="col-start-2 row-start-4 row-span-3 relative rounded-xl overflow-hidden cursor-pointer">
           <Image
             src="/img/Category-desktop-3.png"
             alt="دسته‌بندی 3"
@@ -296,7 +296,7 @@ export default function Categories() {
             </div>
           </div>
         </div>
-        <div onClick={()=> router.push('/products?categoryId=4')} className="col-start-3 row-span-2 relative rounded-xl overflow-hidden cursor-pointer">
+        <div onClick={()=> router.push('/products?categoryId=4&page=1')} className="col-start-3 row-span-2 relative rounded-xl overflow-hidden cursor-pointer">
           <Image
             src="/img/Category-desktop-4.png"
             alt="دسته‌بندی 4"
@@ -317,7 +317,7 @@ export default function Categories() {
             </div>
           </div>
         </div>
-        <div onClick={()=> router.push('/products?categoryId=5')} className="col-start-3 row-start-3 row-span-2 relative rounded-xl overflow-hidden cursor-pointer">
+        <div onClick={()=> router.push('/products?categoryId=5&page=1')} className="col-start-3 row-start-3 row-span-2 relative rounded-xl overflow-hidden cursor-pointer">
           <Image
             src="/img/Category-desktop-5.png"
             alt="دسته‌بندی 5"
@@ -338,7 +338,7 @@ export default function Categories() {
             </div>
           </div>
         </div>
-        <div onClick={()=> router.push('/products?categoryId=6')} className="col-start-3 row-start-5 row-span-2 relative rounded-xl overflow-hidden cursor-pointer">
+        <div onClick={()=> router.push('/products?categoryId=6&page=1')} className="col-start-3 row-start-5 row-span-2 relative rounded-xl overflow-hidden cursor-pointer">
           <Image
             src="/img/Category-desktop-6.png"
             alt="دسته‌بندی 6"
@@ -359,7 +359,7 @@ export default function Categories() {
             </div>
           </div>
         </div>
-        <div onClick={()=> router.push('/products?categoryId=7')} className="col-start-4 row-span-2 relative rounded-xl overflow-hidden cursor-pointer">
+        <div onClick={()=> router.push('/products?categoryId=7&page=1')} className="col-start-4 row-span-2 relative rounded-xl overflow-hidden cursor-pointer">
           <Image
             src="/img/Category-desktop-7.png"
             alt="دسته‌بندی 7"
@@ -380,7 +380,7 @@ export default function Categories() {
             </div>
           </div>
         </div>
-        <div onClick={()=> router.push('/products?categoryId=8')} className="col-start-4 row-start-3 row-span-4 relative rounded-xl overflow-hidden cursor-pointer">
+        <div onClick={()=> router.push('/products?categoryId=8&page=1')} className="col-start-4 row-start-3 row-span-4 relative rounded-xl overflow-hidden cursor-pointer">
           <Image
             src="/img/Category-desktop-8.png"
             alt="دسته‌بندی 8"

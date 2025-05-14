@@ -286,7 +286,7 @@ export default function Search({ handleCloseSearch }) {
                 <div className="mt-6 mb-4 flex justify-between items-center">
                   {isSearching && searchText ? (
                     <p className="text-neutral-gray-13 text-sm leading-6">
-                      نمایش ۴ نتیجه از ۲۴ نتیجه
+                      نمایش ۴ نتیجه از {searchProducts.length} نتیجه
                     </p>
                   ) : (
                     <p className="text-neutral-gray-13 text-sm leading-6">
@@ -296,7 +296,7 @@ export default function Search({ handleCloseSearch }) {
 
                   <div
                     onClick={() => {
-                      router.push(`/products?search=${searchText}`);
+                      router.push(`/products?search=${searchText}&page=1`);
                       handleCloseSearch();
                       closeModal()
                     }}

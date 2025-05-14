@@ -1,5 +1,5 @@
-'use client'
-import { useRouter } from "next/navigation";
+"use client";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import Pagination from "./Pagination";
 import ProductItemOff from "./ProductItemOff";
@@ -9,15 +9,22 @@ import Breadcrumb from "./Breadcrumb";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
 import FilterMenu from "@/components/products/FilterMenu";
 
-export default function Products({ search, orderBy, categoryId, searchParams }) {
+export default function Products({ search, orderBy, categoryId }) {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const router = useRouter();
+  const { openModal, closeModal } = useScrollLockContext();
+  const searchParamsHook = useSearchParams();
+
+  const pageParam = parseInt(searchParamsHook.get("page") || "1");
+
   const [isOpenFilterMenu, setIsOpenFilterMenu] = useState(false);
   const [isOpenSort, setIsOpenSort] = useState(false);
   const [notFound, setNotFound] = useState(false);
   const [token, setToken] = useState(null);
   const [selectedOption, setSelectedOption] = useState({});
   const [products, setProducts] = useState([]);
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const [totalPages, setTotalPages] = useState(null);
+  const [currentPage, setCurrentPage] = useState(pageParam);
 
   const sortOptions = [
     { id: 1, title: "جدیدترین", value: "earliest" },
@@ -25,26 +32,43 @@ export default function Products({ search, orderBy, categoryId, searchParams }) 
     { id: 3, title: "ارزان‌ترین", value: "cheapest" },
     { id: 4, title: "گران‌ترین", value: "expensive" },
   ];
-  const { openModal, closeModal } = useScrollLockContext();
+
   const handleCloseFilter = () => {
     setIsOpenFilterMenu(false);
     closeModal();
   };
+
   const handleCloseSort = () => {
     setIsOpenSort(false);
     closeModal();
   };
 
   //AI
+  //handle changing sort
   const handleSortChange = (option) => {
     setSelectedOption(option);
-
-    const params = new URLSearchParams(searchParams?.toString());
+    const params = new URLSearchParams(searchParamsHook.toString());
     params.set("orderBy", option.value);
-
+    params.set("page", "1");
     router.push(`?${params.toString()}`);
   };
 
+  //AI
+  //handle changing page
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    const params = new URLSearchParams(searchParamsHook.toString());
+    params.set("page", page);
+    router.push(`?${params.toString()}`);
+  };
+
+  //AI
+  //set currentpage from url
+  useEffect(() => {
+    setCurrentPage(parseInt(searchParamsHook.get("page") || "1"));
+  }, [searchParamsHook]);
+
+  //get token
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
@@ -52,11 +76,14 @@ export default function Products({ search, orderBy, categoryId, searchParams }) 
     }
   }, []);
 
+  //handle search
   useEffect(() => {
     if (search) {
       const getProductsBySearch = async () => {
         try {
-          const res = await fetch(`${baseUrl}/products?search=${search}`);
+          const res = await fetch(
+            `${baseUrl}/products?search=${search}&page=${currentPage}`
+          );
           if (res.ok) {
             const data = await res.json();
             if (data.products.length === 0) {
@@ -76,14 +103,15 @@ export default function Products({ search, orderBy, categoryId, searchParams }) 
       };
       getProductsBySearch();
     }
-  }, [search]);
+  }, [search, currentPage]);
 
+  // handle category id
   useEffect(() => {
     if (categoryId) {
       const getProductsByCategoryId = async () => {
         try {
           const res = await fetch(
-            `${baseUrl}/products?categoryId=${categoryId}`
+            `${baseUrl}/products?categoryId=${categoryId}&page=${currentPage}`
           );
           if (res.ok) {
             const data = await res.json();
@@ -91,7 +119,9 @@ export default function Products({ search, orderBy, categoryId, searchParams }) 
               setNotFound(true);
             } else {
               setProducts(data.products);
+              setTotalPages(data.latestPage);
               setNotFound(false);
+              console.log(data);
             }
           }
           if (res.status === 404) {
@@ -104,19 +134,21 @@ export default function Products({ search, orderBy, categoryId, searchParams }) 
       };
       getProductsByCategoryId();
     }
-  }, [categoryId]);
+  }, [categoryId, currentPage]);
 
+  //get all products
   useEffect(() => {
     if (!token || search || categoryId) return;
     const getProducts = async () => {
       try {
-        const res = await fetch(`${baseUrl}/products`, {
+        const res = await fetch(`${baseUrl}/products?page=${currentPage}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         console.log(res);
         if (res.ok) {
           const data = await res.json();
           setProducts(data.products);
+          setTotalPages(data.latestPage);
           setNotFound(false);
         }
       } catch (error) {
@@ -124,14 +156,18 @@ export default function Products({ search, orderBy, categoryId, searchParams }) 
       }
     };
     getProducts();
-  }, [token, search, categoryId]);
+  }, [token, search, categoryId, currentPage]);
 
+  //handle order
   const getProductsByOrder = async () => {
     if (!token || !orderBy) return;
     try {
-      const res = await fetch(`${baseUrl}/products?orderBy=${orderBy}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await fetch(
+        `${baseUrl}/products?orderBy=${orderBy}&page=${currentPage}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       if (res.ok) {
         const data = await res.json();
         setProducts(data.products);
@@ -339,7 +375,11 @@ export default function Products({ search, orderBy, categoryId, searchParams }) 
                           />
                         ))}
                     </div>
-                    <Pagination />
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onPageChange={handlePageChange}
+                    />
                   </div>
                 </>
               )}

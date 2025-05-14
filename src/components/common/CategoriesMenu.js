@@ -77,7 +77,7 @@ export default function CategoriesMenu({
                           key={subcategory.id}
                           onClick={() => {
                             router.push(
-                              `/products?categoryId=${subcategory.parentId}`
+                              `/products?categoryId=${subcategory.parentId}&page=1`
                             );
                             handleCloseCategory();
                             handleCloseMenu();
@@ -101,7 +101,7 @@ export default function CategoriesMenu({
                   <ul key={category.id}>
                     <li
                       onClick={() => {
-                        router.push(`/products?categoryId=${category.id}`);
+                        router.push(`/products?categoryId=${category.id}&page=1`);
                         handleCloseCategory();
                       }}
                       className="flex items-center gap-2.5"
@@ -116,7 +116,7 @@ export default function CategoriesMenu({
                       <li
                         onClick={() => {
                           router.push(
-                            `/products?categoryId=${category.parentId}`
+                            `/products?categoryId=${category.parentId}&page=1`
                           );
                           handleCloseCategory();
                         }}
@@ -137,7 +137,7 @@ export default function CategoriesMenu({
                   <ul key={category.id}>
                     <li
                       onClick={() => {
-                        router.push(`/products?categoryId=${category.id}`);
+                        router.push(`/products?categoryId=${category.id}&page=1`);
                         handleCloseCategory();
                       }}
                       className="flex items-center gap-2.5"
@@ -152,7 +152,7 @@ export default function CategoriesMenu({
                       <li
                         onClick={() => {
                           router.push(
-                            `/products?categoryId=${category.parentId}`
+                            `/products?categoryId=${category.parentId}&page=1`
                           );
                           handleCloseCategory();
                         }}
@@ -175,7 +175,7 @@ export default function CategoriesMenu({
             <div className="flex gap-6 items-center mt-3 mb-12">
               <div
                 onClick={() => {
-                  router.push("/products?categoryId=1");
+                  router.push("/products?categoryId=1&page=1");
                   handleCloseCategory();
                 }}
                 className="relative w-65 h-96 cursor-pointer"
@@ -189,7 +189,7 @@ export default function CategoriesMenu({
               <div>
                 <div
                   onClick={() => {
-                    router.push("/products?categoryId=2");
+                    router.push("/products?categoryId=2&page=1");
                     handleCloseCategory();
                   }}
                   className="relative w-65 h-45 cursor-pointer"
@@ -202,7 +202,7 @@ export default function CategoriesMenu({
 
                 <div
                   onClick={() => {
-                    router.push("/products?categoryId=3");
+                    router.push("/products?categoryId=3&page=1");
                     handleCloseCategory();
                   }}
                   className="relative mt-6 w-65 h-45 cursor-pointer"

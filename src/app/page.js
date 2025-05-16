@@ -2,10 +2,40 @@ import Articles from "@/components/home/Articles";
 import Categories from "@/components/home/Categories";
 import Comments from "@/components/home/Comments";
 import OffProducts from "@/components/home/OffProducts";
+import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Home() {
+export default async function Home() {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  //get categories
+  let categoriesData = [];
+  try {
+    const categoriesRes = await fetch(`${baseUrl}/categories`);
+    categoriesData = await categoriesRes.json();
+  } catch (error) {
+    console.log(error);
+  }
+
+  //get off products
+  const cookieStore = cookies();
+  const token = cookieStore.get("token")?.value;
+  let discountedProducts = [];
+
+  if (token) {
+    try {
+      const res = await fetch(`${baseUrl}/products/discounted`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        next: { revalidate: 60 * 60 * 24 * 2 },
+      });
+
+      discountedProducts = await res.json();
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <>
@@ -153,7 +183,7 @@ export default function Home() {
           </div>
         </div>
       </header>
-      <Categories/>
+      <Categories categoriesData={categoriesData} />
       <section className="bg-neutral-gray-1 py-8 lg:py-16 overflow-x-hidden">
         <h5 className="font-semibold leading-5 text-center mb-2 lg:font-bold lg:leading-11 lg:text-4xl lg:mb-4">
           <span className="text-cognac-primery">طراحـــــی </span>و دوخــــت بر
@@ -244,7 +274,7 @@ export default function Home() {
           />
         </div>
       </section>
-      <OffProducts />
+      <OffProducts discountedProducts={discountedProducts} />
       <section className="bg-neutral-gray-1 px-5 py-8 lg:px-12 lg:py-14">
         <div className="container mx-auto lg:flex lg:justify-center lg:gap-11.5">
           <div>

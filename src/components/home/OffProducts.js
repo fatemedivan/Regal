@@ -5,39 +5,17 @@ import "@glidejs/glide/dist/css/glide.core.min.css";
 import ProductItemOff from "@/components/common/ProductItemOff";
 import Image from "next/image";
 
-export default function OffProducts() {
-  const [discountedProducts, setDiscountedProducts] = useState([]);
+export default function OffProducts({ discountedProducts }) {
+  const [products, setProducts] = useState([]);
   const glideRef = useRef(null);
   const prevbtnRef = useRef(null);
   const nextbtnRef = useRef(null);
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const [token, setToken] = useState('')
 
   useEffect(() => {
-      const storedToken = localStorage.getItem("token");
-      if (storedToken) {
-        setToken(storedToken);
-      }
-    }, []);
-
-  useEffect(() => {
-    if (!token) return;
-    const getDiscountedProducts = async () => {
-      try {
-        const res = await fetch(`${baseUrl}/products/discounted`,{
-          headers :  { Authorization: `Bearer ${token}` },
-        });
-        const result = await res.json();
-        if (result) {
-          setDiscountedProducts(result);
-        }
-        console.log('off result',result);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getDiscountedProducts();
-  }, [token]);
+    if (discountedProducts) {
+      setProducts(discountedProducts);
+    }
+  }, []);
 
   useEffect(() => {
     if (glideRef.current) {
@@ -100,7 +78,7 @@ export default function OffProducts() {
         glide.destroy();
       };
     }
-  }, [discountedProducts]);
+  }, [products]);
 
   return (
     <section className="container mx-auto mt-17 mb-16 lg:mt-22">
@@ -153,7 +131,7 @@ export default function OffProducts() {
       <div className="glide pr-5 lg:pr-12" ref={glideRef}>
         <div className="glide__track" data-glide-el="track">
           <ul className="glide__slides">
-            {discountedProducts.map((product,index) => (
+            {products.map((product, index) => (
               <li key={product.id} className="glide__slide">
                 <ProductItemOff
                   id={product.id}

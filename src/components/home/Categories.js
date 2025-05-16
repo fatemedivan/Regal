@@ -4,21 +4,15 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-export default function Categories() {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const router = useRouter()
+export default function Categories({ categoriesData }) {
+  const router = useRouter();
   const [data, setData] = useState([]);
   useEffect(() => {
-    const getCategories = async () => {
-      const res = await fetch(`${baseUrl}/categories`);
-      if (res.ok) {
-        const data = await res.json();
-        setData(data);
-        console.log(data);
-      }
-    };
-    getCategories();
+    if (categoriesData) {
+      setData(categoriesData);
+    }
   }, []);
+
   return (
     <section className="container mx-auto px-5 mb-16">
       <h5 className="font-semibold leading-5 text-black mt-16 mb-6">
@@ -233,7 +227,10 @@ export default function Categories() {
       </div>
 
       <div className="hidden lg:grid grid-cols-4 grid-rows-6 gap-5">
-        <div onClick={()=> router.push('/products?categoryId=1&page=1')} className="col-span-1 row-span-6 relative rounded-xl overflow-hidden cursor-pointer">
+        <div
+          onClick={() => router.push("/products?categoryId=1&page=1")}
+          className="col-span-1 row-span-6 relative rounded-xl overflow-hidden cursor-pointer"
+        >
           <Image
             src="/img/Category-desktop-1.png"
             alt="دسته‌بندی 1"
@@ -254,7 +251,10 @@ export default function Categories() {
             </div>
           </div>
         </div>
-        <div onClick={()=> router.push('/products?categoryId=2&page=1')} className="col-start-2 row-span-3 relative rounded-xl overflow-hidden cursor-pointer">
+        <div
+          onClick={() => router.push("/products?categoryId=2&page=1")}
+          className="col-start-2 row-span-3 relative rounded-xl overflow-hidden cursor-pointer"
+        >
           <Image
             src="/img/Category-desktop-2.png"
             alt="دسته‌بندی 2"
@@ -275,7 +275,10 @@ export default function Categories() {
             </div>
           </div>
         </div>
-        <div onClick={()=> router.push('/products?categoryId=3&page=1')} className="col-start-2 row-start-4 row-span-3 relative rounded-xl overflow-hidden cursor-pointer">
+        <div
+          onClick={() => router.push("/products?categoryId=3&page=1")}
+          className="col-start-2 row-start-4 row-span-3 relative rounded-xl overflow-hidden cursor-pointer"
+        >
           <Image
             src="/img/Category-desktop-3.png"
             alt="دسته‌بندی 3"
@@ -296,7 +299,10 @@ export default function Categories() {
             </div>
           </div>
         </div>
-        <div onClick={()=> router.push('/products?categoryId=4&page=1')} className="col-start-3 row-span-2 relative rounded-xl overflow-hidden cursor-pointer">
+        <div
+          onClick={() => router.push("/products?categoryId=4&page=1")}
+          className="col-start-3 row-span-2 relative rounded-xl overflow-hidden cursor-pointer"
+        >
           <Image
             src="/img/Category-desktop-4.png"
             alt="دسته‌بندی 4"
@@ -317,7 +323,10 @@ export default function Categories() {
             </div>
           </div>
         </div>
-        <div onClick={()=> router.push('/products?categoryId=5&page=1')} className="col-start-3 row-start-3 row-span-2 relative rounded-xl overflow-hidden cursor-pointer">
+        <div
+          onClick={() => router.push("/products?categoryId=5&page=1")}
+          className="col-start-3 row-start-3 row-span-2 relative rounded-xl overflow-hidden cursor-pointer"
+        >
           <Image
             src="/img/Category-desktop-5.png"
             alt="دسته‌بندی 5"
@@ -338,7 +347,10 @@ export default function Categories() {
             </div>
           </div>
         </div>
-        <div onClick={()=> router.push('/products?categoryId=6&page=1')} className="col-start-3 row-start-5 row-span-2 relative rounded-xl overflow-hidden cursor-pointer">
+        <div
+          onClick={() => router.push("/products?categoryId=6&page=1")}
+          className="col-start-3 row-start-5 row-span-2 relative rounded-xl overflow-hidden cursor-pointer"
+        >
           <Image
             src="/img/Category-desktop-6.png"
             alt="دسته‌بندی 6"
@@ -359,7 +371,10 @@ export default function Categories() {
             </div>
           </div>
         </div>
-        <div onClick={()=> router.push('/products?categoryId=7&page=1')} className="col-start-4 row-span-2 relative rounded-xl overflow-hidden cursor-pointer">
+        <div
+          onClick={() => router.push("/products?categoryId=7&page=1")}
+          className="col-start-4 row-span-2 relative rounded-xl overflow-hidden cursor-pointer"
+        >
           <Image
             src="/img/Category-desktop-7.png"
             alt="دسته‌بندی 7"
@@ -380,7 +395,10 @@ export default function Categories() {
             </div>
           </div>
         </div>
-        <div onClick={()=> router.push('/products?categoryId=8&page=1')} className="col-start-4 row-start-3 row-span-4 relative rounded-xl overflow-hidden cursor-pointer">
+        <div
+          onClick={() => router.push("/products?categoryId=8&page=1")}
+          className="col-start-4 row-start-3 row-span-4 relative rounded-xl overflow-hidden cursor-pointer"
+        >
           <Image
             src="/img/Category-desktop-8.png"
             alt="دسته‌بندی 8"

@@ -12,7 +12,7 @@ export default function Page() {
   const markerRef = useRef(null);
 
   const [coords, setCoords] = useState(null);
-  const [address, setAddress] = useState("");
+  const [fullAddress, setFullAddress] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
 
@@ -56,9 +56,10 @@ export default function Page() {
             `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
           );
           const data = await res.json();
-          setAddress(data.display_name);
-        } catch {
-          setAddress("دریافت آدرس ممکن نشد");
+          setFullAddress(data.display_name);
+          sessionStorage.setItem('full address',data.display_name)
+        } catch(error) {
+          console.log(error);
         }
       });
     })();
@@ -167,9 +168,9 @@ export default function Page() {
                 <button
                   className="bg-cognac-primery rounded-lg py-3.5 px-28 text-white text-sm cursor-pointer"
                   onClick={() => {
-                    if (coords && address) {
+                    if (coords && fullAddress) {
                       console.log("مختصات انتخاب‌شده:", coords);
-                      console.log("آدرس انتخاب‌شده:", address);
+                      console.log("آدرس انتخاب‌شده:", fullAddress);
                     }
                   }}
                 >

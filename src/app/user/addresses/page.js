@@ -7,14 +7,15 @@ import UserPannel from "@/components/user/UserPannel";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Page() {
   const router = useRouter();
   const [isHadAddress, setIsHadAddress] = useState(true);
   const [isOpenAddAddressModal, setIsOpenAddAddressModal] = useState(false);
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
-
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  
   const handleCloseAddAddressModal = () => {
     setIsOpenAddAddressModal(false);
   };
@@ -24,6 +25,17 @@ export default function Page() {
   const handleCloseDetailsModal = () => {
     setIsOpenDetailsModal(false);
   };
+
+  useEffect(() => {
+      const storedToken = localStorage.getItem("token");
+      if (storedToken) {
+        setToken(storedToken);
+      }
+    }, []);
+  
+  useEffect(()=>{
+
+  },[token])
   return (
     <>
       <div className="container mx-auto px-5 py-6 lg:hidden">
@@ -49,7 +61,7 @@ export default function Page() {
             <div className="mb-4">
               <AdressCard isActive={false} />
             </div>
-            <div className="flex items-center justify-center w-full mt-79.5">
+            <div className="flex items-center justify-center w-full mt-50">
               <button
                 onClick={() => router.push("/user/add-address")}
                 className="w-full flex justify-center items-center gap-2 bg-cognac-primery text-white py-3.25 rounded-lg cursor-pointer"

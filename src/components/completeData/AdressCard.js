@@ -7,63 +7,98 @@ import AddAddressModal from "../user/AddAddressModal";
 import DetailsModalAddAddress from "../user/DetailsModalAddAddress";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
 import { useAuthContext } from "@/context/AuthContext";
+import { toast, ToastContainer } from "react-toastify";
 
-export default function AdressCard({ isActive, fullAddress, id}) {
+export default function AdressCard({
+  isActive,
+  fullAddress,
+  id,
+  getAddresses,
+}) {
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [isOpenAddAddressModal, setIsOpenAddAddressModal] = useState(false);
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
+  const [token, setToken] = useState("");
   const { phoneNumber } = useAuthContext();
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const handleCloseDeleteModal = () => {
     setIsOpenDeleteModal(false);
-    closeModal()
+    closeModal();
+  };
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
+
+  const deleteAddress = async () => {
+    try {
+      const res = await fetch(`${baseUrl}/user/addresses/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        toast.success("با موفقیت حذف شد");
+        setTimeout(() => {
+          getAddresses();
+        }, 2500);
+      } else {
+        toast.error("ناموفق");
+      }
+    } catch (error) {
+      toast.error("خطایی رخ داد");
+    }
   };
   const handleDeleteAddress = () => {
-    console.log("removed");
+    deleteAddress();
     setIsOpenDeleteModal(false);
-    closeModal()
+    closeModal();
   };
 
   const handleCloseAddAddressModal = () => {
     setIsOpenAddAddressModal(false);
-    closeModal()
+    closeModal();
   };
   const handleOpenDetailsModal = () => {
     setIsOpenDetailsModal(true);
-    openModal()
+    openModal();
   };
   const handleCloseDetailsModal = () => {
     setIsOpenDetailsModal(false);
-    closeModal()
+    closeModal();
   };
   const { openModal, closeModal } = useScrollLockContext();
 
-  useEffect(()=>{
+  useEffect(() => {
     if (id) {
-      sessionStorage.setItem("addressId", id);   
+      sessionStorage.setItem("addressId", id);
     }
     if (fullAddress) {
-      sessionStorage.setItem('full address', fullAddress)
+      sessionStorage.setItem("full address", fullAddress);
     }
-  },[])
+  }, []);
   return (
     <div
       className={`border ${
         isActive ? "border-cognac-primery" : "border-neutral-gray-4"
       }  rounded-lg p-6 mb-2 lg:mb-4`}
     >
+      <ToastContainer autoClose={2000} className={"custom-toast-container"} />
       <div className="flex items-start justify-between gap-3 mb-4 lg:mb-3">
         <div className="flex items-start gap-1">
           <Image width={16} height={16} src="/img/location2.svg" alt="" />
           <p className="text-neutral-gray-13 text-xs leading-4.5 lg:text-sm lg:leading-5">
-           {fullAddress}
+            {fullAddress}
           </p>
         </div>
         <div className="flex items-center gap-4">
           <Image
             width={16}
             height={16}
-            onClick={() => {setIsOpenDeleteModal(true)
-              openModal()
+            onClick={() => {
+              setIsOpenDeleteModal(true);
+              openModal();
             }}
             className="cursor-pointer lg:w-6 lg:h-6"
             src="/img/trash-3.svg"
@@ -71,8 +106,9 @@ export default function AdressCard({ isActive, fullAddress, id}) {
           />
 
           <Image
-            onClick={() => {setIsOpenDetailsModal(true)
-              openModal()
+            onClick={() => {
+              setIsOpenDetailsModal(true);
+              openModal();
             }}
             width={24}
             height={24}
@@ -115,7 +151,7 @@ export default function AdressCard({ isActive, fullAddress, id}) {
               alt=""
             />
             <p className="text-neutral-gray-13 text-xs leading-4.5 lg:text-sm lg:leading-5">
-             {phoneNumber}
+              {phoneNumber}
             </p>
           </div>
         </div>

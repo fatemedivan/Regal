@@ -36,30 +36,31 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
-  sessionStorage.removeItem("addressId");
-}, []);
+    sessionStorage.removeItem("addressId");
+  }, []);
 
   useEffect(() => {
     if (!token) return;
-    const getAddresses = async () => {
-      const res = await fetch(`${baseUrl}/user/addresses`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      console.log("res address", res);
-      if (res.ok) {
-        const data = await res.json();
-        if (data) {
-          setIsHadAddress(true);
-          setAddresses(data);
-        }
-        console.log(data);
-      }
-      if (res.status === 404) {
-        setIsHadAddress(false);
-      }
-    };
     getAddresses();
-  }, [token, isHadAddress]);
+  }, [token]);
+
+  const getAddresses = async () => {
+    const res = await fetch(`${baseUrl}/user/addresses`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    console.log("res address", res);
+    if (res.ok) {
+      const data = await res.json();
+      if (data) {
+        setIsHadAddress(true);
+        setAddresses(data);
+      }
+      console.log(data);
+    }
+    if (res.status === 404) {
+      setIsHadAddress(false);
+    }
+  };
 
   return (
     <>
@@ -82,7 +83,7 @@ export default function Page() {
           <div>
             {addresses.map((address) => (
               <div key={address.id} className="mb-4">
-                <AdressCard isActive={false} {...address} />
+                <AdressCard isActive={false} {...address} getAddresses={getAddresses} />
               </div>
             ))}
             <div className="flex items-center justify-center w-full mt-50">

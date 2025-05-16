@@ -4,9 +4,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 
-export default function DetailsModalAddAddress({
-  handleCloseModal
-}) {
+export default function DetailsModalAddAddress({ handleCloseModal }) {
   const [city, setCity] = useState("");
   const [province, setProvince] = useState("");
   const [details, setDetails] = useState("");
@@ -166,14 +164,21 @@ export default function DetailsModalAddAddress({
         </div>
         <div className="mt-8">
           <div className="px-4 pt-4 pb-9.5 border border-neutral-gray-4 rounded-lg relative">
-            <p className="text-neutral-gray-11 text-sm leading-5">
-              {fullAddress && fullAddress.slice(0.254)}
-            </p>
+            <textarea
+              onChange={(e) => setFullAddress(e.target.value)}
+              maxLength={255}
+              className="text-neutral-gray-11 text-sm leading-5 w-full resize-none outline-none"
+              defaultValue={fullAddress && fullAddress.slice(0.254)}
+            />
             <p className="absolute right-4 -top-2 bg-white px-1 text-neutral-gray-7 text-xs leading-4.5">
               آدرس کامل
             </p>
           </div>
-
+          {!isValidFullAddress && (
+            <p className="text-xs leading-4.5 my-3 transition duration-200 ease-in-out text-error-primery">
+              ادرس کامل باید حداقل ۳۲ و حداکثر۲۵۵ حرف باشد
+            </p>
+          )}
           <div className="flex gap-2 items-center mt-2 cursor-pointer px-4 py-2.5">
             <p className="text-cognac-primery text-sm leading-5">
               اصلاح آدرس روی نقشه

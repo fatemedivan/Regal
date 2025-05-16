@@ -66,10 +66,16 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
+  if (searchQuery) {
+    sessionStorage.setItem("full address", searchQuery);
+  }
+}, [searchQuery]);
+
+  useEffect(() => {
     sessionStorage.removeItem("addressId");
     sessionStorage.removeItem("full address");
   }, []);
-  
+
   return (
     <div className="lg:hidden">
       <div className="flex justify-between items-center mb-8 px-5 pt-6">
@@ -119,7 +125,7 @@ export default function Page() {
             />
           </div>
           {searchQuery && (
-            <Link href={"/user/addresses/details-address"}>
+            <Link href={"/user/details-address"}>
               <div className="flex items-center gap-2 border-b border-neutral-gray-4 pb-4 cursor-pointer">
                 <Image
                   width={16}

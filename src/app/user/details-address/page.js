@@ -16,7 +16,7 @@ export default function Page() {
   const [lastName, setLastName] = useState("");
   const [fullAddress, setFullAddress] = useState("");
   const [token, setToken] = useState("");
-  const [addressId, setAddressId] = useState(null)
+  const [addressId, setAddressId] = useState(null);
   const [isOpenProvince, setIsOpenProvince] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -62,21 +62,21 @@ export default function Page() {
   useEffect(() => {
     const storedFullAddress = sessionStorage.getItem("full address");
     if (storedFullAddress) {
-      setFullAddress(storedFullAddress);  
+      setFullAddress(storedFullAddress);
     }
   }, []);
 
-   useEffect(()=>{
-    setAddressId(sessionStorage.getItem("addressId"))
-  },[])
+  useEffect(() => {
+    setAddressId(sessionStorage.getItem("addressId"));
+  }, []);
 
   const addAdress = async () => {
     try {
       if (!token && !addressId) return;
       setIsLoading(true);
-       const url = addressId
-      ? `${baseUrl}/user/addresses/${addressId}`
-      : `${baseUrl}/user/addresses`;  
+      const url = addressId
+        ? `${baseUrl}/user/addresses/${addressId}`
+        : `${baseUrl}/user/addresses`;
 
       const method = addressId ? "PATCH" : "POST";
       const res = await fetch(url, {
@@ -86,18 +86,18 @@ export default function Page() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          "province": province,
-          "city": city,
-          "postalCode": postalCode,
-          "fullAddress": fullAddress.slice(0, 254),
-          "detail": details,
+          province: province,
+          city: city,
+          postalCode: postalCode,
+          fullAddress: fullAddress.slice(0, 254),
+          detail: details,
         }),
       });
       setIsLoading(false);
-      
+
       if (res.ok) {
         toast.success("ادرس با موفقیت اضافه شد");
-        sessionStorage.removeItem('addressId')
+        sessionStorage.removeItem("addressId");
         setTimeout(() => {
           router.push("/user/addresses");
         }, 2500);
@@ -111,18 +111,18 @@ export default function Page() {
   };
 
   useEffect(() => {
-    if (!token && !addressId) return
+    if (!token && !addressId) return;
     const getAddress = async () => {
-      const res = await fetch(`${baseUrl}/user/addresses/${addressId}`,{
-        headers : {Authorization: `Bearer ${token}`}
+      const res = await fetch(`${baseUrl}/user/addresses/${addressId}`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
       console.log(res);
-      const data = await res.json()
+      const data = await res.json();
       if (data) {
-        setProvince(data.province || '')
-        setCity(data.city || '')
-        setDetails(data.detail || '')
-        setPostalCode(data.postalCode || '')
+        setProvince(data.province || "");
+        setCity(data.city || "");
+        setDetails(data.detail || "");
+        setPostalCode(data.postalCode || "");
       }
     };
     getAddress();
@@ -180,13 +180,22 @@ export default function Page() {
         <div></div>
       </div>
       <div className="px-4 pt-4 pb-9.5 border border-neutral-gray-4 rounded-lg relative">
-        <p className="text-neutral-gray-11 text-sm leading-5">
-          {fullAddress && fullAddress.slice(0, 254)}
-        </p>
+        <textarea
+          onChange={(e) => setFullAddress(e.target.value)}
+          maxLength={255}
+          className="text-neutral-gray-11 text-sm leading-5 w-full resize-none outline-none"
+          defaultValue={fullAddress && fullAddress.slice(0.254)}
+        />
         <p className="absolute right-4 -top-2 bg-white px-1 text-neutral-gray-7 text-xs leading-4.5">
           آدرس کامل
         </p>
       </div>
+      {!isValidFullAddress && (
+        <p className="text-xs leading-4.5 my-3 transition duration-200 ease-in-out text-error-primery">
+          ادرس کامل باید حداقل ۳۲ و حداکثر۲۵۵ حرف باشد
+        </p>
+      )}
+
       <Link href={"/user/add-address"}>
         <div className="flex gap-2 items-center mt-4.5 cursor-pointer">
           <p className="text-cognac-primery text-sm leading-5">

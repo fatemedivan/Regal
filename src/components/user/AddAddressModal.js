@@ -64,11 +64,17 @@ export default function AddAddressModal({
     })();
   }, []);
 
-   useEffect(() => {
-      sessionStorage.removeItem("addressId");
-      sessionStorage.removeItem("full address");
-    }, []);
-    
+  useEffect(() => {
+    if (searchQuery) {
+      sessionStorage.setItem("full address", searchQuery);
+    }
+  }, [searchQuery]);
+
+  useEffect(() => {
+    sessionStorage.removeItem("addressId");
+    sessionStorage.removeItem("full address");
+  }, []);
+
   return (
     <>
       <div

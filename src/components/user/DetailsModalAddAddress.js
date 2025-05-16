@@ -1,17 +1,43 @@
 import { useAuthContext } from "@/context/AuthContext";
+import { useScrollLockContext } from "@/context/ScrollLockContext";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
-export default function DetailsModalAddAddress({ handleCloseModal }) {
+export default function DetailsModalAddAddress({
+  handleCloseModal
+}) {
   const [city, setCity] = useState("");
   const [province, setProvince] = useState("");
   const [details, setDetails] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [fullAddress, setFullAddress] = useState("");
+  const [addressId, setAddressId] = useState("");
+  const [token, setToken] = useState("");
   const [isOpenProvince, setIsOpenProvince] = useState(false);
   const [isEdited, setIsEdited] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  const [isBluredCity, setIsBluredCity] = useState(false);
+  const [isBluredPostalCode, setIsBluredPostalCode] = useState(false);
+  const [isBluredDetail, setIsBluredDetail] = useState(false);
+
+  const isValidProvince = province.length >= 2 && province.length <= 32;
+  const isValidCity = city.length >= 2 && city.length <= 32;
+  const isValidPostalCode = /^[0-9]{6,10}$/.test(postalCode);
+  const isValidDetail = details.length >= 4 && details.length <= 32;
+  const isValidFullAddress =
+    fullAddress.length >= 32 && fullAddress.length <= 255;
+  const isValidAll =
+    isValidCity &&
+    isValidProvince &&
+    isValidPostalCode &&
+    isValidDetail &&
+    isValidFullAddress;
+
   const [isFocused, setIsFocused] = useState({
     city: false,
     province: false,
@@ -25,12 +51,98 @@ export default function DetailsModalAddAddress({ handleCloseModal }) {
     value || focus ? "-top-2.5" : "top-4.5";
 
   const { phoneNumber } = useAuthContext();
+
   useEffect(() => {
-    setPhone(phoneNumber);
-  }, [phoneNumber]);
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
+
+  useEffect(() => {
+    const storedFullAddress = sessionStorage.getItem("full address");
+    if (storedFullAddress) {
+      setFullAddress(storedFullAddress);
+    }
+  }, []);
+
+  useEffect(() => {
+    setAddressId(sessionStorage.getItem("addressId"));
+  }, []);
+
+  const addAdress = async () => {
+    try {
+      if (!token && !addressId) return;
+      setIsLoading(true);
+      const url = addressId
+        ? `${baseUrl}/user/addresses/${addressId}`
+        : `${baseUrl}/user/addresses`;
+
+      const method = addressId ? "PATCH" : "POST";
+      const res = await fetch(url, {
+        method,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          province: province,
+          city: city,
+          postalCode: postalCode,
+          fullAddress: fullAddress.slice(0, 254),
+          detail: details,
+        }),
+      });
+      setIsLoading(false);
+      if (res.ok) {
+        toast.success("ادرس با موفقیت اضافه شد");
+        sessionStorage.removeItem("addressId");
+      } else {
+        toast.error("ناموفق");
+      }
+    } catch (error) {
+      toast.error("خطایی رخ داد");
+      setIsLoading(false);
+    }
+  };
+
+  const iranProvinces = [
+    "آذربایجان شرقی",
+    "آذربایجان غربی",
+    "اردبیل",
+    "اصفهان",
+    "البرز",
+    "ایلام",
+    "بوشهر",
+    "تهران",
+    "چهارمحال و بختیاری",
+    "خراسان جنوبی",
+    "خراسان رضوی",
+    "خراسان شمالی",
+    "خوزستان",
+    "زنجان",
+    "سمنان",
+    "سیستان و بلوچستان",
+    "فارس",
+    "قزوین",
+    "قم",
+    "کردستان",
+    "کرمان",
+    "کرمانشاه",
+    "کهگیلویه و بویراحمد",
+    "گلستان",
+    "گیلان",
+    "لرستان",
+    "مازندران",
+    "مرکزی",
+    "هرمزگان",
+    "همدان",
+    "یزد",
+  ];
 
   return (
     <>
+      <ToastContainer autoClose={2000} className={"custom-toast-container"} />
       <div
         className="fixed inset-0 bg-[#1E1E1E] opacity-50 z-50"
         onClick={() => handleCloseModal()}
@@ -55,8 +167,7 @@ export default function DetailsModalAddAddress({ handleCloseModal }) {
         <div className="mt-8">
           <div className="px-4 pt-4 pb-9.5 border border-neutral-gray-4 rounded-lg relative">
             <p className="text-neutral-gray-11 text-sm leading-5">
-              تهران، نیاوران، تنگستان چهارم، مجتمع حیات سبز، طبقه چهارم، واحد
-              ۱۳۲
+              {fullAddress && fullAddress.slice(0.254)}
             </p>
             <p className="absolute right-4 -top-2 bg-white px-1 text-neutral-gray-7 text-xs leading-4.5">
               آدرس کامل
@@ -76,33 +187,41 @@ export default function DetailsModalAddAddress({ handleCloseModal }) {
           </div>
 
           <div className="flex items-center gap-4 mt-4">
-            <div className="w-1/2 relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg">
-              <input
-                type="text"
-                id="city"
-                placeholder=" "
-                value={city}
-                onFocus={() =>
-                  setIsFocused((prev) => ({ ...prev, city: true }))
-                }
-                onBlur={() =>
-                  setIsFocused((prev) => ({ ...prev, city: false }))
-                }
-                onChange={(e) => {
-                  setCity(e.target.value);
-                  setIsEdited(true);
-                }}
-                className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent"
-              />
-              <label
-                htmlFor="city"
-                className={`absolute right-4 bg-white px-1 text-xs text-neutral-gray-7 transition-all ${floatLabel(
-                  city,
-                  isFocused.city
-                )}`}
-              >
-                شهر
-              </label>
+            <div className="w-1/2 relative ">
+              <div className="border border-neutral-gray-4 px-4 py-3.75 rounded-lg">
+                <input
+                  type="text"
+                  id="city"
+                  placeholder=" "
+                  value={city}
+                  onFocus={() =>
+                    setIsFocused((prev) => ({ ...prev, city: true }))
+                  }
+                  onBlur={() => {
+                    setIsFocused((prev) => ({ ...prev, city: false }));
+                    setIsBluredCity(true);
+                  }}
+                  onChange={(e) => {
+                    setCity(e.target.value);
+                    setIsEdited(true);
+                  }}
+                  className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent"
+                />
+                <label
+                  htmlFor="city"
+                  className={`absolute right-4 bg-white px-1 text-xs text-neutral-gray-7 transition-all ${floatLabel(
+                    city,
+                    isFocused.city
+                  )}`}
+                >
+                  شهر
+                </label>
+              </div>
+              {isBluredCity && !isValidCity && (
+                <p className="text-xs leading-4.5 my-3 transition duration-200 ease-in-out text-error-primery">
+                  شهر باید حداقل ۲ و حداکثر ۳۲ حرف باشد
+                </p>
+              )}
             </div>
             <div
               onClick={() => setIsOpenProvince(!isOpenProvince)}
@@ -133,8 +252,8 @@ export default function DetailsModalAddAddress({ handleCloseModal }) {
                 alt=""
               />
               {isOpenProvince && (
-                <ul className="absolute w-full top-14 right-0 z-20 bg-white border border-neutral-gray-4 mt-1 rounded-lg shadow-lg text-sm">
-                  {["تهران", "اصفهان", "شیراز", "مشهد"].map((option) => (
+                <ul className="absolute w-full top-14 right-0 z-20 bg-white border border-neutral-gray-4 mt-1 rounded-lg shadow-lg text-sm max-h-50 overflow-y-scroll custom-scrollbar">
+                  {iranProvinces.map((option) => (
                     <li
                       key={option}
                       onClick={() => {
@@ -153,64 +272,79 @@ export default function DetailsModalAddAddress({ handleCloseModal }) {
           </div>
 
           <div className="flex items-center gap-4 mt-4">
-            <div className="w-1/2 relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg">
-              <input
-                type="text"
-                id="details"
-                placeholder=" "
-                value={details}
-                onFocus={() =>
-                  setIsFocused((prev) => ({ ...prev, details: true }))
-                }
-                onBlur={() =>
-                  setIsFocused((prev) => ({ ...prev, details: false }))
-                }
-                onChange={(e) => {
-                  setDetails(e.target.value);
-                  setIsEdited(true);
-                }}
-                className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent"
-              />
-              <label
-                htmlFor="details"
-                className={`absolute right-4 bg-white px-1 text-xs text-neutral-gray-7 transition-all ${floatLabel(
-                  details,
-                  isFocused.details
-                )}`}
-              >
-                جزئیات آدرس (پلاک، طبقه و ...)
-              </label>
+            <div className="w-1/2 relative">
+              <div className="border border-neutral-gray-4 px-4 py-3.75 rounded-lg">
+                <input
+                  type="text"
+                  id="details"
+                  placeholder=" "
+                  value={details}
+                  onFocus={() =>
+                    setIsFocused((prev) => ({ ...prev, details: true }))
+                  }
+                  onBlur={() => {
+                    setIsFocused((prev) => ({ ...prev, details: false }));
+                    setIsBluredDetail(true);
+                  }}
+                  onChange={(e) => {
+                    setDetails(e.target.value);
+                    setIsEdited(true);
+                  }}
+                  className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent"
+                />
+                <label
+                  htmlFor="details"
+                  className={`absolute right-4 bg-white px-1 text-xs text-neutral-gray-7 transition-all ${floatLabel(
+                    details,
+                    isFocused.details
+                  )}`}
+                >
+                  جزئیات آدرس (پلاک، طبقه و ...)
+                </label>
+              </div>
+              {isBluredDetail && !isValidDetail && (
+                <p className="text-xs leading-4.5 my-3 transition duration-200 ease-in-out text-error-primery">
+                  جزئیات باید حداقل ۴ و حداکثر ۳۲ حرف باشد
+                </p>
+              )}
             </div>
-            <div className="w-1/2 relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg">
-              <input
-                type="text"
-                id="postalcode"
-                placeholder=" "
-                value={postalCode}
-                onFocus={() =>
-                  setIsFocused((prev) => ({ ...prev, postalcode: true }))
-                }
-                onBlur={() =>
-                  setIsFocused((prev) => ({ ...prev, postalcode: false }))
-                }
-                onChange={(e) => {
-                  setPostalCode(e.target.value);
-                  setIsEdited(true);
-                }}
-                className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent"
-              />
-              <label
-                htmlFor="postalcode"
-                className={`absolute right-4 bg-white px-1 text-xs text-neutral-gray-7 transition-all ${floatLabel(
-                  postalCode,
-                  isFocused.postalcode
-                )}`}
-              >
-                کد پستی
-              </label>
+            <div className="w-1/2 relative">
+              <div className="border border-neutral-gray-4 px-4 py-3.75 rounded-lg">
+                <input
+                  type="text"
+                  id="postalcode"
+                  placeholder=" "
+                  value={postalCode}
+                  onFocus={() =>
+                    setIsFocused((prev) => ({ ...prev, postalcode: true }))
+                  }
+                  onBlur={() => {
+                    setIsFocused((prev) => ({ ...prev, postalcode: false }));
+                    setIsBluredPostalCode(true);
+                  }}
+                  onChange={(e) => {
+                    setPostalCode(e.target.value);
+                    setIsEdited(true);
+                  }}
+                  className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent"
+                />
+                <label
+                  htmlFor="postalcode"
+                  className={`absolute right-4 bg-white px-1 text-xs text-neutral-gray-7 transition-all ${floatLabel(
+                    postalCode,
+                    isFocused.postalcode
+                  )}`}
+                >
+                  کد پستی
+                </label>
+              </div>
+              {isBluredPostalCode && !isValidPostalCode && (
+                <p className="text-xs leading-4.5 my-3 transition duration-200 ease-in-out text-error-primery">
+                  کد پستی باید حداقل ۶ و حداکثر ۱۰ حرف انگلیسی باشد
+                </p>
+              )}
             </div>
           </div>
-
           <div className="flex items-center gap-2 mt-6 mb-4">
             <label className="relative">
               <input type="checkbox" className="peer hidden" />
@@ -281,26 +415,12 @@ export default function DetailsModalAddAddress({ handleCloseModal }) {
           </div>
 
           <div className="w-75 relative border border-neutral-gray-4 rounded-lg flex mb-4">
-            <input
-              type="text"
-              id="phone-desktop"
-              dir="ltr"
-              placeholder=" "
-              value={phone}
-              onFocus={() => setIsFocused((prev) => ({ ...prev, phone: true }))}
-              onBlur={() => setIsFocused((prev) => ({ ...prev, phone: false }))}
-              onChange={(e) => {
-                setPhone(e.target.value);
-                setIsEdited(true);
-              }}
-              className="placeholder:text-transparent w-full outline-none py-3.75 px-4 text-neutral-gray-7 bg-neutral-gray-2"
-            />
+            <div className="w-full outline-none py-3.75 px-4 bg-neutral-gray-2 text-neutral-gray-7 text-left">
+              {phoneNumber}
+            </div>
             <label
-              htmlFor="phone-desktop"
-              className={`absolute right-4 bg-transparent px-1 text-xs text-neutral-gray-7 transition-all z-10 ${floatLabel(
-                phone,
-                isFocused.phone
-              )}`}
+              htmlFor="phone"
+              className="absolute right-4 bg-transparent px-1 text-xs text-neutral-gray-7 transition-all z-10 -top-2.5"
             >
               شماره موبایل
             </label>
@@ -311,15 +431,28 @@ export default function DetailsModalAddAddress({ handleCloseModal }) {
 
           <div className="flex items-center justify-center">
             <button
-              onClick={() => handleCloseModal()}
-              disabled={!isEdited}
-              className={`leading-5.5 rounded-lg py-3.25 w-full cursor-pointer ${
-                isEdited
+              onClick={() => {
+                addAdress();
+                setTimeout(() => {
+                  handleCloseModal();
+                }, 2500);
+              }}
+              disabled={!isValidAll}
+              className={`leading-5.5 rounded-lg py-3.25 w-full flex justify-center items-center cursor-pointer ${
+                isValidAll
                   ? "bg-cognac-primery text-white"
                   : "bg-cognac-tint-2 text-cognac-tint-4"
               }`}
             >
-              ثبت آدرس
+              {isLoading ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[0ms]"></div>
+                  <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[150ms]"></div>
+                  <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[300ms]"></div>
+                </div>
+              ) : (
+                "ثبت آدرس"
+              )}
             </button>
           </div>
         </div>

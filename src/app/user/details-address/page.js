@@ -35,7 +35,7 @@ export default function Page() {
     isValidCity &&
     isValidProvince &&
     isValidPostalCode &&
-    isValidPostalCode &&
+    isValidDetail &&
     isValidFullAddress;
   //AI
   const [isFocused, setIsFocused] = useState({

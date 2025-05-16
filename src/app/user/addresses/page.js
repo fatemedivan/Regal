@@ -4,6 +4,7 @@ import AdressCard from "@/components/completeData/AdressCard";
 import AddAddressModal from "@/components/user/AddAddressModal";
 import DetailsModalAddAddress from "@/components/user/DetailsModalAddAddress";
 import UserPannel from "@/components/user/UserPannel";
+import { useScrollLockContext } from "@/context/ScrollLockContext";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -15,17 +16,22 @@ export default function Page() {
   const [isOpenAddAddressModal, setIsOpenAddAddressModal] = useState(false);
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+   const { openModal, closeModal } = useScrollLockContext();
   const [token, setToken] = useState("");
   const [addresses, setAddresses] = useState([]);
 
   const handleCloseAddAddressModal = () => {
     setIsOpenAddAddressModal(false);
+    closeModal()
   };
   const handleOpenDetailsModal = () => {
     setIsOpenDetailsModal(true);
+    openModal()
   };
   const handleCloseDetailsModal = () => {
     setIsOpenDetailsModal(false);
+    getAddresses()
+    closeModal()
   };
 
   useEffect(() => {
@@ -45,6 +51,7 @@ export default function Page() {
   }, [token]);
 
   const getAddresses = async () => {
+    if (!token) return
     const res = await fetch(`${baseUrl}/user/addresses`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -83,7 +90,11 @@ export default function Page() {
           <div>
             {addresses.map((address) => (
               <div key={address.id} className="mb-4">
-                <AdressCard isActive={false} {...address} getAddresses={getAddresses} />
+                <AdressCard
+                  isActive={false}
+                  {...address}
+                  getAddresses={getAddresses}
+                />
               </div>
             ))}
             <div className="flex items-center justify-center w-full mt-50">
@@ -127,18 +138,15 @@ export default function Page() {
         <UserPannel rout={"addresses"} isHadAddress={isHadAddress}>
           {isHadAddress ? (
             <div className="mt-4">
-              <div className="mb-4">
-                <AdressCard
-                  isActive={false}
-                  handleOpenDetailsModal={handleOpenDetailsModal}
-                />
-              </div>
-              <div className="mb-4">
-                <AdressCard
-                  isActive={false}
-                  handleOpenDetailsModal={handleOpenDetailsModal}
-                />
-              </div>
+              {addresses.map((address) => (
+                <div key={address.id} className="mb-4">
+                  <AdressCard
+                    isActive={false}
+                    {...address}
+                    getAddresses={getAddresses}
+                  />
+                </div>
+              ))}
             </div>
           ) : (
             <div className="flex flex-col justify-center items-center gap-8 my-12.5">
@@ -153,7 +161,10 @@ export default function Page() {
               </p>
 
               <button
-                onClick={() => setIsOpenAddAddressModal(true)}
+                onClick={() => {
+                  setIsOpenAddAddressModal(true)
+                  openModal()
+                }}
                 className="bg-cognac-primery rounded-lg py-3.25 px-12 text-white leading-5.5 cursor-pointer"
               >
                 افزودن آدرس

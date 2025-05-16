@@ -39,10 +39,8 @@ export default function AdressCard({
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
-        toast.success("با موفقیت حذف شد");
-        setTimeout(() => {
-          getAddresses();
-        }, 2500);
+        getAddresses()
+        toast.success("با موفقیت حذف شد");   
       } else {
         toast.error("ناموفق");
       }

@@ -56,6 +56,7 @@ export default function AddAddressModal({
           );
           const data = await res.json();
           setAddress(data.display_name);
+          sessionStorage.setItem("full address", data.display_name);
         } catch {
           setAddress("دریافت آدرس ممکن نشد");
         }
@@ -63,6 +64,11 @@ export default function AddAddressModal({
     })();
   }, []);
 
+   useEffect(() => {
+      sessionStorage.removeItem("addressId");
+      sessionStorage.removeItem("full address");
+    }, []);
+    
   return (
     <>
       <div

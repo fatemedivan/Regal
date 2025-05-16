@@ -5,19 +5,23 @@ import DateModal from "@/components/completeData/DateModal";
 import ProgressBar from "@/components/common/ProgressBar";
 import TimeModal from "@/components/completeData/TimeModal";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
 import { useBasketContext } from "@/context/BasketContext";
 
 export default function Page() {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const router = useRouter();
   const maxLenght = 200;
   const [text, setText] = useState("");
-  const [deliveryOption, setDeliveryOption] = useState("courier");
+  const [selectedAddressId, setSelectedAddressId] = useState(null)
+  const [deliveryOption, setDeliveryOption] = useState("COURIER");
   const [isShowDateModal, setIsShowDateModal] = useState(false);
   const [isShowTimeModal, setIsShowTimeModal] = useState(false);
-  const [isHadAdress, setIsHadAdress] = useState(false);
+  const [isHadAddress, setIsHadAddress] = useState(false);
+  const [addresses, setAddresses] = useState([]);
+  const [token, setToken] = useState("");
   const [date, setDate] = useState([
     "شنبه ۲۱ آبان ۱۴۰۳",
     "یکشنبه ۲۲ آبان ۱۴۰۳",
@@ -46,6 +50,41 @@ export default function Page() {
     useScrollLockContext();
   const { countOfProduct, totalPric, cart } = useBasketContext();
 
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!token) return;
+    getAddresses();
+  }, [token]);
+
+  const getAddresses = async () => {
+    const res = await fetch(`${baseUrl}/user/addresses`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (data) {
+        setIsHadAddress(true);
+        setAddresses(data);
+      }
+      console.log(data);
+    }
+    if (res.status === 404) {
+      setIsHadAddress(false);
+    }
+  };
+
+  useEffect(()=>{
+    if (selectedAddressId) {
+      sessionStorage.setItem('selectedAddressId', selectedAddressId)
+    }
+    sessionStorage.setItem('deliveryMethod', deliveryOption)
+  },[])
   return (
     <div className="container mx-auto px-5 pt-6 pb-16 lg:pt-0 lg:px-12 lg:pb-22">
       <div className="flex justify-between items-center mb-8 lg:hidden">
@@ -77,8 +116,8 @@ export default function Page() {
                   type="radio"
                   className="hidden peer"
                   name="radio"
-                  value="courier"
-                  onChange={() => setDeliveryOption("courier")}
+                  value="COURIER"
+                  onChange={() => setDeliveryOption("COURIER")}
                   defaultChecked
                 />
                 <span className="w-4 h-4 rounded-full border border-neutral-gray-5 cursor-pointer group relative">
@@ -98,8 +137,8 @@ export default function Page() {
                   type="radio"
                   className="hidden peer"
                   name="radio"
-                  value="person"
-                  onChange={() => setDeliveryOption("person")}
+                  value="IN_PERSON"
+                  onChange={() => setDeliveryOption("IN_PERSON")}
                 />
                 <span className="w-4 h-4 rounded-full border border-neutral-gray-5 cursor-pointer group relative">
                   <span className="w-3 h-3 rounded-full bg-cognac-primery opacity-0 group-peer-checked:opacity-100 transition absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2" />
@@ -115,10 +154,10 @@ export default function Page() {
               </label>
             </div>
           </div>
-          {deliveryOption === "courier" ? (
+          {deliveryOption === "COURIER" ? (
             <>
               <div className="mb-9">
-                {isHadAdress ? (
+                {isHadAddress ? (
                   <>
                     <div className="flex items-center justify-between mb-4">
                       <h5 className="font-semibold leading-5 text-black lg:font-bold lg:text-lg lg:leading-5.5">
@@ -140,8 +179,10 @@ export default function Page() {
                         </p>
                       </div>
                     </div>
-                    <AdressCard isActive={true} />
-                    <AdressCard isAtive={false} />
+                    {addresses &&
+                      addresses.map((address) => (
+                        <AdressCard key={address.id} {...address} selectedAddressId={selectedAddressId} setSelectedAddressId={setSelectedAddressId}/>
+                      ))}
                   </>
                 ) : (
                   <div>
@@ -248,7 +289,7 @@ export default function Page() {
                 </div>
               </div>
             </>
-          ) : deliveryOption === "person" ? (
+          ) : deliveryOption === "IN_PERSON" ? (
             <div className="mb-9">
               <h5 className="font-semibold leading-5 text-black mb-4 lg:font-bold lg:text-lg lg:leading-5.5">
                 آدرس فروشگاه
@@ -351,6 +392,7 @@ export default function Page() {
             totalPric={totalPric}
             count={countOfProduct}
             cart={cart}
+            selectedAddressId={selectedAddressId}
           />
         </div>
       </div>

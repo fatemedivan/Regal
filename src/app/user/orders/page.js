@@ -6,21 +6,49 @@ import { useScrollLockContext } from "@/context/ScrollLockContext";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Page() {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const router = useRouter();
   const [isHadOrders, setIsHadOrders] = useState(true);
   const [isOpenTypeOrder, setIsOpenTypeOrder] = useState(false);
+  const [orders, setOrders] = useState([]);
   const [selectedOrderType, setSelectedOrderType] = useState("همه");
+  const [token, setToken] = useState("");
   const orderTypes = [
     { label: "همه", value: "all" },
     { label: "جاری", value: "active" },
     { label: "تحویل شده", value: "delivered" },
     { label: "مرجوع شده", value: "returned" },
   ];
-    const { isModalOpen, openModal, closeModal } = useScrollLockContext();
+  const { isModalOpen, openModal, closeModal } = useScrollLockContext();
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
 
+  useEffect(() => {
+    if (!token) return;
+    const getOrders = async () => {
+      const res = await fetch(`${baseUrl}/orders`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log(res);
+      if (res.ok) {
+        const result = await res.json();
+        if (result.length) {
+          setOrders(result);
+          setIsHadOrders(true);
+        } else {
+          setIsHadOrders(false);
+        }
+      }
+    };
+    getOrders();
+  }, [token]);
   return (
     <>
       <div className="container mx-auto px-5 py-6 lg:hidden">
@@ -39,34 +67,40 @@ export default function Page() {
           <div></div>
         </div>
 
-        <div
-          onClick={() => {setIsOpenTypeOrder(!isOpenTypeOrder)
-            isModalOpen ? closeModal() : openModal()
-          }}
-          className="relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg mb-4 flex items-center justify-between cursor-pointer"
-        >
-          <div className="flex items-center gap-1">
-            <div className="py-1.75 px-3 flex justify-center items-center gap-2 rounded-100 bg-neutral-gray-2">
-              <p className="text-neutral-gray-11 text-xs leading-4.5">
-                {selectedOrderType}
-              </p>
+        {isHadOrders ? (
+          <>
+            <div
+              onClick={() => {
+                setIsOpenTypeOrder(!isOpenTypeOrder);
+                isModalOpen ? closeModal() : openModal();
+              }}
+              className="relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg mb-4 flex items-center justify-between cursor-pointer"
+            >
+              <div className="flex items-center gap-1">
+                <div className="py-1.75 px-3 flex justify-center items-center gap-2 rounded-100 bg-neutral-gray-2">
+                  <p className="text-neutral-gray-11 text-xs leading-4.5">
+                    {selectedOrderType}
+                  </p>
+                  <Image
+                    width={16}
+                    height={16}
+                    src="/img/close-square.svg"
+                    alt=""
+                  />
+                </div>
+              </div>
+              <label
+                className={`absolute right-4 -top-2.5 bg-white px-1 text-xs text-neutral-gray-7 leading-4.5 transition-all`}
+              >
+                نوع سفارش
+              </label>
               <Image
                 width={16}
                 height={16}
-                src="/img/close-square.svg"
+                src="/img/arrow-down-4.svg"
                 alt=""
               />
             </div>
-          </div>
-          <label
-            className={`absolute right-4 -top-2.5 bg-white px-1 text-xs text-neutral-gray-7 leading-4.5 transition-all`}
-          >
-            نوع سفارش
-          </label>
-          <Image width={16} height={16} src="/img/arrow-down-4.svg" alt="" />
-        </div>
-        {isHadOrders ? (
-          <>
             <OrderDetailsCard
               date={" پنجشنبه ۵ مهر ۱۴۰۳ "}
               time={"۱۳:۴۵"}
@@ -131,9 +165,9 @@ export default function Page() {
               در حال حاضر هیچ سفارشی ثبت نکرده‌اید.
             </p>
             <div className="mt-60 flex items-center justify-center">
-              <Link href={"/"}>
+              <Link href={"/products"}>
                 <button className="bg-cognac-primery rounded-lg py-3.25 px-28.5 text-white leading-5.5 cursor-pointer">
-                  برو به صفحه اصلی
+                  مشاهده محصولات
                 </button>
               </Link>
             </div>
@@ -145,8 +179,9 @@ export default function Page() {
         <div className="lg:hidden">
           <div
             className="fixed inset-0 bg-[#1E1E1E] opacity-50 z-50"
-            onClick={() => {setIsOpenTypeOrder(false)
-              closeModal()
+            onClick={() => {
+              setIsOpenTypeOrder(false);
+              closeModal();
             }}
           />
           <div className="bg-white fixed bottom-0 left-0 right-0 z-60 w-full rounded-tr-3xl rounded-tl-3xl px-5 pt-4 pb-6">
@@ -158,8 +193,9 @@ export default function Page() {
                 src="/img/close-icon-filter.svg"
                 className="cursor-pointer lg:w-6 lg:h-6"
                 alt=""
-                onClick={() => {setIsOpenTypeOrder(false)
-                  closeModal()
+                onClick={() => {
+                  setIsOpenTypeOrder(false);
+                  closeModal();
                 }}
               />
             </div>

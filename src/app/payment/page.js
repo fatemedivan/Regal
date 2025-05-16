@@ -4,12 +4,49 @@ import ProgressBar from "@/components/common/ProgressBar";
 import { useBasketContext } from "@/context/BasketContext";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Page() {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const [payment, setPayment] = useState("online");
   const { countOfProduct, totalPric, cart } = useBasketContext();
   const router = useRouter();
+  const [token, setToken] = useState("");
+  const [fullAddress, setFullAddress] = useState("");
+  const [deliveryMethod, setDeliveryMethod] = useState("");
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+    const storedFullAddress = sessionStorage.getItem("full address");
+    setFullAddress(storedFullAddress);
+
+    setDeliveryMethod(sessionStorage.getItem("deliveryMethod"));
+  }, []);
+
+  const addOrders = async () => {
+    if (!token) return
+    const res = await fetch(`${baseUrl}/orders`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        "fullAddress": fullAddress,
+        "deliveryMethod": deliveryMethod,
+      }),
+    });
+    console.log(fullAddress);
+    console.log(deliveryMethod);
+    
+    console.log(res);
+    const result = await res.json();
+    console.log(result);
+  };
+
   return (
     <div className="container mx-auto px-5 pt-6 pb-16 lg:pt-0 lg:px-12">
       <div className="flex justify-between items-center mb-6 lg:hidden">
@@ -166,6 +203,7 @@ export default function Page() {
           totalPric={totalPric}
           count={countOfProduct}
           cart={cart}
+          addOrders={addOrders}
         />
       </div>
     </div>

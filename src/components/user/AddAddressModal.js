@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 
 export default function AddAddressModal({
@@ -14,7 +13,6 @@ export default function AddAddressModal({
   const [address, setAddress] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
-  const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
   useEffect(() => {
     (async () => {
       await import("leaflet/dist/leaflet.css");

@@ -225,7 +225,7 @@ export default function Page() {
               ))}
           </div>
 
-          <div className="lg:flex lg:gap-6">
+          <div className="lg:flex lg:justify-evenly lg:gap-6">
             <div className="hidden lg:block rounded-2xl border border-neutral-gray-4 p-8 max-w-222 max-h-max lg:mb-22">
               <div className="space-y-6">
                 <div className="grid grid-cols-4 text-neutral-gray-12 font-bold text-lg leading-5.5">

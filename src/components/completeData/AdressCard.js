@@ -10,7 +10,8 @@ import { useAuthContext } from "@/context/AuthContext";
 import { toast, ToastContainer } from "react-toastify";
 
 export default function AdressCard({
-  isActive,
+  selectedAddressId,
+  setSelectedAddressId,
   fullAddress,
   id,
   getAddresses,
@@ -39,8 +40,8 @@ export default function AdressCard({
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
-        getAddresses()
-        toast.success("با موفقیت حذف شد");   
+        getAddresses();
+        toast.success("با موفقیت حذف شد");
       } else {
         toast.error("ناموفق");
       }
@@ -69,18 +70,16 @@ export default function AdressCard({
   const { openModal, closeModal } = useScrollLockContext();
 
   useEffect(() => {
-    if (id) {
-      sessionStorage.setItem("addressId", id);
-    }
     if (fullAddress) {
       sessionStorage.setItem("full address", fullAddress);
     }
   }, []);
   return (
     <div
+      onClick={() => setSelectedAddressId(id)}
       className={`border ${
-        isActive ? "border-cognac-primery" : "border-neutral-gray-4"
-      }  rounded-lg p-6 mb-2 lg:mb-4`}
+        selectedAddressId === id ? "border-cognac-primery" : "border-neutral-gray-4"
+      }  rounded-lg p-6 mb-2 lg:mb-4 cursor-pointer`}
     >
       <ToastContainer autoClose={2000} className={"custom-toast-container"} />
       <div className="flex items-start justify-between gap-3 mb-4 lg:mb-3">

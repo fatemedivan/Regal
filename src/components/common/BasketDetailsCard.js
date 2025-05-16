@@ -6,23 +6,41 @@ import DetailsModal from "./DetailsModal";
 import DeleteModal from "./DeleteModal";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
 
-export default function BasketDetails({ step, count, totalPric, cart }) {
+export default function BasketDetails({
+  selectedAddressId,
+  step,
+  count,
+  totalPric,
+  cart,
+  addOrders,
+}) {
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
+  const [showError, setShowError] = useState(false)
 
   const handleCloseDetailsModal = () => {
     setIsOpenDetailsModal(false);
-    closeModal()
+    closeModal();
   };
   const handleCloseDeleteModal = () => {
     setIsOpenDeleteModal(false);
-    closeModal()
+    closeModal();
   };
   const shippingCost = step === 3 ? 50000 : 0;
   const cleanTotalPrice = parseInt((totalPric || "0").replace(/,/g, ""));
   const finalAmount = cleanTotalPrice + shippingCost;
 
   const { openModal, closeModal } = useScrollLockContext();
+
+  const handleClick = () => {
+    if (step === 2 && !selectedAddressId) {
+      setShowError(true)
+    }
+    if (step === 3) {
+      addOrders();
+    }
+  };
+
   return (
     <>
       <div className="mt-8 lg:border lg:border-neutral-gray-4 lg:rounded-2xl lg:p-8 lg:mt-0 mb-auto lg:max-w-108">
@@ -36,7 +54,7 @@ export default function BasketDetails({ step, count, totalPric, cart }) {
               height={24}
               onClick={() => {
                 setIsOpenDeleteModal(true);
-                openModal()
+                openModal();
               }}
               className="cursor-pointer"
               src="/img/trash-2.svg"
@@ -51,14 +69,17 @@ export default function BasketDetails({ step, count, totalPric, cart }) {
             <div className="pb-6 mb-6 border-b border-neutral-gray-4">
               <table className="w-full text-sm text-neutral-gray-11">
                 <tbody>
-                  {cart.map(cartItem => (
-                  <tr key={cartItem.id}>
-                    <td className="py-1">لباس میدی رکسان</td>
-                    <td className="py-1 text-center">{cartItem.quantity} عدد</td>
-                    <td className="py-1 text-left">{cartItem.Entity.price} تومان</td>
-                  </tr>
+                  {cart.map((cartItem) => (
+                    <tr key={cartItem.id}>
+                      <td className="py-1">لباس میدی رکسان</td>
+                      <td className="py-1 text-center">
+                        {cartItem.quantity} عدد
+                      </td>
+                      <td className="py-1 text-left">
+                        {cartItem.Entity.price} تومان
+                      </td>
+                    </tr>
                   ))}
-                  
                 </tbody>
               </table>
             </div>
@@ -78,7 +99,7 @@ export default function BasketDetails({ step, count, totalPric, cart }) {
                 className="flex gap-2 items-center lg:hidden"
                 onClick={() => {
                   setIsOpenDetailsModal(true);
-                  openModal()
+                  openModal();
                 }}
               >
                 <p className="text-cognac-primery text-sm leading-5 cursor-pointer">
@@ -99,7 +120,10 @@ export default function BasketDetails({ step, count, totalPric, cart }) {
         <div>
           <div className="flex justify-between items-center mb-4">
             <p className="text-sm leading-6 text-neutral-gray-11">تعداد</p>
-            <p className="text-sm leading-6 text-neutral-gray-10"> {count} عدد</p>
+            <p className="text-sm leading-6 text-neutral-gray-10">
+              {" "}
+              {count} عدد
+            </p>
           </div>
           <div className="flex justify-between items-center mb-4">
             <p className="text-sm leading-6 text-neutral-gray-11">
@@ -111,9 +135,7 @@ export default function BasketDetails({ step, count, totalPric, cart }) {
           </div>
           <div className="flex justify-between items-center mb-4">
             <p className="text-sm leading-6 text-cognac-primery">تخفیف</p>
-            <p className="text-sm leading-6 text-cognac-primery">
-              ۰ تومان
-            </p>
+            <p className="text-sm leading-6 text-cognac-primery">۰ تومان</p>
           </div>
           <div className="flex justify-between items-center mb-2">
             {step === 1 || step === 2 ? (
@@ -155,7 +177,7 @@ export default function BasketDetails({ step, count, totalPric, cart }) {
               مبلغ قابل پرداخت
             </p>
             <p className="text-sm leading-6 text-neutral-gray-10">
-              {finalAmount}  تومان
+              {finalAmount} تومان
             </p>
           </div>
           {step === 1 && (
@@ -170,16 +192,28 @@ export default function BasketDetails({ step, count, totalPric, cart }) {
                 مبلغ قابل پرداخت:
               </p>
               <h6 className="text-neutral-gray-13 text-sm font-semibold leading-4">
-                {finalAmount}  تومان
+                {finalAmount} تومان
               </h6>
             </div>
             <div className="flex justify-center items-center">
               <Link
                 href={
-                  step === 1 ? "complete-data" : step === 2 ? "payment" : "#"
+                  step === 1
+                    ? "complete-data"
+                    : step === 2 && selectedAddressId
+                    ? "payment"
+                    : ""
                 }
               >
-                <button className="bg-cognac-primery leading-5.5 text-white rounded-lg py-3.25 px-26 lg:px-24 xl:px-36 cursor-pointer">
+                {showError && (
+                  <p className="text-xs text-center leading-4.5 mb-4 transition duration-200 ease-in-out text-error-primery">
+                    باید روی یک ادرس کلیک کرده و ان را انتخاب کنید
+                  </p>
+                )}
+                <button
+                  onClick={handleClick}
+                  className="bg-cognac-primery leading-5.5 text-white rounded-lg py-3.25 px-26 lg:px-24 xl:px-36 cursor-pointer"
+                >
                   {step === 1
                     ? " ثبت سفارش"
                     : step === 2
@@ -188,6 +222,7 @@ export default function BasketDetails({ step, count, totalPric, cart }) {
                     ? "پرداخت"
                     : ""}
                 </button>
+                
               </Link>
             </div>
           </div>
@@ -195,7 +230,7 @@ export default function BasketDetails({ step, count, totalPric, cart }) {
       </div>
 
       {isOpenDetailsModal && (
-        <DetailsModal handleCloseModal={handleCloseDetailsModal}cart={cart} />
+        <DetailsModal handleCloseModal={handleCloseDetailsModal} cart={cart} />
       )}
       {isOpenDeleteModal && (
         <DeleteModal

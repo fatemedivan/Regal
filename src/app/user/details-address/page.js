@@ -14,12 +14,11 @@ export default function Page() {
   const [postalCode, setPostalCode] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [phone, setPhone] = useState("");
   const [fullAddress, setFullAddress] = useState("");
   const [token, setToken] = useState("");
+  const [addressId, setAddressId] = useState(null)
   const [isOpenProvince, setIsOpenProvince] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isEdited, setIsEdited] = useState(false);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const [isBluredCity, setIsBluredCity] = useState(false);
@@ -52,9 +51,6 @@ export default function Page() {
     value || focus ? "-top-2.5" : "top-4.5";
 
   const { phoneNumber } = useAuthContext();
-  useEffect(() => {
-    setPhone(phoneNumber);
-  }, [phoneNumber]);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -65,29 +61,43 @@ export default function Page() {
 
   useEffect(() => {
     const storedFullAddress = sessionStorage.getItem("full address");
-    setFullAddress(storedFullAddress);
+    if (storedFullAddress) {
+      setFullAddress(storedFullAddress);  
+    }
   }, []);
+
+   useEffect(()=>{
+    setAddressId(sessionStorage.getItem("addressId"))
+  },[])
 
   const addAdress = async () => {
     try {
+      if (!token && !addressId) return;
       setIsLoading(true);
-      const res = await fetch(`${baseUrl}/user/addresses`, {
-        method: "POST",
+       const url = addressId
+      ? `${baseUrl}/user/addresses/${addressId}`
+      : `${baseUrl}/user/addresses`;  
+
+      const method = addressId ? "PATCH" : "POST";
+      const res = await fetch(url, {
+        method,
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          province: province,
-          city: city,
-          postalCode: postalCode,
-          fullAddress: fullAddress.slice(0, 254),
-          detail: details,
+          "province": province,
+          "city": city,
+          "postalCode": postalCode,
+          "fullAddress": fullAddress.slice(0, 254),
+          "detail": details,
         }),
       });
       setIsLoading(false);
+      
       if (res.ok) {
         toast.success("ادرس با موفقیت اضافه شد");
+        sessionStorage.removeItem('addressId')
         setTimeout(() => {
           router.push("/user/addresses");
         }, 2500);
@@ -100,39 +110,57 @@ export default function Page() {
     }
   };
 
+  useEffect(() => {
+    if (!token && !addressId) return
+    const getAddress = async () => {
+      const res = await fetch(`${baseUrl}/user/addresses/${addressId}`,{
+        headers : {Authorization: `Bearer ${token}`}
+      });
+      console.log(res);
+      const data = await res.json()
+      if (data) {
+        setProvince(data.province || '')
+        setCity(data.city || '')
+        setDetails(data.detail || '')
+        setPostalCode(data.postalCode || '')
+      }
+    };
+    getAddress();
+  }, [token]);
+
   const iranProvinces = [
-  "آذربایجان شرقی",
-  "آذربایجان غربی",
-  "اردبیل",
-  "اصفهان",
-  "البرز",
-  "ایلام",
-  "بوشهر",
-  "تهران",
-  "چهارمحال و بختیاری",
-  "خراسان جنوبی",
-  "خراسان رضوی",
-  "خراسان شمالی",
-  "خوزستان",
-  "زنجان",
-  "سمنان",
-  "سیستان و بلوچستان",
-  "فارس",
-  "قزوین",
-  "قم",
-  "کردستان",
-  "کرمان",
-  "کرمانشاه",
-  "کهگیلویه و بویراحمد",
-  "گلستان",
-  "گیلان",
-  "لرستان",
-  "مازندران",
-  "مرکزی",
-  "هرمزگان",
-  "همدان",
-  "یزد"
-];
+    "آذربایجان شرقی",
+    "آذربایجان غربی",
+    "اردبیل",
+    "اصفهان",
+    "البرز",
+    "ایلام",
+    "بوشهر",
+    "تهران",
+    "چهارمحال و بختیاری",
+    "خراسان جنوبی",
+    "خراسان رضوی",
+    "خراسان شمالی",
+    "خوزستان",
+    "زنجان",
+    "سمنان",
+    "سیستان و بلوچستان",
+    "فارس",
+    "قزوین",
+    "قم",
+    "کردستان",
+    "کرمان",
+    "کرمانشاه",
+    "کهگیلویه و بویراحمد",
+    "گلستان",
+    "گیلان",
+    "لرستان",
+    "مازندران",
+    "مرکزی",
+    "هرمزگان",
+    "همدان",
+    "یزد",
+  ];
 
   return (
     <div className="container mx-auto px-5 py-6">
@@ -186,7 +214,6 @@ export default function Page() {
             }}
             onChange={(e) => {
               setCity(e.target.value);
-              setIsEdited(true);
             }}
             className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent"
           />
@@ -241,7 +268,6 @@ export default function Page() {
                   onClick={() => {
                     setIsOpenProvince(false);
                     setProvince(option);
-                    setIsEdited(true);
                   }}
                   className="px-4 py-2 hover:bg-neutral-gray-2 cursor-pointer text-xs leading-4.5 text-neutral-gray-7"
                 >
@@ -265,7 +291,6 @@ export default function Page() {
             }}
             onChange={(e) => {
               setDetails(e.target.value);
-              setIsEdited(true);
             }}
             className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent"
           />
@@ -299,7 +324,6 @@ export default function Page() {
             }}
             onChange={(e) => {
               setPostalCode(e.target.value);
-              setIsEdited(true);
             }}
             className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent"
           />
@@ -341,7 +365,6 @@ export default function Page() {
             }
             onChange={(e) => {
               setFirstName(e.target.value);
-              setIsEdited(true);
             }}
             className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent px-4 py-3.25 focus:bg-neutral-gray-2"
           />
@@ -369,7 +392,6 @@ export default function Page() {
             }
             onChange={(e) => {
               setLastName(e.target.value);
-              setIsEdited(true);
             }}
             className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent px-4 py-3.25 focus:bg-neutral-gray-2"
           />
@@ -384,26 +406,12 @@ export default function Page() {
           </label>
         </div>
         <div className="relative border border-neutral-gray-4 rounded-lg flex mb-4">
-          <input
-            type="text"
-            id="phone-desktop"
-            dir="ltr"
-            placeholder=" "
-            value={phone}
-            onFocus={() => setIsFocused((prev) => ({ ...prev, phone: true }))}
-            onBlur={() => setIsFocused((prev) => ({ ...prev, phone: false }))}
-            onChange={(e) => {
-              setPhone(e.target.value);
-              setIsEdited(true);
-            }}
-            className="placeholder:text-transparent w-full outline-none py-3.75 px-4 text-neutral-gray-7 bg-neutral-gray-2"
-          />
+          <div className="w-full outline-none py-3.75 px-4 bg-neutral-gray-2 text-neutral-gray-7 text-left">
+            {phoneNumber}
+          </div>
           <label
-            htmlFor="phone-desktop"
-            className={`absolute right-4 bg-transparent px-1 text-xs text-neutral-gray-7 transition-all z-10 ${floatLabel(
-              phone,
-              isFocused.phone
-            )}`}
+            htmlFor="phone"
+            className="absolute right-4 bg-transparent px-1 text-xs text-neutral-gray-7 transition-all z-10 -top-2.5"
           >
             شماره موبایل
           </label>

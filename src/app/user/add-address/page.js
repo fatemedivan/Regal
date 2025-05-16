@@ -57,14 +57,19 @@ export default function Page() {
           );
           const data = await res.json();
           setFullAddress(data.display_name);
-          sessionStorage.setItem('full address',data.display_name)
-        } catch(error) {
+          sessionStorage.setItem("full address", data.display_name);
+        } catch (error) {
           console.log(error);
         }
       });
     })();
   }, []);
 
+  useEffect(() => {
+    sessionStorage.removeItem("addressId");
+    sessionStorage.removeItem("full address");
+  }, []);
+  
   return (
     <div className="lg:hidden">
       <div className="flex justify-between items-center mb-8 px-5 pt-6">

@@ -39,6 +39,8 @@ export default function UserPannel({ children, rout, isHadAddress }) {
   };
   const handleLogout = () => {
     localStorage.removeItem('token')
+    sessionStorage.removeItem('full address')
+    sessionStorage.removeItem('address')
     document.cookie = `token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC`
     router.push('/auth/sign-up')
     setIsOpenLogoutModal(false);

@@ -15,7 +15,9 @@ export default function Page() {
   const [isOpenAddAddressModal, setIsOpenAddAddressModal] = useState(false);
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  
+  const [token, setToken] = useState("");
+  const [addresses, setAddresses] = useState([]);
+
   const handleCloseAddAddressModal = () => {
     setIsOpenAddAddressModal(false);
   };
@@ -27,15 +29,38 @@ export default function Page() {
   };
 
   useEffect(() => {
-      const storedToken = localStorage.getItem("token");
-      if (storedToken) {
-        setToken(storedToken);
-      }
-    }, []);
-  
-  useEffect(()=>{
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
 
-  },[token])
+  useEffect(() => {
+  sessionStorage.removeItem("addressId");
+}, []);
+
+  useEffect(() => {
+    if (!token) return;
+    const getAddresses = async () => {
+      const res = await fetch(`${baseUrl}/user/addresses`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log("res address", res);
+      if (res.ok) {
+        const data = await res.json();
+        if (data) {
+          setIsHadAddress(true);
+          setAddresses(data);
+        }
+        console.log(data);
+      }
+      if (res.status === 404) {
+        setIsHadAddress(false);
+      }
+    };
+    getAddresses();
+  }, [token, isHadAddress]);
+
   return (
     <>
       <div className="container mx-auto px-5 py-6 lg:hidden">
@@ -55,12 +80,11 @@ export default function Page() {
         </div>
         {isHadAddress ? (
           <div>
-            <div className="mb-4">
-              <AdressCard isActive={false} />
-            </div>
-            <div className="mb-4">
-              <AdressCard isActive={false} />
-            </div>
+            {addresses.map((address) => (
+              <div key={address.id} className="mb-4">
+                <AdressCard isActive={false} {...address} />
+              </div>
+            ))}
             <div className="flex items-center justify-center w-full mt-50">
               <button
                 onClick={() => router.push("/user/add-address")}

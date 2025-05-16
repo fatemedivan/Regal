@@ -1,16 +1,18 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DeleteModal from "@/components/common/DeleteModal";
 import AddAddressModal from "../user/AddAddressModal";
 import DetailsModalAddAddress from "../user/DetailsModalAddAddress";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
+import { useAuthContext } from "@/context/AuthContext";
 
-export default function AdressCard({ isActive }) {
+export default function AdressCard({ isActive, fullAddress, id}) {
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [isOpenAddAddressModal, setIsOpenAddAddressModal] = useState(false);
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
+  const { phoneNumber } = useAuthContext();
   const handleCloseDeleteModal = () => {
     setIsOpenDeleteModal(false);
     closeModal()
@@ -33,7 +35,16 @@ export default function AdressCard({ isActive }) {
     setIsOpenDetailsModal(false);
     closeModal()
   };
-   const { isModalOpen, openModal, closeModal } = useScrollLockContext();
+  const { openModal, closeModal } = useScrollLockContext();
+
+  useEffect(()=>{
+    if (id) {
+      sessionStorage.setItem("addressId", id);   
+    }
+    if (fullAddress) {
+      sessionStorage.setItem('full address', fullAddress)
+    }
+  },[])
   return (
     <div
       className={`border ${
@@ -44,7 +55,7 @@ export default function AdressCard({ isActive }) {
         <div className="flex items-start gap-1">
           <Image width={16} height={16} src="/img/location2.svg" alt="" />
           <p className="text-neutral-gray-13 text-xs leading-4.5 lg:text-sm lg:leading-5">
-            تهران، نیاوران، تنگستان چهارم، مجتمع حیات سبز، طبقه چهارم، واحد ۱۳۲
+           {fullAddress}
           </p>
         </div>
         <div className="flex items-center gap-4">
@@ -104,7 +115,7 @@ export default function AdressCard({ isActive }) {
               alt=""
             />
             <p className="text-neutral-gray-13 text-xs leading-4.5 lg:text-sm lg:leading-5">
-              ۹۸۹۱۲۱۲۳۴۵۶۷+
+             {phoneNumber}
             </p>
           </div>
         </div>

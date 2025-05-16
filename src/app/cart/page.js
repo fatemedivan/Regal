@@ -12,7 +12,7 @@ import { toast, ToastContainer } from "react-toastify";
 
 export default function Page() {
   const router = useRouter();
-  const { removeFromCart, getCart, cart, countOfProduct, totalPric } =
+  const { removeFromCart, getCart, cart, countOfProduct, totalPric, isEmptyCart } =
     useBasketContext();
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [token, setToken] = useState("");
@@ -75,7 +75,7 @@ export default function Page() {
   return (
     <div className="container mx-auto px-5 mb-22 lg:px-12">
       <ToastContainer autoClose={2000} className={"custom-toast-container"} />
-      {cart.length === 0 ? (
+      {isEmptyCart? (
         <div className="mt-35 mb-6 mx-5 lg:mb-33.75 lg:mt-26">
           <div className="flex justify-center items-center mb-55.5 lg:mb-8">
             <div>

@@ -16,6 +16,7 @@ export const BasketContextProvider = ({ children }) => {
   const [token, setToken] = useState("");
   const [totalPric, setTotalPrice] = useState(null);
   const [cart, setCart] = useState([]);
+  const [isEmptyCart, setIsEmptyCart] = useState(true)
   const [countOfProduct, setCountOfPrroduct] = useState(0);
 
   useEffect(() => {
@@ -76,7 +77,7 @@ export const BasketContextProvider = ({ children }) => {
       console.log(res);
       if (res.ok) {
         const data = await res.json();
-        console.log("new cart data:", data);
+        setIsEmptyCart(false)
         setCart(data);
         const total = Math.floor(
           data.reduce((sum, cartItem) => {
@@ -85,6 +86,9 @@ export const BasketContextProvider = ({ children }) => {
         );
 
         setTotalPrice(total.toLocaleString());
+      }
+      if (res.status === 404) {
+        setIsEmptyCart(true)
       }
     } catch (error) {
       console.log(error);
@@ -106,6 +110,7 @@ export const BasketContextProvider = ({ children }) => {
         cart,
         totalPric,
         countOfProduct,
+        isEmptyCart
       }}
     >
       {children}

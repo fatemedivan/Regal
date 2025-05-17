@@ -12,8 +12,14 @@ import { toast, ToastContainer } from "react-toastify";
 
 export default function Page() {
   const router = useRouter();
-  const { removeFromCart, getCart, cart, countOfProduct, totalPric, isEmptyCart } =
-    useBasketContext();
+  const {
+    removeFromCart,
+    getCart,
+    cart,
+    countOfProduct,
+    totalPric,
+    isEmptyCart,
+  } = useBasketContext();
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [token, setToken] = useState("");
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -63,11 +69,34 @@ export default function Page() {
     }
   };
 
+  const deleteCart = async () => {
+    if(!token) return
+    try {
+      const res = await fetch(`${baseUrl}/cart`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log(res);
+      
+      if (res.ok) {
+        getCart()
+        toast.success('با موفقیت حذف شد')
+      }else{
+        toast.error("ناموفق");
+      }
+    } catch (error) {
+      toast.error("خطایی رخ داد");
+    }
+  };
+
   const handleCloseDeleteModal = () => {
     setIsOpenDeleteModal(false);
     closeModal();
   };
   const handleDeleteBasket = () => {
+    deleteCart()
+    console.log('deleted');
+    closeModal()
     setIsOpenDeleteModal(false);
   };
   const { openModal, closeModal } = useScrollLockContext();
@@ -75,7 +104,7 @@ export default function Page() {
   return (
     <div className="container mx-auto px-5 mb-22 lg:px-12">
       <ToastContainer autoClose={2000} className={"custom-toast-container"} />
-      {isEmptyCart? (
+      {isEmptyCart ? (
         <div className="mt-35 mb-6 mx-5 lg:mb-33.75 lg:mt-26">
           <div className="flex justify-center items-center mb-55.5 lg:mb-8">
             <div>
@@ -349,6 +378,7 @@ export default function Page() {
               count={countOfProduct}
               totalPric={totalPric}
               cart={cart}
+              deleteCart={deleteCart}
             />
           </div>
           {isOpenDeleteModal && (

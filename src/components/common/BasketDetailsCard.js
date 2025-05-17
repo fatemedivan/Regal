@@ -13,6 +13,7 @@ export default function BasketDetails({
   totalPric,
   cart,
   addOrders,
+  deleteCart
 }) {
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
@@ -23,6 +24,7 @@ export default function BasketDetails({
     closeModal();
   };
   const handleCloseDeleteModal = () => {
+    deleteCart()
     setIsOpenDeleteModal(false);
     closeModal();
   };

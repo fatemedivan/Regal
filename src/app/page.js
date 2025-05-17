@@ -28,7 +28,7 @@ export default async function Home() {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        next: { revalidate: 60 * 60 * 24 * 2 },
+        cache: 'no-store'
       });
 
       discountedProducts = await res.json();

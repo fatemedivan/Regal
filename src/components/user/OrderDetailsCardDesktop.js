@@ -1,6 +1,7 @@
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProgressBarProfile from "./ProgressBarProfile";
+import moment from "jalali-moment";
 
 export default function OrderDetailsCardDesktop({
   status,
@@ -13,6 +14,18 @@ export default function OrderDetailsCardDesktop({
   amountDiscount,
 }) {
   const [isShownDetails, setIsShownDetails] = useState(false);
+   const [createdAt, setCreatedAt] = useState("");
+  
+    const formatJalaliDateTime = (isoString) => {
+      return moment(isoString).locale("fa").format("dddd D MMMM YYYY ،HH:mm");
+    };
+  
+    useEffect(() => {
+    if (date) {
+      setCreatedAt(formatJalaliDateTime(date));
+    }
+  }, [date]);
+  
   return (
     <div className="border border-neutral-gray-4 rounded-xl p-6 mb-4">
       <div className="flex items-center justify-between mb-3">
@@ -82,7 +95,7 @@ export default function OrderDetailsCardDesktop({
         }`}
       >
         <Image width={20} height={20} src="/img/calendar.svg" alt="" />
-        <p className="text-neutral-gray-11 text-sm leading-5">{date}</p>
+        <p className="text-neutral-gray-11 text-sm leading-5">{createdAt && createdAt}</p>
       </div>
       <div
         className={`mb-4 border-b border-dashed border-neutral-gray-4 ${

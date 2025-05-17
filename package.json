@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@glidejs/glide": "^3.7.1",
+    "jalali-moment": "^3.3.11",
     "keen-slider": "^6.8.6",
     "leaflet": "^1.9.4",
     "next": "15.3.1",

@@ -1,8 +1,9 @@
 "use client";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import OrderDetailsModal from "./OrderDetailsModal";
 import ProgressBarProfile from "./ProgressBarProfile";
+import moment from "jalali-moment";
 
 export default function OrderDetailsCard({
   status,
@@ -17,6 +18,18 @@ export default function OrderDetailsCard({
   amountDiscount,
 }) {
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
+  const [createdAt, setCreatedAt] = useState("");
+
+  const formatJalaliDateTime = (isoString) => {
+    return moment(isoString).locale("fa").format("dddd D MMMM YYYY ،HH:mm");
+  };
+
+  useEffect(() => {
+  if (date) {
+    setCreatedAt(formatJalaliDateTime(date));
+  }
+}, [date]);
+
   const handleCloseDetailsModal = () => {
     setIsOpenDetailsModal(false);
   };
@@ -57,7 +70,7 @@ export default function OrderDetailsCard({
       <div className="flex items-center gap-1 mb-3">
         <Image width={16} height={16} src="/img/calendar.svg" alt="" />
         <p className="text-neutral-gray-11 text-xs leading-4.5">
-          {date}،<span className="mr-1">{time}</span>
+          {createdAt && createdAt}
         </p>
       </div>
       <div

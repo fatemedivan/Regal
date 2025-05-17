@@ -107,8 +107,7 @@ export default function Page() {
                 orders.map((order) => (
                   <OrderDetailsCard
                     key={order.id}
-                    date={" پنجشنبه ۵ مهر ۱۴۰۳ "}
-                    time={"۱۳:۴۵"}
+                    date={order.createdAt}
                     receivingTime={"۱۳:۴۵"}
                     address={order.fullAddress}
                     status={order.status}
@@ -213,8 +212,7 @@ export default function Page() {
                 orders.map((order) => (
                   <OrderDetailsCardDesktop
                     key={order.id}
-                    date={" پنجشنبه ۵ مهر ۱۴۰۳ "}
-                    time={"۱۳:۴۵"}
+                    date={order.createdAt}
                     address={order.fullAddress}
                     status={order.status}
                     deliveryStatus={"_"}

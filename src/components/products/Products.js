@@ -9,21 +9,15 @@ import Breadcrumb from "../common/Breadcrumb";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
 import FilterMenu from "@/components/products/FilterMenu";
 
-export default function Products({ search, orderBy, categoryId }) {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+export default function Products({ allProducts, totalProductsPages }) {
   const router = useRouter();
   const { openModal, closeModal } = useScrollLockContext();
   const searchParamsHook = useSearchParams();
 
   const pageParam = parseInt(searchParamsHook.get("page") || "1");
-
   const [isOpenFilterMenu, setIsOpenFilterMenu] = useState(false);
   const [isOpenSort, setIsOpenSort] = useState(false);
-  const [notFound, setNotFound] = useState(false);
-  const [token, setToken] = useState(null);
   const [selectedOption, setSelectedOption] = useState({});
-  const [products, setProducts] = useState([]);
-  const [totalPages, setTotalPages] = useState(null);
   const [currentPage, setCurrentPage] = useState(pageParam);
   const [searchValue, setSearchValue] = useState("");
 
@@ -34,18 +28,10 @@ export default function Products({ search, orderBy, categoryId }) {
     { id: 4, title: "گران‌ترین", value: "expensive" },
   ];
 
-  const handleCloseFilter = () => {
-    setIsOpenFilterMenu(false);
-    closeModal();
-  };
+  const products = allProducts || [];
+  const totalPages = totalProductsPages || 1;
+  const notFound = products.length === 0;
 
-  const handleCloseSort = () => {
-    setIsOpenSort(false);
-    closeModal();
-  };
-
-  //AI
-  //handle changing sort
   const handleSortChange = (option) => {
     setSelectedOption(option);
     const params = new URLSearchParams(searchParamsHook.toString());
@@ -54,8 +40,6 @@ export default function Products({ search, orderBy, categoryId }) {
     router.push(`?${params.toString()}`);
   };
 
-  //AI
-  //handle changing page
   const handlePageChange = (page) => {
     setCurrentPage(page);
     const params = new URLSearchParams(searchParamsHook.toString());
@@ -63,159 +47,13 @@ export default function Products({ search, orderBy, categoryId }) {
     router.push(`?${params.toString()}`);
   };
 
-  //AI
-  //set currentpage from url
-  useEffect(() => {
-    setCurrentPage(parseInt(searchParamsHook.get("page") || "1"));
-  }, [searchParamsHook]);
-
-  //get token
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-    }
-  }, []);
-
-  //handle search
-  useEffect(() => {
-    if (search) {
-      const getProductsBySearch = async () => {
-        try {
-          const res = await fetch(
-            `${baseUrl}/products?search=${search}&page=${currentPage}`
-          );
-          if (res.ok) {
-            const data = await res.json();
-            if (data.products.length === 0) {
-              setNotFound(true);
-            } else {
-              setProducts(data.products);
-              setNotFound(false);
-            }
-          }
-          if (res.status === 404) {
-            setNotFound(true);
-            setProducts([]);
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      getProductsBySearch();
-    }
-  }, [search, currentPage]);
-
-  // handle category id
-  useEffect(() => {
-    if (categoryId) {
-      const getProductsByCategoryId = async () => {
-        try {
-          const res = await fetch(
-            `${baseUrl}/products?categoryId=${categoryId}&page=${currentPage}`
-          );
-          if (res.ok) {
-            const data = await res.json();
-            if (data.products.length === 0) {
-              setNotFound(true);
-            } else {
-              setProducts(data.products);
-              setTotalPages(data.latestPage);
-              setNotFound(false);
-              console.log(data);
-            }
-          }
-          if (res.status === 404) {
-            setNotFound(true);
-            setProducts([]);
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      getProductsByCategoryId();
-    }
-  }, [categoryId, currentPage]);
-
-  //get all products
-  useEffect(() => {
-    if (!token || search || categoryId) return;
-    const getProducts = async () => {
-      try {
-        const res = await fetch(`${baseUrl}/products?page=${currentPage}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        console.log(res);
-        if (res.ok) {
-          const data = await res.json();
-          setProducts(data.products);
-          setTotalPages(data.latestPage);
-          setNotFound(false);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getProducts();
-  }, [token, search, categoryId, currentPage]);
-
-  //handle order
-  const getProductsByOrder = async () => {
-    if (!token || !orderBy) return;
-    try {
-      const res = await fetch(
-        `${baseUrl}/products?orderBy=${orderBy}&page=${currentPage}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      if (res.ok) {
-        const data = await res.json();
-        setProducts(data.products);
-        setNotFound(false);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  //handle search in products
-  useEffect(() => {
-    if (searchValue.trim() === "") return;
+  const handleSearch = () => {
+    if (!searchValue.trim()) return;
     const params = new URLSearchParams(searchParamsHook.toString());
     params.set("search", searchValue);
-    params.set("page", currentPage);
+    params.set("page", "1");
     router.push(`?${params.toString()}`);
-
-    const getSearchedProducts = async () => {
-      try {
-        const res = await fetch(
-          `${baseUrl}/products?search=${searchValue}&page=${currentPage}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        if (res.ok) {
-          const data = await res.json();
-          if (data.products.length === 0) {
-            setNotFound(true);
-          } else {
-            setProducts(data.products);
-            setTotalPages(data.latestPage);
-            setNotFound(false);
-            console.log(data);
-          }
-        }
-        if (res.status === 404) {
-          setNotFound(true);
-          setProducts([]);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getSearchedProducts();
-  }, [searchValue, token, currentPage, searchParamsHook]);
+  };
 
   return (
     <div>
@@ -230,7 +68,12 @@ export default function Products({ search, orderBy, categoryId }) {
       <div className="container mx-auto">
         {isOpenFilterMenu && (
           <div className="lg:hidden absolute top-0 left-0 right-0 bg-white z-50">
-            <FilterMenu handleCloseFilter={handleCloseFilter} />
+            <FilterMenu
+              handleCloseFilter={() => {
+                setIsOpenFilterMenu(false);
+                closeModal();
+              }}
+            />
           </div>
         )}
         {isOpenSort && (
@@ -239,8 +82,10 @@ export default function Products({ search, orderBy, categoryId }) {
               setSelectedOption={setSelectedOption}
               selectedOption={selectedOption}
               handleSortChange={handleSortChange}
-              handleCloseSort={handleCloseSort}
-              getProductsByOrder={getProductsByOrder}
+              handleCloseSort={() => {
+                setIsOpenSort(false);
+                closeModal();
+              }}
             />
           </div>
         )}
@@ -347,6 +192,7 @@ export default function Products({ search, orderBy, categoryId }) {
                       onChange={(e) => {
                         setSearchValue(e.target.value);
                       }}
+                      onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                       className="w-full outline-none placeholder:text-xs placeholder:leading-4.5 placeholder:text-neutral-gray-7"
                       placeholder="جستجو کنید"
                     />
@@ -379,7 +225,7 @@ export default function Products({ search, orderBy, categoryId }) {
                             key={option.id}
                             onClick={() => {
                               handleSortChange(option);
-                              getProductsByOrder();
+
                               setIsOpenSort(false);
                               closeModal();
                             }}

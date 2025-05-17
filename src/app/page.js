@@ -18,7 +18,7 @@ export default async function Home() {
   }
 
   //get off products
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
   let discountedProducts = [];
 

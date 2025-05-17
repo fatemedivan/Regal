@@ -2,12 +2,16 @@
 import Image from "next/image";
 import React, { useState } from "react";
 
-export default function Sort({ handleCloseSort, setSelectedOption ,selectedOption, getProductsByOrder,handleSortChange}) {
+export default function Sort({
+  handleCloseSort,
+  selectedOption,
+  handleSortChange,
+}) {
   const [sortOption, setSortOption] = useState([
-   {id:1, title: "جدیدترین", value: "earliest"} ,
-   {id:2, title: "قدیمی‌ترین", value: "latest" } ,
-   {id:3, title:  "ارزان‌ترین", value: "cheapest"},
-   {id:4, title: "گران‌ترین", value: "expensive"}   
+    { id: 1, title: "جدیدترین", value: "earliest" },
+    { id: 2, title: "قدیمی‌ترین", value: "latest" },
+    { id: 3, title: "ارزان‌ترین", value: "cheapest" },
+    { id: 4, title: "گران‌ترین", value: "expensive" },
   ]);
 
   return (
@@ -17,7 +21,7 @@ export default function Sort({ handleCloseSort, setSelectedOption ,selectedOptio
           width={20}
           height={20}
           src="/img/close-icon-filter.svg"
-          onClick={()=>handleCloseSort()}
+          onClick={() => handleCloseSort()}
           alt="بستن"
           className="cursor-pointer"
         />
@@ -44,9 +48,8 @@ export default function Sort({ handleCloseSort, setSelectedOption ,selectedOptio
         ))}
         <button
           disabled={!selectedOption}
-          onClick={()=>{
-            handleCloseSort()
-            getProductsByOrder()
+          onClick={() => {
+            handleCloseSort();
           }}
           className={`px-11.75 py-3.25 ${
             selectedOption.length !== 0

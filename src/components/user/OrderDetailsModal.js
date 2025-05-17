@@ -1,7 +1,12 @@
 import Image from "next/image";
 import React from "react";
 
-export default function OrderDetailsModal({ handleCloseModal }) {
+export default function OrderDetailsModal({
+  handleCloseModal,
+  orderItem,
+  amountPaid,
+  amountDiscount,
+}) {
   return (
     <div>
       <div
@@ -21,30 +26,20 @@ export default function OrderDetailsModal({ handleCloseModal }) {
           />
         </div>
         <div className=" pb-4 mb-4 border-b border-b-neutral-gray-4">
-          <div className="flex justify-between items-center mb-2">
-            <p className="text-sm leading-6 text-neutral-gray-11">
-              لباس میدی مدرن راشا (x۱)
-            </p>
-            <p className="text-sm leading-6 text-neutral-gray-10">
-              ۱,۹۹۹,۰۰۰ تومان
-            </p>
-          </div>
-          <div className="flex justify-between items-center mb-2">
-            <p className="text-sm leading-6 text-neutral-gray-11">
-              لباس میدی رکسان (x۲)
-            </p>
-            <p className="text-sm leading-6 text-neutral-gray-10">
-              ۱,۹۹۹,۰۰۰ تومان
-            </p>
-          </div>
-          <div className="flex justify-between items-center">
-            <p className="text-sm leading-6 text-neutral-gray-11">
-              لباس میدی توری یاس (x۱)
-            </p>
-            <p className="text-sm leading-6 text-neutral-gray-10">
-              ۱,۹۹۹,۰۰۰ تومان
-            </p>
-          </div>
+          {orderItem &&
+            orderItem.map((item) => (
+              <div
+                key={item.id}
+                className="flex justify-between items-center mb-2"
+              >
+                <p className="text-sm leading-6 text-neutral-gray-11">
+                  {item.productTitle}(x{item.number})
+                </p>
+                <p className="text-sm leading-6 text-neutral-gray-10">
+                  {item.price} تومان
+                </p>
+              </div>
+            ))}
         </div>
         <div className="pb-4 mb-4 border-b border-b-neutral-gray-4">
           <div className="flex justify-between items-center mb-2">
@@ -52,13 +47,13 @@ export default function OrderDetailsModal({ handleCloseModal }) {
               مجموع سفارش
             </p>
             <p className="text-sm leading-6 text-neutral-gray-10">
-              ۳,۹۹۸,۰۰۰ تومان
+              {amountPaid}تومان
             </p>
           </div>
           <div className="flex justify-between items-center mb-2">
             <p className="text-sm leading-6 text-cognac-primery">تخفیف</p>
             <p className="text-sm leading-6 text-cognac-primery">
-              ۱۱۰.۰۰۰ تومان
+              {amountDiscount} تومان
             </p>
           </div>
           <div className="flex justify-between items-center">
@@ -66,7 +61,7 @@ export default function OrderDetailsModal({ handleCloseModal }) {
               هزینه ارسال
             </p>
             <p className="text-sm leading-6 text-neutral-gray-10">
-              ۸۰.۰۰۰ تومان
+              80000 تومان
             </p>
           </div>
         </div>
@@ -76,7 +71,7 @@ export default function OrderDetailsModal({ handleCloseModal }) {
               مبلغ پرداخت شده
             </p>
             <p className="text-sm leading-6 text-neutral-gray-10">
-              ۳,۹۹۸,۰۰۰ تومان
+              {amountPaid} تومان
             </p>
           </div>
         </div>

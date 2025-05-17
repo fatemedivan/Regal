@@ -39,12 +39,10 @@ export default function Page() {
         "deliveryMethod": deliveryMethod,
       }),
     });
-    console.log(fullAddress);
-    console.log(deliveryMethod);
-    
     console.log(res);
-    const result = await res.json();
-    console.log(result);
+   if (res.ok) {
+    router.push('/payment/success')
+   }
   };
 
   return (

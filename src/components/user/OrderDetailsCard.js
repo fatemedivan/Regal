@@ -12,11 +12,15 @@ export default function OrderDetailsCard({
   time,
   address,
   receivingTime,
+  orderItem,
+  amountPaid,
+  amountDiscount,
 }) {
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
   const handleCloseDetailsModal = () => {
     setIsOpenDetailsModal(false);
   };
+
   return (
     <div className="p-3 border border-neutral-gray-4 rounded-xl mb-4">
       <div className="flex justify-between items-center mb-3.5">
@@ -31,11 +35,11 @@ export default function OrderDetailsCard({
         </div>
         <div className="flex items-center gap-2">
           <div className="bg-cognac-tint-1 text-xs leading-4.5 py-0.5 px-2 rounded-100 text-cognac-primery">
-            {deliveryType}
+            {deliveryType === "COURIER" ? "ارسال با پیک" : "تحویل حضوری"}
           </div>
           <div
             className={` text-xs leading-4.5 py-0.5 px-2 rounded-100  ${
-              status === "جاری"
+              status === "CURRENT"
                 ? "border border-neutral-gray-4 bg-neutral-gray-1 text-neutral-gray-11"
                 : status === "تحویل شده"
                 ? "bg-success-tint-1 text-success-primery"
@@ -46,7 +50,7 @@ export default function OrderDetailsCard({
                 : ""
             }`}
           >
-            {status}
+            {status === "CURRENT" && "جاری"}
           </div>
         </div>
       </div>
@@ -58,19 +62,21 @@ export default function OrderDetailsCard({
       </div>
       <div
         className={`flex gap-1 ${
-          status === "جاری" && deliveryType !== "تحویل حضوری" ? "mb-8" : "mb-3"
+          status === "CURRENT" && deliveryType !== "تحویل حضوری"
+            ? "mb-8"
+            : "mb-3"
         }`}
       >
         <Image width={16} height={16} src="/img/location-3.svg" alt="" />
         <p className="text-neutral-gray-11 text-xs leading-4.5">{address}</p>
       </div>
-      {status === "جاری" && deliveryType !== "تحویل حضوری" && (
+      {status === "CURRENT" && deliveryType !== "تحویل حضوری" && (
         <ProgressBarProfile />
       )}
 
       <div
         className={` ${
-          status === "جاری" && deliveryType !== "تحویل حضوری" && "pt-8"
+          status === "CURRENT" && deliveryType !== "تحویل حضوری" && "pt-8"
         } flex justify-center items-center`}
       >
         <button
@@ -82,7 +88,12 @@ export default function OrderDetailsCard({
       </div>
 
       {isOpenDetailsModal && (
-        <OrderDetailsModal handleCloseModal={handleCloseDetailsModal} />
+        <OrderDetailsModal
+          handleCloseModal={handleCloseDetailsModal}
+          orderItem={orderItem}
+          amountPaid={amountPaid}
+          amountDiscount={amountDiscount}
+        />
       )}
     </div>
   );

@@ -6,11 +6,11 @@ export default function OrderDetailsCardDesktop({
   status,
   deliveryType,
   address,
-  payment,
-  discount,
-  shippingcost,
   date,
   time,
+  orderItem,
+  amountPaid,
+  amountDiscount,
 }) {
   const [isShownDetails, setIsShownDetails] = useState(false);
   return (
@@ -20,7 +20,7 @@ export default function OrderDetailsCardDesktop({
           <div className="flex items-center gap-1">
             <Image width={20} height={20} src="/img/wallet-2.svg" alt="" />
             <p className="text-neutral-gray-11 text-sm leading-5">
-              مبلغ پرداخت شده: {payment} تومان
+              مبلغ پرداخت شده: {amountPaid} تومان
             </p>
           </div>
           <div className="flex items-center gap-1">
@@ -31,23 +31,23 @@ export default function OrderDetailsCardDesktop({
               alt=""
             />
             <p className="text-neutral-gray-11 text-sm leading-5">
-              تخفیف کل: {discount}تومان
+              تخفیف کل: {amountDiscount}تومان
             </p>
           </div>
           <div className="flex items-center gap-1">
             <Image width={20} height={20} src="/img/truck-fast-2.svg" alt="" />
             <p className="text-neutral-gray-11 text-sm leading-5">
-              هزینه ارسال: {shippingcost} تومان
+              هزینه ارسال: 80000 تومان
             </p>
           </div>
         </div>
         <div className="flex items-center gap-2">
           <div className="bg-cognac-tint-1 text-xs leading-4.5 py-0.5 px-2 rounded-100 text-cognac-primery text-nowrap">
-            {deliveryType}
+           {deliveryType === "COURIER" ? "ارسال با پیک" : "تحویل حضوری"}
           </div>
           <div
             className={` text-xs leading-4.5 py-0.5 px-2 rounded-100 text-nowrap ${
-              status === "جاری"
+              status === "CURRENT"
                 ? "border border-neutral-gray-4 bg-neutral-gray-1 text-neutral-gray-11"
                 : status === "تحویل شده"
                 ? "bg-success-tint-1 text-success-primery"
@@ -58,7 +58,7 @@ export default function OrderDetailsCardDesktop({
                 : ""
             }`}
           >
-            {status}
+            {status === 'CURRENT' && 'جاری'}
           </div>
         </div>
       </div>
@@ -84,9 +84,11 @@ export default function OrderDetailsCardDesktop({
         <Image width={20} height={20} src="/img/calendar.svg" alt="" />
         <p className="text-neutral-gray-11 text-sm leading-5">{date}</p>
       </div>
-      <div className={`mb-4 border-b border-dashed border-neutral-gray-4 ${
+      <div
+        className={`mb-4 border-b border-dashed border-neutral-gray-4 ${
           status === "جاری" && deliveryType !== "تحویل حضوری" ? "pb-8" : "pb-0"
-        }`}>
+        }`}
+      >
         {status === "جاری" && deliveryType !== "تحویل حضوری" && (
           <ProgressBarProfile />
         )}
@@ -120,45 +122,26 @@ export default function OrderDetailsCardDesktop({
               <p className="text-neutral-gray-10 text-sm leading-6">مبلغ کل</p>
             </div>
             <div className="grid grid-cols-5 gap-y-2 gap-x-4 mt-5 px-4 text-right">
-              <p className="text-neutral-gray-11 text-sm leading-6">
-                لباس میدی توری یاس
-              </p>
-              <p className="text-neutral-gray-11 text-sm leading-6">۱ عدد</p>
-              <p className="text-neutral-gray-11 text-sm leading-6">
-                ۱,۹۹۹,۰۰۰ تومان
-              </p>
-              <p className="text-neutral-gray-11 text-sm leading-6">
-                ۸۰.۰۰۰ تومان
-              </p>
-              <p className="text-neutral-gray-11 text-sm leading-6">
-                ۱,۹۱۹,۰۰۰ تومان
-              </p>
-
-              <p className="text-neutral-gray-11 text-sm leading-6">
-                لباس میدی رکسان
-              </p>
-              <p className="text-neutral-gray-11 text-sm leading-6">۲ عدد</p>
-              <p className="text-neutral-gray-11 text-sm leading-6">
-                ۱,۹۹۹,۰۰۰ تومان
-              </p>
-              <p className="text-neutral-gray-11 text-sm leading-6">-</p>
-              <p className="text-neutral-gray-11 text-sm leading-6">
-                ۳,۹۹۸,۰۰۰ تومان
-              </p>
-
-              <p className="text-neutral-gray-11 text-sm leading-6">
-                لباس میدی مدرن راشا
-              </p>
-              <p className="text-neutral-gray-11 text-sm leading-6">۱ عدد</p>
-              <p className="text-neutral-gray-11 text-sm leading-6">
-                ۱,۹۹۹,۰۰۰ تومان
-              </p>
-              <p className="text-neutral-gray-11 text-sm leading-6">
-                ۱۱۰.۰۰۰ تومان
-              </p>
-              <p className="text-neutral-gray-11 text-sm leading-6">
-                ۱,۸۸۹,۰۰۰ تومان
-              </p>
+              {orderItem &&
+                orderItem.map((item) => (
+                  <React.Fragment key={item.id}>
+                    <p className="text-neutral-gray-11 text-sm leading-6">
+                      {item.productTitle}
+                    </p>
+                    <p className="text-neutral-gray-11 text-sm leading-6">
+                      {item.number} عدد
+                    </p>
+                    <p className="text-neutral-gray-11 text-sm leading-6">
+                      {item.price} تومان
+                    </p>
+                    <p className="text-neutral-gray-11 text-sm leading-6">
+                      {item.discount} تومان
+                    </p>
+                    <p className="text-neutral-gray-11 text-sm leading-6">
+                      {amountPaid} تومان
+                    </p>
+                  </React.Fragment>
+                ))}
             </div>
           </div>
         )}

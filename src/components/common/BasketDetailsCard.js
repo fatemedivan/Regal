@@ -222,7 +222,6 @@ export default function BasketDetails({
                     ? "پرداخت"
                     : ""}
                 </button>
-                
               </Link>
             </div>
           </div>

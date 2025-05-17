@@ -42,6 +42,7 @@ export default function Page() {
         if (result.length) {
           setOrders(result);
           setIsHadOrders(true);
+          console.log(result);
         } else {
           setIsHadOrders(false);
         }
@@ -101,57 +102,24 @@ export default function Page() {
                 alt=""
               />
             </div>
-            <OrderDetailsCard
-              date={" پنجشنبه ۵ مهر ۱۴۰۳ "}
-              time={"۱۳:۴۵"}
-              address={
-                " تهران، نیاوران، تنگستان چهارم، مجتمع حیات سبز، طبقه چهارم، واحد ۱۳۲"
-              }
-              status={"جاری"}
-              deliveryStatus={"تحویل تا"}
-              deliveryType={"ارسال با پیک"}
-              receivingTime={"۱۳:۱۰"}
-            />
-            <OrderDetailsCard
-              date={" پنجشنبه ۵ مهر ۱۴۰۳ "}
-              time={"۱۳:۴۵"}
-              address={
-                " تهران، نیاوران، تنگستان چهارم، مجتمع حیات سبز، طبقه چهارم، واحد ۱۳۲"
-              }
-              status={"جاری"}
-              deliveryStatus={"آماده تحویل در فروشگاه"}
-              deliveryType={"تحویل حضوری"}
-            />
-            <OrderDetailsCard
-              date={" پنجشنبه ۵ مهر ۱۴۰۳ "}
-              time={"۱۳:۴۵"}
-              address={
-                " تهران، نیاوران، تنگستان چهارم، مجتمع حیات سبز، طبقه چهارم، واحد ۱۳۲"
-              }
-              status={"تحویل شده"}
-              deliveryStatus={"تحویل شده در فروشگاه"}
-              deliveryType={"تحویل حضوری"}
-            />
-            <OrderDetailsCard
-              date={" پنجشنبه ۵ مهر ۱۴۰۳ "}
-              time={"۱۳:۴۵"}
-              address={
-                " تهران، نیاوران، تنگستان چهارم، مجتمع حیات سبز، طبقه چهارم، واحد ۱۳۲"
-              }
-              status={"لغو شده"}
-              deliveryStatus={"_"}
-              deliveryType={"تحویل حضوری"}
-            />
-            <OrderDetailsCard
-              date={" پنجشنبه ۵ مهر ۱۴۰۳ "}
-              time={"۱۳:۴۵"}
-              address={
-                " تهران، نیاوران، تنگستان چهارم، مجتمع حیات سبز، طبقه چهارم، واحد ۱۳۲"
-              }
-              status={"مرجوع شده"}
-              deliveryStatus={"_"}
-              deliveryType={"ارسال با پیک"}
-            />
+            <div>
+              {orders &&
+                orders.map((order) => (
+                  <OrderDetailsCard
+                    key={order.id}
+                    date={" پنجشنبه ۵ مهر ۱۴۰۳ "}
+                    time={"۱۳:۴۵"}
+                    receivingTime={"۱۳:۴۵"}
+                    address={order.fullAddress}
+                    status={order.status}
+                    deliveryStatus={"تحویل تا"}
+                    deliveryType={order.deliveryMethod}
+                    orderItem={order.OrderItem}
+                    amountPaid={order.amountPaid}
+                    amountDiscount={order.amountDiscount}
+                  />
+                ))}
+            </div>
           </>
         ) : (
           <div className="flex flex-col justify-center items-center gap-6 mt-28">
@@ -241,62 +209,21 @@ export default function Page() {
         <UserPannel rout={"order"}>
           {isHadOrders ? (
             <div className="my-6">
-              <OrderDetailsCardDesktop
-                status={"جاری"}
-                deliveryType={"ارسال با پیک"}
-                address={
-                  "تهران، نیاوران، تنگستان چهارم، مجتمع حیات سبز، طبقه چهارم، واحد ۱۳۲"
-                }
-                payment={"۱.۵۶۹.۰۰۰"}
-                discount={"۱۹۰.۰۰۰"}
-                shippingcost={"۱۹۰.۰۰۰"}
-                date={"پنجشنبه ۵ مهر ۱۴۰۳ ، ۱۳:۴۵"}
-                time={"۱۳:۱۰"}
-              />
-              <OrderDetailsCardDesktop
-                status={"جاری"}
-                deliveryType={"ارسال با پیک"}
-                address={
-                  "تهران، نیاوران، تنگستان چهارم، مجتمع حیات سبز، طبقه چهارم، واحد ۱۳۲"
-                }
-                payment={"۲.۳۲۵.۰۰۰"}
-                discount={"۲۱۰.۰۰۰"}
-                shippingcost={"۱۹۰.۰۰۰"}
-                date={"دوشنبه ۲ مرداد ۱۴۰۳ ، ۱۱:۴۵"}
-              />
-              <OrderDetailsCardDesktop
-                status={"تحویل شده"}
-                deliveryType={"تحویل حضوری"}
-                address={
-                  "تهران، نیاوران، تنگستان چهارم، مجتمع حیات سبز، طبقه چهارم، واحد ۱۳۲"
-                }
-                payment={"۳.۱۰۰.۰۰۰"}
-                discount={"۲۵۰.۰۰۰"}
-                shippingcost={"۱۹۰.۰۰۰"}
-                date={"شنبه ۳۰ تیر ۱۴۰۳ ، ۱۰:۵۵"}
-              />
-              <OrderDetailsCardDesktop
-                status={"لغو شده"}
-                deliveryType={"تحویل حضوری"}
-                address={
-                  "تهران، نیاوران، تنگستان چهارم، مجتمع حیات سبز، طبقه چهارم، واحد ۱۳۲"
-                }
-                payment={"۱.۱۱۰.۰۰۰"}
-                discount={"۱۵۰.۰۰۰"}
-                shippingcost={"۱۹۰.۰۰۰"}
-                date={"پنجشنبه ۱۰ تیر ۱۴۰۳ ، ۱۱:۵۰"}
-              />
-              <OrderDetailsCardDesktop
-                status={"مرجوع شده"}
-                deliveryType={"ارسال با پیک"}
-                address={
-                  "تهران، نیاوران، تنگستان چهارم، مجتمع حیات سبز، طبقه چهارم، واحد ۱۳۲"
-                }
-                payment={"۱.۳۰۰.۰۰۰"}
-                discount={"۱۷۵.۰۰۰"}
-                shippingcost={"۱۹۰.۰۰۰"}
-                date={"پنجشنبه ۱ تیر ۱۴۰۳ ، ۱۳:۲۵"}
-              />
+              {orders &&
+                orders.map((order) => (
+                  <OrderDetailsCardDesktop
+                    key={order.id}
+                    date={" پنجشنبه ۵ مهر ۱۴۰۳ "}
+                    time={"۱۳:۴۵"}
+                    address={order.fullAddress}
+                    status={order.status}
+                    deliveryStatus={"_"}
+                    deliveryType={order.deliveryMethod}
+                    orderItem={order.OrderItem}
+                    amountPaid={order.amountPaid}
+                    amountDiscount={order.amountDiscount}
+                  />
+                ))}
             </div>
           ) : (
             <div className="flex flex-col justify-center items-center gap-8 my-12.5">

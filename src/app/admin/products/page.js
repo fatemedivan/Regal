@@ -3,7 +3,7 @@ import AddNewProduct from '@/components/admin/AddNewProduct';
 import ProductsTable from '@/components/admin/ProductsTable';
 import React, { useEffect, useState } from 'react'
 
-export default function page() {
+export default function Page() {
       const baseUrl = process.env.NEXT_PUBLIC_API_URL;
       const [products, setProducts] = useState()
 

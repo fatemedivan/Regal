@@ -56,7 +56,7 @@ export default function Page() {
   };
 
   return (
-    <div className="lg:flex">
+    <div className="lg:flex h-screen">
       <div className="container mx-auto pt-16 px-5 pb-6 lg:px-12 lg:pt-12 lg:pb-29.5 lg:w-[55%]">
         <ToastContainer autoClose={2000} className={"custom-toast-container"} />
         <div className="w-full lg:w-116 lg:mx-auto">

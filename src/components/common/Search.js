@@ -6,6 +6,7 @@ import "@glidejs/glide/dist/css/glide.core.min.css";
 import ProductSearchItem from "./ProductSearchItem";
 import { useRouter } from "next/navigation";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
+import { HashLoader } from "react-spinners";
 
 export default function Search({ handleCloseSearch }) {
   const router = useRouter();
@@ -18,6 +19,8 @@ export default function Search({ handleCloseSearch }) {
   const [searchProducts, setSearchProducts] = useState([]);
   const [isEmptySearch, setIsEmptySearch] = useState(true);
   const [isNotFound, setIsNotFound] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const { closeModal } = useScrollLockContext();
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -29,10 +32,19 @@ export default function Search({ handleCloseSearch }) {
   useEffect(() => {
     if (!token) return;
     const getPopularProducts = async () => {
-      const res = await fetch(`${baseUrl}/products/popular`);
-      const data = await res.json();
-      setPopularProducts(data);
-      console.log("populae data", data);
+      try {
+        setIsLoading(true);
+        const res = await fetch(`${baseUrl}/products/popular`);
+        if (res.ok) {
+          const data = await res.json();
+          setPopularProducts(data);
+          setIsLoading(false);
+        } else {
+          setIsLoading(false);
+        }
+      } catch (error) {
+        setIsLoading(false);
+      }
     };
     getPopularProducts();
   }, [token, isEmptySearch]);
@@ -147,7 +159,7 @@ export default function Search({ handleCloseSearch }) {
               onChange={(e) => {
                 setIsSearching(true);
                 setSearchText(e.target.value);
-                 getProductsBySearch();
+                getProductsBySearch();
                 e.target.value
                   ? setIsEmptySearch(false)
                   : setIsEmptySearch(true);
@@ -298,7 +310,7 @@ export default function Search({ handleCloseSearch }) {
                     onClick={() => {
                       router.push(`/products?search=${searchText}&page=1`);
                       handleCloseSearch();
-                      closeModal()
+                      closeModal();
                     }}
                     className="text-neutral-gray-11 text-sm leading-5 flex items-center gap-2 px-4 cursor-pointer"
                   >
@@ -338,29 +350,41 @@ export default function Search({ handleCloseSearch }) {
                   ))}
                 </div>
               )}
-
-              {!searchText && (
-                <div className="glide max-w-full" ref={glideRef}>
-                  <div className="glide__track" data-glide-el="track">
-                    <ul className="glide__slides">
-                      {popularProducts.map((product) => (
-                        <li key={product.id} className="glide__slide">
-                          <ProductSearchItem
-                            handleCloseSearch={handleCloseSearch}
-                            img={"/img/product-off-1.png"}
-                            title={product.title}
-                            finalPrice={product.latestPrice}
-                            isMore={false}
-                            colors={product.ProductColor.map(
-                              (item) => item.color
-                            )}
-                            id={product.id}
-                            favorites={product.Favorite}
-                          />
-                        </li>
-                      ))}
-                    </ul>
+              {isLoading ? (
+                <>
+                  <div className="flex flex-col justify-center items-center h-[60vh]">
+                    <HashLoader color="#b19276" size={80} />
+                    <p className="mt-5 text-xl font-extrabold text-cognac-shade-3 animate-pulse">
+                      loading...
+                    </p>
                   </div>
+                </>
+              ) : (
+                <div>
+                  {!searchText && (
+                    <div className="glide max-w-full" ref={glideRef}>
+                      <div className="glide__track" data-glide-el="track">
+                        <ul className="glide__slides">
+                          {popularProducts.map((product) => (
+                            <li key={product.id} className="glide__slide">
+                              <ProductSearchItem
+                                handleCloseSearch={handleCloseSearch}
+                                img={"/img/product-off-1.png"}
+                                title={product.title}
+                                finalPrice={product.latestPrice}
+                                isMore={false}
+                                colors={product.ProductColor.map(
+                                  (item) => item.color
+                                )}
+                                id={product.id}
+                                favorites={product.Favorite}
+                              />
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

@@ -28,7 +28,7 @@ export default async function Home() {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        cache: 'no-store'
+        cache: "no-store",
       });
 
       discountedProducts = await res.json();

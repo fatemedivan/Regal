@@ -4,16 +4,20 @@ import Glide from "@glidejs/glide";
 import "@glidejs/glide/dist/css/glide.core.min.css";
 import ProductItemOff from "@/components/common/ProductItemOff";
 import Image from "next/image";
+import { HashLoader } from "react-spinners";
 
 export default function OffProducts({ discountedProducts }) {
   const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const glideRef = useRef(null);
   const prevbtnRef = useRef(null);
   const nextbtnRef = useRef(null);
 
   useEffect(() => {
+    setIsLoading(true);
     if (discountedProducts) {
       setProducts(discountedProducts);
+      setIsLoading(false);
     }
   }, []);
 
@@ -127,36 +131,46 @@ export default function OffProducts({ discountedProducts }) {
           </div>
         </div>
       </div>
-
-      <div className="glide pr-5 lg:pr-12" ref={glideRef}>
-        <div className="glide__track" data-glide-el="track">
-          <ul className="glide__slides">
-            {products.map((product, index) => (
-              <li key={product.id} className="glide__slide">
-                <ProductItemOff
-                  id={product.id}
-                  img={
-                    product.images &&
-                    product.images.length > 0 &&
-                    product.images[index]?.src
-                      ? product.images[index].src
-                      : "/img/product-off-1.png"
-                  }
-                  title={product.title}
-                  finalPrice={product.latestPrice}
-                  price={Math.round(
-                    product.latestPrice / (1 - product.discount / 100)
-                  )}
-                  offPercent={product.discount}
-                  isMore={false}
-                  colors={product.ProductColor.map((item) => item.color)}
-                  favorites={product.Favorite}
-                />
-              </li>
-            ))}
-          </ul>
+      {isLoading ? (
+        <>
+          <div className="flex flex-col justify-center items-center h-[60vh]">
+            <HashLoader color="#b19276" size={80} />
+            <p className="mt-5 text-xl font-extrabold text-cognac-shade-3 animate-pulse">
+              loading...
+            </p>
+          </div>
+        </>
+      ) : (
+        <div className="glide pr-5 lg:pr-12" ref={glideRef}>
+          <div className="glide__track" data-glide-el="track">
+            <ul className="glide__slides">
+              {products.map((product, index) => (
+                <li key={product.id} className="glide__slide">
+                  <ProductItemOff
+                    id={product.id}
+                    img={
+                      product.images &&
+                      product.images.length > 0 &&
+                      product.images[index]?.src
+                        ? product.images[index].src
+                        : "/img/product-off-1.png"
+                    }
+                    title={product.title}
+                    finalPrice={product.latestPrice}
+                    price={Math.round(
+                      product.latestPrice / (1 - product.discount / 100)
+                    )}
+                    offPercent={product.discount}
+                    isMore={false}
+                    colors={product.ProductColor.map((item) => item.color)}
+                    favorites={product.Favorite}
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-      </div>
+      )}
     </section>
   );
 }

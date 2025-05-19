@@ -55,7 +55,7 @@ export default function ProductItemOff({
           )}
           {colors.map((color) => (
             <div
-              key={color}
+              key={color + Math.random()}
               style={{ backgroundColor: color }}
               className={`w-5 h-5 rounded-sm
                 `}

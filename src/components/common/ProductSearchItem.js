@@ -81,7 +81,7 @@ export default function ProductSearchItem({
             {colors.map((color) => (
               <div
                 style={{ backgroundColor: color }}
-                key={color}
+                key={color + Math.random()}
                 className={`w-5 h-5 rounded-sm`}
               ></div>
             ))}

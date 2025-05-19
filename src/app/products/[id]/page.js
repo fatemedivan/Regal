@@ -11,7 +11,7 @@ import { useBasketContext } from "@/context/BasketContext";
 
 export default function Page() {
   const sizes = ["XS", "S", "M", "L", "XL", "2XL"];
-  const router = useRouter()
+  const router = useRouter();
   const glideRef = useRef(null);
   const prevbtnRef = useRef(null);
   const nextbtnRef = useRef(null);
@@ -20,6 +20,8 @@ export default function Page() {
   const { id } = useParams();
   const [product, setProduct] = useState({});
   const [currentImgSrc, setCurrentImgSrc] = useState("");
+  const [categoryId, setCategoryId] = useState("");
+  const [similarProducts, setSimilarProducts] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
   const [isExistProduct, setIsExistProduct] = useState(true);
   const { addToCart } = useBasketContext();
@@ -43,6 +45,7 @@ export default function Page() {
       if (res.ok) {
         const data = await res.json();
         setProduct(data);
+        setCategoryId(data.categoryId);
         setCurrentImgSrc(data?.images?.[0]?.src);
         setIsExistProduct(true);
         console.log(data);
@@ -57,6 +60,20 @@ export default function Page() {
     };
     getProduct();
   }, [token]);
+
+  useEffect(() => {
+    const getSimilarProducts = async () => {
+      const res = await fetch(`${baseUrl}/products?categoryId=${categoryId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setSimilarProducts(data.products);
+        console.log("similar", data);
+      }
+    };
+    getSimilarProducts();
+  }, [categoryId, token]);
 
   //handle sliders
   useEffect(() => {
@@ -110,7 +127,7 @@ export default function Page() {
         glide.destroy();
       };
     }
-  }, []);
+  }, [similarProducts]);
 
   const likeProduct = async (id) => {
     if (!token) {
@@ -464,46 +481,22 @@ export default function Page() {
               <div className="glide" ref={glideRef}>
                 <div className="glide__track" data-glide-el="track">
                   <ul className="glide__slides scroll-smooth">
-                    <li className="glide__slide">
-                      <ProductItemOff
-                        img={"/img/product-off-1.png"}
-                        title={"لباس میدی رایا"}
-                        finalPrice={"۳,۵۰۲,۰۰۰"}
-                        isMore={false}
-                        colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
-                        id={1}
-                      />
-                    </li>
-                    <li className="glide__slide">
-                      <ProductItemOff
-                        img={"/img/product-off-2.png"}
-                        title={"لباس میدی فیال"}
-                        finalPrice={"۵,۰۲۲,۰۰۰"}
-                        isMore={false}
-                        colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
-                        id={2}
-                      />
-                    </li>
-                    <li className="glide__slide">
-                      <ProductItemOff
-                        img={"/img/product-off-3.png"}
-                        title={"لباس میدی مدرن مارال"}
-                        finalPrice={"۳,۸۶۴,۰۰۰"}
-                        isMore={false}
-                        colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
-                        id={3}
-                      />
-                    </li>
-                    <li className="glide__slide">
-                      <ProductItemOff
-                        img={"/img/product-off-4.png"}
-                        title={"لباس میدی تک شانه نولا"}
-                        finalPrice={"۳,۲۳۰,۰۰۰"}
-                        isMore={false}
-                        colors={["#97AAB4", "#94999F", "#C2B1A5", "#F1AB90"]}
-                        id={4}
-                      />
-                    </li>
+                    {similarProducts &&
+                      similarProducts.map((product) => (
+                        <li className="glide__slide">
+                          <ProductItemOff
+                            key={product.id}
+                            img={"/img/product-off-1.png"}
+                            title={product.title}
+                            finalPrice={product.latestPrice}
+                            isMore={false}
+                            colors={product.ProductColor.map(
+                              (item) => item.color
+                            )}
+                            id={product.id}
+                          />
+                        </li>
+                      ))}
                   </ul>
                 </div>
               </div>

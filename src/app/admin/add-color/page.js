@@ -36,6 +36,7 @@ export default function Page() {
         setTimeout(() => {
             router.push('/admin/products')
         }, 2500);
+        sessionStorage.removeItem('productId')
       }
     } catch (error) {
       toast.error("خطایی رخ داد");

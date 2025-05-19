@@ -45,30 +45,30 @@ export default function SideBar() {
 
   return (
     <div>
-      <div
-        className={`h-full right-0 top-0 fixed bg-cognac-primery text-white w-45`}
-      >
+      <div className="h-full right-0 top-0 fixed bg-cognac-primery text-white w-45">
         <div className="flex items-center justify-between p-2 border-b-1 border-white-50">
-          <h1>به داشبورد خوش امدید</h1>
+          <h1>به داشبورد خوش آمدید</h1>
         </div>
-        <div className="pt-6">
+        <ul className="pt-6">
           {menuItems.map((item) => {
             const isActive = pathname === item.href;
 
             return (
-              <Link href={item.href} key={item.href}>
-                <div
-                  className={`flex gap-2 items-center text-xl p-3 w-full cursor-pointer transition-colors ${
-                    isActive && "bg-cognac-tint-6"
-                  }`}
-                >
-                  {item.icon}
-                  {item.label}
-                </div>
-              </Link>
+              <li key={item.href} className="w-full">
+                <Link href={item.href} className="block w-full">
+                  <div
+                    className={`flex gap-2 items-center text-xl p-3 w-full cursor-pointer transition-colors ${
+                      isActive && "bg-cognac-tint-6"
+                    }`}
+                  >
+                    {item.icon}
+                    {item.label}
+                  </div>
+                </Link>
+              </li>
             );
           })}
-        </div>
+        </ul>
       </div>
     </div>
   );

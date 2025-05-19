@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ErrBox from "./Errorbox";
 import ActionModal from "./ActionModal";
 import DetailsModal from "./DetailsModal";
 import EditModal from "./EditModal";
+import { useScrollLockContext } from "@/context/ScrollLockContext";
 
 export default function ProductsTable({ products }) {
   const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
@@ -12,28 +13,28 @@ export default function ProductsTable({ products }) {
   const [mainProductInfo, setMainProductInfo] = useState({});
   const [newTitle, setNewTitle] = useState("");
   const [newPrice, setNewPrice] = useState("");
-  const [newCount, setNewCount] = useState("");
-  const [newImg, setNewImg] = useState("");
-  const [newPopularity, setNewPopularity] = useState("");
-  const [newSale, setNewSale] = useState("");
+  const [newDesc, setNewDesc] = useState("");
+  const [newDiscount, setNewDiscount] = useState("");
+  const [newCategoryId, setNewCategoryId] = useState("");
+  const [newImg, setNewImg] = useState([]);
+  const [newSize, setNewSize] = useState("");
   const [newColors, setNewColors] = useState("");
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  console.log(isShowDeleteModal);
-  console.log(isShowDetailsModal);
-  console.log(isShowEditModal);
+  const {openModal, closeModal} = useScrollLockContext()
   
 
   const deleteModalCancel = () => {
     setIsShowDeleteModal(false);
+    closeModal()
   };
 
   const closeDeailsModal = () => {
     setIsShowDetailsModal(false);
+    closeModal()
   };
 
   return (
     <div>
-      <h1 className="text-3xl mb-3 mt-10">لیست محصولات</h1>
+      <h1 className="text-3xl mb-3 mt-10 mr-50">لیست محصولات</h1>
       {/* mobile and tablet design */}
       {products && products.length ? (
         <div className="space-y-4 lg:hidden mr-50 flex flex-wrap gap-2 justify-center items-center mb-5">
@@ -60,6 +61,7 @@ export default function ProductsTable({ products }) {
                 <button
                   onClick={() => {
                     setIsShowDeleteModal(true);
+                    openModal()
                     setProductId(product.id);
                     setMainProductInfo(product);
                   }}
@@ -70,14 +72,16 @@ export default function ProductsTable({ products }) {
                 <button
                   onClick={() => {
                     setIsShowEditModal(true);
+                    openModal()
                     setProductId(product.id);
                     setNewTitle(product.title);
-                    setNewPrice(product.latestPrice);
-                    setNewCount(product.count);
+                    setNewPrice(product.price);
+                    setNewDiscount(product.discount);
+                    setNewCategoryId(product.categoryId);
                     setNewImg(product.img);
-                    setNewPopularity(product.popularity);
+                    setNewSize(product.size);
                     setNewColors(product.colors);
-                    setNewSale(product.sale);
+                    setNewDesc(product.desc);
                   }}
                   className="bg-cognac-primery rounded-xl p-3 text-white mx-1 cursor-pointer"
                 >
@@ -86,6 +90,7 @@ export default function ProductsTable({ products }) {
                 <button
                   onClick={() => {
                     setIsShowDetailsModal(true);
+                    openModal()
                     setMainProductInfo(product);
                   }}
                   className="bg-cognac-primery rounded-xl p-3 text-white mx-1 cursor-pointer"
@@ -106,7 +111,7 @@ export default function ProductsTable({ products }) {
         <div className="lg:flex lg:items-center lg:justify-center">
           {products && products.length ? (
             <div className="rounded-lg p-5 mt-3 bg-white flex justify-center items-center mr-50">
-              <table >
+              <table>
                 <thead>
                   <tr>
                     <th className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
@@ -141,6 +146,7 @@ export default function ProductsTable({ products }) {
                         <button
                           onClick={() => {
                             setIsShowDeleteModal(true);
+                            openModal()
                             setProductId(product.id);
                             setMainProductInfo(product);
                           }}
@@ -151,14 +157,16 @@ export default function ProductsTable({ products }) {
                         <button
                           onClick={() => {
                             setIsShowEditModal(true);
+                            openModal()
                             setProductId(product.id);
                             setNewTitle(product.title);
                             setNewPrice(product.price);
-                            setNewCount(product.count);
+                            setNewDiscount(product.discount);
+                            setNewCategoryId(product.categoryId);
                             setNewImg(product.img);
-                            setNewPopularity(product.popularity);
+                            setNewSize(product.size);
                             setNewColors(product.colors);
-                            setNewSale(product.sale);
+                            setNewDesc(product.desc);
                           }}
                           className="bg-cognac-primery rounded-xl p-3 text-white mx-3 cursor-pointer"
                         >
@@ -167,6 +175,7 @@ export default function ProductsTable({ products }) {
                         <button
                           onClick={() => {
                             setIsShowDetailsModal(true);
+                            openModal()
                             setMainProductInfo(product);
                           }}
                           className="bg-cognac-primery rounded-xl p-3 text-white mx-3 cursor-pointer"
@@ -194,29 +203,33 @@ export default function ProductsTable({ products }) {
       )}
       {isShowDetailsModal && (
         <DetailsModal onClose={closeDeailsModal}>
-            <div className="flex justify-center items-center">
-
-          <table>
-            <thead>
-              <tr>
-                <th className="px-5 py-3">اسم</th>
-                <th className="px-5 py-3">رنگ بندی</th>
-                <th className="px-5 py-3">محبوبیت</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="px-5">{mainProductInfo.title}</td>
-                <td className="px-5">{mainProductInfo.colors}</td>
-                <td className="px-5">{mainProductInfo.popularity}</td>
-              </tr>
-            </tbody>
-          </table>
-            </div>
+          <div className="flex justify-center items-center">
+            <table>
+              <thead>
+                <tr>
+                  <th className="px-5 py-3">اسم</th>
+                  <th className="px-5 py-3">رنگ بندی</th>
+                  <th className="px-5 py-3">سایز یندی</th>
+                  <th className="px-5 py-3">تخفیف</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="px-5">{mainProductInfo.title}</td>
+                  <td className="px-5">{mainProductInfo.color}</td>
+                  <td className="px-5">{mainProductInfo.size}</td>
+                  <td className="px-5">{mainProductInfo.discount}%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </DetailsModal>
       )}
       {isShowEditModal && (
-        <EditModal onSubmit={()=> setIsShowEditModal(false)}>
+        <EditModal onSubmit={() => {
+          setIsShowEditModal(false)
+          closeModal()
+        }}>
           <div>
             <div className="py-3 pl-6 pr-3 rounded-xl mb-3 text-black bg-cognac-tint-4">
               <input
@@ -240,45 +253,53 @@ export default function ProductsTable({ products }) {
               <input
                 className="outline-none"
                 type="text"
-                placeholder="عکس جدید را وارد کنید"
-                value={newImg}
-                onChange={(e) => setNewImg(e.target.value)}
+                placeholder="تخفیف جدید را وارد کنید"
+                value={newDiscount}
+                onChange={(e) => setNewDiscount(e.target.value)}
               />
             </div>
             <div className="py-3 pl-6 pr-3 rounded-xl mb-3 text-black bg-cognac-tint-4">
               <input
-                className="outline-none"
+                className="outline-none w-full"
                 type="text"
-                placeholder="موجودی جدید را وارد کنید"
-                value={newCount}
-                onChange={(e) => setNewCount(e.target.value)}
+                placeholder=" شماره دسته بندی جدید را بنویسید"
+                value={newCategoryId}
+                onChange={(e) => setNewCategoryId(e.target.value)}
               />
             </div>
             <div className="py-3 pl-6 pr-3 rounded-xl mb-3 text-black bg-cognac-tint-4">
               <input
-                className="outline-none"
+                className="outline-none w-full"
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={(e) => setNewImg([...e.target.files])}
+              />
+            </div>
+            <div className="py-3 pl-6 pr-3 rounded-xl mb-3 text-black bg-cognac-tint-4">
+              <input
+                className="outline-none w-full"
+                type="text"
+                placeholder="سایز یندی جدید را وارد کنید"
+                value={newSize}
+                onChange={(e) => setNewSize(e.target.value)}
+              />
+            </div>
+            <div className="py-3 pl-6 pr-3 rounded-xl mb-3  text-black bg-cognac-tint-4">
+              <input
+                className="outline-none w-full"
                 type="text"
                 placeholder="رنگ بندی جدید را وارد کنید"
                 value={newColors}
                 onChange={(e) => setNewColors(e.target.value)}
               />
             </div>
-            <div className="py-3 pl-6 pr-3 rounded-xl mb-3 text-black bg-cognac-tint-4">
-              <input
-                className="outline-none"
-                type="text"
-                placeholder="میزان محبوبیت جدید را وارد کنید"
-                value={newPopularity}
-                onChange={(e) => setNewPopularity(e.target.value)}
-              />
-            </div>
             <div className="py-3 pl-6 pr-3 rounded-xl mb-3  text-black bg-cognac-tint-4">
-              <input
-                className="outline-none"
-                type="text"
-                placeholder="میزان فروش جدید را وارد کنید"
-                value={newSale}
-                onChange={(e) => setNewSale(e.target.value)}
+              <textarea
+                className="outline-none w-full resize-none"
+                placeholder="توضیحات جدید را بنویسید"
+                value={newDesc}
+                onChange={(e) => setNewDesc(e.target.value)}
               />
             </div>
           </div>

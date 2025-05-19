@@ -2,7 +2,6 @@
 import React from "react";
 import { MdProductionQuantityLimits } from "react-icons/md";
 import { FiUsers } from "react-icons/fi";
-import { MdOutlineLocalOffer } from "react-icons/md";
 import { MdOutlineCategory } from "react-icons/md";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -22,7 +21,6 @@ export default function SideBar() {
       label: "سفارشات",
       icon: <MdProductionQuantityLimits />,
     },
-    { href: "/admin/offs", label: "تخفیف ها", icon: <MdOutlineLocalOffer /> },
   ];
 
   return (

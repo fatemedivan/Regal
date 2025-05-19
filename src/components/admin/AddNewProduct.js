@@ -12,43 +12,67 @@ export default function AddNewProduct() {
   const [newColors, setNewColors] = useState("");
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-
   const addProduct = async () => {
-  if (!newImg || newImg.length < 2 || newImg.length > 5) {
-    toast.warning("تعداد فایل‌ها باید بین ۲ تا ۵ عدد باشد.");
-    return;
-  }
+    if (!newImg || newImg.length < 2 || newImg.length > 5) {
+      toast.warning("تعداد فایل‌ها باید بین ۲ تا ۵ عدد باشد.");
+      return;
+    }
 
-  const formData = new FormData();
-  formData.append("title", newTitle);
-  formData.append("discount", newDiscount);
-  formData.append("description", newDesc);
-  formData.append("categoryId", newCategoryId);
+    const formData = new FormData();
+    formData.append("title", newTitle);
+    formData.append("discount", newDiscount);
+    formData.append("description", newDesc);
+    formData.append("categoryId", newCategoryId);
 
-  newImg.forEach((file) => {
-    formData.append("files", file); 
-  });
-
-  try {
-    const res = await fetch(`${baseUrl}/admin/products`, {
-      method: "POST",
-      body: formData,
+    newImg.forEach((file) => {
+      formData.append("files", file);
     });
 
-    const result = await res.json();
+    try {
+      const res = await fetch(`${baseUrl}/admin/products`, {
+        method: "POST",
+        body: formData,
+      });
 
-    if (!res.ok) {
-      console.error("Error response:", result);
-      toast.error('ناموفق');
-    } else {
-      toast.success("محصول با موفقیت اضافه شد!");
+      const result = await res.json();
+
+      if (!res.ok) {
+        console.error("Error response:", result);
+        toast.error("ناموفق");
+      } else {
+        toast.success("محصول با موفقیت اضافه شد!");
+      }
+    } catch (err) {
+      console.error("Error:", err);
+      toast.error("خطا در ارسال اطلاعات");
     }
-  } catch (err) {
-    console.error("Error:", err);
-    toast.error("خطا در ارسال اطلاعات");
-  }
-};
+  };
 
+  // const addsize = async () => {
+  //   const res = await fetch(`${baseUrl}/products-size`, {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify({
+  //       size: "XS",
+  //       stockQuantity: 1,
+  //       price: 100000,
+  //       productColorId: 1,
+  //     }),
+  //   });
+  //   console.log(res);
+  // };
+
+  // const addColor = async () => {
+  //   const res = await fetch(`${baseUrl}/products-color`, {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify({
+  //       color: newColors,
+  //       productId: 1,
+  //     }),
+  //   });
+  //   console.log(res);
+  // };
 
   return (
     <div className="mt-10 mr-50 ml-10">
@@ -135,7 +159,7 @@ export default function AddNewProduct() {
           <button
             type="button"
             onClick={() => addProduct()}
-            className="bg-cognac-primery rounded-xl p-3 text-white mt-3"
+            className="bg-cognac-primery rounded-xl p-3 text-white mt-3 cursor-pointer"
           >
             ثبت محصول
           </button>

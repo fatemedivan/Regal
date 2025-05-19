@@ -53,7 +53,7 @@ export default function Page() {
     if (token) {
       getFavoriteProducts();
     }
-  }, [token]);
+  }, [token,getFavoriteProducts]);
 
   const disLikeProduct = async (id) => {
     try {

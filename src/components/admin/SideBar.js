@@ -54,6 +54,7 @@ export default function SideBar() {
             return (
               <Link href={item.href} key={item.href}>
                 <li
+                key={item.href}
                   className={`flex gap-2 items-center text-xl p-3 w-full cursor-pointer transition-colors ${
                     isActive && "bg-cognac-tint-6"
                   }`}

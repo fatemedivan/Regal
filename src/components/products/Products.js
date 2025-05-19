@@ -20,6 +20,7 @@ export default function Products({ allProducts, totalProductsPages }) {
   const [selectedOption, setSelectedOption] = useState({});
   const [currentPage, setCurrentPage] = useState(pageParam);
   const [searchValue, setSearchValue] = useState("");
+  const [products, setProducts] = useState(allProducts || [])
 
   const sortOptions = [
     { id: 1, title: "جدیدترین", value: "earliest" },
@@ -28,7 +29,6 @@ export default function Products({ allProducts, totalProductsPages }) {
     { id: 4, title: "گران‌ترین", value: "expensive" },
   ];
 
-  const products = allProducts || [];
   const totalPages = totalProductsPages || 1;
   const notFound = products.length === 0;
 
@@ -73,6 +73,7 @@ export default function Products({ allProducts, totalProductsPages }) {
                 setIsOpenFilterMenu(false);
                 closeModal();
               }}
+              setProducts={setProducts}
             />
           </div>
         )}
@@ -174,7 +175,7 @@ export default function Products({ allProducts, totalProductsPages }) {
                   فیلترها
                 </h5>
                 <div>
-                  <FilterMenu />
+                  <FilterMenu setProducts={setProducts}/>
                 </div>
               </div>
               <div>

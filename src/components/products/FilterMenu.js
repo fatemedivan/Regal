@@ -2,15 +2,16 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
-export default function FilterMenuMobile({ handleCloseFilter }) {
+export default function FilterMenuMobile({ handleCloseFilter, setProducts }) {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const [isOpenPriceFilter, setIsOpenPriceFilter] = useState(false);
-  const [minPrice, setMinPrice] = useState(1000000);
-  const [maxPrice, setMaxPrice] = useState(5000000);
+  const [minPrice, setMinPrice] = useState(100000);
+  const [maxPrice, setMaxPrice] = useState(250000);
   const [filters, setFilters] = useState([
     {
       id: 1,
       title: "نوع لباس",
-      options: ["لباس مجلسی", "پیراهن کوتاه", "کت و شلوار", "شومیز", "شلوار"],
+      options: ["پیراهن کوتاه", "کت و شلوار", "شومیز", "شلوار"],
       isOpen: false,
       type: "clothes",
     },
@@ -18,22 +19,15 @@ export default function FilterMenuMobile({ handleCloseFilter }) {
       id: 2,
       title: "رنگ‌بندی",
       options: [
-        "#E6E6E6",
-        "#94999F",
-        "#C2B1A5",
-        "#F1AB90",
-        "#997979",
-        "#6A6A6A",
-        "#7E1F6D",
-        "#33562F",
-        "#CB927C",
-        "#69101C",
-        "#DAA37F",
-        "#C0916F",
-        "#988FAB",
-        "#E67B79",
-        "#5AAAB8",
-        "rgba(138,33,32,0.46)",
+        "red",
+        "blue",
+        "green",
+        "black",
+        "white",
+        "gray",
+        "pink",
+        "purple",
+        "yellow",
       ],
       isOpen: false,
       type: "color",
@@ -45,30 +39,59 @@ export default function FilterMenuMobile({ handleCloseFilter }) {
       isOpen: false,
       type: "size",
     },
-    {
-      id: 4,
-      title: "جنس پارچه",
-      options: ["پنبه", "ساتن", "مخمل", "لینن", "گیپور"],
-      isOpen: false,
-      type: "fabric",
-    },
-    {
-      id: 5,
-      title: "فرم بدن",
-      options: ["ساعت شنی", "گلابی", "سیب", "مستطیل", "مثلث وارونه"],
-      isOpen: false,
-      type: "shape",
-    },
-    {
-      id: 6,
-      title: "طرح لباس",
-      options: ["ساده", "گل‌دار", "راه‌راه", "طرح‌دار", "براق", "مات"],
-      isOpen: false,
-      type: "design",
-    },
   ]);
 
   const [selectedFilters, setSelectedFilters] = useState([]);
+  console.log(selectedFilters);
+
+  useEffect(() => {
+    
+    const queryParams = [];
+    let url = `${baseUrl}/products`;
+
+    const applyFilters = async () => {
+      selectedFilters.forEach((filter) => {
+        if (filter.filterTitle === "سایزبندی") {
+          queryParams.push(`size=${filter.option}`);
+        } else if (filter.filterTitle === "رنگ‌بندی") {
+          queryParams.push(`color=${filter.option}`);
+        } else if (filter.filterTitle === "قیمت") {
+          queryParams.push(
+            `minPrice=${filter.option.min}&maxPrice=${filter.option.max}`
+          );
+        } else if (filter.filterTitle === "نوع لباس") {
+          if (filter.option === "پیراهن کوتاه") {
+            queryParams.push(`categoryId=1`);
+          }
+          if (filter.option === "کت و شلوار") {
+            queryParams.push("categoryId=2");
+          }
+          if (filter.option === "شومیز") {
+            queryParams.push("categoryId=3");
+          }
+          if (filter.option === "شلوار") {
+            queryParams.push("categoryId=4");
+          }
+        }
+      });
+
+      if (queryParams.length > 0) {
+        url += `?${queryParams.join("&")}`;
+      }
+
+      const res = await fetch(url);
+      console.log("filter res", res);
+      if (res.ok) {
+        const data = await res.json();
+        setProducts(data.products);
+        console.log("filter data", data);
+      }
+      if (res.status === 404) {
+        setProducts([]);
+      }
+    };
+    applyFilters();
+  }, [selectedFilters]);
 
   const toggleFilter = (id) => {
     setFilters((prev) =>
@@ -106,7 +129,7 @@ export default function FilterMenuMobile({ handleCloseFilter }) {
 
   //AI
   useEffect(() => {
-    const isPriceChanged = minPrice !== 1000000 || maxPrice !== 5000000;
+    const isPriceChanged = minPrice !== 100000 || maxPrice !== 250000;
 
     setSelectedFilters((prev) => {
       const withoutPrice = prev.filter((item) => item.type !== "price");
@@ -131,8 +154,8 @@ export default function FilterMenuMobile({ handleCloseFilter }) {
       )
     );
 
-    setMinPrice(1000000);
-    setMaxPrice(5000000);
+    setMinPrice(100000);
+    setMaxPrice(250000);
   };
 
   return (
@@ -313,9 +336,9 @@ export default function FilterMenuMobile({ handleCloseFilter }) {
 
                 <input
                   type="range"
-                  min={500000}
-                  max={5000000}
-                  step={500000}
+                  min={100000}
+                  max={250000}
+                  step={10000}
                   value={minPrice}
                   onChange={(e) => setMinPrice(Number(e.target.value))}
                   className="absolute bottom-2.5 w-full h-0.5 bg-transparent appearance-none"
@@ -323,9 +346,9 @@ export default function FilterMenuMobile({ handleCloseFilter }) {
 
                 <input
                   type="range"
-                  min={500000}
-                  max={5000000}
-                  step={500000}
+                  min={100000}
+                  max={250000}
+                  step={10000}
                   value={maxPrice}
                   onChange={(e) => {
                     setMaxPrice(Number(e.target.value));

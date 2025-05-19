@@ -70,18 +70,18 @@ export default function Page() {
   };
 
   const deleteCart = async () => {
-    if(!token) return
+    if (!token) return;
     try {
       const res = await fetch(`${baseUrl}/cart`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
       console.log(res);
-      
+
       if (res.ok) {
-        getCart()
-        toast.success('با موفقیت حذف شد')
-      }else{
+        getCart();
+        toast.success("با موفقیت حذف شد");
+      } else {
         toast.error("ناموفق");
       }
     } catch (error) {
@@ -94,9 +94,9 @@ export default function Page() {
     closeModal();
   };
   const handleDeleteBasket = () => {
-    deleteCart()
-    console.log('deleted');
-    closeModal()
+    deleteCart();
+    console.log("deleted");
+    closeModal();
     setIsOpenDeleteModal(false);
   };
   const { openModal, closeModal } = useScrollLockContext();
@@ -163,7 +163,7 @@ export default function Page() {
             {cart &&
               cart.map((item) => (
                 <div
-                  key={item.id}
+                  key={`${item.id}-${item.Entity.size}-${item.Entity.productColor.color}`}
                   className="flex items-center gap-2 border-b border-neutral-gray-4 pb-4 mb-4"
                 >
                   <Image

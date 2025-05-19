@@ -30,7 +30,11 @@ export default function SideBar() {
       label: "افزودن رنگ",
       icon: <IoMdAddCircleOutline />,
     },
-    { href: "/admin/categories", label: "دسته بندی ها", icon: <MdOutlineCategory /> },
+    {
+      href: "/admin/categories",
+      label: "دسته بندی ها",
+      icon: <MdOutlineCategory />,
+    },
     { href: "/admin/users", label: "کاربران", icon: <FiUsers /> },
     {
       href: "/admin/orders",
@@ -47,25 +51,24 @@ export default function SideBar() {
         <div className="flex items-center justify-between p-2 border-b-1 border-white-50">
           <h1>به داشبورد خوش امدید</h1>
         </div>
-        <ul className="pt-6">
+        <div className="pt-6">
           {menuItems.map((item) => {
             const isActive = pathname === item.href;
 
             return (
               <Link href={item.href} key={item.href}>
-                <li
-                key={item.href}
+                <div
                   className={`flex gap-2 items-center text-xl p-3 w-full cursor-pointer transition-colors ${
                     isActive && "bg-cognac-tint-6"
                   }`}
                 >
                   {item.icon}
                   {item.label}
-                </li>
+                </div>
               </Link>
             );
           })}
-        </ul>
+        </div>
       </div>
     </div>
   );

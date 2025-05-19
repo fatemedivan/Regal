@@ -78,9 +78,9 @@ export default function ProductItemOff({
                   ۲+
                 </div>
               )}
-              {colors.map((color) => (
+              {colors.map((color, index) => (
                 <div
-                key={(color + Math.random())}
+                  key={`${color}-${index}`}
                   style={{ backgroundColor: color }}
                   className={`w-5 h-5 rounded-sm`}
                 ></div>
@@ -88,7 +88,7 @@ export default function ProductItemOff({
             </div>
           </div>
           <div className="flex items-center gap-2 text-black lg:justify-start">
-            {(price && finalPrice) && offPercent !== 0 && (
+            {price && finalPrice && offPercent !== 0 && (
               <p className="text-neutral-gray-8 text-xs leading-4.5 lg:text-sm lg:leading-4.5 lg:line-through">
                 {price}
               </p>

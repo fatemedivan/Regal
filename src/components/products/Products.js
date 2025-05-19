@@ -20,7 +20,7 @@ export default function Products({ allProducts, totalProductsPages }) {
   const [selectedOption, setSelectedOption] = useState({});
   const [currentPage, setCurrentPage] = useState(pageParam);
   const [searchValue, setSearchValue] = useState("");
-  const [products, setProducts] = useState(allProducts || [])
+  const [products, setProducts] = useState(allProducts || []);
 
   const sortOptions = [
     { id: 1, title: "جدیدترین", value: "earliest" },
@@ -155,8 +155,8 @@ export default function Products({ allProducts, totalProductsPages }) {
               {products.length > 0 &&
                 products.map((product) => (
                   <ProductItemOff
-                    id={product.id}
                     key={product.id}
+                    id={product.id}
                     img={"/img/category-page-2.png"}
                     offPercent={product.discount}
                     title={product.title}
@@ -175,7 +175,7 @@ export default function Products({ allProducts, totalProductsPages }) {
                   فیلترها
                 </h5>
                 <div>
-                  <FilterMenu setProducts={setProducts}/>
+                  <FilterMenu setProducts={setProducts} />
                 </div>
               </div>
               <div>
@@ -248,8 +248,8 @@ export default function Products({ allProducts, totalProductsPages }) {
                   {products.length > 0 &&
                     products.map((product) => (
                       <ProductItemOff
-                        id={product.id}
                         key={product.id}
+                        id={product.id}
                         img={"/img/category-page-2.png"}
                         offPercent={product.discount}
                         title={product.title}

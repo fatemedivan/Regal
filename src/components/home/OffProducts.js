@@ -15,11 +15,11 @@ export default function OffProducts({ discountedProducts }) {
 
   useEffect(() => {
     setIsLoading(true);
-    if (discountedProducts) {
+    if (discountedProducts.length) {
       setProducts(discountedProducts);
       setIsLoading(false);
     }
-  }, []);
+  }, [discountedProducts]);
 
   useEffect(() => {
     if (glideRef.current) {

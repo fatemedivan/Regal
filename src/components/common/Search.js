@@ -30,11 +30,18 @@ export default function Search({ handleCloseSearch }) {
   }, []);
 
   useEffect(() => {
-    if (!token) return;
+    const headers = token
+    ? {
+        Authorization: `Bearer ${token}`,
+      }
+    : {};
+
     const getPopularProducts = async () => {
       try {
         setIsLoading(true);
-        const res = await fetch(`${baseUrl}/products/popular`);
+        const res = await fetch(`${baseUrl}/products/popular`,{
+          headers : headers
+        });
         if (res.ok) {
           const data = await res.json();
           setPopularProducts(data);

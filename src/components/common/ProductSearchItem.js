@@ -11,11 +11,11 @@ export default function ProductSearchItem({
   isMore,
   colors,
   favorites,
-  handleCloseSearch
+  handleCloseSearch,
 }) {
   return (
     <div className="min-w-41.75 lg:max-w-51 relative">
-      <Link href={`/products/${id}`} onClick={()=>handleCloseSearch()}>
+      <Link href={`/products/${id}`} onClick={() => handleCloseSearch()}>
         <div
           className={`w-41.75 h-60 lg:w-50.5 lg:h-71 relative object-cover group`}
         >
@@ -78,10 +78,10 @@ export default function ProductSearchItem({
                 isMore && "hidden"
               }`}
             ></div>
-            {colors.map((color) => (
+            {colors.map((color, index) => (
               <div
                 style={{ backgroundColor: color }}
-                key={color + Math.random()}
+                key={`${color}-${index}`}
                 className={`w-5 h-5 rounded-sm`}
               ></div>
             ))}

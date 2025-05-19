@@ -21,13 +21,15 @@ export default async function Home() {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
   let discountedProducts = [];
+  const headers = token
+    ? {
+        Authorization: `Bearer ${token}`,
+      }
+    : {};
 
-  if (token) {
     try {
       const res = await fetch(`${baseUrl}/products/discounted`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers : headers,
         cache: "no-store",
       });
 
@@ -35,7 +37,7 @@ export default async function Home() {
     } catch (error) {
       console.log(error);
     }
-  }
+  
 
   return (
     <>

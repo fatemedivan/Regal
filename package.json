@@ -11,16 +11,13 @@
   "dependencies": {
     "@glidejs/glide": "^3.7.1",
     "jalali-moment": "^3.3.11",
-    "keen-slider": "^6.8.6",
     "leaflet": "^1.9.4",
     "next": "15.3.1",
-    "nprogress": "^0.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
     "react-spinners": "^0.17.0",
-    "react-toastify": "^11.0.5",
-    "swiper": "^11.2.6"
+    "react-toastify": "^11.0.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

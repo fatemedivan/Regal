@@ -12,6 +12,11 @@ export default async function Page({ searchParams }) {
 
   let products = [];
   let totalPages = null;
+  const headers = token
+    ? {
+        Authorization: `Bearer ${token}`,
+      }
+    : {};
 
   try {
     let url = `${baseUrl}/products?page=${currentPage}`;
@@ -20,7 +25,7 @@ export default async function Page({ searchParams }) {
     if (orderBy) url += `&orderBy=${orderBy}`;
 
     const res = await fetch(url, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: headers,
       cache: "no-store",
     });
     if (res.ok) {

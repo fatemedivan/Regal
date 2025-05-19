@@ -33,12 +33,17 @@ export default function Page() {
     }
   }, []);
 
+  const headers = token
+    ? {
+        Authorization: `Bearer ${token}`,
+      }
+    : {};
+
   //get product
   useEffect(() => {
-    if (!token) return;
     const getProduct = async () => {
       const res = await fetch(`${baseUrl}/products/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: headers,
       });
       console.log(res);
 
@@ -64,7 +69,7 @@ export default function Page() {
   useEffect(() => {
     const getSimilarProducts = async () => {
       const res = await fetch(`${baseUrl}/products?categoryId=${categoryId}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: headers,
       });
       if (res.ok) {
         const data = await res.json();
@@ -417,15 +422,7 @@ export default function Page() {
                     ))}
                   </div>
                 </div>
-                <div className="flex items-center gap-4">
-                  <button className="flex items-center gap-2 border border-cognac-primery rounded-lg px-4 py-3.25 xl:px-6 cursor-pointer">
-                    <img
-                      className="hidden lg:block"
-                      src="/img/check.svg"
-                      alt=""
-                    />
-                    <p className="text-5.5 text-cognac-primery">مقایسه محصول</p>
-                  </button>
+                <div>
                   <button
                     onClick={() => addToCart(product.id)}
                     className="flex items-center bg-cognac-primery gap-2 rounded-lg px-4 py-3.25 lg:px-10 xl:px-37 cursor-pointer"

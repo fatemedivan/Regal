@@ -1,5 +1,4 @@
 'use client'
-import AddNewProduct from '@/components/admin/AddNewProduct';
 import ProductsTable from '@/components/admin/ProductsTable';
 import React, { useEffect, useState } from 'react'
 
@@ -21,7 +20,6 @@ export default function Page() {
     },[])
   return (
     <div>
-        <AddNewProduct/>
         <ProductsTable products={products}/>
     </div>
   )

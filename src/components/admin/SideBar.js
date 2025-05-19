@@ -3,6 +3,7 @@ import React from "react";
 import { MdProductionQuantityLimits } from "react-icons/md";
 import { FiUsers } from "react-icons/fi";
 import { MdOutlineCategory } from "react-icons/md";
+import { IoMdAddCircleOutline } from "react-icons/io";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -13,6 +14,21 @@ export default function SideBar() {
       href: "/admin/products",
       label: "محصولات",
       icon: <MdProductionQuantityLimits />,
+    },
+    {
+      href: "/admin/add-product",
+      label: "افزودن محصول",
+      icon: <IoMdAddCircleOutline />,
+    },
+    {
+      href: "/admin/add-size",
+      label: "افزودن سایز",
+      icon: <IoMdAddCircleOutline />,
+    },
+    {
+      href: "/admin/add-color",
+      label: "افزودن رنگ",
+      icon: <IoMdAddCircleOutline />,
     },
     { href: "/admin/categories", label: "دسته بندی ها", icon: <MdOutlineCategory /> },
     { href: "/admin/users", label: "کاربران", icon: <FiUsers /> },
@@ -26,7 +42,7 @@ export default function SideBar() {
   return (
     <div>
       <div
-        className={`h-full right-0 top-0 fixed bg-cognac-primery text-white w-[180px] md:translate-x-0 md:fixed ${"translate-x-0"}`}
+        className={`h-full right-0 top-0 fixed bg-cognac-primery text-white w-45`}
       >
         <div className="flex items-center justify-between p-2 border-b-1 border-white-50">
           <h1>به داشبورد خوش امدید</h1>

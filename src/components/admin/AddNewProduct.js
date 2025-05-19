@@ -1,16 +1,16 @@
+"use client";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 
 export default function AddNewProduct() {
   const [newTitle, setNewTitle] = useState("");
-  const [newPrice, setNewPrice] = useState("");
   const [newDesc, setNewDesc] = useState("");
   const [newDiscount, setNewDiscount] = useState("");
   const [newCategoryId, setNewCategoryId] = useState("");
   const [newImg, setNewImg] = useState([]);
-  const [newSize, setNewSize] = useState("");
-  const [newColors, setNewColors] = useState("");
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const router = useRouter();
 
   const addProduct = async () => {
     if (!newImg || newImg.length < 2 || newImg.length > 5) {
@@ -35,44 +35,23 @@ export default function AddNewProduct() {
       });
 
       const result = await res.json();
+      console.log(res);
+      console.log(result);
 
       if (!res.ok) {
-        console.error("Error response:", result);
         toast.error("ناموفق");
       } else {
         toast.success("محصول با موفقیت اضافه شد!");
+        sessionStorage.setItem("productId", result.id);
+        setTimeout(() => {
+          router.push("/admin/add-size");
+        }, 2500);
       }
     } catch (err) {
       console.error("Error:", err);
       toast.error("خطا در ارسال اطلاعات");
     }
   };
-
-  // const addsize = async () => {
-  //   const res = await fetch(`${baseUrl}/products-size`, {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify({
-  //       size: "XS",
-  //       stockQuantity: 1,
-  //       price: 100000,
-  //       productColorId: 1,
-  //     }),
-  //   });
-  //   console.log(res);
-  // };
-
-  // const addColor = async () => {
-  //   const res = await fetch(`${baseUrl}/products-color`, {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify({
-  //       color: newColors,
-  //       productId: 1,
-  //     }),
-  //   });
-  //   console.log(res);
-  // };
 
   return (
     <div className="mt-10 mr-50 ml-10">
@@ -88,15 +67,6 @@ export default function AddNewProduct() {
               placeholder="اسم محصول را بنویسید"
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
-            />
-          </div>
-          <div className="w-full bg-cognac-tint-4 p-3 rounded-xl ">
-            <input
-              className="outline-none w-full"
-              type="text"
-              placeholder="قیمت محصول را بنویسید"
-              value={newPrice}
-              onChange={(e) => setNewPrice(e.target.value)}
             />
           </div>
 
@@ -126,24 +96,6 @@ export default function AddNewProduct() {
               multiple
               accept="image/*"
               onChange={(e) => setNewImg([...e.target.files])}
-            />
-          </div>
-          <div className="w-full bg-cognac-tint-4 p-3 rounded-xl">
-            <input
-              className="outline-none w-full"
-              type="text"
-              placeholder="سایز یندی محصول را وارد کنید"
-              value={newSize}
-              onChange={(e) => setNewSize(e.target.value)}
-            />
-          </div>
-          <div className="w-full bg-cognac-tint-4 p-3 rounded-xl">
-            <input
-              className="outline-none w-full"
-              type="text"
-              placeholder="رنگ بندی محصول را وارد کنید"
-              value={newColors}
-              onChange={(e) => setNewColors(e.target.value)}
             />
           </div>
           <div className="w-full bg-cognac-tint-4 p-3 rounded-xl">

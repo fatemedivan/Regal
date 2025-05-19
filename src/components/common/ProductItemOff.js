@@ -80,8 +80,8 @@ export default function ProductItemOff({
               )}
               {colors.map((color) => (
                 <div
+                key={(color+Math.random())}
                   style={{ backgroundColor: color }}
-                  key={(color+Math.random())}
                   className={`w-5 h-5 rounded-sm`}
                 ></div>
               ))}
@@ -95,7 +95,6 @@ export default function ProductItemOff({
             )}
 
             <p className="text-sm leading-6 lg:text-[1rem] lg:leading-7">
-              {" "}
               <span className="ml-1">{finalPrice}</span>تومان
             </p>
           </div>

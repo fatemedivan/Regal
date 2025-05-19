@@ -50,15 +50,15 @@ export default function SideBar() {
           <h1>به داشبورد خوش آمدید</h1>
         </div>
         <ul className="pt-6">
-          {menuItems.map((item) => {
+          {menuItems.map((item, index) => {
             const isActive = pathname === item.href;
 
             return (
-              <li key={item.href} className="w-full">
+              <li key={`menu-${index}`} className="w-full">
                 <Link href={item.href} className="block w-full">
                   <div
                     className={`flex gap-2 items-center text-xl p-3 w-full cursor-pointer transition-colors ${
-                      isActive && "bg-cognac-tint-6"
+                      isActive ? "bg-cognac-tint-6" : ""
                     }`}
                   >
                     {item.icon}

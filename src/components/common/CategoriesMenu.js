@@ -43,7 +43,7 @@ export default function CategoriesMenu({
       <div className="px-5 py-6 bg-white absolute w-full top-21.25 right-0 left-0 z-50">
         <ul className="text-neutral-gray-13 lg:hidden">
           {categoriesData &&
-            categoriesData.slice(0, 8).map((category) => (
+            categoriesData.filter(category => category.parentId === null).map((category) => (
               <div key={category.id}>
                 <li
                   onClick={() => handleToggle(category.id)}
@@ -97,7 +97,7 @@ export default function CategoriesMenu({
           <div>
             <div className="flex gap-7 mb-6">
               {categoriesData &&
-                categoriesData.slice(0, 4).map((category) => (
+                categoriesData.filter(category => category.parentId === null).map((category) => (
                   <ul key={category.id}>
                     <li
                       onClick={() => {
@@ -133,7 +133,7 @@ export default function CategoriesMenu({
             </div>
             <div className="flex gap-7">
               {categoriesData &&
-                categoriesData.slice(5, 9).map((category) => (
+                categoriesData.filter(category => category.parentId === null).map((category) => (
                   <ul key={category.id}>
                     <li
                       onClick={() => {

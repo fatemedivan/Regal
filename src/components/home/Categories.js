@@ -9,7 +9,8 @@ export default function Categories({ categoriesData }) {
   const [data, setData] = useState([]);
   useEffect(() => {
     if (categoriesData) {
-      setData(categoriesData);
+      const mainCategory = categoriesData.filter(category => category.parentId === null)
+      setData(mainCategory)
     }
   }, []);
 

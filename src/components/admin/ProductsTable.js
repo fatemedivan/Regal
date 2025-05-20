@@ -189,7 +189,7 @@ export default function ProductsTable({ products, getProducts }) {
       <div className="hidden lg:block">
         <div className="lg:flex lg:items-center lg:justify-center">
           {products && products.length ? (
-            <div className="rounded-lg p-5 mt-3 bg-white flex justify-center items-center mr-50">
+            <div className="rounded-lg p-5 mt-3 bg-white flex justify-center items-center mr-40">
               <table>
                 <thead>
                   <tr>

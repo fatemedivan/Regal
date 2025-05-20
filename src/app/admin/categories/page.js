@@ -1,6 +1,5 @@
 "use client";
 import ActionModal from "@/components/admin/ActionModal";
-import DetailsModal from "@/components/admin/DetailsModal";
 import EditModal from "@/components/admin/EditModal";
 import ErrBox from "@/components/admin/Errorbox";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
@@ -11,31 +10,64 @@ export default function Page() {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const [categories, setCategories] = useState([]);
   const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
-  const [isShowDetailsModal, setIsShowDetailsModal] = useState(false);
   const [isShowEditModal, setIsShowEditModal] = useState(false);
-  const [categoryId, setCategoryId] = useState(null);
   const [mainCategory, setMainCategoryInfo] = useState({});
   const [newSlug, setNewSlug] = useState("");
   const [newSubCategory, setNewSubCategory] = useState("");
   const [newCategoryId, setNewCategoryId] = useState("");
+  const [token, setToken] = useState("");
 
   const { openModal, closeModal } = useScrollLockContext();
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
 
   const deleteModalCancel = () => {
     setIsShowDeleteModal(false);
     closeModal();
   };
 
-  const closeDeailsModal = () => {
-    setIsShowDetailsModal(false);
-    closeModal();
+  const deleteCategory = async () => {
+    try {
+      const res = await fetch(
+        `${baseUrl}/admin/categories/${mainCategory.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(res);
+      const result = await res.json();
+      console.log(result);
+
+      if (res.ok) {
+        toast.success("با موفقیت حذف شد");
+      } else {
+        toast.error("ناموفق");
+      }
+    } catch (error) {
+      toast.error("خطایی رخ داد");
+    }finally{
+      setIsShowDeleteModal(false)
+      closeModal()
+      getCategories()
+    }
   };
 
   const addCategories = async () => {
     try {
-      const res = await fetch(`${baseUrl}/categories`, {
+      const res = await fetch(`${baseUrl}/admin/categories`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           slug: newSlug,
           parentId: parseInt(newCategoryId),
@@ -43,8 +75,13 @@ export default function Page() {
       });
       console.log(res);
       if (res.ok) {
+        const result = res.json();
+        console.log(result);
+
         toast.success("با موفقیت اضافه شد");
         getCategories();
+        setNewCategoryId("");
+        setNewSlug("");
       } else {
         toast.error("ناموفق");
       }
@@ -63,9 +100,9 @@ export default function Page() {
       if (res.ok) {
         const data = await res.json();
         setCategories(data);
+        console.log(data);
       }
       console.log(res);
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -116,7 +153,7 @@ export default function Page() {
         {categories && categories.length ? (
           <div className="space-y-4 lg:hidden mr-50 flex flex-wrap gap-2 justify-center items-center mb-5">
             {categories
-              .filter((category) => category.parentId === null)
+              .filter((category) => category.parentId !== null)
               .map((category) => (
                 <div
                   key={category.id}
@@ -129,7 +166,7 @@ export default function Page() {
                     شماره :{category.id}
                   </p>
                   <p className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
-                    تعداد زیردسته بندی ها: {category.subcategories.length}
+                    دسته بندی :{category.parent.slug}
                   </p>
 
                   <div className="flex flex-wrap gap-2 mt-4">
@@ -137,7 +174,6 @@ export default function Page() {
                       onClick={() => {
                         setIsShowDeleteModal(true);
                         openModal();
-                        setCategoryId(category.id);
                         setMainCategoryInfo(category);
                       }}
                       className="bg-cognac-primery rounded-xl p-3 text-white mx-1 cursor-pointer"
@@ -148,23 +184,12 @@ export default function Page() {
                       onClick={() => {
                         setIsShowEditModal(true);
                         openModal();
-                        setCategoryId(category.id);
                         setNewSlug(category.slug);
                         setNewSubCategory(category.subCategory);
                       }}
                       className="bg-cognac-primery rounded-xl p-3 text-white mx-1 cursor-pointer"
                     >
                       ویرایش
-                    </button>
-                    <button
-                      onClick={() => {
-                        setIsShowDetailsModal(true);
-                        openModal();
-                        setMainCategoryInfo(category);
-                      }}
-                      className="bg-cognac-primery rounded-xl p-3 text-white mx-1 cursor-pointer"
-                    >
-                      مشاهده بیشتر
                     </button>
                   </div>
                 </div>
@@ -179,7 +204,7 @@ export default function Page() {
         <div className="hidden lg:block">
           <div className="lg:flex lg:items-center lg:justify-center">
             {categories && categories.length ? (
-              <div className="rounded-lg p-5 mt-3 bg-white flex justify-center items-center mr-50">
+              <div className="rounded-lg p-5 mt-3 bg-white flex justify-center items-center mr-40">
                 <table className="table-auto border-separate border-spacing-y-4">
                   <thead>
                     <tr>
@@ -190,13 +215,16 @@ export default function Page() {
                         شماره
                       </th>
                       <th className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
-                        تعداد زیردسته بندی ها
+                        دسته بندی
+                      </th>
+                      <th className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
+                        شماره دسته بندی
                       </th>
                     </tr>
                   </thead>
                   <tbody>
                     {categories
-                      .filter((category) => category.parentId === null)
+                      .filter((category) => category.parentId !== null)
                       .map((category) => (
                         <tr key={category.id}>
                           <td className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
@@ -206,15 +234,17 @@ export default function Page() {
                             {category.id}
                           </td>
                           <td className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
-                            {category.subcategories.length}
+                            {category.parent.slug}
+                          </td>
+                          <td className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
+                            {category.parent.id}
                           </td>
 
-                          <td>
+                          <td className="px-8">
                             <button
                               onClick={() => {
                                 setIsShowDeleteModal(true);
                                 openModal();
-                                setCategoryId(category.id);
                                 setMainCategoryInfo(category);
                               }}
                               className="bg-cognac-primery rounded-xl p-3 text-white mx-3 cursor-pointer"
@@ -225,24 +255,12 @@ export default function Page() {
                               onClick={() => {
                                 setIsShowEditModal(true);
                                 openModal();
-                                setCategoryId(category.id);
                                 setNewSlug(category.slug);
                                 setNewSubCategory(category.subCategory);
                               }}
-                              className="bg-cognac-primery rounded-xl p-3 text-white mx-3 cursor-pointer"
+                              className="bg-cognac-primery rounded-xl p-3 text-white mx-3 cursor-pointer mr-8"
                             >
                               ویرایش
-                            </button>
-
-                            <button
-                              onClick={() => {
-                                setIsShowDetailsModal(true);
-                                openModal();
-                                setMainCategoryInfo(category);
-                              }}
-                              className="bg-cognac-primery rounded-xl p-3 text-white mx-3 cursor-pointer"
-                            >
-                              مشاهده بیشتر
                             </button>
                           </td>
                         </tr>
@@ -261,24 +279,16 @@ export default function Page() {
           <ActionModal
             title={`ایا از حذف "${mainCategory.slug}" اطمینان دارید ؟`}
             onCancel={deleteModalCancel}
+            onDelete={deleteCategory}
           />
-        )}
-        {isShowDetailsModal && (
-          <DetailsModal onClose={closeDeailsModal}>
-            <div className="flex flex-col flex-wrap items-center gap-4">
-              {categories
-                .filter((category) => category.parentId === mainCategory.id)
-                .map((category) => (
-                  <div key={category.id} className="px-5">
-                    {category.slug}
-                  </div>
-                ))}
-            </div>
-          </DetailsModal>
         )}
         {isShowEditModal && (
           <EditModal
             onSubmit={() => {
+              setIsShowEditModal(false);
+              closeModal();
+            }}
+            onCancel={() => {
               setIsShowEditModal(false);
               closeModal();
             }}

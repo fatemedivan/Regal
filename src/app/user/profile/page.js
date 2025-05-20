@@ -10,10 +10,18 @@ export default function Page() {
     phone: "",
     email: "",
   });
-  const {phoneNumber} = useAuthContext()
+  const { phoneNumber, name, family, email } = useAuthContext();
+
   useEffect(() => {
-    setUserData(prev => ({...prev, phone : phoneNumber}))
-  }, [phoneNumber])
+    setUserData((prev) => ({
+      ...prev,
+      phone: phoneNumber,
+      firstName: name,
+      lastName: family,
+      email: email,
+    }));
+  }, [phoneNumber, name, family, email]);
+
   return (
     <UserPannel rout={"profile"}>
       <div className="flex items-center gap-32 mt-6">
@@ -35,10 +43,12 @@ export default function Page() {
               {userData.firstName ? userData.firstName : " نام وارد نشده است"}
             </li>
             <li className="text-neutral-gray-11 text-sm leading-6 mb-4">
-              {userData.lastName ? userData.lastName : "نام‌خانوادگی وارد نشده است"}
+              {userData.lastName
+                ? userData.lastName
+                : "نام‌خانوادگی وارد نشده است"}
             </li>
             <li className="text-neutral-gray-11 text-sm leading-6 mb-4">
-              {userData.phone}
+              {userData.phone ? userData.phone : "شماره هنوز وارد نشده است"}
             </li>
             <li className="text-neutral-gray-11 text-sm leading-6">
               {userData.lastName ? userData.email : " آدرس ایمیل وارد نشده است"}

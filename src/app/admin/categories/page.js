@@ -13,9 +13,9 @@ export default function Page() {
   const [isShowEditModal, setIsShowEditModal] = useState(false);
   const [mainCategory, setMainCategoryInfo] = useState({});
   const [newSlug, setNewSlug] = useState("");
-  const [newSubCategory, setNewSubCategory] = useState("");
-  const [newCategoryId, setNewCategoryId] = useState("");
+  const [newParentCategoryId, setNewParentCategoryId] = useState("");
   const [token, setToken] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const { openModal, closeModal } = useScrollLockContext();
 
@@ -48,20 +48,58 @@ export default function Page() {
 
       if (res.ok) {
         toast.success("با موفقیت حذف شد");
+        getCategories();
       } else {
         toast.error("ناموفق");
       }
     } catch (error) {
       toast.error("خطایی رخ داد");
-    }finally{
-      setIsShowDeleteModal(false)
-      closeModal()
-      getCategories()
+    } finally {
+      setIsShowDeleteModal(false);
+      closeModal();
+    }
+  };
+
+  const editCategory = async () => {
+    try {
+      setIsLoading(true);
+      const res = await fetch(
+        `${baseUrl}/admin/categories/${mainCategory.id}/slug`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            slug: newSlug.toLowerCase(),
+            parentId: parseInt(newParentCategoryId),
+          }),
+        }
+      );
+      console.log(res);
+      const result = await res.json();
+      console.log(result);
+      if (res.ok) {
+        toast.success("با موفقیت ویرایش شد");
+        getCategories();
+      } else {
+        toast.error("ناموفق");
+      }
+    } catch (error) {
+      toast.error("خطایی رخ داد");
+    } finally {
+      setIsShowEditModal(false);
+      closeModal();
+      setIsLoading(false);
+      setNewParentCategoryId("");
+      setNewSlug("");
     }
   };
 
   const addCategories = async () => {
     try {
+      setIsLoading(true);
       const res = await fetch(`${baseUrl}/admin/categories`, {
         method: "POST",
         headers: {
@@ -70,23 +108,24 @@ export default function Page() {
         },
         body: JSON.stringify({
           slug: newSlug,
-          parentId: parseInt(newCategoryId),
+          parentId: parseInt(newParentCategoryId),
         }),
       });
       console.log(res);
       if (res.ok) {
         const result = res.json();
         console.log(result);
-
         toast.success("با موفقیت اضافه شد");
         getCategories();
-        setNewCategoryId("");
+        setNewParentCategoryId("");
         setNewSlug("");
       } else {
         toast.error("ناموفق");
       }
     } catch (error) {
       toast.error("خطایی رخ داد");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -130,8 +169,8 @@ export default function Page() {
                 className="outline-none w-full"
                 type="text"
                 placeholder="شماره زیردسته بندی محصول را بنویسید"
-                value={newCategoryId}
-                onChange={(e) => setNewCategoryId(e.target.value)}
+                value={newParentCategoryId}
+                onChange={(e) => setNewParentCategoryId(e.target.value)}
               />
             </div>
           </div>
@@ -141,7 +180,15 @@ export default function Page() {
               onClick={() => addCategories()}
               className="bg-cognac-primery rounded-xl py-2 px-5 text-white mt-3 cursor-pointer"
             >
-              ثبت
+              {isLoading ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[0ms]"></div>
+                  <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[150ms]"></div>
+                  <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[300ms]"></div>
+                </div>
+              ) : (
+                "ثبت"
+              )}
             </button>
           </div>
         </form>
@@ -185,7 +232,7 @@ export default function Page() {
                         setIsShowEditModal(true);
                         openModal();
                         setNewSlug(category.slug);
-                        setNewSubCategory(category.subCategory);
+                        setNewParentCategoryId(category.parentId);
                       }}
                       className="bg-cognac-primery rounded-xl p-3 text-white mx-1 cursor-pointer"
                     >
@@ -256,7 +303,7 @@ export default function Page() {
                                 setIsShowEditModal(true);
                                 openModal();
                                 setNewSlug(category.slug);
-                                setNewSubCategory(category.subCategory);
+                                setNewParentCategoryId(category.parentId);
                               }}
                               className="bg-cognac-primery rounded-xl p-3 text-white mx-3 cursor-pointer mr-8"
                             >
@@ -284,16 +331,15 @@ export default function Page() {
         )}
         {isShowEditModal && (
           <EditModal
-            onSubmit={() => {
-              setIsShowEditModal(false);
-              closeModal();
-            }}
+            onSubmit={editCategory}
             onCancel={() => {
               setIsShowEditModal(false);
               closeModal();
             }}
+            isLoading={isLoading}
           >
             <div>
+              <label className="pr-2">عنوان جدید</label>
               <div className="py-3 pl-6 pr-3 rounded-xl mb-3 text-black bg-cognac-tint-4">
                 <input
                   className="outline-none"
@@ -303,13 +349,14 @@ export default function Page() {
                   onChange={(e) => setNewSlug(e.target.value)}
                 />
               </div>
+              <label className="pr-2">شماره دسته بندی جدید</label>
               <div className="py-3 pl-6 pr-3 rounded-xl mb-3 text-black bg-cognac-tint-4">
                 <input
                   className="outline-none"
                   type="text"
-                  placeholder="زیر دسته بندی جدید را وارد کنید"
-                  value={newSubCategory}
-                  onChange={(e) => setNewSubCategory(e.target.value)}
+                  placeholder="شماره دسته بندی جدید را وارد کنید"
+                  value={newParentCategoryId}
+                  onChange={(e) => setNewParentCategoryId(e.target.value)}
                 />
               </div>
             </div>

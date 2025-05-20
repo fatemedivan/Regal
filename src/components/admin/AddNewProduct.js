@@ -9,17 +9,17 @@ export default function AddNewProduct() {
   const [newDiscount, setNewDiscount] = useState("");
   const [newCategoryId, setNewCategoryId] = useState("");
   const [newImg, setNewImg] = useState([]);
-  const [isLoading, setIsLoading] = useState(false)
-  const [token, setToken] = useState('')
+  const [isLoading, setIsLoading] = useState(false);
+  const [token, setToken] = useState("");
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const router = useRouter();
 
   useEffect(() => {
-      const storedToken = localStorage.getItem("token");
-      if (storedToken) {
-        setToken(storedToken);
-      }
-    }, []);
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
 
   const addProduct = async () => {
     if (!newImg || newImg.length < 2 || newImg.length > 5) {
@@ -38,6 +38,7 @@ export default function AddNewProduct() {
     });
 
     try {
+      setIsLoading(true);
       const res = await fetch(`${baseUrl}/admin/products`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
@@ -51,18 +52,20 @@ export default function AddNewProduct() {
       if (!res.ok) {
         toast.error("ناموفق");
       } else {
-        toast.success("محصول با موفقیت اضافه شد!");
+        toast.success("محصول با موفقیت اضافه شد");
         sessionStorage.setItem("productId", result.id);
         setTimeout(() => {
           router.push("/admin/add-size");
         }, 2500);
       }
       if (res.status === 413) {
-        toast.error("حجم فایل ها زیاد است")
+        toast.error("حجم فایل ها زیاد است");
       }
     } catch (err) {
       console.error("Error:", err);
       toast.error("خطا در ارسال اطلاعات");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -126,7 +129,15 @@ export default function AddNewProduct() {
             onClick={() => addProduct()}
             className="bg-cognac-primery rounded-xl p-3 text-white mt-3 cursor-pointer"
           >
-            ثبت محصول
+            {isLoading ? (
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[0ms]"></div>
+                <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[150ms]"></div>
+                <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[300ms]"></div>
+              </div>
+            ) : (
+              "ثبت محصول"
+            )}
           </button>
         </div>
       </form>

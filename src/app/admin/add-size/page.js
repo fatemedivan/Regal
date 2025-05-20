@@ -10,6 +10,7 @@ export default function Page() {
   const [newPrice, setNewPrice] = useState("");
   const [newProductColorId, setNewProductColorId] = useState("");
   const [token, setToken] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -21,6 +22,7 @@ export default function Page() {
 
   const addsize = async () => {
     try {
+      setIsLoading(true)
       const res = await fetch(`${baseUrl}/admin/products-size`, {
         method: "POST",
         headers: {
@@ -47,6 +49,8 @@ export default function Page() {
       }
     } catch (error) {
       toast.error("خطایی رخ داد");
+    }finally{
+      setIsLoading(false)
     }
   };
 
@@ -98,9 +102,17 @@ export default function Page() {
           <button
             type="button"
             onClick={() => addsize()}
-            className="bg-cognac-primery rounded-xl p-3 text-white mt-3 cursor-pointer"
+            className="bg-cognac-primery rounded-xl py-2 px-5 text-white mt-3 cursor-pointer"
           >
-            ثبت محصول
+           {isLoading ? (
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[0ms]"></div>
+                <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[150ms]"></div>
+                <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[300ms]"></div>
+              </div>
+            ) : (
+              "ثبت"
+            )}
           </button>
         </div>
       </form>

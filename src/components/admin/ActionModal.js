@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 
-export default function ActionModal({ title, onCancel }) {
+export default function ActionModal({ title, onCancel, onDelete }) {
   return (
     <>
       <div
@@ -33,7 +33,7 @@ export default function ActionModal({ title, onCancel }) {
             انصراف
           </button>
           <button
-            onClick={() => onCancel()}
+            onClick={() => onDelete()}
             className="leading-5.5 bg-error-primery text-white py-3.25 px-16.5 rounded-lg cursor-pointer lg:px-18.75"
           >
             بله

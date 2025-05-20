@@ -25,9 +25,7 @@ export const AuthContextProvider = ({ children }) => {
       const response = await fetch(`${baseUrl}/auth/me`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
       const result = await response.json();
-      console.log(result);
       if (response.ok) {
         setPhoneNumber(result.phoneNumber);
         setName(result.name);

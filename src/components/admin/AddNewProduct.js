@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 
 export default function AddNewProduct() {
@@ -9,8 +9,17 @@ export default function AddNewProduct() {
   const [newDiscount, setNewDiscount] = useState("");
   const [newCategoryId, setNewCategoryId] = useState("");
   const [newImg, setNewImg] = useState([]);
+  const [isLoading, setIsLoading] = useState(false)
+  const [token, setToken] = useState('')
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const router = useRouter();
+
+  useEffect(() => {
+      const storedToken = localStorage.getItem("token");
+      if (storedToken) {
+        setToken(storedToken);
+      }
+    }, []);
 
   const addProduct = async () => {
     if (!newImg || newImg.length < 2 || newImg.length > 5) {
@@ -31,6 +40,7 @@ export default function AddNewProduct() {
     try {
       const res = await fetch(`${baseUrl}/admin/products`, {
         method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
 
@@ -46,6 +56,9 @@ export default function AddNewProduct() {
         setTimeout(() => {
           router.push("/admin/add-size");
         }, 2500);
+      }
+      if (res.status === 413) {
+        toast.error("حجم فایل ها زیاد است")
       }
     } catch (err) {
       console.error("Error:", err);

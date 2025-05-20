@@ -7,7 +7,15 @@ export default function Page() {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const [newColor, setNewColor] = useState("");
   const [productId, setProductId] = useState("");
-  const router = useRouter()
+  const [token, setToken] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
 
   useEffect(() => {
     const storedProductId = sessionStorage.getItem("productId");
@@ -18,9 +26,12 @@ export default function Page() {
 
   const addColor = async () => {
     try {
-      const res = await fetch(`${baseUrl}/products-color`, {
+      const res = await fetch(`${baseUrl}/admin/products-color`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           color: newColor,
           productId: parseInt(productId),
@@ -34,9 +45,9 @@ export default function Page() {
       } else {
         toast.success("با موفقیت اضافه شد");
         setTimeout(() => {
-            router.push('/admin/products')
+          router.push("/admin/products");
         }, 2500);
-        sessionStorage.removeItem('productId')
+        sessionStorage.removeItem("productId");
       }
     } catch (error) {
       toast.error("خطایی رخ داد");

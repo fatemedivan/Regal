@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 
 export default function Page() {
@@ -9,13 +9,24 @@ export default function Page() {
   const [newStockQuantity, setNewStockQuantity] = useState("");
   const [newPrice, setNewPrice] = useState("");
   const [newProductColorId, setNewProductColorId] = useState("");
-  const router = useRouter()
+  const [token, setToken] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
 
   const addsize = async () => {
     try {
-      const res = await fetch(`${baseUrl}/products-size`, {
+      const res = await fetch(`${baseUrl}/admin/products-size`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           size: newSize,
           stockQuantity: parseInt(newStockQuantity),
@@ -31,7 +42,7 @@ export default function Page() {
       } else {
         toast.success("با موفقیت اضافه شد");
         setTimeout(() => {
-            router.push('/admin/add-color')
+          router.push("/admin/add-color");
         }, 2500);
       }
     } catch (error) {

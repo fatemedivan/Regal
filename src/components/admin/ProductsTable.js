@@ -1,11 +1,14 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import ErrBox from "./Errorbox";
 import ActionModal from "./ActionModal";
 import DetailsModal from "./DetailsModal";
 import EditModal from "./EditModal";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
+import { toast, ToastContainer } from "react-toastify";
 
-export default function ProductsTable({ products }) {
+export default function ProductsTable({ products, getProducts }) {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
   const [isShowDetailsModal, setIsShowDetailsModal] = useState(false);
   const [isShowEditModal, setIsShowEditModal] = useState(false);
@@ -17,24 +20,102 @@ export default function ProductsTable({ products }) {
   const [newDiscount, setNewDiscount] = useState("");
   const [newCategoryId, setNewCategoryId] = useState("");
   const [newImg, setNewImg] = useState([]);
-  const [newSize, setNewSize] = useState("");
-  const [newColors, setNewColors] = useState("");
-  const {openModal, closeModal} = useScrollLockContext()
-  
+  const [token, setToken] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { openModal, closeModal } = useScrollLockContext();
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
 
   const deleteModalCancel = () => {
     setIsShowDeleteModal(false);
-    closeModal()
+    closeModal();
+  };
+
+  const deletProduct = async () => {
+    try {
+      const res = await fetch(
+        `${baseUrl}/admin/products/${mainProductInfo.id}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (res.ok) {
+        toast.success("با موفقیت حذف شد");
+        getProducts();
+      } else {
+        toast.error("ناموفق");
+      }
+    } catch (error) {
+      toast.error("خطایی رخ داد");
+    } finally {
+      setIsShowDeleteModal(false);
+      closeModal();
+    }
+  };
+
+  const editProduct = async () => {
+    if (!newImg || newImg.length < 2 || newImg.length > 5) {
+      toast.warning("تعداد فایل‌ها باید بین ۲ تا ۵ عدد باشد.");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("title", newTitle);
+    formData.append("discount", newDiscount);
+    formData.append("description", newDesc);
+    formData.append("categoryId", newCategoryId);
+    newImg.forEach((file) => {
+      formData.append("files", file);
+    });
+
+    try {
+      setIsLoading(true);
+      const res = await fetch(
+        `${baseUrl}/admin/products/${mainProductInfo.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
+      console.log(res);
+      const result = await res.json();
+      console.log(result);
+      if (res.ok) {
+        toast.success("با موفقیت ویرایش شد");
+        getProducts();
+      } else {
+        toast.error("ناموفق");
+      }
+    } catch (error) {
+      toast.error("خطایی رخ داد");
+    } finally {
+      setIsShowEditModal(false);
+      closeModal();
+      setIsLoading(false);
+    }
   };
 
   const closeDeailsModal = () => {
     setIsShowDetailsModal(false);
-    closeModal()
+    closeModal();
+  };
+  const closeEditModal = () => {
+    setIsShowEditModal(false);
+    closeModal();
   };
 
   return (
     <div>
       <h1 className="text-3xl mb-3 mt-10 mr-50">لیست محصولات</h1>
+      <ToastContainer autoClose={2000} className={"custom-toast-container"} />
       {/* mobile and tablet design */}
       {products && products.length ? (
         <div className="space-y-4 lg:hidden mr-50 flex flex-wrap gap-2 justify-center items-center mb-5">
@@ -61,7 +142,7 @@ export default function ProductsTable({ products }) {
                 <button
                   onClick={() => {
                     setIsShowDeleteModal(true);
-                    openModal()
+                    openModal();
                     setProductId(product.id);
                     setMainProductInfo(product);
                   }}
@@ -72,15 +153,13 @@ export default function ProductsTable({ products }) {
                 <button
                   onClick={() => {
                     setIsShowEditModal(true);
-                    openModal()
+                    openModal();
                     setProductId(product.id);
                     setNewTitle(product.title);
                     setNewPrice(product.price);
                     setNewDiscount(product.discount);
                     setNewCategoryId(product.categoryId);
                     setNewImg(product.img);
-                    setNewSize(product.size);
-                    setNewColors(product.colors);
                     setNewDesc(product.desc);
                   }}
                   className="bg-cognac-primery rounded-xl p-3 text-white mx-1 cursor-pointer"
@@ -90,7 +169,7 @@ export default function ProductsTable({ products }) {
                 <button
                   onClick={() => {
                     setIsShowDetailsModal(true);
-                    openModal()
+                    openModal();
                     setMainProductInfo(product);
                   }}
                   className="bg-cognac-primery rounded-xl p-3 text-white mx-1 cursor-pointer"
@@ -146,7 +225,7 @@ export default function ProductsTable({ products }) {
                         <button
                           onClick={() => {
                             setIsShowDeleteModal(true);
-                            openModal()
+                            openModal();
                             setProductId(product.id);
                             setMainProductInfo(product);
                           }}
@@ -157,15 +236,13 @@ export default function ProductsTable({ products }) {
                         <button
                           onClick={() => {
                             setIsShowEditModal(true);
-                            openModal()
+                            openModal();
                             setProductId(product.id);
                             setNewTitle(product.title);
                             setNewPrice(product.price);
                             setNewDiscount(product.discount);
                             setNewCategoryId(product.categoryId);
                             setNewImg(product.img);
-                            setNewSize(product.size);
-                            setNewColors(product.colors);
                             setNewDesc(product.desc);
                           }}
                           className="bg-cognac-primery rounded-xl p-3 text-white mx-3 cursor-pointer"
@@ -175,7 +252,7 @@ export default function ProductsTable({ products }) {
                         <button
                           onClick={() => {
                             setIsShowDetailsModal(true);
-                            openModal()
+                            openModal();
                             setMainProductInfo(product);
                           }}
                           className="bg-cognac-primery rounded-xl p-3 text-white mx-3 cursor-pointer"
@@ -199,6 +276,7 @@ export default function ProductsTable({ products }) {
         <ActionModal
           title={`ایا از حذف "${mainProductInfo.title}" اطمینان دارید ؟`}
           onCancel={deleteModalCancel}
+          onDelete={deletProduct}
         />
       )}
       {isShowDetailsModal && (
@@ -226,47 +304,55 @@ export default function ProductsTable({ products }) {
         </DetailsModal>
       )}
       {isShowEditModal && (
-        <EditModal onSubmit={() => {
-          setIsShowEditModal(false)
-          closeModal()
-        }}>
+        <EditModal
+          onSubmit={() => {
+            editProduct();
+          }}
+          onCancel={closeEditModal}
+          isLoading={isLoading}
+        >
           <div>
+            <label className="pr-2">عنوان</label>
             <div className="py-3 pl-6 pr-3 rounded-xl mb-3 text-black bg-cognac-tint-4">
               <input
                 className="outline-none"
                 type="text"
                 placeholder="عنوان جدید را وارد کنید"
-                value={newTitle}
+                value={newTitle || ""}
                 onChange={(e) => setNewTitle(e.target.value)}
               />
             </div>
+            <label className="pr-2">قیمت</label>
             <div className="py-3 pl-6 pr-3 rounded-xl mb-3 text-black bg-cognac-tint-4">
               <input
                 className="outline-none"
                 type="text"
                 placeholder="قیمت جدید را وارد کنید"
-                value={newPrice}
+                value={newPrice || ""}
                 onChange={(e) => setNewPrice(e.target.value)}
               />
             </div>
+            <label className="pr-2">تخفیف</label>
             <div className="py-3 pl-6 pr-3 rounded-xl mb-3 text-black bg-cognac-tint-4">
               <input
                 className="outline-none"
                 type="text"
                 placeholder="تخفیف جدید را وارد کنید"
-                value={newDiscount}
+                value={newDiscount || ""}
                 onChange={(e) => setNewDiscount(e.target.value)}
               />
             </div>
+            <label className="pr-2">شماره دسته بندی </label>
             <div className="py-3 pl-6 pr-3 rounded-xl mb-3 text-black bg-cognac-tint-4">
               <input
                 className="outline-none w-full"
                 type="text"
                 placeholder=" شماره دسته بندی جدید را بنویسید"
-                value={newCategoryId}
+                value={newCategoryId || ""}
                 onChange={(e) => setNewCategoryId(e.target.value)}
               />
             </div>
+            <label className="pr-2">عکس</label>
             <div className="py-3 pl-6 pr-3 rounded-xl mb-3 text-black bg-cognac-tint-4">
               <input
                 className="outline-none w-full"
@@ -276,29 +362,13 @@ export default function ProductsTable({ products }) {
                 onChange={(e) => setNewImg([...e.target.files])}
               />
             </div>
-            <div className="py-3 pl-6 pr-3 rounded-xl mb-3 text-black bg-cognac-tint-4">
-              <input
-                className="outline-none w-full"
-                type="text"
-                placeholder="سایز یندی جدید را وارد کنید"
-                value={newSize}
-                onChange={(e) => setNewSize(e.target.value)}
-              />
-            </div>
-            <div className="py-3 pl-6 pr-3 rounded-xl mb-3  text-black bg-cognac-tint-4">
-              <input
-                className="outline-none w-full"
-                type="text"
-                placeholder="رنگ بندی جدید را وارد کنید"
-                value={newColors}
-                onChange={(e) => setNewColors(e.target.value)}
-              />
-            </div>
+
+            <label className="pr-2">توضیحات</label>
             <div className="py-3 pl-6 pr-3 rounded-xl mb-3  text-black bg-cognac-tint-4">
               <textarea
                 className="outline-none w-full resize-none"
                 placeholder="توضیحات جدید را بنویسید"
-                value={newDesc}
+                value={newDesc || ""}
                 onChange={(e) => setNewDesc(e.target.value)}
               />
             </div>

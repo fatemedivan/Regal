@@ -1,17 +1,20 @@
 "use client";
 import ActionModal from "@/components/admin/ActionModal";
 import DetailsModal from "@/components/admin/DetailsModal";
+import EditModal from "@/components/admin/EditModal";
 import ErrBox from "@/components/admin/Errorbox";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
 import moment from "jalali-moment";
 import React, { useEffect, useState } from "react";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function Page() {
   const [orders, setOrders] = useState([]);
   const [token, setToken] = useState("");
+  const [newStatuse, setNewStatuse] = useState("");
   const [isShowDetailsModal, setIsShowDetailsModal] = useState(false);
   const [isShowEditModal, setIsShowEditModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [mainOrderInfo, setMainOrderInfo] = useState({});
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const { openModal, closeModal } = useScrollLockContext();
@@ -26,6 +29,40 @@ export default function Page() {
       setToken(storedToken);
     }
   }, []);
+
+  const editOrder = async () => {
+    try {
+      setIsLoading(true);
+      const res = await fetch(
+        `${baseUrl}/admin/orders/${mainOrderInfo.id}/status`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            status: newStatuse,
+          }),
+        }
+      );
+      console.log(res);
+      const result = await res.json();
+      console.log(result);
+      if (res.ok) {
+        toast.success("با موفقیت ویرایش شد");
+        getOrders();
+      } else {
+        toast.error(result.message[0]);
+      }
+    } catch (error) {
+      toast.error("خطایی رخ داد");
+    } finally {
+      setIsShowEditModal(false);
+      closeModal();
+      setIsLoading(false);
+    }
+  };
 
   const getOrders = async () => {
     const res = await fetch(`${baseUrl}/admin/orders?page=1`, {
@@ -73,6 +110,7 @@ export default function Page() {
                     onClick={() => {
                       setIsShowEditModal(true);
                       openModal();
+                      setNewStatuse(order.status);
                       setMainOrderInfo(order);
                     }}
                     className="bg-cognac-primery rounded-xl p-3 text-white mx-1 cursor-pointer"
@@ -140,7 +178,13 @@ export default function Page() {
                         </td>
 
                         <td className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-2">
-                          {order.status === "CURRENT" && "جاری"}
+                          {order.status === "CURRENT"
+                            ? "جاری"
+                            : order.status === "DELIVERED"
+                            ? "تحویل شده"
+                            : order.status === "CANCELED"
+                            ? "مرجوع شده"
+                            : "نامشخص"}
                         </td>
 
                         <td>
@@ -148,6 +192,7 @@ export default function Page() {
                             onClick={() => {
                               setIsShowEditModal(true);
                               setMainOrderInfo(order);
+                              setNewStatuse(order.status);
                               openModal();
                             }}
                             className="bg-cognac-primery rounded-xl p-3 text-white mx-3 cursor-pointer mr-8"
@@ -206,8 +251,10 @@ export default function Page() {
                     <td className="px-3">
                       {mainOrderInfo.OrderItem[0]?.number}
                     </td>
-                    
-                    <td className="px-3">{mainOrderInfo.fullAddress.slice(0,50)}</td>
+
+                    <td className="px-3">
+                      {mainOrderInfo.fullAddress.slice(0, 50)}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -216,13 +263,26 @@ export default function Page() {
         )}
         {isShowEditModal && (
           <EditModal
-            onSubmit={editCategory}
+            onSubmit={editOrder}
             onCancel={() => {
               setIsShowEditModal(false);
               closeModal();
             }}
             isLoading={isLoading}
-          ></EditModal>
+          >
+            <div>
+              <label className="pr-2">وضعیت جدید</label>
+              <div className="py-3 pl-6 pr-3 rounded-xl mb-3 text-black bg-cognac-tint-4">
+                <input
+                  className="outline-none"
+                  type="text"
+                  placeholder="وضعیت جدید را وارد کنید"
+                  value={newStatuse}
+                  onChange={(e) => setNewStatuse(e.target.value)}
+                />
+              </div>
+            </div>
+          </EditModal>
         )}
       </div>
     </>

@@ -1,7 +1,6 @@
 "use client";
 import ProductsTable from "@/components/admin/ProductsTable";
 import React, { useEffect, useState } from "react";
-import { HashLoader } from "react-spinners";
 
 export default function Page() {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -18,7 +17,7 @@ export default function Page() {
 
   const getProducts = async () => {
     try {
-      setIsLoading(false);
+      setIsLoading(true);
       const res = await fetch(`${baseUrl}/admin/products?page=1`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -43,15 +42,11 @@ export default function Page() {
   }, [token]);
   return (
     <div>
-      {isLoading && (
-        <div className="flex flex-col justify-center items-center h-[60vh]">
-          <HashLoader color="#b19276" size={80} />
-          <p className="mt-5 text-xl font-extrabold text-cognac-shade-3 animate-pulse">
-            ...loading
-          </p>
-        </div>
-      )}
-      <ProductsTable products={products} getProducts={getProducts} loading={isLoading}/>
+      <ProductsTable
+        products={products}
+        getProducts={getProducts}
+        loading={isLoading}
+      />
     </div>
   );
 }

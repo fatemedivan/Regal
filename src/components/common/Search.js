@@ -349,7 +349,7 @@ export default function Search({ handleCloseSearch }) {
                         title={product.title}
                         finalPrice={product.latestPrice}
                         isMore={false}
-                        colors={product.ProductColor.map((item) => item.color)}
+                        colors={product.ProductColor}
                         id={product.id}
                         favorites={product.Favorite}
                       />
@@ -380,9 +380,7 @@ export default function Search({ handleCloseSearch }) {
                                 title={product.title}
                                 finalPrice={product.latestPrice}
                                 isMore={false}
-                                colors={product.ProductColor.map(
-                                  (item) => item.color
-                                )}
+                                colors={product.ProductColor}
                                 id={product.id}
                                 favorites={product.Favorite}
                               />

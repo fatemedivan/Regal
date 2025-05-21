@@ -159,7 +159,7 @@ export default function Products({ allProducts, totalProductsPages }) {
 
             <div className="flex flex-wrap gap-4 lg:hidden">
               {products.length > 0 &&
-                products.map((product) => (
+                products.map((product,index) => (
                   <ProductItemOff
                     key={product.id}
                     id={product.id}
@@ -170,7 +170,7 @@ export default function Products({ allProducts, totalProductsPages }) {
                       product.latestPrice / (1 - product.discount / 100)
                     )}
                     finalPrice={product.latestPrice}
-                    colors={product.ProductColor.map((item) => item.color)}
+                    colors={product.ProductColor}
                     favorites={product.Favorite}
                   />
                 ))}
@@ -253,7 +253,7 @@ export default function Products({ allProducts, totalProductsPages }) {
                 )}
                 <div className="flex items-center 2xl:justify-between flex-wrap gap-x-6 gap-y-8 mt-6">
                   {products.length > 0 &&
-                    products.map((product) => (
+                    products.map((product,index) => (
                       <ProductItemOff
                         key={product.id}
                         id={product.id}
@@ -264,7 +264,7 @@ export default function Products({ allProducts, totalProductsPages }) {
                           product.latestPrice / (1 - product.discount / 100)
                         )}
                         finalPrice={product.latestPrice}
-                        colors={product.ProductColor.map((item) => item.color)}
+                        colors={product.ProductColor}
                         favorites={product.Favorite}
                       />
                     ))}

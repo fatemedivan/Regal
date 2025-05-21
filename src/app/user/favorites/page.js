@@ -6,6 +6,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
+import ProductSceleton from "@/components/common/ProductSceleton";
 
 export default function Page() {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;

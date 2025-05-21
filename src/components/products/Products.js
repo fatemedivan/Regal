@@ -54,9 +54,13 @@ export default function Products({ allProducts, totalProductsPages }) {
     params.set("page", "1");
     router.push(`?${params.toString()}`);
   };
+
   useEffect(() => {
     setCurrentPage(parseInt(searchParamsHook.get("page") || "1"));
   }, [searchParamsHook]);
+
+  console.log(products);
+  
   return (
     <div>
       <Breadcrumb
@@ -170,6 +174,7 @@ export default function Products({ allProducts, totalProductsPages }) {
                     favorites={product.Favorite}
                   />
                 ))}
+                
             </div>
             <div className="hidden lg:flex justify-between gap-6">
               <div>

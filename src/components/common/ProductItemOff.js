@@ -80,7 +80,7 @@ export default function ProductItemOff({
               )}
               {colors.map((color, index) => (
                 <div
-                  key={`${color}-${index}`}
+                  key={index}
                   style={{ backgroundColor: color }}
                   className={`w-5 h-5 rounded-sm`}
                 ></div>

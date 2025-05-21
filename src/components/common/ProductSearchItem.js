@@ -80,8 +80,8 @@ export default function ProductSearchItem({
             ></div>
             {colors.map((color, index) => (
               <div
+                key={index}
                 style={{ backgroundColor: color }}
-                key={`${color}-${index}`}
                 className={`w-5 h-5 rounded-sm`}
               ></div>
             ))}

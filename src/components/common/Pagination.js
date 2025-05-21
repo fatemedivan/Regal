@@ -8,7 +8,6 @@ export default function Pagination({
   products,
   onPageChange,
 }) {
-  
   let pageNumbers = [];
 
   for (let i = 1; i <= latestPage; i++) {
@@ -48,11 +47,10 @@ export default function Pagination({
       {/* Page Numbers */}
       {pageNumbers
         .filter((page) => {
-          // جلوگیری از نمایش صفحات بعدی در صورتی که هیچ محصولی وجود نداشته باشه
           return (
             page === "..." ||
-            page < latestPage || // فقط تا قبل از latestPage
-            (page === latestPage && products.length > 0) // آخرین صفحه فقط اگه محصول داره
+            page < latestPage ||
+            (page === latestPage && products.length > 0)
           );
         })
         .map((item, index) => (

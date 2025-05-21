@@ -233,6 +233,7 @@ export default function Page() {
                         openModal();
                         setNewSlug(category.slug);
                         setNewParentCategoryId(category.parentId);
+                        setMainCategoryInfo(category)
                       }}
                       className="bg-cognac-primery rounded-xl p-3 text-white mx-1 cursor-pointer"
                     >
@@ -304,6 +305,7 @@ export default function Page() {
                                 openModal();
                                 setNewSlug(category.slug);
                                 setNewParentCategoryId(category.parentId);
+                                setMainCategoryInfo(category)
                               }}
                               className="bg-cognac-primery rounded-xl p-3 text-white mx-3 cursor-pointer mr-8"
                             >

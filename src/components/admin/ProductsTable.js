@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import ErrBox from "./Errorbox";
 import ActionModal from "./ActionModal";
-import DetailsModal from "./DetailsModal";
 import EditModal from "./EditModal";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
 import { toast, ToastContainer } from "react-toastify";
@@ -10,7 +9,6 @@ import { toast, ToastContainer } from "react-toastify";
 export default function ProductsTable({ products, getProducts }) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
-  const [isShowDetailsModal, setIsShowDetailsModal] = useState(false);
   const [isShowEditModal, setIsShowEditModal] = useState(false);
   const [productId, setProductId] = useState(null);
   const [mainProductInfo, setMainProductInfo] = useState({});
@@ -31,20 +29,14 @@ export default function ProductsTable({ products, getProducts }) {
     }
   }, []);
 
-  const deleteModalCancel = () => {
-    setIsShowDeleteModal(false);
-    closeModal();
-  };
-
   const deletProduct = async () => {
+    console.log("id", productId);
+
     try {
-      const res = await fetch(
-        `${baseUrl}/admin/products/${mainProductInfo.id}`,
-        {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const res = await fetch(`${baseUrl}/admin/products/${productId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (res.ok) {
         toast.success("با موفقیت حذف شد");
         getProducts();
@@ -60,32 +52,25 @@ export default function ProductsTable({ products, getProducts }) {
   };
 
   const editProduct = async () => {
-    if (!newImg || newImg.length < 2 || newImg.length > 5) {
-      toast.warning("تعداد فایل‌ها باید بین ۲ تا ۵ عدد باشد.");
-      return;
-    }
-    const formData = new FormData();
-    formData.append("title", newTitle);
-    formData.append("discount", newDiscount);
-    formData.append("description", newDesc);
-    formData.append("categoryId", newCategoryId);
-    newImg.forEach((file) => {
-      formData.append("files", file);
-    });
+    const payload = {
+      title: newTitle,
+      discount: newDiscount,
+      description: newDesc,
+      categoryId: newCategoryId.toString(),
+      files: newImg,
+    };
 
     try {
       setIsLoading(true);
-      const res = await fetch(
-        `${baseUrl}/admin/products/${mainProductInfo.id}`,
-        {
-          method: "PATCH",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        }
-      );
-      console.log(res);
+      const res = await fetch(`${baseUrl}/admin/products/${productId}`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
       const result = await res.json();
       console.log(result);
       if (res.ok) {
@@ -101,15 +86,6 @@ export default function ProductsTable({ products, getProducts }) {
       closeModal();
       setIsLoading(false);
     }
-  };
-
-  const closeDeailsModal = () => {
-    setIsShowDetailsModal(false);
-    closeModal();
-  };
-  const closeEditModal = () => {
-    setIsShowEditModal(false);
-    closeModal();
   };
 
   return (
@@ -132,10 +108,13 @@ export default function ProductsTable({ products, getProducts }) {
                 />
               </p>
               <p className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
-                {product.title}
+                اسم : {product.title}
               </p>
               <p className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
-                {product.latestPrice}
+                قیمت : {product.latestPrice}
+              </p>
+              <p className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
+                تخفیف : {product.discount}%
               </p>
 
               <div className="flex flex-wrap gap-2 mt-4">
@@ -155,8 +134,9 @@ export default function ProductsTable({ products, getProducts }) {
                     setIsShowEditModal(true);
                     openModal();
                     setProductId(product.id);
+                    setMainProductInfo(product);
                     setNewTitle(product.title);
-                    setNewPrice(product.price);
+                    setNewPrice(product.latestPrice);
                     setNewDiscount(product.discount);
                     setNewCategoryId(product.categoryId);
                     setNewImg(product.img);
@@ -165,16 +145,6 @@ export default function ProductsTable({ products, getProducts }) {
                   className="bg-cognac-primery rounded-xl p-3 text-white mx-1 cursor-pointer"
                 >
                   ویرایش
-                </button>
-                <button
-                  onClick={() => {
-                    setIsShowDetailsModal(true);
-                    openModal();
-                    setMainProductInfo(product);
-                  }}
-                  className="bg-cognac-primery rounded-xl p-3 text-white mx-1 cursor-pointer"
-                >
-                  مشاهده
                 </button>
               </div>
             </div>
@@ -202,6 +172,9 @@ export default function ProductsTable({ products, getProducts }) {
                     <th className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
                       قیمت
                     </th>
+                    <th className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
+                      تخفیف
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -219,6 +192,9 @@ export default function ProductsTable({ products, getProducts }) {
                       </td>
                       <td className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
                         {product.latestPrice}
+                      </td>
+                      <td className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
+                        {product.discount}%
                       </td>
 
                       <td>
@@ -238,9 +214,10 @@ export default function ProductsTable({ products, getProducts }) {
                             setIsShowEditModal(true);
                             openModal();
                             setProductId(product.id);
+                            setMainProductInfo(product);
                             setNewTitle(product.title);
-                            setNewPrice(product.price);
                             setNewDiscount(product.discount);
+                            setNewPrice(product.latestPrice);
                             setNewCategoryId(product.categoryId);
                             setNewImg(product.img);
                             setNewDesc(product.desc);
@@ -248,16 +225,6 @@ export default function ProductsTable({ products, getProducts }) {
                           className="bg-cognac-primery rounded-xl p-3 text-white mx-3 cursor-pointer"
                         >
                           ویرایش
-                        </button>
-                        <button
-                          onClick={() => {
-                            setIsShowDetailsModal(true);
-                            openModal();
-                            setMainProductInfo(product);
-                          }}
-                          className="bg-cognac-primery rounded-xl p-3 text-white mx-3 cursor-pointer"
-                        >
-                          مشاهده
                         </button>
                       </td>
                     </tr>
@@ -275,40 +242,23 @@ export default function ProductsTable({ products, getProducts }) {
       {isShowDeleteModal && (
         <ActionModal
           title={`ایا از حذف "${mainProductInfo.title}" اطمینان دارید ؟`}
-          onCancel={deleteModalCancel}
+          onCancel={() => {
+            setIsShowDeleteModal(false);
+            closeModal();
+          }}
           onDelete={deletProduct}
         />
       )}
-      {isShowDetailsModal && (
-        <DetailsModal onClose={closeDeailsModal}>
-          <div className="flex justify-center items-center">
-            <table>
-              <thead>
-                <tr>
-                  <th className="px-5 py-3">اسم</th>
-                  <th className="px-5 py-3">رنگ بندی</th>
-                  <th className="px-5 py-3">سایز یندی</th>
-                  <th className="px-5 py-3">تخفیف</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="px-5">{mainProductInfo.title}</td>
-                  <td className="px-5">{mainProductInfo.color}</td>
-                  <td className="px-5">{mainProductInfo.size}</td>
-                  <td className="px-5">{mainProductInfo.discount}%</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </DetailsModal>
-      )}
+
       {isShowEditModal && (
         <EditModal
           onSubmit={() => {
             editProduct();
           }}
-          onCancel={closeEditModal}
+          onCancel={() => {
+            setIsShowEditModal(false);
+            closeModal();
+          }}
           isLoading={isLoading}
         >
           <div>
@@ -359,7 +309,7 @@ export default function ProductsTable({ products, getProducts }) {
                 type="file"
                 multiple
                 accept="image/*"
-                onChange={(e) => setNewImg([...e.target.files])}
+                onChange={(e) => setNewImg(e.target.files)}
               />
             </div>
 

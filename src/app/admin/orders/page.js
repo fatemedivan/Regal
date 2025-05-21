@@ -47,16 +47,17 @@ export default function Page() {
         }
       );
       console.log(res);
-      const result = await res.json();
-      console.log(result);
       if (res.ok) {
         toast.success("با موفقیت ویرایش شد");
-        getOrders();
+        setTimeout(() => {
+          getOrders();
+        }, 1000);
       } else {
-        toast.error(result.message[0]);
+        toast.error("ناموفق");
       }
     } catch (error) {
       toast.error("خطایی رخ داد");
+      console.log(error);
     } finally {
       setIsShowEditModal(false);
       closeModal();

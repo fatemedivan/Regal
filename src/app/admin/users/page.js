@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 import { HashLoader } from "react-spinners";
 import { toast, ToastContainer } from "react-toastify";
 
-export default function page() {
+export default function Page() {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const searchParamsHook = useSearchParams();
   const router = useRouter();

@@ -198,181 +198,184 @@ export default function Page() {
           </div>
         </form>
       </div>
-      {!isLoadingGetData && (!categories || categories.length === 0) && (
+      {!isLoadingGetData && (!categories || categories.length === 0) ? (
         <div className="flex justify-center items-center mt-10 mr-50">
           <ErrBox title={"محصولی"} />
         </div>
-      )}
-      {isLoadingGetData ? (
-        <div className="flex flex-col justify-center items-center h-[60vh]">
-          <HashLoader color="#b19276" size={80} />
-          <p className="mt-5 text-xl font-extrabold text-cognac-shade-3 animate-pulse">
-            ...loading
-          </p>
-        </div>
       ) : (
         <div>
-          <h1 className="text-3xl mb-3 mt-10 mr-50">لیست دسته بندی ها</h1>
-          {/* mobile and tablet design */}
-          {categories && (
-            <div className="space-y-4 lg:hidden mr-50 flex flex-wrap gap-2 justify-center items-center mb-5">
-              {categories
-                .filter((category) => category.parentId !== null)
-                .map((category) => (
-                  <div
-                    key={category.id}
-                    className="p-4 rounded-lg bg-white shadow m-0"
-                  >
-                    <p className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
-                      {category.slug}
-                    </p>
-                    <p className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
-                      شماره :{category.id}
-                    </p>
-                    <p className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
-                      دسته بندی :{category.parent.slug}
-                    </p>
-
-                    <div className="flex flex-wrap gap-2 mt-4">
-                      <button
-                        onClick={() => {
-                          setIsShowDeleteModal(true);
-                          openModal();
-                          setMainCategoryInfo(category);
-                        }}
-                        className="bg-cognac-primery rounded-xl p-3 text-white mx-1 cursor-pointer"
-                      >
-                        حذف
-                      </button>
-                      <button
-                        onClick={() => {
-                          setIsShowEditModal(true);
-                          openModal();
-                          setNewSlug(category.slug);
-                          setNewParentCategoryId(category.parentId);
-                          setMainCategoryInfo(category);
-                        }}
-                        className="bg-cognac-primery rounded-xl p-3 text-white mx-1 cursor-pointer"
-                      >
-                        ویرایش
-                      </button>
-                    </div>
-                  </div>
-                ))}
+          {isLoadingGetData ? (
+            <div className="flex flex-col justify-center items-center h-[60vh]">
+              <HashLoader color="#b19276" size={80} />
+              <p className="mt-5 text-xl font-extrabold text-cognac-shade-3 animate-pulse">
+                ...loading
+              </p>
             </div>
-          )}
-
-          {/* desktop design */}
-          <div className="hidden lg:block">
-            <div className="lg:flex lg:items-center lg:justify-center">
+          ) : (
+            <div>
+              <h1 className="text-3xl mb-3 mt-10 mr-50">لیست دسته بندی ها</h1>
+              {/* mobile and tablet design */}
               {categories && (
-                <div className="rounded-lg p-5 mt-3 bg-white flex justify-center items-center mr-40">
-                  <table className="table-auto border-separate border-spacing-y-4">
-                    <thead>
-                      <tr>
-                        <th className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
-                          اسم
-                        </th>
-                        <th className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
-                          شماره
-                        </th>
-                        <th className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
-                          دسته بندی
-                        </th>
-                        <th className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
-                          شماره دسته بندی
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {categories
-                        .filter((category) => category.parentId !== null)
-                        .map((category) => (
-                          <tr key={category.id}>
-                            <td className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
-                              {category.slug}
-                            </td>
-                            <td className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
-                              {category.id}
-                            </td>
-                            <td className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
-                              {category.parent.slug}
-                            </td>
-                            <td className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
-                              {category.parent.id}
-                            </td>
+                <div className="space-y-4 lg:hidden mr-50 flex flex-wrap gap-2 justify-center items-center mb-5">
+                  {categories
+                    .filter((category) => category.parentId !== null)
+                    .map((category) => (
+                      <div
+                        key={category.id}
+                        className="p-4 rounded-lg bg-white shadow m-0"
+                      >
+                        <p className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
+                          {category.slug}
+                        </p>
+                        <p className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
+                          شماره :{category.id}
+                        </p>
+                        <p className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
+                          دسته بندی :{category.parent.slug}
+                        </p>
 
-                            <td className="px-8">
-                              <button
-                                onClick={() => {
-                                  setIsShowDeleteModal(true);
-                                  openModal();
-                                  setMainCategoryInfo(category);
-                                }}
-                                className="bg-cognac-primery rounded-xl p-3 text-white mx-3 cursor-pointer"
-                              >
-                                حذف
-                              </button>
-                              <button
-                                onClick={() => {
-                                  setIsShowEditModal(true);
-                                  openModal();
-                                  setNewSlug(category.slug);
-                                  setNewParentCategoryId(category.parentId);
-                                  setMainCategoryInfo(category);
-                                }}
-                                className="bg-cognac-primery rounded-xl p-3 text-white mx-3 cursor-pointer mr-8"
-                              >
-                                ویرایش
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                    </tbody>
-                  </table>
+                        <div className="flex flex-wrap gap-2 mt-4">
+                          <button
+                            onClick={() => {
+                              setIsShowDeleteModal(true);
+                              openModal();
+                              setMainCategoryInfo(category);
+                            }}
+                            className="bg-cognac-primery rounded-xl p-3 text-white mx-1 cursor-pointer"
+                          >
+                            حذف
+                          </button>
+                          <button
+                            onClick={() => {
+                              setIsShowEditModal(true);
+                              openModal();
+                              setNewSlug(category.slug);
+                              setNewParentCategoryId(category.parentId);
+                              setMainCategoryInfo(category);
+                            }}
+                            className="bg-cognac-primery rounded-xl p-3 text-white mx-1 cursor-pointer"
+                          >
+                            ویرایش
+                          </button>
+                        </div>
+                      </div>
+                    ))}
                 </div>
               )}
-            </div>
-          </div>
-          {isShowDeleteModal && (
-            <ActionModal
-              title={`ایا از حذف "${mainCategory.slug}" اطمینان دارید ؟`}
-              onCancel={deleteModalCancel}
-              onDelete={deleteCategory}
-            />
-          )}
-          {isShowEditModal && (
-            <EditModal
-              onSubmit={editCategory}
-              onCancel={() => {
-                setIsShowEditModal(false);
-                closeModal();
-              }}
-              isLoading={isLoading}
-            >
-              <div>
-                <label className="pr-2">عنوان جدید</label>
-                <div className="py-3 pl-6 pr-3 rounded-xl mb-3 text-black bg-cognac-tint-4">
-                  <input
-                    className="outline-none"
-                    type="text"
-                    placeholder="عنوان جدید را وارد کنید"
-                    value={newSlug}
-                    onChange={(e) => setNewSlug(e.target.value)}
-                  />
-                </div>
-                <label className="pr-2">شماره دسته بندی جدید</label>
-                <div className="py-3 pl-6 pr-3 rounded-xl mb-3 text-black bg-cognac-tint-4">
-                  <input
-                    className="outline-none"
-                    type="text"
-                    placeholder="شماره دسته بندی جدید را وارد کنید"
-                    value={newParentCategoryId}
-                    onChange={(e) => setNewParentCategoryId(e.target.value)}
-                  />
+
+              {/* desktop design */}
+              <div className="hidden lg:block">
+                <div className="lg:flex lg:items-center lg:justify-center">
+                  {categories && (
+                    <div className="rounded-lg p-5 mt-3 bg-white flex justify-center items-center mr-40">
+                      <table className="table-auto border-separate border-spacing-y-4">
+                        <thead>
+                          <tr>
+                            <th className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
+                              اسم
+                            </th>
+                            <th className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
+                              شماره
+                            </th>
+                            <th className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
+                              دسته بندی
+                            </th>
+                            <th className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
+                              شماره دسته بندی
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {categories
+                            .filter((category) => category.parentId !== null)
+                            .map((category) => (
+                              <tr key={category.id}>
+                                <td className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
+                                  {category.slug}
+                                </td>
+                                <td className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
+                                  {category.id}
+                                </td>
+                                <td className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
+                                  {category.parent.slug}
+                                </td>
+                                <td className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
+                                  {category.parent.id}
+                                </td>
+
+                                <td className="px-8">
+                                  <button
+                                    onClick={() => {
+                                      setIsShowDeleteModal(true);
+                                      openModal();
+                                      setMainCategoryInfo(category);
+                                    }}
+                                    className="bg-cognac-primery rounded-xl p-3 text-white mx-3 cursor-pointer"
+                                  >
+                                    حذف
+                                  </button>
+                                  <button
+                                    onClick={() => {
+                                      setIsShowEditModal(true);
+                                      openModal();
+                                      setNewSlug(category.slug);
+                                      setNewParentCategoryId(category.parentId);
+                                      setMainCategoryInfo(category);
+                                    }}
+                                    className="bg-cognac-primery rounded-xl p-3 text-white mx-3 cursor-pointer mr-8"
+                                  >
+                                    ویرایش
+                                  </button>
+                                </td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
                 </div>
               </div>
-            </EditModal>
+              {isShowDeleteModal && (
+                <ActionModal
+                  title={`ایا از حذف "${mainCategory.slug}" اطمینان دارید ؟`}
+                  onCancel={deleteModalCancel}
+                  onDelete={deleteCategory}
+                />
+              )}
+              {isShowEditModal && (
+                <EditModal
+                  onSubmit={editCategory}
+                  onCancel={() => {
+                    setIsShowEditModal(false);
+                    closeModal();
+                  }}
+                  isLoading={isLoading}
+                >
+                  <div>
+                    <label className="pr-2">عنوان جدید</label>
+                    <div className="py-3 pl-6 pr-3 rounded-xl mb-3 text-black bg-cognac-tint-4">
+                      <input
+                        className="outline-none"
+                        type="text"
+                        placeholder="عنوان جدید را وارد کنید"
+                        value={newSlug}
+                        onChange={(e) => setNewSlug(e.target.value)}
+                      />
+                    </div>
+                    <label className="pr-2">شماره دسته بندی جدید</label>
+                    <div className="py-3 pl-6 pr-3 rounded-xl mb-3 text-black bg-cognac-tint-4">
+                      <input
+                        className="outline-none"
+                        type="text"
+                        placeholder="شماره دسته بندی جدید را وارد کنید"
+                        value={newParentCategoryId}
+                        onChange={(e) => setNewParentCategoryId(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </EditModal>
+              )}
+            </div>
           )}
         </div>
       )}

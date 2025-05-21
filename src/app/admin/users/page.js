@@ -36,6 +36,9 @@ export default function page() {
     params.set("page", page);
     router.push(`?${params.toString()}`);
   };
+  useEffect(() => {
+      setCurrentPage(parseInt(searchParamsHook.get("page") || "1"));
+    }, [searchParamsHook]);
 
   const editUser = async () => {
     try {

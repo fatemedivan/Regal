@@ -54,7 +54,9 @@ export default function Products({ allProducts, totalProductsPages }) {
     params.set("page", "1");
     router.push(`?${params.toString()}`);
   };
-
+  useEffect(() => {
+    setCurrentPage(parseInt(searchParamsHook.get("page") || "1"));
+  }, [searchParamsHook]);
   return (
     <div>
       <Breadcrumb

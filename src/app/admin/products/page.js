@@ -28,6 +28,9 @@ export default function Page() {
     params.set("page", page);
     router.push(`?${params.toString()}`);
   };
+  useEffect(() => {
+    setCurrentPage(parseInt(searchParamsHook.get("page") || "1"));
+  }, [searchParamsHook]);
 
   const getProducts = async () => {
     try {

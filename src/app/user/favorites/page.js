@@ -11,6 +11,7 @@ export default function Page() {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const [isHadFavourite, setIsHadFavourite] = useState(true);
   const [isOpenSort, setIsOpenSort] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedOptionSort, setSelectedOptionSort] = useState("");
   const [token, setToken] = useState("");
   const [favoriteProductes, setFavoriteProductes] = useState([]);
@@ -46,6 +47,8 @@ export default function Page() {
       }
     } catch (error) {
       toast.error("خطایی رخ داد");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -53,7 +56,7 @@ export default function Page() {
     if (token) {
       getFavoriteProducts();
     }
-  }, [token,getFavoriteProducts]);
+  }, [token]);
 
   const disLikeProduct = async (id) => {
     try {
@@ -129,20 +132,30 @@ export default function Page() {
           )}
         </div>
         {isHadFavourite ? (
-          <div className="flex flex-wrap gap-4">
-            {favoriteProductes &&
-              favoriteProductes.map((product) => (
-                <FavouriteProduct
-                  key={product.id}
-                  id={product.id}
-                  img={"/img/product-off-1.png"}
-                  title={product.title}
-                  finalPrice={product.latestPrice}
-                  isMore={false}
-                  colors={product.ProductColor.map((item) => item.color)}
-                  disLikeProduct={disLikeProduct}
-                />
-              ))}
+          <div>
+            {isLoading ? (
+              <div className="mt-4 flex items-center flex-wrap gap-4 lg:hidden">
+                {favoriteProductes.map((product) => (
+                  <ProductSceleton key={product.id} />
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-wrap gap-4">
+                {favoriteProductes &&
+                  favoriteProductes.map((product) => (
+                    <FavouriteProduct
+                      key={product.id}
+                      id={product.id}
+                      img={"/img/product-off-1.png"}
+                      title={product.title}
+                      finalPrice={product.latestPrice}
+                      isMore={false}
+                      colors={product.ProductColor.map((item) => item.color)}
+                      disLikeProduct={disLikeProduct}
+                    />
+                  ))}
+              </div>
+            )}
           </div>
         ) : (
           <div className="flex flex-col justify-center items-center gap-6 mt-28">
@@ -168,20 +181,30 @@ export default function Page() {
       <div className="hidden lg:block">
         <UserPannel rout={"favorites"}>
           {isHadFavourite ? (
-            <div className="w-full flex flex-wrap gap-4 my-6">
-              {favoriteProductes &&
-                favoriteProductes.map((product) => (
-                  <FavouriteProduct
-                    key={product.id}
-                    id={product.id}
-                    img={"/img/product-off-1.png"}
-                    title={product.title}
-                    finalPrice={product.lastPrice}
-                    isMore={false}
-                    colors={product.ProductColor.map((item) => item.color)}
-                    disLikeProduct={disLikeProduct}
-                  />
-                ))}
+            <div>
+              {isLoading ? (
+                <div className="mt-6 flex items-center flex-wrap gap-6">
+                  {favoriteProductes.map((product) => (
+                    <ProductSceleton key={product.id} />
+                  ))}
+                </div>
+              ) : (
+                <div className="w-full flex flex-wrap gap-4 my-6">
+                  {favoriteProductes &&
+                    favoriteProductes.map((product) => (
+                      <FavouriteProduct
+                        key={product.id}
+                        id={product.id}
+                        img={"/img/product-off-1.png"}
+                        title={product.title}
+                        finalPrice={product.lastPrice}
+                        isMore={false}
+                        colors={product.ProductColor.map((item) => item.color)}
+                        disLikeProduct={disLikeProduct}
+                      />
+                    ))}
+                </div>
+              )}
             </div>
           ) : (
             <div className="flex flex-col justify-center items-center gap-8 my-12.5">

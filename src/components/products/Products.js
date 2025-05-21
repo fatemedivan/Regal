@@ -8,6 +8,7 @@ import Sort from "./Sort";
 import Breadcrumb from "../common/Breadcrumb";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
 import FilterMenu from "@/components/products/FilterMenu";
+import ProductSceleton from "../common/ProductSceleton";
 
 export default function Products({ allProducts, totalProductsPages }) {
   const router = useRouter();
@@ -17,6 +18,7 @@ export default function Products({ allProducts, totalProductsPages }) {
   const pageParam = parseInt(searchParamsHook.get("page") || "1");
   const [isOpenFilterMenu, setIsOpenFilterMenu] = useState(false);
   const [isOpenSort, setIsOpenSort] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedOption, setSelectedOption] = useState({});
   const [currentPage, setCurrentPage] = useState(pageParam);
   const [searchValue, setSearchValue] = useState("");
@@ -28,6 +30,14 @@ export default function Products({ allProducts, totalProductsPages }) {
     { id: 3, title: "ارزان‌ترین", value: "cheapest" },
     { id: 4, title: "گران‌ترین", value: "expensive" },
   ];
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, [searchParamsHook]);
 
   const totalPages = totalProductsPages || 1;
   const notFound = products.length === 0;
@@ -59,8 +69,6 @@ export default function Products({ allProducts, totalProductsPages }) {
     setCurrentPage(parseInt(searchParamsHook.get("page") || "1"));
   }, [searchParamsHook]);
 
-  console.log(products);
-  
   return (
     <div>
       <Breadcrumb
@@ -156,26 +164,33 @@ export default function Products({ allProducts, totalProductsPages }) {
                 </div>
               </>
             )}
-
-            <div className="flex flex-wrap gap-4 lg:hidden">
-              {products.length > 0 &&
-                products.map((product,index) => (
-                  <ProductItemOff
-                    key={product.id}
-                    id={product.id}
-                    img={"/img/category-page-2.png"}
-                    offPercent={product.discount}
-                    title={product.title}
-                    price={Math.round(
-                      product.latestPrice / (1 - product.discount / 100)
-                    )}
-                    finalPrice={product.latestPrice}
-                    colors={product.ProductColor}
-                    favorites={product.Favorite}
-                  />
+            {!isLoading ? (
+              <div className="flex flex-wrap gap-4 lg:hidden">
+                {products.length > 0 &&
+                  products.map((product) => (
+                    <ProductItemOff
+                      key={product.id}
+                      id={product.id}
+                      img={"/img/category-page-2.png"}
+                      offPercent={product.discount}
+                      title={product.title}
+                      price={Math.round(
+                        product.latestPrice / (1 - product.discount / 100)
+                      )}
+                      finalPrice={product.latestPrice}
+                      colors={product.ProductColor}
+                      favorites={product.Favorite}
+                    />
+                  ))}
+              </div>
+            ) : (
+              <div className="mt-6  flex items-center flex-wrap gap-4 lg:hidden">
+                {products.map((product) => (
+                  <ProductSceleton key={product.id} />
                 ))}
-                
-            </div>
+              </div>
+            )}
+
             <div className="hidden lg:flex justify-between gap-6">
               <div>
                 <h5 className="text-xl font-bold leading-6.5 text-neutral-gray-13 mb-12">
@@ -251,24 +266,33 @@ export default function Products({ allProducts, totalProductsPages }) {
                     محصولی یافت نشد
                   </div>
                 )}
-                <div className="flex items-center 2xl:justify-between flex-wrap gap-x-6 gap-y-8 mt-6">
-                  {products.length > 0 &&
-                    products.map((product,index) => (
-                      <ProductItemOff
-                        key={product.id}
-                        id={product.id}
-                        img={"/img/category-page-2.png"}
-                        offPercent={product.discount}
-                        title={product.title}
-                        price={Math.round(
-                          product.latestPrice / (1 - product.discount / 100)
-                        )}
-                        finalPrice={product.latestPrice}
-                        colors={product.ProductColor}
-                        favorites={product.Favorite}
-                      />
+                {!isLoading ? (
+                  <div className="flex items-center 2xl:justify-between flex-wrap gap-x-6 gap-y-8 mt-6">
+                    {products.length > 0 &&
+                      products.map((product) => (
+                        <ProductItemOff
+                          key={product.id}
+                          id={product.id}
+                          img={"/img/category-page-2.png"}
+                          offPercent={product.discount}
+                          title={product.title}
+                          price={Math.round(
+                            product.latestPrice / (1 - product.discount / 100)
+                          )}
+                          finalPrice={product.latestPrice}
+                          colors={product.ProductColor}
+                          favorites={product.Favorite}
+                        />
+                      ))}
+                  </div>
+                ) : (
+                  <div className="mt-8 flex items-center flex-wrap gap-6">
+                    {products.map((product) => (
+                      <ProductSceleton key={product.id} />
                     ))}
-                </div>
+                  </div>
+                )}
+
                 {!notFound && (
                   <Pagination
                     currentPage={currentPage}

@@ -162,7 +162,7 @@ export default function OffProducts({ discountedProducts }) {
                     )}
                     offPercent={product.discount}
                     isMore={false}
-                    colors={product.ProductColor.map((item) => item.color)}
+                    colors={product.ProductColor}
                     favorites={product.Favorite}
                   />
                 </li>

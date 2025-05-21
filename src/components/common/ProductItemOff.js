@@ -15,6 +15,7 @@ export default function ProductItemOff({
   colors,
   favorites,
 }) {
+  
   return (
     <>
       <div className="min-w-41.75 lg:min-w-79.5 relative">
@@ -79,8 +80,7 @@ export default function ProductItemOff({
                 </div>
               )}
               {colors.map((color) => (
-                <div
-                  key={color.id}
+                <div key={color.id}
                   style={{ backgroundColor: color.color }}
                   className={`w-5 h-5 rounded-sm`}
                 ></div>

@@ -8,6 +8,7 @@ import "@glidejs/glide/dist/css/glide.core.min.css";
 import { useParams, useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 import { useBasketContext } from "@/context/BasketContext";
+import { HashLoader } from "react-spinners";
 
 export default function Page() {
   const sizes = ["XS", "S", "M", "L", "XL", "2XL"];
@@ -24,10 +25,12 @@ export default function Page() {
   const [similarProducts, setSimilarProducts] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
   const [isExistProduct, setIsExistProduct] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const { addToCart } = useBasketContext();
   //get token
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
+    console.log("Stored token:", storedToken); 
     if (storedToken) {
       setToken(storedToken);
     }
@@ -53,7 +56,6 @@ export default function Page() {
         setCategoryId(data.categoryId);
         setCurrentImgSrc(data?.images?.[0]?.src);
         setIsExistProduct(true);
-        console.log(data);
 
         if (data.Favorite.length) {
           setIsLiked(true);
@@ -67,14 +69,24 @@ export default function Page() {
   }, [token]);
 
   useEffect(() => {
+    setIsLoading(true);
     const getSimilarProducts = async () => {
-      const res = await fetch(`${baseUrl}/products?categoryId=${categoryId}`, {
-        headers: headers,
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setSimilarProducts(data.products);
-        console.log("similar", data);
+      try {
+        const res = await fetch(
+          `${baseUrl}/products?categoryId=${categoryId}`,
+          {
+            headers: headers,
+          }
+        );
+        if (res.ok) {
+          const data = await res.json();
+          setSimilarProducts(data.products);
+          console.log("similar", data);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     };
     getSimilarProducts();
@@ -377,7 +389,7 @@ export default function Page() {
                 </div>
                 <div className="mb-4 lg:mb-6">
                   <p className="text-sm leading-6 mb-1 text-black">رنگ بندی:</p>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     {product.ProductColor &&
                       product.ProductColor.map((item) => (
                         <label
@@ -475,28 +487,34 @@ export default function Page() {
                 </div>
               </div>
 
-              <div className="glide" ref={glideRef}>
-                <div className="glide__track" data-glide-el="track">
-                  <ul className="glide__slides scroll-smooth">
-                    {similarProducts &&
-                      similarProducts.map((product) => (
-                        <li className="glide__slide">
-                          <ProductItemOff
-                            key={product.id}
-                            img={"/img/product-off-1.png"}
-                            title={product.title}
-                            finalPrice={product.latestPrice}
-                            isMore={false}
-                            colors={product.ProductColor.map(
-                              (item) => item.color
-                            )}
-                            id={product.id}
-                          />
-                        </li>
-                      ))}
-                  </ul>
+              {isLoading ? (
+                <div className="flex flex-col justify-center items-center h-[60vh]">
+                  <HashLoader color="#b19276" size={80} />
+                  <p className="mt-5 text-xl font-extrabold text-cognac-shade-3 animate-pulse">
+                    ...loading
+                  </p>
                 </div>
-              </div>
+              ) : (
+                <div className="glide" ref={glideRef}>
+                  <div className="glide__track" data-glide-el="track">
+                    <ul className="glide__slides scroll-smooth">
+                      {similarProducts &&
+                        similarProducts.map((product) => (
+                          <li key={product.id} className="glide__slide">
+                            <ProductItemOff
+                              img={"/img/product-off-1.png"}
+                              title={product.title}
+                              finalPrice={product.latestPrice}
+                              isMore={false}
+                              colors={product.ProductColor}
+                              id={product.id}
+                            />
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </>

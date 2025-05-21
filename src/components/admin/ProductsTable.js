@@ -6,7 +6,7 @@ import EditModal from "./EditModal";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
 import { toast, ToastContainer } from "react-toastify";
 
-export default function ProductsTable({ products, getProducts }) {
+export default function ProductsTable({ products, getProducts, loading }) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
   const [isShowEditModal, setIsShowEditModal] = useState(false);
@@ -90,10 +90,15 @@ export default function ProductsTable({ products, getProducts }) {
 
   return (
     <div>
+      {!loading && (!products || products.length === 0) && (
+        <div className="flex justify-center items-center mt-10 mr-50">
+          <ErrBox title={"محصولی"} />
+        </div>
+      )}
       <h1 className="text-3xl mb-3 mt-10 mr-50">لیست محصولات</h1>
       <ToastContainer autoClose={2000} className={"custom-toast-container"} />
       {/* mobile and tablet design */}
-      {products && products.length ? (
+      {products && (
         <div className="space-y-4 lg:hidden mr-50 flex flex-wrap gap-2 justify-center items-center mb-5">
           {products.map((product) => (
             <div
@@ -150,15 +155,12 @@ export default function ProductsTable({ products, getProducts }) {
             </div>
           ))}
         </div>
-      ) : (
-        <div className="flex justify-center items-center mt-10 mr-50">
-          <ErrBox title={"محصولی"} />
-        </div>
       )}
+
       {/* desktop design */}
       <div className="hidden lg:block">
         <div className="lg:flex lg:items-center lg:justify-center">
-          {products && products.length ? (
+          {products && (
             <div className="rounded-lg p-5 mt-3 bg-white flex justify-center items-center mr-40">
               <table>
                 <thead>
@@ -231,10 +233,6 @@ export default function ProductsTable({ products, getProducts }) {
                   ))}
                 </tbody>
               </table>
-            </div>
-          ) : (
-            <div className="lg:hidden flex justify-center items-center mt-10 mr-50">
-              <ErrBox title={"محصولی"} />
             </div>
           )}
         </div>

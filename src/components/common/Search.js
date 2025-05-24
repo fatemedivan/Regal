@@ -315,7 +315,11 @@ export default function Search({ handleCloseSearch }) {
 
                   <div
                     onClick={() => {
-                      router.push(`/products?search=${searchText}&page=1`);
+                      if (searchText) {
+                        router.push(`/products?search=${searchText}&page=1`); 
+                      }else{
+                        router.push('/products')
+                      }
                       handleCloseSearch();
                       closeModal();
                     }}

@@ -175,22 +175,6 @@ export default function Page() {
                   "تایید"
                 )}
               </button>
-              <div className="border-t border-neutral-gray-4 relative mt-6 w-full">
-                <span className="bg-white px-2 text-sm leading-6 text-neutral-gray-7 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 lg:text-[1rem] lg:leading-7">
-                  یا
-                </span>
-              </div>
-              <button className="flex items-center justify-center border border-cognac-primery gap-2 rounded-lg py-3.25 px-20 mt-6 cursor-pointer w-full lg:py-3.75">
-                <Image
-                  width={16}
-                  height={16}
-                  src="/img/google-logo.svg"
-                  alt=""
-                />
-                <p className="text-cognac-primery leading-5.5 lg:text-lg lg:leading-6.5 cursor-pointer">
-                  ورود با گوگل
-                </p>
-              </button>
             </div>
           </div>
         </div>

@@ -37,7 +37,7 @@ export default function Page() {
     isValidPostalCode &&
     isValidDetail &&
     isValidFullAddress;
-  //AI
+    
   const [isFocused, setIsFocused] = useState({
     city: false,
     province: false,
@@ -183,7 +183,7 @@ export default function Page() {
         <textarea
           onChange={(e) => setFullAddress(e.target.value)}
           maxLength={255}
-          className="text-neutral-gray-11 text-sm leading-5 w-full resize-none outline-none"
+          className="text-neutral-gray-11 text-sm leading-5 w-full resize-none outline-non"
           defaultValue={fullAddress && fullAddress.slice(0.254)}
         />
         <p className="absolute right-4 -top-2 bg-white px-1 text-neutral-gray-7 text-xs leading-4.5">

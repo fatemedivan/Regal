@@ -19,8 +19,14 @@ export const AuthContextProvider = ({ children }) => {
   const [family, setFamily] = useState("");
   const [email, setEmail] = useState("");
   const [token, setToken] = useState("");
+  useEffect(()=>{
+    const storedToken = localStorage.getItem('token')
+    if (storedToken) {
+      setToken(storedToken)
+    }
+  },[])
   useEffect(() => {
-    setToken(localStorage.getItem("token"));
+    if (!token) return
     const getUser = async () => {
       const response = await fetch(`${baseUrl}/auth/me`, {
         headers: { Authorization: `Bearer ${token}` },

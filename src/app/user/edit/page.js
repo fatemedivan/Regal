@@ -10,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 export default function Page() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [emailAddress, setEmail] = useState("");
+  const [email, setEmail] = useState("");
   const [token, setToken] = useState("");
   const [isLoading, setIsLoaading] = useState(false);
   const [isBluredFirstName, setIsBluredFirstName] = useState(false);
@@ -18,20 +18,20 @@ export default function Page() {
   const [isBluredEmail, setIsBluredEmail] = useState(false);
   const router = useRouter();
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const emailAddressRegex = /^(?=.{1,64}$)[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const isValidEmail = emailAddressRegex.test(emailAddress);
+  const emailRegex = /^(?=.{1,64}$)[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const isValidEmail = emailRegex.test(email);
   const isValidFirstName = firstName.length >= 3 && firstName.length <= 32;
   const isValidLastName = lastName.length >= 3 && lastName.length <= 32;
   //AI
   const [isFocused, setIsFocused] = useState({
     firstName: false,
     lastName: false,
-    emailAddress: false,
+    email: false,
   });
   const floatLabel = (value, focus) =>
     value || focus ? "-top-2.5" : "top-4.5";
 
-  const { phoneNumber, name, family, email } = useAuthContext();
+  const { phoneNumber, name, family, email: userEmail  } = useAuthContext();
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -41,8 +41,8 @@ export default function Page() {
   useEffect(() => {
     name && setFirstName(name);
     family && setLastName(family);
-    email && setEmail(email);
-  }, [name, email, family]);
+    userEmail && setEmail(userEmail);
+  }, [name, userEmail, family]);
 
   const editUser = async () => {
     setIsLoaading(true);
@@ -52,7 +52,7 @@ export default function Page() {
         body: JSON.stringify({
           name: firstName,
           family: lastName,
-          emailAddress: emailAddress,
+          email: email,
         }),
         headers: {
           Authorization: `Bearer ${token}`,
@@ -60,10 +60,12 @@ export default function Page() {
         },
       });
       console.log("response : ", res);
-      if (!res.ok) {
-        toast.error(res.message);
-      } else {
+      if (res.ok) {
         toast.success("با موفقیت ذخیره شد");
+      } else {
+        const result = await res.json()
+        console.log(result);  
+        toast.error(result.message[0]);
       }
       setIsLoaading(false);
     } catch (error) {
@@ -197,15 +199,15 @@ export default function Page() {
           >
             <input
               type="text"
-              id="emailAddress"
+              id="email"
               dir="ltr"
               placeholder=" "
-              value={emailAddress}
+              value={email}
               onFocus={() =>
-                setIsFocused((prev) => ({ ...prev, emailAddress: true }))
+                setIsFocused((prev) => ({ ...prev, email: true }))
               }
               onBlur={() => {
-                setIsFocused((prev) => ({ ...prev, emailAddress: false }));
+                setIsFocused((prev) => ({ ...prev, email: false }));
                 setIsBluredEmail(true);
               }}
               onChange={(e) => {
@@ -214,10 +216,10 @@ export default function Page() {
               className="placeholder:text-transparent w-full outline-none text-neutral-gray-7"
             />
             <label
-              htmlFor="emailAddress"
+              htmlFor="email"
               className={`absolute right-4 bg-white px-1 text-xs text-neutral-gray-7 transition-all ${floatLabel(
-                emailAddress,
-                isFocused.emailAddress
+                email,
+                isFocused.email
               )}`}
             >
               آدرس ایمیل
@@ -356,17 +358,17 @@ export default function Page() {
                 <div className="relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg mb-4">
                   <input
                     type="text"
-                    id="emailAddress-desktop"
+                    id="email-desktop"
                     dir="ltr"
                     placeholder=" "
-                    value={emailAddress}
+                    value={email}
                     onFocus={() =>
-                      setIsFocused((prev) => ({ ...prev, emailAddress: true }))
+                      setIsFocused((prev) => ({ ...prev, email: true }))
                     }
                     onBlur={() => {
                       setIsFocused((prev) => ({
                         ...prev,
-                        emailAddress: false,
+                        email: false,
                       }));
                       setIsBluredEmail(true);
                     }}
@@ -376,10 +378,10 @@ export default function Page() {
                     className="placeholder:text-transparent w-full outline-none text-neutral-gray-7"
                   />
                   <label
-                    htmlFor="emailAddress-desktop"
+                    htmlFor="email-desktop"
                     className={`absolute right-4 bg-white px-1 text-xs text-neutral-gray-7 transition-all ${floatLabel(
-                      emailAddress,
-                      isFocused.emailAddress
+                      email,
+                      isFocused.email
                     )}`}
                   >
                     آدرس ایمیل

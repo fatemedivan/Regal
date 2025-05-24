@@ -20,7 +20,7 @@ export default function AdressCard({
   const [isOpenAddAddressModal, setIsOpenAddAddressModal] = useState(false);
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
   const [token, setToken] = useState("");
-  const { phoneNumber } = useAuthContext();
+  const { phoneNumber, name ,family } = useAuthContext();
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const handleCloseDeleteModal = () => {
     setIsOpenDeleteModal(false);
@@ -134,7 +134,7 @@ export default function AdressCard({
             alt=""
           />
           <p className="text-neutral-gray-13 text-xs leading-4.5 lg:text-sm lg:leading-5 lg:ml-2">
-            آرزو محمدعلیزاده
+            {name && name} {family && family}
           </p>
         </div>
         <div className="flex items-center gap-2">

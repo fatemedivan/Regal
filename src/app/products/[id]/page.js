@@ -30,7 +30,6 @@ export default function Page() {
   //get token
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
-    console.log("Stored token:", storedToken); 
     if (storedToken) {
       setToken(storedToken);
     }
@@ -44,6 +43,7 @@ export default function Page() {
 
   //get product
   useEffect(() => {
+    if (!token) return
     const getProduct = async () => {
       const res = await fetch(`${baseUrl}/products/${id}`, {
         headers: headers,
@@ -147,8 +147,11 @@ export default function Page() {
   }, [similarProducts]);
 
   const likeProduct = async (id) => {
+    console.log('token:',token);
+    
     if (!token) {
       toast.warning("باید ابتدا ثبت نام کنید");
+      return
     } else {
       try {
         const res = await fetch(`${baseUrl}/products/${id}/favorite`, {

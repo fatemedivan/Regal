@@ -15,23 +15,24 @@ export default function Page() {
   const [isHadAddress, setIsHadAddress] = useState(true);
   const [isOpenAddAddressModal, setIsOpenAddAddressModal] = useState(false);
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
+  const [selectedAddressId, setSelectedAddressId] = useState(null);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-   const { openModal, closeModal } = useScrollLockContext();
+  const { openModal, closeModal } = useScrollLockContext();
   const [token, setToken] = useState("");
   const [addresses, setAddresses] = useState([]);
 
   const handleCloseAddAddressModal = () => {
     setIsOpenAddAddressModal(false);
-    closeModal()
+    closeModal();
   };
   const handleOpenDetailsModal = () => {
     setIsOpenDetailsModal(true);
-    openModal()
+    openModal();
   };
   const handleCloseDetailsModal = () => {
+    getAddresses();
     setIsOpenDetailsModal(false);
-    getAddresses()
-    closeModal()
+    closeModal();
   };
 
   useEffect(() => {
@@ -51,7 +52,7 @@ export default function Page() {
   }, [token]);
 
   const getAddresses = async () => {
-    if (!token) return
+    if (!token) return;
     const res = await fetch(`${baseUrl}/user/addresses`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -94,6 +95,9 @@ export default function Page() {
                   isActive={false}
                   {...address}
                   getAddresses={getAddresses}
+                  id={address.id}
+                  selectedAddressId={selectedAddressId}
+                  setSelectedAddressId={setSelectedAddressId}
                 />
               </div>
             ))}
@@ -144,6 +148,9 @@ export default function Page() {
                     isActive={false}
                     {...address}
                     getAddresses={getAddresses}
+                    id={address.id}
+                    selectedAddressId={selectedAddressId}
+                    setSelectedAddressId={setSelectedAddressId}
                   />
                 </div>
               ))}
@@ -162,8 +169,8 @@ export default function Page() {
 
               <button
                 onClick={() => {
-                  setIsOpenAddAddressModal(true)
-                  openModal()
+                  setIsOpenAddAddressModal(true);
+                  openModal();
                 }}
                 className="bg-cognac-primery rounded-lg py-3.25 px-12 text-white leading-5.5 cursor-pointer"
               >

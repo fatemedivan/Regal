@@ -61,19 +61,7 @@ export default function Articles() {
         <h5 className="font-semibold leading-5 text-black lg:text-30 lg:leading-9.5 lg:font-bold">
           مقالات مد و استایل زنانه
         </h5>
-        <div className="flex justify-center items-center gap-2">
-          <a href="" className="text-sm leading-5 text-neutral-gray-11">
-            مشاهده همه
-          </a>
-          <Image
-            className="hidden lg:block cursor-pointer"
-            src="/img/arrow-left-4.svg"
-            alt=""
-            width={16}
-            height={16}
-            quality={100}
-          />
-        </div>
+        
       </div>
       <div className="glide mt-6 lg:mt-8" ref={glideRef}>
         <div className="glide__track" data-glide-el="track">

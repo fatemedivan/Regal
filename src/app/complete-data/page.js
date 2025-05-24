@@ -181,7 +181,7 @@ export default function Page() {
                     </div>
                     {addresses &&
                       addresses.map((address) => (
-                        <AdressCard key={address.id} {...address} selectedAddressId={selectedAddressId} setSelectedAddressId={setSelectedAddressId}/>
+                        <AdressCard key={address.id} {...address} selectedAddressId={selectedAddressId} setSelectedAddressId={setSelectedAddressId} id={address.id}/>
                       ))}
                   </>
                 ) : (

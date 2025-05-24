@@ -5,6 +5,7 @@ import Search from "@/components/common/Search";
 import Categories from "@/components/common/CategoriesMenu";
 import Link from "next/link";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
@@ -15,15 +16,14 @@ export default function Navbar() {
   };
   const handleCloseCategory = () => {
     setIsOpenCategory(false);
-    closeModal()
+    closeModal();
   };
   const handleCloseMenu = () => {
     setIsOpenMenu(false);
-    closeModal()
+    closeModal();
   };
 
-  const { isModalOpen, openModal, closeModal } =
-    useScrollLockContext();
+  const { isModalOpen, openModal, closeModal } = useScrollLockContext();
 
   return (
     <div>
@@ -49,7 +49,7 @@ export default function Navbar() {
             <li
               onClick={() => {
                 setIsOpenCategory(!isOpenCategory);
-                isModalOpen ? closeModal() : openModal()
+                isModalOpen ? closeModal() : openModal();
               }}
               className="flex justify-center items-center gap-2"
             >
@@ -75,9 +75,11 @@ export default function Navbar() {
                 alt=""
               />
             </li>
-            <li>
-              <p className="text-sm leading-5 cursor-pointer">تخفیف‌دار‌ها</p>
-            </li>
+            <Link href={"/products"}>
+              <li>
+                <p className="text-sm leading-5 cursor-pointer">تخفیف‌دار‌ها</p>
+              </li>
+            </Link>
             <li>
               <p className="text-sm leading-5 cursor-pointer">درباره ما</p>
             </li>
@@ -106,7 +108,7 @@ export default function Navbar() {
                 quality={100}
                 onClick={() => {
                   setIsSearching(true);
-                  openModal()
+                  openModal();
                   setIsOpenCategory(false);
                 }}
               />
@@ -118,7 +120,7 @@ export default function Navbar() {
                   setIsOpenMenu(false);
                   setIsSearching(false);
                   setIsOpenCategory(false);
-                  closeModal()
+                  closeModal();
                 }}
               >
                 <Image
@@ -135,7 +137,7 @@ export default function Navbar() {
                 className="p-3.5"
                 onClick={() => {
                   setIsOpenMenu(true);
-                  openModal()
+                  openModal();
                 }}
               >
                 <Image
@@ -151,30 +153,33 @@ export default function Navbar() {
           </ul>
           <ul className="hidden lg:flex justify-center items-center gap-1">
             <li className="p-3">
-              {isSearching ? <Image
-                className="cursor-pointer"
-                width={16}
-                height={16}
-                src="/img/Close Icon.svg"
-                alt=""
-                quality={100}
-                onClick={(e) => {
-                  setIsSearching(false)
-                }}
-              /> : <Image
-                className="cursor-pointer"
-                width={16}
-                height={16}
-                src="/img/search-normal.svg"
-                alt=""
-                quality={100}
-                onClick={(e) => {
-                  setIsSearching(true);
-                  setIsOpenCategory(false);
-                  setIsOpenMenu(false);
-                }}
-              />}
-              
+              {isSearching ? (
+                <Image
+                  className="cursor-pointer"
+                  width={16}
+                  height={16}
+                  src="/img/Close Icon.svg"
+                  alt=""
+                  quality={100}
+                  onClick={(e) => {
+                    setIsSearching(false);
+                  }}
+                />
+              ) : (
+                <Image
+                  className="cursor-pointer"
+                  width={16}
+                  height={16}
+                  src="/img/search-normal.svg"
+                  alt=""
+                  quality={100}
+                  onClick={(e) => {
+                    setIsSearching(true);
+                    setIsOpenCategory(false);
+                    setIsOpenMenu(false);
+                  }}
+                />
+              )}
             </li>
             <Link href={"/cart"}>
               <li className="p-3">
@@ -221,7 +226,7 @@ export default function Navbar() {
             className="fixed inset-0 bg-[#1E1E1E] opacity-50 z-40"
             onClick={() => {
               setIsOpenMenu(false);
-              closeModal()
+              closeModal();
             }}
           />
           <div className="fixed top-21.25 left-0 right-0  w-full bg-white px-5 pt-6 pb-10 text-neutral-gray-13 lg:hidden z-50">
@@ -229,7 +234,7 @@ export default function Navbar() {
               <div
                 onClick={() => {
                   setIsOpenMenu(false);
-                 closeModal
+                  closeModal;
                 }}
                 className="flex justify-between items-center pb-4 border-b-1 border-neutral-gray-4 cursor-pointer"
               >
@@ -246,7 +251,7 @@ export default function Navbar() {
             <div
               onClick={() => {
                 setIsOpenCategory(true);
-                openModal()
+                openModal();
               }}
               className="flex justify-between items-center pb-4 mt-4 border-b-1 border-neutral-gray-4 cursor-pointer"
             >
@@ -259,21 +264,26 @@ export default function Navbar() {
                 quality={100}
               />
             </div>
-            <div className="flex justify-between items-center pb-4 mt-4 border-b-1 border-neutral-gray-4 cursor-pointer">
-              <p className="text-sm leading-5">تخفیف‌دارها</p>
-              <Image
-                width={16}
-                height={16}
-                src="/img/arrow-left-3.svg"
-                alt=""
-                quality={100}
-              />
-            </div>
+            <Link href={"/products"}>
+              <div onClick={() => {
+                  setIsOpenMenu(false);
+                  closeModal();
+                }} className="flex justify-between items-center pb-4 mt-4 border-b-1 border-neutral-gray-4 cursor-pointer">
+                <p className="text-sm leading-5">تخفیف‌دارها</p>
+                <Image
+                  width={16}
+                  height={16}
+                  src="/img/arrow-left-3.svg"
+                  alt=""
+                  quality={100}
+                />
+              </div>
+            </Link>
             <Link href={"/cart"}>
               <div
                 onClick={() => {
                   setIsOpenMenu(false);
-                  closeModal()
+                  closeModal();
                 }}
                 className="flex justify-between items-center mt-4 cursor-pointer"
               >

@@ -7,6 +7,7 @@ import Image from "next/image";
 
 export default function Comments() {
   const glideRef = useRef(null);
+  const glideInstanceRef = useRef(null);
   const prevbtnRef = useRef(null);
   const nextbtnRef = useRef(null);
   useEffect(() => {
@@ -41,12 +42,7 @@ export default function Comments() {
       });
 
       glide.mount();
-      //AI
-      glideRef.current.glideInstance = glide;
-
-      return () => {
-        glide.destroy();
-      };
+      glideInstanceRef.current = glide;
     }
   }, []);
 
@@ -69,12 +65,11 @@ export default function Comments() {
             <br />
             ارزشمندترین دارایی ماست
           </h5>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 relative z-40">
             <div
               className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer"
               ref={prevbtnRef}
-              //AI
-              onClick={() => glideRef.current?.glideInstance?.go("<")}
+              onClick={() => glideInstanceRef.current?.go("<")}
             >
               <Image
                 width={16}
@@ -87,8 +82,7 @@ export default function Comments() {
             <div
               className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer"
               ref={nextbtnRef}
-              //AI
-              onClick={() => glideRef.current?.glideInstance?.go(">")}
+              onClick={() => glideInstanceRef.current?.go(">")}
             >
               <Image
                 width={16}

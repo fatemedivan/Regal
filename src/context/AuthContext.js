@@ -34,7 +34,7 @@ export const AuthContextProvider = ({ children }) => {
       }
     };
     getUser();
-  }, [token, phoneNumber, name, family, email]);
+  }, [token]);
 
   return (
     <AuthContext.Provider value={{ phoneNumber, name, family, email }}>

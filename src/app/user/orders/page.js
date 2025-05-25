@@ -13,15 +13,16 @@ export default function Page() {
   const router = useRouter();
   const [isHadOrders, setIsHadOrders] = useState(true);
   const [isOpenTypeOrder, setIsOpenTypeOrder] = useState(false);
+  const [allOrders, setAllOrders] = useState([]);
   const [orders, setOrders] = useState([]);
   const [selectedOrderType, setSelectedOrderType] = useState("همه");
-  const [selectedOrderTypeValue, setSelectedOrderTypeValue] = useState("all");
+  const [selectedOrderTypeValue, setSelectedOrderTypeValue] = useState("ALL");
   const [token, setToken] = useState("");
   const orderTypes = [
-    { label: "همه", value: "all" },
-    { label: "جاری", value: "current" },
-    { label: "تحویل شده", value: "delivered" },
-    { label: "مرجوع شده", value: "returned" },
+    { label: "همه", value: "ALL" },
+    { label: "جاری", value: "CURRENT" },
+    { label: "تحویل شده", value: "DELIVERED" },
+    { label: "مرجوع شده", value: "RETURNED" },
   ];
   const { isModalOpen, openModal, closeModal } = useScrollLockContext();
   useEffect(() => {
@@ -40,7 +41,10 @@ export default function Page() {
       console.log(res);
       if (res.ok) {
         const result = await res.json();
+        console.log(result);
+
         if (result.length) {
+          setAllOrders(result);
           setOrders(result);
           setIsHadOrders(true);
           console.log(result);
@@ -51,10 +55,20 @@ export default function Page() {
     };
     getOrders();
   }, [token]);
-  const filterOrders = ()=>{
-    setOrders(prevOrders => prevOrders.filter(order => order.status === selectedOrderTypeValue))
-  }
- 
+
+  useEffect(() => {
+    console.log(selectedOrderTypeValue);
+
+    if (selectedOrderTypeValue === "ALL") {
+      setOrders(allOrders);
+    } else {
+      const filtered = allOrders.filter(
+        (order) => order.status === selectedOrderTypeValue
+      );
+      setOrders(filtered);
+    }
+  }, [selectedOrderTypeValue, allOrders]);
+
   return (
     <>
       <div className="container mx-auto px-5 py-6 lg:hidden">
@@ -108,7 +122,7 @@ export default function Page() {
               />
             </div>
             <div>
-              {orders &&
+              {orders && orders.length ? (
                 orders.map((order) => (
                   <OrderDetailsCard
                     key={order.id}
@@ -122,7 +136,20 @@ export default function Page() {
                     amountPaid={order.amountPaid}
                     amountDiscount={order.amountDiscount}
                   />
-                ))}
+                ))
+              ) : (
+                <div className="flex flex-col justify-center items-center gap-6 my-10">
+                  <Image
+                    width={128}
+                    height={116}
+                    src="/img/order-not-found.svg"
+                    alt=""
+                  />
+                  <p className="text-sm leading-6 text-neutral-gray-9">
+                    هیچ سفارشی پیدا نشد
+                  </p>
+                </div>
+              )}
             </div>
           </>
         ) : (
@@ -178,19 +205,14 @@ export default function Page() {
                   className="cursor-pointer flex items-center justify-between mb-6"
                 >
                   <input
-                    type="checkbox"
+                    type="radio"
                     name="ordertype"
-                    value={selectedOrderType}
                     className="hidden peer"
                     onChange={() => {
                       setSelectedOrderType(type.label);
-                      setSelectedOrderTypeValue(type.value)
-                      filterOrders()
+                      setSelectedOrderTypeValue(type.value);
                     }}
-                    checked={
-                      selectedOrderType === "همه" ||
-                      selectedOrderType === type.label
-                    }
+                    checked={selectedOrderTypeValue === type.value}
                   />
                   <p className="text-neutral-gray-11 text-sm leading-5">
                     {type.label}
@@ -200,7 +222,7 @@ export default function Page() {
                      before:content-[''] before:absolute before:w-1.5 before:h-2.5 before:border-r-2 before:border-b-2 
                      before:border-neutral-gray-10 before:rotate-45 before:opacity-0 peer-checked:before:opacity-100 pb-1"
                   >
-                    {type.value === "all" && selectedOrderType !== "همه"
+                    {type.value === "ALL" && selectedOrderType !== "همه"
                       ? "ـــ"
                       : ""}
                   </div>
@@ -212,10 +234,10 @@ export default function Page() {
       )}
 
       <div className="hidden lg:block">
-        <UserPannel rout={"order"}>
+        <UserPannel rout={"order"} setSelectedOrderType={setSelectedOrderType} selectedOrderType={selectedOrderType} setSelectedOrderTypeValue={setSelectedOrderTypeValue} selectedOrderTypeValue={selectedOrderTypeValue} orderTypes={orderTypes}>
           {isHadOrders ? (
             <div className="my-6">
-              {orders &&
+              {orders && orders.length ? (
                 orders.map((order) => (
                   <OrderDetailsCardDesktop
                     key={order.id}
@@ -228,7 +250,20 @@ export default function Page() {
                     amountPaid={order.amountPaid}
                     amountDiscount={order.amountDiscount}
                   />
-                ))}
+                ))
+              ) : (
+                <div className="flex flex-col justify-center items-center gap-6 my-10">
+                  <Image
+                    width={128}
+                    height={116}
+                    src="/img/order-not-found.svg"
+                    alt=""
+                  />
+                  <p className="text-sm leading-6 text-neutral-gray-9">
+                    هیچ سفارشی پیدا نشد
+                  </p>
+                </div>
+              )}
             </div>
           ) : (
             <div className="flex flex-col justify-center items-center gap-8 my-12.5">

@@ -9,11 +9,20 @@ import DetailsModalAddAddress from "./DetailsModalAddAddress";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
 import { useAuthContext } from "@/context/AuthContext";
 
-export default function UserPannel({ children, rout, isHadAddress }) {
-  const router = useRouter()
+export default function UserPannel({
+  children,
+  rout,
+  isHadAddress,
+  setSelectedOrderType,
+  selectedOrderType,
+  setSelectedOrderTypeValue,
+  selectedOrderTypeValue,
+  orderTypes
+}) {
+  const router = useRouter();
   const pathname = usePathname();
   const [isShownOrderTypes, setIsShownOrderTypes] = useState(false);
-  const [selectedOrderType, setSelectedOrderType] = useState("همه");
+
   const [isOpenSort, setIsOpenSort] = useState(false);
   const [selectedOptionSort, setSelectedOptionSort] = useState("");
   const [isOpenLogoutModal, setIsOpenLogoutModal] = useState(false);
@@ -22,38 +31,33 @@ export default function UserPannel({ children, rout, isHadAddress }) {
 
   const handleCloseAddAddressModal = () => {
     setIsOpenAddAddressModal(false);
-    openModal()
+    openModal();
   };
   const handleOpenDetailsModal = () => {
     setIsOpenDetailsModal(true);
-   openModal()
+    openModal();
   };
   const handleCloseDetailsModal = () => {
     setIsOpenDetailsModal(false);
-    closeModal()
+    closeModal();
   };
 
   const handleCloseLogoutModal = () => {
     setIsOpenLogoutModal(false);
-    closeModal()
+    closeModal();
   };
   const handleLogout = () => {
-    localStorage.removeItem('token')
-    sessionStorage.removeItem('full address')
-    sessionStorage.removeItem('address')
-    document.cookie = `token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC`
-    router.push('/auth/sign-up')
+    localStorage.removeItem("token");
+    sessionStorage.removeItem("full address");
+    sessionStorage.removeItem("address");
+    document.cookie = `token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC`;
+    router.push("/auth/sign-up");
     setIsOpenLogoutModal(false);
-   closeModal()
+    closeModal();
   };
-  const orderTypes = [
-    { label: "همه", value: "all" },
-    { label: "جاری", value: "active" },
-    { label: "تحویل شده", value: "delivered" },
-    { label: "مرجوع شده", value: "returned" },
-  ];
-   const { isModalOpen, openModal, closeModal } = useScrollLockContext();
-     const {phoneNumber} = useAuthContext()
+  const { openModal, closeModal } = useScrollLockContext();
+  const { phoneNumber } = useAuthContext();
+
   return (
     <div className="container mx-auto pt-8 px-5 pb-66.5 lg:px-12 lg:pt-12 lg:pb-22 lg:flex lg:gap-4">
       <div className="xl:min-w-79.5">
@@ -178,8 +182,9 @@ export default function UserPannel({ children, rout, isHadAddress }) {
             </div>
           </Link>
           <div
-            onClick={() => {setIsOpenLogoutModal(true)
-              openModal()
+            onClick={() => {
+              setIsOpenLogoutModal(true);
+              openModal();
             }}
             className="flex items-center gap-2 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:mb-0  lg:rounded-lg lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer"
           >
@@ -251,17 +256,14 @@ export default function UserPannel({ children, rout, isHadAddress }) {
                       className="cursor-pointer flex items-center justify-between mb-6"
                     >
                       <input
-                        type="checkbox"
+                        type="radio"
                         name="ordertype"
-                        value={selectedOrderType}
                         className="hidden peer"
                         onChange={() => {
                           setSelectedOrderType(type.label);
+                          setSelectedOrderTypeValue(type.value);
                         }}
-                        checked={
-                          selectedOrderType === "همه" ||
-                          selectedOrderType === type.label
-                        }
+                        checked={selectedOrderTypeValue === type.value}
                       />
                       <p className="text-neutral-gray-11 text-sm leading-5">
                         {type.label}
@@ -271,7 +273,7 @@ export default function UserPannel({ children, rout, isHadAddress }) {
                                    before:content-[''] before:absolute before:w-1.5 before:h-2.5 before:border-r-2 before:border-b-2 
                                    before:border-neutral-gray-10 before:rotate-45 before:opacity-0 peer-checked:before:opacity-100 pb-1"
                       >
-                        {type.value === "all" && selectedOrderType !== "همه"
+                        {type.value === "ALL" && selectedOrderType !== "همه"
                           ? "ـــ"
                           : ""}
                       </div>
@@ -322,9 +324,13 @@ export default function UserPannel({ children, rout, isHadAddress }) {
           ) : rout === "addresses" ? (
             <div>
               {isHadAddress && (
-                <div onClick={()=> {setIsOpenAddAddressModal(true)
-                  openModal()
-                }} className="flex items-center gap-2 px-6 py-3.25 cursor-pointer">
+                <div
+                  onClick={() => {
+                    setIsOpenAddAddressModal(true);
+                    openModal();
+                  }}
+                  className="flex items-center gap-2 px-6 py-3.25 cursor-pointer"
+                >
                   <Image
                     width={20}
                     height={20}

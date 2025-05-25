@@ -1,5 +1,4 @@
 import { useAuthContext } from "@/context/AuthContext";
-import { useScrollLockContext } from "@/context/ScrollLockContext";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
@@ -100,6 +99,24 @@ export default function DetailsModalAddAddress({ handleCloseModal }) {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!token && !addressId) return;
+    const getAddress = async () => {
+      const res = await fetch(`${baseUrl}/user/addresses/${addressId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log(res);
+      const data = await res.json();
+      if (data) {
+        setProvince(data.province || "");
+        setCity(data.city || "");
+        setDetails(data.detail || "");
+        setPostalCode(data.postalCode || "");
+      }
+    };
+    getAddress();
+  }, [token]);
 
   const iranProvinces = [
     "آذربایجان شرقی",

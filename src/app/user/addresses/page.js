@@ -1,5 +1,4 @@
 "use client";
-import DetailsModal from "@/components/common/DetailsModal";
 import AdressCard from "@/components/completeData/AdressCard";
 import AddAddressModal from "@/components/user/AddAddressModal";
 import DetailsModalAddAddress from "@/components/user/DetailsModalAddAddress";
@@ -60,7 +59,7 @@ export default function Page() {
     closeModal();
   };
   const handleCloseAddAddressModal = () => {
-    getAddresses()
+    getAddresses();
     setIsOpenAddAddressModal(false);
     closeModal();
   };
@@ -68,7 +67,11 @@ export default function Page() {
     setIsOpenDetailsModal(true);
     openModal();
   };
-
+  useEffect(() => {
+    if (selectedAddressId) {
+      sessionStorage.setItem("addressId", selectedAddressId);
+    }
+  }, [selectedAddressId]);
   return (
     <>
       <div className="container mx-auto px-5 py-6 lg:hidden">
@@ -95,7 +98,6 @@ export default function Page() {
                   {...address}
                   getAddresses={getAddresses}
                   id={address.id}
-                  selectedAddressId={selectedAddressId}
                   setSelectedAddressId={setSelectedAddressId}
                 />
               </div>
@@ -148,7 +150,6 @@ export default function Page() {
                     {...address}
                     getAddresses={getAddresses}
                     id={address.id}
-                    selectedAddressId={selectedAddressId}
                     setSelectedAddressId={setSelectedAddressId}
                   />
                 </div>

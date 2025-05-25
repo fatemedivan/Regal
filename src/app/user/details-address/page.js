@@ -12,8 +12,6 @@ export default function Page() {
   const [province, setProvince] = useState("");
   const [details, setDetails] = useState("");
   const [postalCode, setPostalCode] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [fullAddress, setFullAddress] = useState("");
   const [token, setToken] = useState("");
   const [addressId, setAddressId] = useState(null);
@@ -183,7 +181,7 @@ export default function Page() {
         <textarea
           onChange={(e) => setFullAddress(e.target.value)}
           maxLength={255}
-          className="text-neutral-gray-11 text-sm leading-5 w-full resize-none outline-non"
+          className="text-neutral-gray-11 text-sm leading-5 w-full resize-none outline-none"
           defaultValue={fullAddress && fullAddress.slice(0.254)}
         />
         <p className="absolute right-4 -top-2 bg-white px-1 text-neutral-gray-7 text-xs leading-4.5">
@@ -196,19 +194,6 @@ export default function Page() {
         </p>
       )}
 
-      <Link href={"/user/add-address"}>
-        <div className="flex gap-2 items-center mt-4.5 cursor-pointer">
-          <p className="text-cognac-primery text-sm leading-5">
-            اصلاح آدرس روی نقشه
-          </p>
-          <Image
-            width={16}
-            height={16}
-            src="/img/arrow-left-primery.svg"
-            alt=""
-          />
-        </div>
-      </Link>
       <div className="mt-6.5">
         <div className="relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg mb-4">
           <input
@@ -351,69 +336,6 @@ export default function Page() {
             کد پستی باید حداقل ۶ و حداکثر ۱۰ حرف انگلیسی باشد
           </p>
         )}
-        <div className="flex items-center gap-2 mt-6 mb-4">
-          <label className="relative">
-            <input type="checkbox" className="peer hidden" />
-            <div className='w-5 h-5 rounded-sm border border-neutral-gray-5 relative flex items-center justify-center cursor-pointer before:content-[""] before:absolute before:w-1.5 before:h-2.5 before:border-r-2 before:border-b-2 before:border-neutral-gray-10 before:rotate-45 before:opacity-0 peer-checked:before:opacity-100'></div>
-          </label>
-          <p className="text-neutral-gray-13 text-sm leading-6">
-            گیرنده سفارش خودم هستم
-          </p>
-        </div>
-        <div className="relative border border-neutral-gray-4 rounded-lg mb-4">
-          <input
-            type="text"
-            id="firstName-desktop"
-            placeholder=" "
-            value={firstName}
-            onFocus={() =>
-              setIsFocused((prev) => ({ ...prev, firstname: true }))
-            }
-            onBlur={() =>
-              setIsFocused((prev) => ({ ...prev, firstname: false }))
-            }
-            onChange={(e) => {
-              setFirstName(e.target.value);
-            }}
-            className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent px-4 py-3.25 focus:bg-neutral-gray-2"
-          />
-          <label
-            htmlFor="firstName-desktop"
-            className={`absolute right-4 bg-transparent px-1 text-xs text-neutral-gray-7 transition-all ${floatLabel(
-              firstName,
-              isFocused.firstname
-            )}`}
-          >
-            نام گیرنده
-          </label>
-        </div>
-        <div className="relative border border-neutral-gray-4 rounded-lg mb-4">
-          <input
-            type="text"
-            id="lastName-desktop"
-            placeholder=" "
-            value={lastName}
-            onFocus={() =>
-              setIsFocused((prev) => ({ ...prev, lastname: true }))
-            }
-            onBlur={() =>
-              setIsFocused((prev) => ({ ...prev, lastname: false }))
-            }
-            onChange={(e) => {
-              setLastName(e.target.value);
-            }}
-            className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent px-4 py-3.25 focus:bg-neutral-gray-2"
-          />
-          <label
-            htmlFor="lastName-desktop"
-            className={`absolute right-4 bg-transparent px-1 text-xs text-neutral-gray-7 transition-all ${floatLabel(
-              lastName,
-              isFocused.lastname
-            )}`}
-          >
-            نام خانوادگی گیرنده
-          </label>
-        </div>
         <div className="relative border border-neutral-gray-4 rounded-lg flex mb-4">
           <div className="w-full outline-none py-3.75 px-4 bg-neutral-gray-2 text-neutral-gray-7 text-left">
             {phoneNumber}

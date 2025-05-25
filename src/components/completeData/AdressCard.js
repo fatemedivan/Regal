@@ -105,6 +105,7 @@ export default function AdressCard({
           <Image
             onClick={() => {
               setIsOpenDetailsModal(true);
+              setSelectedAddressId(id)
               openModal();
             }}
             width={24}

@@ -21,20 +21,6 @@ export default function Page() {
   const [token, setToken] = useState("");
   const [addresses, setAddresses] = useState([]);
 
-  const handleCloseAddAddressModal = () => {
-    setIsOpenAddAddressModal(false);
-    closeModal();
-  };
-  const handleOpenDetailsModal = () => {
-    setIsOpenDetailsModal(true);
-    openModal();
-  };
-  const handleCloseDetailsModal = () => {
-    getAddresses();
-    setIsOpenDetailsModal(false);
-    closeModal();
-  };
-
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
@@ -52,7 +38,6 @@ export default function Page() {
   }, [token]);
 
   const getAddresses = async () => {
-    if (!token) return;
     const res = await fetch(`${baseUrl}/user/addresses`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -68,6 +53,19 @@ export default function Page() {
     if (res.status === 404) {
       setIsHadAddress(false);
     }
+  };
+  const handleCloseDetailsModal = () => {
+    getAddresses();
+    setIsOpenDetailsModal(false);
+    closeModal();
+  };
+  const handleCloseAddAddressModal = () => {
+    setIsOpenAddAddressModal(false);
+    closeModal();
+  };
+  const handleOpenDetailsModal = () => {
+    setIsOpenDetailsModal(true);
+    openModal();
   };
 
   return (

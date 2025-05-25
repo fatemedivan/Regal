@@ -15,10 +15,11 @@ export default function Page() {
   const [isOpenTypeOrder, setIsOpenTypeOrder] = useState(false);
   const [orders, setOrders] = useState([]);
   const [selectedOrderType, setSelectedOrderType] = useState("همه");
+  const [selectedOrderTypeValue, setSelectedOrderTypeValue] = useState("all");
   const [token, setToken] = useState("");
   const orderTypes = [
     { label: "همه", value: "all" },
-    { label: "جاری", value: "active" },
+    { label: "جاری", value: "current" },
     { label: "تحویل شده", value: "delivered" },
     { label: "مرجوع شده", value: "returned" },
   ];
@@ -50,6 +51,10 @@ export default function Page() {
     };
     getOrders();
   }, [token]);
+  const filterOrders = ()=>{
+    setOrders(prevOrders => prevOrders.filter(order => order.status === selectedOrderTypeValue))
+  }
+ 
   return (
     <>
       <div className="container mx-auto px-5 py-6 lg:hidden">
@@ -179,6 +184,8 @@ export default function Page() {
                     className="hidden peer"
                     onChange={() => {
                       setSelectedOrderType(type.label);
+                      setSelectedOrderTypeValue(type.value)
+                      filterOrders()
                     }}
                     checked={
                       selectedOrderType === "همه" ||

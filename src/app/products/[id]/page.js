@@ -43,7 +43,7 @@ export default function Page() {
 
   //get product
   useEffect(() => {
-    if (!token) return
+    if (!token) return;
     const getProduct = async () => {
       const res = await fetch(`${baseUrl}/products/${id}`, {
         headers: headers,
@@ -52,6 +52,8 @@ export default function Page() {
 
       if (res.ok) {
         const data = await res.json();
+        console.log(data);
+        
         setProduct(data);
         setCategoryId(data.categoryId);
         setCurrentImgSrc(data?.images?.[0]?.src);
@@ -147,16 +149,18 @@ export default function Page() {
   }, [similarProducts]);
 
   const likeProduct = async (id) => {
-    console.log('token:',token);
-    
+    console.log("token:", token);
+
     if (!token) {
       toast.warning("باید ابتدا ثبت نام کنید");
-      return
+      return;
     } else {
       try {
         const res = await fetch(`${baseUrl}/products/${id}/favorite`, {
           method: "POST",
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
         if (res.ok) {
           setIsLiked(true);
@@ -191,7 +195,6 @@ export default function Page() {
     <>
       {isExistProduct ? (
         <>
-          {" "}
           <ToastContainer
             autoClose={2000}
             className={"custom-toast-container"}
@@ -273,7 +276,7 @@ export default function Page() {
                     <div className="p-3 border border-cognac-tint-8 rounded-lg">
                       {isLiked ? (
                         <Image
-                          onClick={() => disLikeProduct(id)}
+                          onClick={() => disLikeProduct(product.id)}
                           width={16}
                           height={16}
                           className="cursor-pointer"
@@ -283,7 +286,7 @@ export default function Page() {
                         />
                       ) : (
                         <Image
-                          onClick={() => likeProduct(id)}
+                          onClick={() => likeProduct(product.id)}
                           width={16}
                           height={16}
                           className="cursor-pointer"

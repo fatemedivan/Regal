@@ -23,7 +23,6 @@ export default function FilterMenuMobile({ handleCloseFilter, setProducts }) {
         "blue",
         "green",
         "black",
-        "white",
         "gray",
         "pink",
         "purple",

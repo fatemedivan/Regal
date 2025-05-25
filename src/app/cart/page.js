@@ -28,6 +28,7 @@ export default function Page() {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
       setToken(storedToken);
+      getCart();
     }
   }, []);
 
@@ -35,7 +36,9 @@ export default function Page() {
     try {
       const res = await fetch(`${baseUrl}/cart/${id}`, {
         method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
       console.log(res);
       if (res.ok) {
@@ -315,7 +318,7 @@ export default function Page() {
                             </div>
                           )}
                           <p className="text-neutral-gray-10 text-sm leading-6">
-                            {item.Entity.price.toLocaleString()} تومان
+                            {item.Entity.price.toLocaleString()}
                           </p>
                         </div>
                       </div>

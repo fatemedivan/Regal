@@ -15,7 +15,6 @@ export default function DetailsModalAddAddress({ handleCloseModal }) {
   const [addressId, setAddressId] = useState("");
   const [token, setToken] = useState("");
   const [isOpenProvince, setIsOpenProvince] = useState(false);
-  const [isEdited, setIsEdited] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -208,7 +207,6 @@ export default function DetailsModalAddAddress({ handleCloseModal }) {
                   }}
                   onChange={(e) => {
                     setCity(e.target.value);
-                    setIsEdited(true);
                   }}
                   className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent"
                 />
@@ -264,7 +262,6 @@ export default function DetailsModalAddAddress({ handleCloseModal }) {
                       onClick={() => {
                         setIsOpenProvince(false);
                         setProvince(option);
-                        setIsEdited(true);
                       }}
                       className="px-4 py-2 hover:bg-neutral-gray-2 cursor-pointer text-xs leading-4.5 text-neutral-gray-7"
                     >
@@ -293,7 +290,6 @@ export default function DetailsModalAddAddress({ handleCloseModal }) {
                   }}
                   onChange={(e) => {
                     setDetails(e.target.value);
-                    setIsEdited(true);
                   }}
                   className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent"
                 />
@@ -329,7 +325,6 @@ export default function DetailsModalAddAddress({ handleCloseModal }) {
                   }}
                   onChange={(e) => {
                     setPostalCode(e.target.value);
-                    setIsEdited(true);
                   }}
                   className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent"
                 />
@@ -375,7 +370,6 @@ export default function DetailsModalAddAddress({ handleCloseModal }) {
                 }
                 onChange={(e) => {
                   setFirstName(e.target.value);
-                  setIsEdited(true);
                 }}
                 className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent px-4 py-3.25 focus:bg-neutral-gray-2"
               />
@@ -403,7 +397,6 @@ export default function DetailsModalAddAddress({ handleCloseModal }) {
                 }
                 onChange={(e) => {
                   setLastName(e.target.value);
-                  setIsEdited(true);
                 }}
                 className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent px-4 py-3.25 focus:bg-neutral-gray-2"
               />

@@ -191,7 +191,7 @@ export default function Products({ allProducts, totalProductsPages }) {
               </div>
             )}
 
-            <div className="hidden lg:flex justify-between gap-6">
+            <div className="hidden lg:flex justify-between gap-6 mt-10">
               <div>
                 <h5 className="text-xl font-bold leading-6.5 text-neutral-gray-13 mb-12">
                   فیلترها
@@ -267,7 +267,7 @@ export default function Products({ allProducts, totalProductsPages }) {
                   </div>
                 )}
                 {!isLoading ? (
-                  <div className="flex items-center 2xl:justify-between flex-wrap gap-x-6 gap-y-8 mt-6">
+                  <div className="flex items-center flex-wrap gap-x-6 gap-y-8 mt-6 2xl:justify-between">
                     {products.length > 0 &&
                       products.map((product) => (
                         <ProductItemOff

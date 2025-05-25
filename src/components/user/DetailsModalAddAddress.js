@@ -9,8 +9,6 @@ export default function DetailsModalAddAddress({ handleCloseModal }) {
   const [province, setProvince] = useState("");
   const [details, setDetails] = useState("");
   const [postalCode, setPostalCode] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [fullAddress, setFullAddress] = useState("");
   const [addressId, setAddressId] = useState("");
   const [token, setToken] = useState("");
@@ -147,7 +145,6 @@ export default function DetailsModalAddAddress({ handleCloseModal }) {
       <div className="bg-white fixed left-0 z-60 w-165 max-h-max p-6 top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 bottom-auto rounded-2xl">
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center gap-2">
-            <Image width={24} height={24} src="/img/arrow-right-6.svg" alt="" />
             <p className=" text-black text-lg font-bold leading-5.5">
               جزئیات آدرس
             </p>
@@ -178,17 +175,6 @@ export default function DetailsModalAddAddress({ handleCloseModal }) {
               ادرس کامل باید حداقل ۳۲ و حداکثر۲۵۵ حرف باشد
             </p>
           )}
-          <div className="flex gap-2 items-center mt-2 cursor-pointer px-4 py-2.5">
-            <p className="text-cognac-primery text-sm leading-5">
-              اصلاح آدرس روی نقشه
-            </p>
-            <Image
-              width={16}
-              height={16}
-              src="/img/arrow-left-primery.svg"
-              alt=""
-            />
-          </div>
 
           <div className="flex items-center gap-4 mt-4">
             <div className="w-1/2 relative ">
@@ -345,74 +331,7 @@ export default function DetailsModalAddAddress({ handleCloseModal }) {
               )}
             </div>
           </div>
-          <div className="flex items-center gap-2 mt-6 mb-4">
-            <label className="relative">
-              <input type="checkbox" className="peer hidden" />
-              <div className='w-5 h-5 rounded-sm border border-neutral-gray-5 relative flex items-center justify-center cursor-pointer before:content-[""] before:absolute before:w-1.5 before:h-2.5 before:border-r-2 before:border-b-2 before:border-neutral-gray-10 before:rotate-45 before:opacity-0 peer-checked:before:opacity-100'></div>
-            </label>
-            <p className="text-neutral-gray-13 text-sm leading-5">
-              گیرنده سفارش خودم هستم
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2 mt-6 mb-4">
-            <div className="w-1/2 relative border border-neutral-gray-4 rounded-lg ">
-              <input
-                type="text"
-                id="firstName-desktop"
-                placeholder=" "
-                value={firstName}
-                onFocus={() =>
-                  setIsFocused((prev) => ({ ...prev, firstname: true }))
-                }
-                onBlur={() =>
-                  setIsFocused((prev) => ({ ...prev, firstname: false }))
-                }
-                onChange={(e) => {
-                  setFirstName(e.target.value);
-                }}
-                className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent px-4 py-3.25 focus:bg-neutral-gray-2"
-              />
-              <label
-                htmlFor="firstName-desktop"
-                className={`absolute right-4 bg-transparent px-1 text-xs text-neutral-gray-7 transition-all ${floatLabel(
-                  firstName,
-                  isFocused.firstname
-                )}`}
-              >
-                نام گیرنده
-              </label>
-            </div>
-            <div className="w-1/2 relative border border-neutral-gray-4 rounded-lg ">
-              <input
-                type="text"
-                id="lastName-desktop"
-                placeholder=" "
-                value={lastName}
-                onFocus={() =>
-                  setIsFocused((prev) => ({ ...prev, lastname: true }))
-                }
-                onBlur={() =>
-                  setIsFocused((prev) => ({ ...prev, lastname: false }))
-                }
-                onChange={(e) => {
-                  setLastName(e.target.value);
-                }}
-                className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent px-4 py-3.25 focus:bg-neutral-gray-2"
-              />
-              <label
-                htmlFor="lastName-desktop"
-                className={`absolute right-4 bg-transparent px-1 text-xs text-neutral-gray-7 transition-all ${floatLabel(
-                  lastName,
-                  isFocused.lastname
-                )}`}
-              >
-                نام خانوادگی گیرنده
-              </label>
-            </div>
-          </div>
-
-          <div className="w-75 relative border border-neutral-gray-4 rounded-lg flex mb-4">
+          <div className="w-75 relative border border-neutral-gray-4 rounded-lg flex mb-4 mt-5">
             <div className="w-full outline-none py-3.75 px-4 bg-neutral-gray-2 text-neutral-gray-7 text-left">
               {phoneNumber}
             </div>

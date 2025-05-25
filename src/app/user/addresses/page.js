@@ -60,6 +60,7 @@ export default function Page() {
     closeModal();
   };
   const handleCloseAddAddressModal = () => {
+    getAddresses()
     setIsOpenAddAddressModal(false);
     closeModal();
   };

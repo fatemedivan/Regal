@@ -234,7 +234,14 @@ export default function Page() {
       )}
 
       <div className="hidden lg:block">
-        <UserPannel rout={"order"} setSelectedOrderType={setSelectedOrderType} selectedOrderType={selectedOrderType} setSelectedOrderTypeValue={setSelectedOrderTypeValue} selectedOrderTypeValue={selectedOrderTypeValue} orderTypes={orderTypes}>
+        <UserPannel
+          rout={"order"}
+          setSelectedOrderType={setSelectedOrderType}
+          selectedOrderType={selectedOrderType}
+          setSelectedOrderTypeValue={setSelectedOrderTypeValue}
+          selectedOrderTypeValue={selectedOrderTypeValue}
+          orderTypes={orderTypes}
+        >
           {isHadOrders ? (
             <div className="my-6">
               {orders && orders.length ? (

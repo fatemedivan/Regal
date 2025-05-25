@@ -18,6 +18,7 @@ export const AuthContextProvider = ({ children }) => {
   const [name, setName] = useState("");
   const [family, setFamily] = useState("");
   const [email, setEmail] = useState("");
+  const [role, setRole] = useState('')
   const [token, setToken] = useState("");
   useEffect(()=>{
     const storedToken = localStorage.getItem('token')
@@ -37,13 +38,14 @@ export const AuthContextProvider = ({ children }) => {
         setName(result.name);
         setFamily(result.family);
         setEmail(result.email);
+        setRole(result.role)
       }
     };
     getUser();
   }, [token]);
 
   return (
-    <AuthContext.Provider value={{ phoneNumber, name, family, email }}>
+    <AuthContext.Provider value={{ phoneNumber, name, family, email, role }}>
       {children}
     </AuthContext.Provider>
   );

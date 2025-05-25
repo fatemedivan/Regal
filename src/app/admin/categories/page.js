@@ -174,7 +174,7 @@ export default function Page() {
                 className="outline-none w-full"
                 type="text"
                 placeholder="شماره زیردسته بندی محصول را بنویسید"
-                value={newParentCategoryId}
+                value={newParentCategoryId ? newParentCategoryId : ''}
                 onChange={(e) => setNewParentCategoryId(e.target.value)}
               />
             </div>
@@ -217,49 +217,48 @@ export default function Page() {
               {/* mobile and tablet design */}
               {categories && (
                 <div className="space-y-4 lg:hidden mr-50 flex flex-wrap gap-2 justify-center items-center mb-5">
-                  {categories
-                    .filter((category) => category.parentId !== null)
-                    .map((category) => (
-                      <div
-                        key={category.id}
-                        className="p-4 rounded-lg bg-white shadow m-0"
-                      >
-                        <p className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
-                          {category.slug}
-                        </p>
-                        <p className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
-                          شماره :{category.id}
-                        </p>
-                        <p className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
-                          دسته بندی :{category.parent.slug}
-                        </p>
+                  {categories.map((category) => (
+                    <div
+                      key={category.id}
+                      className="p-4 rounded-lg bg-white shadow m-0"
+                    >
+                      <p className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
+                        {category.slug}
+                      </p>
+                      <p className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
+                        شماره :{category.id}
+                      </p>
+                      <p className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
+                        دسته بندی :{" "}
+                        {category.parent?.slug ? category.parent.slug : "_"}
+                      </p>
 
-                        <div className="flex flex-wrap gap-2 mt-4">
-                          <button
-                            onClick={() => {
-                              setIsShowDeleteModal(true);
-                              openModal();
-                              setMainCategoryInfo(category);
-                            }}
-                            className="bg-cognac-primery rounded-xl p-3 text-white mx-1 cursor-pointer"
-                          >
-                            حذف
-                          </button>
-                          <button
-                            onClick={() => {
-                              setIsShowEditModal(true);
-                              openModal();
-                              setNewSlug(category.slug);
-                              setNewParentCategoryId(category.parentId);
-                              setMainCategoryInfo(category);
-                            }}
-                            className="bg-cognac-primery rounded-xl p-3 text-white mx-1 cursor-pointer"
-                          >
-                            ویرایش
-                          </button>
-                        </div>
+                      <div className="flex flex-wrap gap-2 mt-4">
+                        <button
+                          onClick={() => {
+                            setIsShowDeleteModal(true);
+                            openModal();
+                            setMainCategoryInfo(category);
+                          }}
+                          className="bg-cognac-primery rounded-xl p-3 text-white mx-1 cursor-pointer"
+                        >
+                          حذف
+                        </button>
+                        <button
+                          onClick={() => {
+                            setIsShowEditModal(true);
+                            openModal();
+                            setNewSlug(category.slug);
+                            setNewParentCategoryId(category.parentId);
+                            setMainCategoryInfo(category);
+                          }}
+                          className="bg-cognac-primery rounded-xl p-3 text-white mx-1 cursor-pointer"
+                        >
+                          ویرایش
+                        </button>
                       </div>
-                    ))}
+                    </div>
+                  ))}
                 </div>
               )}
 
@@ -286,49 +285,49 @@ export default function Page() {
                           </tr>
                         </thead>
                         <tbody>
-                          {categories
-                            .filter((category) => category.parentId !== null)
-                            .map((category) => (
-                              <tr key={category.id}>
-                                <td className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
-                                  {category.slug}
-                                </td>
-                                <td className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
-                                  {category.id}
-                                </td>
-                                <td className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
-                                  {category.parent.slug}
-                                </td>
-                                <td className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
-                                  {category.parent.id}
-                                </td>
+                          {categories.map((category) => (
+                            <tr key={category.id}>
+                              <td className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
+                                {category.slug}
+                              </td>
+                              <td className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
+                                {category.id}
+                              </td>
+                              <td className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
+                                {category.parent?.slug
+                                  ? category.parent.slug
+                                  : "_"}
+                              </td>
+                              <td className="pb-3 text-xs md:text-sm md:px-2 lg:text-lg lg:px-5">
+                                {category.parent?.id ? category.parent.id : "_"}
+                              </td>
 
-                                <td className="px-8">
-                                  <button
-                                    onClick={() => {
-                                      setIsShowDeleteModal(true);
-                                      openModal();
-                                      setMainCategoryInfo(category);
-                                    }}
-                                    className="bg-cognac-primery rounded-xl p-3 text-white mx-3 cursor-pointer"
-                                  >
-                                    حذف
-                                  </button>
-                                  <button
-                                    onClick={() => {
-                                      setIsShowEditModal(true);
-                                      openModal();
-                                      setNewSlug(category.slug);
-                                      setNewParentCategoryId(category.parentId);
-                                      setMainCategoryInfo(category);
-                                    }}
-                                    className="bg-cognac-primery rounded-xl p-3 text-white mx-3 cursor-pointer mr-8"
-                                  >
-                                    ویرایش
-                                  </button>
-                                </td>
-                              </tr>
-                            ))}
+                              <td className="px-8">
+                                <button
+                                  onClick={() => {
+                                    setIsShowDeleteModal(true);
+                                    openModal();
+                                    setMainCategoryInfo(category);
+                                  }}
+                                  className="bg-cognac-primery rounded-xl p-3 text-white mx-3 cursor-pointer"
+                                >
+                                  حذف
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    setIsShowEditModal(true);
+                                    openModal();
+                                    setNewSlug(category.slug);
+                                    setNewParentCategoryId(category.parentId);
+                                    setMainCategoryInfo(category);
+                                  }}
+                                  className="bg-cognac-primery rounded-xl p-3 text-white mx-3 cursor-pointer mr-8"
+                                >
+                                  ویرایش
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
                         </tbody>
                       </table>
                     </div>
@@ -362,16 +361,22 @@ export default function Page() {
                         onChange={(e) => setNewSlug(e.target.value)}
                       />
                     </div>
-                    <label className="pr-2">شماره دسته بندی جدید</label>
-                    <div className="py-3 pl-6 pr-3 rounded-xl mb-3 text-black bg-cognac-tint-4">
-                      <input
-                        className="outline-none"
-                        type="text"
-                        placeholder="شماره دسته بندی جدید را وارد کنید"
-                        value={newParentCategoryId}
-                        onChange={(e) => setNewParentCategoryId(e.target.value)}
-                      />
-                    </div>
+                    {newParentCategoryId && (
+                      <div>
+                        <label className="pr-2">شماره دسته بندی جدید</label>
+                        <div className="py-3 pl-6 pr-3 rounded-xl mb-3 text-black bg-cognac-tint-4">
+                          <input
+                            className="outline-none"
+                            type="text"
+                            placeholder="شماره دسته بندی جدید را وارد کنید"
+                            value={newParentCategoryId}
+                            onChange={(e) =>
+                              setNewParentCategoryId(e.target.value)
+                            }
+                          />
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </EditModal>
               )}

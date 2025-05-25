@@ -6,6 +6,7 @@ import Categories from "@/components/common/CategoriesMenu";
 import Link from "next/link";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
 import { useRouter } from "next/navigation";
+import { useAuthContext } from "@/context/AuthContext";
 
 export default function Navbar() {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
@@ -24,6 +25,7 @@ export default function Navbar() {
   };
 
   const { isModalOpen, openModal, closeModal } = useScrollLockContext();
+  const { role } = useAuthContext();
 
   return (
     <div>
@@ -87,7 +89,9 @@ export default function Navbar() {
 
           <ul className="flex justify-center items-center lg:hidden">
             <li className="p-3.5">
-              <Link href={"/user/profile"}>
+              <Link
+                href={role === "USER" ? "/user/profile" : "/admin/products"}
+              >
                 <Image
                   className="cursor-pointer"
                   width={16}
@@ -181,31 +185,36 @@ export default function Navbar() {
                 />
               )}
             </li>
-            <Link href={"/cart"}>
-              <li className="p-3">
-                <Image
-                  className="cursor-pointer"
-                  width={16}
-                  height={16}
-                  src="/img/shopping-cart.svg"
-                  alt=""
-                  quality={100}
-                />
-              </li>
-            </Link>
-            <Link href={"/user/favorites"}>
-              <li className="p-3">
-                <Image
-                  className="cursor-pointer"
-                  width={16}
-                  height={16}
-                  quality={100}
-                  src="/img/heart.svg"
-                  alt=""
-                />
-              </li>
-            </Link>
-            <Link href={"/user/profile"}>
+            {role === "USER" && (
+              <>
+                <Link href={"/cart"}>
+                  <li className="p-3">
+                    <Image
+                      className="cursor-pointer"
+                      width={16}
+                      height={16}
+                      src="/img/shopping-cart.svg"
+                      alt=""
+                      quality={100}
+                    />
+                  </li>
+                </Link>
+                <Link href={"/user/favorites"}>
+                  <li className="p-3">
+                    <Image
+                      className="cursor-pointer"
+                      width={16}
+                      height={16}
+                      quality={100}
+                      src="/img/heart.svg"
+                      alt=""
+                    />
+                  </li>
+                </Link>
+              </>
+            )}
+
+            <Link href={role === "USER" ? "/user/profile" : "/admin/products"}>
               <li className="p-3">
                 <Image
                   className="cursor-pointer"
@@ -221,7 +230,7 @@ export default function Navbar() {
         </div>
       </nav>
       {isOpenMenu && (
-        <>
+        <div>
           <div
             className="fixed inset-0 bg-[#1E1E1E] opacity-50 z-40"
             onClick={() => {
@@ -265,10 +274,13 @@ export default function Navbar() {
               />
             </div>
             <Link href={"/products"}>
-              <div onClick={() => {
+              <div
+                onClick={() => {
                   setIsOpenMenu(false);
                   closeModal();
-                }} className="flex justify-between items-center pb-4 mt-4 border-b-1 border-neutral-gray-4 cursor-pointer">
+                }}
+                className="flex justify-between items-center pb-4 mt-4 border-b-1 border-neutral-gray-4 cursor-pointer"
+              >
                 <p className="text-sm leading-5">تخفیف‌دارها</p>
                 <Image
                   width={16}
@@ -279,26 +291,28 @@ export default function Navbar() {
                 />
               </div>
             </Link>
-            <Link href={"/cart"}>
-              <div
-                onClick={() => {
-                  setIsOpenMenu(false);
-                  closeModal();
-                }}
-                className="flex justify-between items-center mt-4 cursor-pointer"
-              >
-                <p className="text-sm leading-5">سبد خرید</p>
-                <Image
-                  width={16}
-                  height={16}
-                  src="/img/arrow-left-3.svg"
-                  alt=""
-                  quality={100}
-                />
-              </div>
-            </Link>
+            {role === "USER" && (
+              <Link href={"/cart"}>
+                <div
+                  onClick={() => {
+                    setIsOpenMenu(false);
+                    closeModal();
+                  }}
+                  className="flex justify-between items-center mt-4 cursor-pointer"
+                >
+                  <p className="text-sm leading-5">سبد خرید</p>
+                  <Image
+                    width={16}
+                    height={16}
+                    src="/img/arrow-left-3.svg"
+                    alt=""
+                    quality={100}
+                  />
+                </div>
+              </Link>
+            )}
           </div>
-        </>
+        </div>
       )}
       {isSearching && <Search handleCloseSearch={handleCloseSearch} />}
       {isOpenCategory && (

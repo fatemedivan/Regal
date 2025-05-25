@@ -22,6 +22,8 @@ export default function Page() {
   const [product, setProduct] = useState({});
   const [currentImgSrc, setCurrentImgSrc] = useState("");
   const [categoryId, setCategoryId] = useState("");
+  const [slug, setSlug] = useState("");
+  const [parentCategory, setParentCategory] = useState("");
   const [similarProducts, setSimilarProducts] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
   const [isExistProduct, setIsExistProduct] = useState(true);
@@ -53,12 +55,13 @@ export default function Page() {
       if (res.ok) {
         const data = await res.json();
         console.log(data);
-        
+
         setProduct(data);
         setCategoryId(data.categoryId);
         setCurrentImgSrc(data?.images?.[0]?.src);
         setIsExistProduct(true);
-
+        setSlug(data.category.slug);
+        setParentCategory(data.category.parent.slug);
         if (data.Favorite.length) {
           setIsLiked(true);
         }
@@ -199,16 +202,16 @@ export default function Page() {
             autoClose={2000}
             className={"custom-toast-container"}
           />
-          {product.category?.name && (
+          {slug && parentCategory && (
             <Breadcrumb
               items={[
-                { label: "صفحه اصلی" },
-                { label: "دسته‌بندی محصولات" },
-                { label: product.category.name },
+                { label: parentCategory && parentCategory },
+                { label: slug && slug },
                 { label: product.title },
               ]}
             />
           )}
+
           <div className="mx-auto px-5 container">
             <div className="lg:flex gap-6 my-12">
               <div className="flex flex-col gap-4 lg:flex-row-reverse lg:gap-6">

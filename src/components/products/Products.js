@@ -71,14 +71,6 @@ export default function Products({ allProducts, totalProductsPages }) {
 
   return (
     <div>
-      <Breadcrumb
-        items={[
-          { label: "صفحه اصلی" },
-          { label: "دسته‌بندی محصولات" },
-          { label: "لباس مجلسی" },
-          { label: "لباس مجلسی میدی" },
-        ]}
-      />
       <div className="container mx-auto">
         {isOpenFilterMenu && (
           <div className="lg:hidden absolute top-0 left-0 right-0 bg-white z-50">

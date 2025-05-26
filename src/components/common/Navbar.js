@@ -90,7 +90,7 @@ export default function Navbar() {
           <ul className="flex justify-center items-center lg:hidden">
             <li className="p-3.5">
               <Link
-                href={role === "USER" ? "/user/profile" : "/admin/products"}
+                href={role === "ADMIN" ? "/admin/products" : "/user/profile"}
               >
                 <Image
                   className="cursor-pointer"
@@ -185,36 +185,33 @@ export default function Navbar() {
                 />
               )}
             </li>
-            {role === "USER" && (
-              <>
-                <Link href={"/cart"}>
-                  <li className="p-3">
-                    <Image
-                      className="cursor-pointer"
-                      width={16}
-                      height={16}
-                      src="/img/shopping-cart.svg"
-                      alt=""
-                      quality={100}
-                    />
-                  </li>
-                </Link>
-                <Link href={"/user/favorites"}>
-                  <li className="p-3">
-                    <Image
-                      className="cursor-pointer"
-                      width={16}
-                      height={16}
-                      quality={100}
-                      src="/img/heart.svg"
-                      alt=""
-                    />
-                  </li>
-                </Link>
-              </>
-            )}
 
-            <Link href={role === "ADMIN" ? "admin/products" : "/user/profile"}>
+            <Link href={"/cart"}>
+              <li className="p-3">
+                <Image
+                  className="cursor-pointer"
+                  width={16}
+                  height={16}
+                  src="/img/shopping-cart.svg"
+                  alt=""
+                  quality={100}
+                />
+              </li>
+            </Link>
+            <Link href={"/user/favorites"}>
+              <li className="p-3">
+                <Image
+                  className="cursor-pointer"
+                  width={16}
+                  height={16}
+                  quality={100}
+                  src="/img/heart.svg"
+                  alt=""
+                />
+              </li>
+            </Link>
+
+            <Link href={role === "ADMIN" ? "/admin/products" : "/user/profile"}>
               <li className="p-3">
                 <Image
                   className="cursor-pointer"

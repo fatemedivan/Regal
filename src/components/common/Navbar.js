@@ -214,15 +214,7 @@ export default function Navbar() {
               </>
             )}
 
-            <Link
-              href={
-                role === "USER"
-                  ? "/user/profile"
-                  : role === "ADMIN"
-                  ? "/admin/products"
-                  : ""
-              }
-            >
+            <Link href={role === "ADMIN" ? "admin/products" : "/user/profile"}>
               <li className="p-3">
                 <Image
                   className="cursor-pointer"

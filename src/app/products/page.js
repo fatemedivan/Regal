@@ -30,7 +30,7 @@ export default async function Page({ searchParams }) {
     });
     if (res.ok) {
       const data = await res.json();
-      console.log(data);
+      console.log('data',data);
       
       products = data.products;
       totalPages = data.latestPage;

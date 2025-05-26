@@ -115,13 +115,13 @@ export default function Products({ allProducts, totalProductsPages }) {
                   />
                   <h5 className="font-semibold leading-5 text-black lg:font-bold lg:text-[27px] lg:inline lg:leading-8">
                     <span className="hidden lg:inline mr-2 text-neutral-gray-8 font-bold leading-4.5 text-lg">
-                      ({products.length} کالا)
+                      ({products.length * totalPages} کالا)
                     </span>
                   </h5>
                 </div>
                 <div className="flex justify-between items-center mb-6 lg:hidden">
                   <p className="text-neutral-gray-8 text-sm leading-5">
-                    تعداد محصولات : {products.length} کالا
+                    تعداد محصولات : {products.length * totalPages} کالا
                   </p>
                   <div className="flex items-center gap-2">
                     <div

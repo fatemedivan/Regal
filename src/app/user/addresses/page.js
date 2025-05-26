@@ -54,12 +54,10 @@ export default function Page() {
     }
   };
   const handleCloseDetailsModal = () => {
-    getAddresses();
     setIsOpenDetailsModal(false);
     closeModal();
   };
   const handleCloseAddAddressModal = () => {
-    getAddresses();
     setIsOpenAddAddressModal(false);
     closeModal();
   };
@@ -185,6 +183,9 @@ export default function Page() {
               {isOpenDetailsModal && (
                 <DetailsModalAddAddress
                   handleCloseModal={handleCloseDetailsModal}
+                  onSuccess={() => {
+                    getAddresses();
+                  }}
                 />
               )}
             </div>

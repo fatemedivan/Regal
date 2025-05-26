@@ -3,7 +3,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 
-export default function DetailsModalAddAddress({ handleCloseModal }) {
+export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) {
   const [city, setCity] = useState("");
   const [province, setProvince] = useState("");
   const [details, setDetails] = useState("");
@@ -90,6 +90,7 @@ export default function DetailsModalAddAddress({ handleCloseModal }) {
       setIsLoading(false);
       if (res.ok) {
         toast.success("ادرس با موفقیت اضافه شد");
+        onSuccess()
         sessionStorage.removeItem("addressId");
       } else {
         toast.error("ناموفق");
@@ -116,7 +117,7 @@ export default function DetailsModalAddAddress({ handleCloseModal }) {
       }
     };
     getAddress();
-  }, [token]);
+  }, [token, addressId]);
 
   const iranProvinces = [
     "آذربایجان شرقی",

@@ -95,46 +95,90 @@ export default function CategoriesMenu({
                 </div>
               ))}
         </ul>
-        <div className="hidden lg:flex justify-center gap-3">
-          <div className="flex gap-7 mb-6">
-            {categoriesData &&
-              categoriesData
-                .filter((category) => category.parentId === null)
-                .map((category) => (
-                  <ul key={category.id}>
-                    <li
-                      onClick={() => {
-                        router.push(
-                          `/products?categoryId=${category.id}&page=1`
-                        );
-                        handleCloseCategory();
-                      }}
-                      className="flex items-center gap-2.5"
-                    >
-                      <div className="w-1.5 h-1.5 rounded-100 bg-cognac-primery"></div>
-                      <p className="leading-7 text-neutral-gray-13 text-nowrap cursor-pointer">
-                        {category.slug}
-                      </p>
-                    </li>
-
-                    {category.subcategories.map((subCategory) => (
+        <div className="hidden lg:flex justify-center gap-5">
+          <div className="flex flex-col justify-center">
+            <div className="flex gap-7 mb-6 justify-between">
+              {categoriesData &&
+                categoriesData
+                  .filter((category) => category.parentId === null)
+                  .slice(0, 4)
+                  .map((category) => (
+                    <ul key={category.id}>
                       <li
-                        key={subCategory.id}
                         onClick={() => {
                           router.push(
-                            `/products?categoryId=${category.parentId}&page=1`
+                            `/products?categoryId=${category.id}&page=1`
                           );
                           handleCloseCategory();
                         }}
-                        className="cursor-pointer"
+                        className="flex items-center gap-2.5"
                       >
-                        <p className="leading-5 text-sm text-neutral-gray-11 px-4 py-2.5">
-                          {subCategory.slug}
+                        <div className="w-1.5 h-1.5 rounded-100 bg-cognac-primery"></div>
+                        <p className="leading-7 text-neutral-gray-13 text-nowrap cursor-pointer">
+                          {category.slug}
                         </p>
                       </li>
-                    ))}
-                  </ul>
-                ))}
+
+                      {category.subcategories.map((subCategory) => (
+                        <li
+                          key={subCategory.id}
+                          onClick={() => {
+                            router.push(
+                              `/products?categoryId=${category.parentId}&page=1`
+                            );
+                            handleCloseCategory();
+                          }}
+                          className="cursor-pointer"
+                        >
+                          <p className="leading-5 text-sm text-neutral-gray-11 px-4 py-2.5">
+                            {subCategory.slug}
+                          </p>
+                        </li>
+                      ))}
+                    </ul>
+                  ))}
+            </div>
+            <div className="flex gap-7 mb-6 justify-between">
+              {categoriesData &&
+                categoriesData
+                  .filter((category) => category.parentId === null)
+                  .slice(4, 8)
+                  .map((category) => (
+                    <ul key={category.id}>
+                      <li
+                        onClick={() => {
+                          router.push(
+                            `/products?categoryId=${category.id}&page=1`
+                          );
+                          handleCloseCategory();
+                        }}
+                        className="flex items-center gap-2.5"
+                      >
+                        <div className="w-1.5 h-1.5 rounded-100 bg-cognac-primery"></div>
+                        <p className="leading-7 text-neutral-gray-13 text-nowrap cursor-pointer">
+                          {category.slug}
+                        </p>
+                      </li>
+
+                      {category.subcategories.map((subCategory) => (
+                        <li
+                          key={subCategory.id}
+                          onClick={() => {
+                            router.push(
+                              `/products?categoryId=${category.parentId}&page=1`
+                            );
+                            handleCloseCategory();
+                          }}
+                          className="cursor-pointer"
+                        >
+                          <p className="leading-5 text-sm text-neutral-gray-11 px-4 py-2.5">
+                            {subCategory.slug}
+                          </p>
+                        </li>
+                      ))}
+                    </ul>
+                  ))}
+            </div>
           </div>
           <div>
             <p className="leading-7 text-neutral-gray-13">

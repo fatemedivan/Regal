@@ -11,6 +11,8 @@ export default function Categories({ categoriesData }) {
     if (categoriesData) {
       const mainCategory = categoriesData.filter(category => category.parentId === null)
       setData(mainCategory)
+      console.log(mainCategory);
+      
     }
   }, []);
 
@@ -58,7 +60,7 @@ export default function Categories({ categoriesData }) {
               />
               <div className="absolute z-30 bottom-1 px-2">
                 <h5 className="leading-5 font-semibold text-white">
-                  {data[1]?.slug}
+                  {data[2]?.slug}
                 </h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -83,7 +85,7 @@ export default function Categories({ categoriesData }) {
               />
               <div className="absolute z-30 bottom-1 px-2">
                 <h5 className="leading-5 font-semibold text-white">
-                  {data[2]?.slug}
+                  {data[5]?.slug}
                 </h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -108,7 +110,7 @@ export default function Categories({ categoriesData }) {
               />
               <div className="absolute z-30 bottom-1 px-2">
                 <h5 className="leading-5 font-semibold text-white">
-                  {data[3]?.slug}
+                  {data[6]?.slug}
                 </h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -136,7 +138,7 @@ export default function Categories({ categoriesData }) {
               />
               <div className="absolute bottom-1 z-30 px-2">
                 <h5 className="leading-5 font-semibold text-white">
-                  {data[4]?.slug}
+                  {data[1]?.slug}
                 </h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -161,7 +163,7 @@ export default function Categories({ categoriesData }) {
               />
               <div className="absolute bottom-1 z-30 px-2">
                 <h5 className="leading-5 font-semibold text-white">
-                  {data[5]?.slug}
+                  {data[3]?.slug}
                 </h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -186,7 +188,7 @@ export default function Categories({ categoriesData }) {
               />
               <div className="absolute bottom-1 z-30 px-2">
                 <h5 className="leading-5 font-semibold text-white">
-                  {data[6]?.slug}
+                  {data[4]?.slug}
                 </h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">

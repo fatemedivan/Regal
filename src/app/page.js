@@ -198,17 +198,7 @@ export default async function Home() {
           انتخاب کنید تا ما به شما لباس‌هایی را پیشنهاد دهیم که به شما احساس
           راحتی و زیبایی بیشتری ببخشند.
         </p>
-        <button className="flex justify-center items-center gap-2 mx-auto bg-neutral-gray-13 rounded-lg text-white text-sm leading-5 py-2.5 px-8.5 lg:text-[1rem] lg:leading-5.5 lg:py-3.25 lg:px-11 cursor-pointer">
-          <Image
-            width={16}
-            height={16}
-            className="mb-0.75"
-            src="/img/scissor.svg"
-            alt=""
-            quality={100}
-          />
-          شخصی دوزی
-        </button>
+        
         <div className="flex justify-center items-center gap-3 mt-8 lg:mt-16 lg:gap-6 sm:justify-between 2xl:justify-between">
           <Image
             width={115}

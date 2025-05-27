@@ -3,12 +3,14 @@ import { cookies } from "next/headers";
 
 export default async function Page({ searchParams }) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const token = cookies().get("token")?.value;
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
 
-  const search = searchParams?.search || "";
-  const categoryId = searchParams?.categoryId || "";
-  const orderBy = searchParams?.orderBy || "";
-  const currentPage = searchParams?.page || 1;
+  const params = await searchParams;
+  const search = params?.search || "";
+  const categoryId = params?.categoryId || "";
+  const orderBy = params?.orderBy || "";
+  const currentPage = params?.page || 1;
 
   let products = [];
   let totalPages = null;
@@ -30,8 +32,8 @@ export default async function Page({ searchParams }) {
     });
     if (res.ok) {
       const data = await res.json();
-      console.log('data',data);
-      
+      console.log("data", data);
+
       products = data.products;
       totalPages = data.latestPage;
     }

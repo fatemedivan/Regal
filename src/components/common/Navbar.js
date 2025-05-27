@@ -5,7 +5,6 @@ import Search from "@/components/common/Search";
 import Categories from "@/components/common/CategoriesMenu";
 import Link from "next/link";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
-import { useRouter } from "next/navigation";
 import { useAuthContext } from "@/context/AuthContext";
 
 export default function Navbar() {

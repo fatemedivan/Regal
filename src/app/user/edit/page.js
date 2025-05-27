@@ -22,7 +22,7 @@ export default function Page() {
   const isValidEmail = emailRegex.test(email);
   const isValidFirstName = firstName.length >= 3 && firstName.length <= 32;
   const isValidLastName = lastName.length >= 3 && lastName.length <= 32;
-  //AI
+
   const [isFocused, setIsFocused] = useState({
     firstName: false,
     lastName: false,
@@ -31,7 +31,7 @@ export default function Page() {
   const floatLabel = (value, focus) =>
     value || focus ? "-top-2.5" : "top-4.5";
 
-  const { phoneNumber, name, family, email: userEmail  } = useAuthContext();
+  const { phoneNumber, name, family, email: userEmail } = useAuthContext();
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -63,8 +63,8 @@ export default function Page() {
       if (res.ok) {
         toast.success("با موفقیت ذخیره شد");
       } else {
-        const result = await res.json()
-        console.log(result);  
+        const result = await res.json();
+        console.log(result);
         toast.error(result.message[0]);
       }
       setIsLoaading(false);
@@ -109,7 +109,6 @@ export default function Page() {
               id="firstName"
               placeholder=" "
               value={firstName}
-              //AI
               onFocus={() =>
                 setIsFocused((prev) => ({ ...prev, firstName: true }))
               }
@@ -203,9 +202,7 @@ export default function Page() {
               dir="ltr"
               placeholder=" "
               value={email}
-              onFocus={() =>
-                setIsFocused((prev) => ({ ...prev, email: true }))
-              }
+              onFocus={() => setIsFocused((prev) => ({ ...prev, email: true }))}
               onBlur={() => {
                 setIsFocused((prev) => ({ ...prev, email: false }));
                 setIsBluredEmail(true);

@@ -13,7 +13,7 @@ export const useScrollLockContext = () => {
   }
   return context;
 };
-//AI
+
 export const ScrollLockContextProvider = ({ children }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);

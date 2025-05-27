@@ -142,7 +142,7 @@ export default function Page() {
       });
 
       glide.mount();
-      //AI
+
       glideRef.current.glideInstance = glide;
 
       return () => {
@@ -468,7 +468,6 @@ export default function Page() {
                   <div
                     className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer custom-prev"
                     ref={prevbtnRef}
-                    //AI
                     onClick={() => glideRef.current?.glideInstance?.go("<")}
                   >
                     <Image
@@ -482,7 +481,6 @@ export default function Page() {
                   <div
                     className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer custom-next"
                     ref={nextbtnRef}
-                    //AI
                     onClick={() => glideRef.current?.glideInstance?.go(">")}
                   >
                     <Image

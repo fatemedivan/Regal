@@ -24,7 +24,6 @@ export default function CategoriesMenu({
       console.log("category data", data);
       console.log(res);
 
-      //AI
       const updatedData = data.map((item) => ({
         ...item,
         isOpen: false,

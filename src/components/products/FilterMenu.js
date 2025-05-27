@@ -44,7 +44,6 @@ export default function FilterMenuMobile({ handleCloseFilter, setProducts }) {
   console.log(selectedFilters);
 
   useEffect(() => {
-    
     const queryParams = [];
     let url = `${baseUrl}/products`;
 
@@ -126,7 +125,6 @@ export default function FilterMenuMobile({ handleCloseFilter, setProducts }) {
     handleCloseFilter();
   };
 
-  //AI
   useEffect(() => {
     const isPriceChanged = minPrice !== 100000 || maxPrice !== 250000;
 
@@ -145,7 +143,7 @@ export default function FilterMenuMobile({ handleCloseFilter, setProducts }) {
       ];
     });
   }, [minPrice, maxPrice]);
-  //AI
+
   const handleRemoveSelected = (option) => {
     setSelectedFilters((prev) =>
       prev.filter((itemfilter) =>

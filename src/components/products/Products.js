@@ -5,7 +5,6 @@ import Pagination from "../common/Pagination";
 import ProductItemOff from "../common/ProductItemOff";
 import Image from "next/image";
 import Sort from "./Sort";
-import Breadcrumb from "../common/Breadcrumb";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
 import FilterMenu from "@/components/products/FilterMenu";
 import ProductSceleton from "../common/ProductSceleton";

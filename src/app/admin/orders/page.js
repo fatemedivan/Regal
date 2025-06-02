@@ -1,5 +1,4 @@
 "use client";
-import ActionModal from "@/components/admin/ActionModal";
 import DetailsModal from "@/components/admin/DetailsModal";
 import EditModal from "@/components/admin/EditModal";
 import ErrBox from "@/components/admin/Errorbox";

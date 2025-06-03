@@ -9,25 +9,24 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
 import { useBasketContext } from "@/context/BasketContext";
+import dayjs from "dayjs";
+import jalali from "jalali-dayjs";
+import "dayjs/locale/fa";
 
 export default function Page() {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const router = useRouter();
   const maxLenght = 200;
   const [text, setText] = useState("");
-  const [selectedAddressId, setSelectedAddressId] = useState(null)
+  const [selectedAddressId, setSelectedAddressId] = useState(null);
   const [deliveryOption, setDeliveryOption] = useState("COURIER");
   const [isShowDateModal, setIsShowDateModal] = useState(false);
   const [isShowTimeModal, setIsShowTimeModal] = useState(false);
   const [isHadAddress, setIsHadAddress] = useState(false);
   const [addresses, setAddresses] = useState([]);
   const [token, setToken] = useState("");
-  const [date, setDate] = useState([
-    "شنبه ۲۱ آبان ۱۴۰۳",
-    "یکشنبه ۲۲ آبان ۱۴۰۳",
-    "دوشنبه ۲۳ آبان ۱۴۰۳",
-    "سه شنبه ۲۴ آبان ۱۴۰۳",
-  ]);
+  const [mainDate, setMainDate] = useState('')
+  const [date, setDate] = useState([]);
   const [time, setTime] = useState([
     "ساعت ۹ تا ۱۲",
     "ساعت ۱۲ تا ۱۵",
@@ -35,8 +34,43 @@ export default function Page() {
     "ساعت ۱۸ تا ۲۱",
     "ساعت ۲۱ تا ۲۴",
   ]);
-  const [mainDate, setMainDate] = useState("شنبه ۲۱ آبان ۱۴۰۳");
+
+  dayjs.extend(jalali);
+  dayjs.locale("fa");
+  const getNextNDays = (n = 4) => {
+    const days = [];
+    const weekdays = [
+      "یکشنبه",
+      "دوشنبه",
+      "سه‌شنبه",
+      "چهارشنبه",
+      "پنج‌شنبه",
+      "جمعه",
+      "شنبه",
+    ];
+
+    for (let i = 0; i < n; i++) {
+      const date = dayjs().add(i, "day");
+      const weekday = weekdays[date.day()];
+      const fullDate = `${weekday} ${date.format("D MMMM YYYY")}`;
+      days.push(fullDate);
+    }
+
+    return days;
+  };
+
+  useEffect(() => {
+    setDate(getNextNDays(4));
+  }, []);
+
+  useEffect(() => {
+    if (date.length > 0) {
+      setMainDate(date[0]); 
+    }
+  }, [date]);
+
   const [mainTime, setMainTime] = useState("ساعت ۹ تا ۱۲");
+
   const handleCloseDateModal = () => {
     setIsShowDateModal(false);
     closeModal();
@@ -79,12 +113,12 @@ export default function Page() {
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     if (selectedAddressId) {
-      sessionStorage.setItem('selectedAddressId', selectedAddressId)
+      sessionStorage.setItem("selectedAddressId", selectedAddressId);
     }
-    sessionStorage.setItem('deliveryMethod', deliveryOption)
-  },[])
+    sessionStorage.setItem("deliveryMethod", deliveryOption);
+  }, []);
   return (
     <div className="container mx-auto px-5 pt-6 pb-16 lg:pt-0 lg:px-12 lg:pb-22">
       <div className="flex justify-between items-center mb-8 lg:hidden">
@@ -181,7 +215,13 @@ export default function Page() {
                     </div>
                     {addresses &&
                       addresses.map((address) => (
-                        <AdressCard key={address.id} {...address} selectedAddressId={selectedAddressId} setSelectedAddressId={setSelectedAddressId} id={address.id}/>
+                        <AdressCard
+                          key={address.id}
+                          {...address}
+                          selectedAddressId={selectedAddressId}
+                          setSelectedAddressId={setSelectedAddressId}
+                          id={address.id}
+                        />
                       ))}
                   </>
                 ) : (
@@ -398,7 +438,7 @@ export default function Page() {
       </div>
       <div className="lg:hidden">
         {isShowDateModal && (
-          <DateModal handleCloseModal={handleCloseDateModal} />
+          <DateModal handleCloseModal={handleCloseDateModal} mainDate={mainDate} setMainDate={setMainDate}/>
         )}
         {isShowTimeModal && (
           <TimeModal handleCloseModal={handleCloseTimeModal} />

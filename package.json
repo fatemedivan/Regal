@@ -10,7 +10,10 @@
   },
   "dependencies": {
     "@glidejs/glide": "^3.7.1",
+    "dayjs": "^1.11.13",
+    "jalali-dayjs": "^0.0.1",
     "jalali-moment": "^3.3.11",
+    "jalaliday": "^2.3.0",
     "leaflet": "^1.9.4",
     "next": "15.3.1",
     "nextjs-toploader": "^3.8.16",

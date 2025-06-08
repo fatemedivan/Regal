@@ -215,7 +215,7 @@ export default function Page() {
           <div className="mx-auto px-5 container">
             <div className="lg:flex gap-6 my-12">
               <div className="flex flex-col gap-4 lg:flex-row-reverse lg:gap-6">
-                <div className="relative mt-6 lg:my-0">
+                <div className="mt-6 lg:my-0">
                   {product?.images?.[0]?.src && (
                     <Image
                       quality={100}
@@ -226,14 +226,6 @@ export default function Page() {
                       className="lg:min-w-136.5 lg:min-h-138"
                     />
                   )}
-                  <div className="absolute top-4 lg:top-6 lg:right-6 right-4 z-20 p-2 lg:p-2.5 rounded-lg flex justify-center items-center bg-[rgba(247,247,248,0.3)] cursor-pointer">
-                    <Image
-                      width={16}
-                      height={16}
-                      src="/img/search-zoom-in.svg"
-                      alt=""
-                    />
-                  </div>
                 </div>
                 <div className="flex items-center gap-2 mb-6 lg:hidden">
                   {product?.images?.map((img) => (

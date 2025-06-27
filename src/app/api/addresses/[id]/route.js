@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { verifyToken } from '@/utils/auth';
+import { verifyToken } from '../../../../utils/auth';
+import { prisma } from '../../../../lib/prisma';
 
 // GET: دریافت جزئیات یک آدرس خاص
 export async function GET(request, { params }) {

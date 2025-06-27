@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { verifyToken } from '@/utils/auth';
+import { prisma } from '../../../../lib/prisma';
+import { verifyToken } from '../../../../utils/auth';
 
 // GET: دریافت محتویات سبد خرید کاربر
 export async function GET(request) {

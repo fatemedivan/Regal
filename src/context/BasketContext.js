@@ -32,7 +32,6 @@ export const BasketContextProvider = ({ children }) => {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(res);
       if (res.status === 201) {
         toast.success("با موفقیت به سبد خرید اضافه شد");
       } else if (res.status === 401) {
@@ -41,7 +40,7 @@ export const BasketContextProvider = ({ children }) => {
         toast.error(" ناموفق");
       }
     } catch (error) {
-      console.log(error);
+      //console.log(error);
       toast.error("خطایی رخ داد");
     }
   };
@@ -73,7 +72,6 @@ export const BasketContextProvider = ({ children }) => {
       const res = await fetch(`${baseUrl}/cart`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(res);
       if (res.ok) {
         const data = await res.json();
         setIsEmptyCart(false);
@@ -90,7 +88,7 @@ export const BasketContextProvider = ({ children }) => {
         setIsEmptyCart(true);
       }
     } catch (error) {
-      console.log(error);
+     // console.log(error);
     }
   };
   useEffect(() => {

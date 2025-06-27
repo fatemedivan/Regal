@@ -17,7 +17,6 @@ export default function Page() {
   const [isBluredLastName, setIsBluredLastName] = useState(false);
   const [isBluredEmail, setIsBluredEmail] = useState(false);
   const router = useRouter();
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const emailRegex = /^(?=.{1,64}$)[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const isValidEmail = emailRegex.test(email);
   const isValidFirstName = firstName.length >= 3 && firstName.length <= 32;
@@ -47,12 +46,12 @@ export default function Page() {
   const editUser = async () => {
     setIsLoaading(true);
     try {
-      const res = await fetch(`${baseUrl}/user`, {
+      const res = await fetch("/api/auth/me", {
         method: "PATCH",
         body: JSON.stringify({
-          name: firstName,
-          family: lastName,
-          email: email,
+          firstName,
+          lastName,
+          email,
         }),
         headers: {
           Authorization: `Bearer ${token}`,
@@ -65,7 +64,7 @@ export default function Page() {
       } else {
         const result = await res.json();
         console.log(result);
-        toast.error(result.message[0]);
+        toast.error(result.message);
       }
       setIsLoaading(false);
     } catch (error) {

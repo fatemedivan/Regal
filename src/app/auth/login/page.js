@@ -6,7 +6,6 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Page() {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL; 
   const router = useRouter();
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
@@ -32,18 +31,22 @@ export default function Page() {
     }
     try {
       setIsLoading(true);
-      const response = await fetch(`${baseUrl}/auth/login`, {
+      const response = await fetch("/api/auth/login", {
         method: "POST",
-        body: JSON.stringify({ "phoneNumber": phone, "password": password }),
+        body: JSON.stringify({ phoneNumber: phone, password: password }),
         headers: { "Content-Type": "application/json" },
       });
       const result = await response.json();
       console.log(result);
-      
+
       if (result.token) {
-        document.cookie = `token=${result.token}; path=/; max-age=${60 * 60 * 24 * 30}`
-        document.cookie = `role=${result.role}; path=/; max-age=${60 * 60 * 24 * 365}`
-        localStorage.setItem('token', result.token)
+        document.cookie = `token=${result.token}; path=/; max-age=${
+          60 * 60 * 24 * 30
+        }`;
+        document.cookie = `role=${result.role}; path=/; max-age=${
+          60 * 60 * 24 * 365
+        }`;
+        localStorage.setItem("token", result.token);
         toast.success("با موفقیت وارد شدید");
         setTimeout(() => {
           router.push("/");
@@ -63,7 +66,6 @@ export default function Page() {
       toast.error("خطایی رخ داد");
     }
   };
- 
 
   return (
     <div className="lg:flex h-screen">
@@ -84,7 +86,7 @@ export default function Page() {
           </div>
           <div>
             <p className="font-semibold leading-5 text-neutral-gray-13 mb-4 lg:text-lg lg:leading-5.5 lg:font-bold">
-             ورود
+              ورود
             </p>
             <div
               className={`border ${
@@ -116,7 +118,7 @@ export default function Page() {
             </div>
             {isBluredPhone && !isValidPhone && (
               <p className="text-xs leading-4.5 mt-4 transition duration-200 ease-in-out text-error-primery">
-               شماره موبایل را بدون ۰ و با اعداد انگلیسی وارد کنید
+                شماره موبایل را بدون ۰ و با اعداد انگلیسی وارد کنید
               </p>
             )}
 
@@ -152,7 +154,6 @@ export default function Page() {
               </p>
             )}
 
-            
             <div className="mt-56 flex flex-col justify-center items-center lg:items-start lg:mt-7.5">
               <button
                 disabled={!(isValidPassword && isValidPhone)}
@@ -172,7 +173,7 @@ export default function Page() {
                 ) : (
                   "تایید"
                 )}
-              </button>      
+              </button>
             </div>
           </div>
         </div>

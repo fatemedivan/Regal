@@ -13,7 +13,6 @@ export const useAuthContext = () => {
 };
 
 export const AuthContextProvider = ({ children }) => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const [phoneNumber, setPhoneNumber] = useState("");
   const [name, setName] = useState("");
   const [family, setFamily] = useState("");
@@ -29,14 +28,14 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     if (!token) return
     const getUser = async () => {
-      const response = await fetch(`${baseUrl}/auth/me`, {
+      const response = await fetch('/api/auth/me', {
         headers: { Authorization: `Bearer ${token}` },
       });
       const result = await response.json();
       if (response.ok) {
         setPhoneNumber(result.phoneNumber);
-        setName(result.name);
-        setFamily(result.family);
+        setName(result.firstName);
+        setFamily(result.lastName);
         setEmail(result.email);
         setRole(result.role)
       }

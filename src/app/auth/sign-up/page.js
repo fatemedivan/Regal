@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 
 export default function Page() {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const router = useRouter();
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
@@ -22,7 +21,7 @@ export default function Page() {
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch(`${baseUrl}/auth/signup`, {
+      const response = await fetch("/api/auth/register", {
         method: "POST",
         body: JSON.stringify({ phoneNumber: phone, password: password }),
         headers: { "Content-Type": "application/json" },
@@ -45,7 +44,7 @@ export default function Page() {
             router.push("/auth/login");
           }, 2500);
         } else {
-          toast.error(result.message[0]);
+          toast.error(result.message);
         }
       }
     } catch (err) {

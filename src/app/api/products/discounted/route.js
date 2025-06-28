@@ -1,7 +1,7 @@
 // app/api/products/discounted/route.js
 import { NextResponse } from 'next/server';
-import { prisma } from '../../../../lib/prisma';
-import { verifyToken } from '../../../../utils/auth';
+import { prisma } from '../../../../../lib/prisma';
+import { verifyToken } from '../../../../../utils/auth';
 
 export async function GET(request) {
   try {

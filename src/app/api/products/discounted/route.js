@@ -66,7 +66,7 @@ export async function GET(request) {
         price: product.price, // قیمت اصلی
         offPercent: offPercent,
         isLiked: likedProductIds.has(product.id), // وضعیت لایک
-        colors: product.ProductColor || [], 
+        colors: product.color || [], 
         favorites: product.Favorite || [], 
       };
     });

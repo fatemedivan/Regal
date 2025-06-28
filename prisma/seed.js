@@ -5,11 +5,10 @@ const prisma = new PrismaClient();
 
 async function main() {
   console.log(
-    "Starting seeding process for 6 discounted formal wear products..."
+    "Starting seeding process for 6 discounted formal wear products (single color with hex code)..."
   );
 
   // --- Seed Categories and Subcategories ---
-  // این بخش دسته‌بندی‌های اصلی رو می‌سازه.
   const mainCategories = [
     "لباس مجلسی",
     "شلوار",
@@ -34,7 +33,6 @@ async function main() {
     );
   }
 
-  // این بخش زیردسته‌بندی‌ها رو می‌سازه و ID اون‌ها رو هم ذخیره می‌کنه.
   const subcategoriesToAdd = [
     { parentName: "لباس مجلسی", name: "پیراهن شب" },
     { parentName: "لباس مجلسی", name: "مانتو مجلسی" },
@@ -73,7 +71,6 @@ async function main() {
           parentId: parentCategory.id,
         },
       });
-      // ذخیره زیردسته‌بندی‌ها در createdCategories تا محصولات بتونن به اون‌ها ارجاع بدن.
       createdCategories[subcategoryInfo.name] = subcategory;
       console.log(
         `Subcategory created or found: ${subcategory.name} (Parent: ${subcategoryInfo.parentName}, ID: ${subcategory.id})`
@@ -86,7 +83,7 @@ async function main() {
   }
   console.log("Category and subcategory seeding complete.");
 
-  // --- فقط 6 محصول تخفیف‌دار از دسته‌بندی "لباس مجلسی" ---
+  // --- Seed Products with Hex Color Code ---
   const productsData = [
     {
       name: "لباس مجلسی دکلته الی",
@@ -96,7 +93,7 @@ async function main() {
       discountedPrice: 600000,
       isDiscounted: true,
       imageUrl: "/img/product-off-1.png",
-      color: "بنفش",
+      color: ["#800080"], // ✅ کد هگز به جای نام رنگ
       size: "Free Size",
       categoryName: "پیراهن شب",
     },
@@ -105,10 +102,10 @@ async function main() {
       description:
         "پیراهن شب بلند تمام گیپور با آستر، بسیار شیک و مجلل. آف ویژه آخر فصل!",
       price: 2200000,
-      discountedPrice: 1100000,
+      discountedPrice: 1000000,
       isDiscounted: true,
       imageUrl: "/img/product-off-2.png",
-      color: "زرشکی",
+      color: ["#8B0000"], // ✅ کد هگز
       size: "S",
       categoryName: "پیراهن شب",
     },
@@ -120,7 +117,7 @@ async function main() {
       discountedPrice: 1200000,
       isDiscounted: true,
       imageUrl: "/img/product-off-3.png",
-      color: "سبز تیره",
+      color: ["#006400"], // ✅ کد هگز
       size: "XL",
       categoryName: "پیراهن شب",
     },
@@ -132,7 +129,7 @@ async function main() {
       discountedPrice: 400000,
       isDiscounted: true,
       imageUrl: "/img/product-off-4.png",
-      color: "نقره‌ای",
+      color: ["#C0C0C0"], // ✅ کد هگز
       size: "M",
       categoryName: "پیراهن شب",
     },
@@ -149,7 +146,7 @@ async function main() {
           discountedPrice: productData.discountedPrice || null,
           isDiscounted: productData.isDiscounted || false,
           imageUrl: productData.imageUrl || null,
-          color: productData.color || null,
+          color: productData.color, // ✅ فیلد color مستقیم از productData می‌آید
           size: productData.size || null,
           categoryId: category.id,
         },
@@ -160,13 +157,13 @@ async function main() {
           discountedPrice: productData.discountedPrice,
           isDiscounted: productData.isDiscounted,
           imageUrl: productData.imageUrl,
-          color: productData.color,
+          color: productData.color, // ✅ فیلد color مستقیم از productData می‌آید
           size: productData.size,
           categoryId: category.id,
         },
       });
       console.log(
-        `Product created or updated: ${product.name} (Category: ${productData.categoryName}, ID: ${product.id})`
+        `Product created or updated: ${product.name} (Category: ${productData.categoryName}, Color: ${product.color}, ID: ${product.id})`
       );
     } else {
       console.warn(
@@ -185,4 +182,4 @@ main()
   })
   .finally(async () => {
     await prisma.$disconnect();
-  })
+  });

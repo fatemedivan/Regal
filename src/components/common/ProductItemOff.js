@@ -15,7 +15,6 @@ export default function ProductItemOff({
   colors,
   favorites,
 }) {
-  
   return (
     <>
       <div className="min-w-41.75 lg:min-w-79.5 relative">
@@ -79,12 +78,11 @@ export default function ProductItemOff({
                   ۲+
                 </div>
               )}
-              {colors.map((color) => (
-                <div key={color.id}
-                  style={{ backgroundColor: color.color }}
-                  className={`w-5 h-5 rounded-sm`}
-                ></div>
-              ))}
+
+              <div
+                style={{ backgroundColor: colors }}
+                className={`w-5 h-5 rounded-sm`}
+              ></div>
             </div>
           </div>
           <div className="flex items-center gap-2 text-black lg:justify-start">

@@ -171,7 +171,7 @@ export default function Products({
                       title={product.name}
                       price={product.price}
                       finalPrice={product.discountedPrice}
-                      colors={product.colors}
+                      colors={product.productColors.map(pc => pc.color.hexCode)}
                       favorites={product.isLiked}
                     />
                   ))}
@@ -271,7 +271,7 @@ export default function Products({
                           title={product.name}
                           price={product.price}
                           finalPrice={product.discountedPrice}
-                          colors={product.colors}
+                          colors={product.productColors.map(pc => pc.color.hexCode)}
                           favorites={product.isLiked}
                         />
                       ))}

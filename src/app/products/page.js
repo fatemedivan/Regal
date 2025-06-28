@@ -2,7 +2,7 @@ import Products from "@/components/products/Products";
 import { cookies } from "next/headers";
 
 export default async function Page({ searchParams }) {
-  const baseUrl = process.NEXT_PUBLIC_API_BASE_URL;
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
 
@@ -22,7 +22,7 @@ export default async function Page({ searchParams }) {
     : {};
 
   try {
-    let url = `${baseUrl}/products?page=${currentPage}`;
+    let url = `${baseUrl}/api/products?page=${currentPage}`;
     if (search) url += `&search=${search}`;
     if (categoryId) url += `&categoryId=${categoryId}`;
     if (orderBy) url += `&orderBy=${orderBy}`;

@@ -7,26 +7,26 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default async function Home() {
-
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   //get off products
-  // const cookieStore = await cookies();
-  // const token = cookieStore.get("token")?.value;
-  // let discountedProducts = [];
-  // const headers = token
-  //   ? {
-  //       Authorization: `Bearer ${token}`,
-  //     }
-  //   : {};
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
+  let discountedProducts = [];
+  const headers = token
+    ? {
+        Authorization: `Bearer ${token}`,
+      }
+    : {};
 
-  //   try {
-  //     const res = await fetch('/api/products/discounted', {
-  //       headers : headers,
-  //     });
+    try {
+      const res = await fetch(`${baseUrl}/api/products/discounted`, {
+        headers : headers,
+      });
 
-  //     discountedProducts = await res.json();
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
+      discountedProducts = await res.json();
+    } catch (error) {
+      console.log(error);
+    }
   
 
   return (
@@ -256,7 +256,7 @@ export default async function Home() {
           />
         </div>
       </section>
-      <OffProducts />
+      <OffProducts discountedProducts={discountedProducts}/>
       <section className="bg-neutral-gray-1 px-5 py-8 lg:px-12 lg:py-14">
         <div className="container mx-auto lg:flex lg:justify-center lg:gap-11.5">
           <div>

@@ -6,7 +6,7 @@ import ProductItemOff from "@/components/common/ProductItemOff";
 import Image from "next/image";
 import { HashLoader } from "react-spinners";
 
-export default function OffProducts() {
+export default function OffProducts({discountedProducts}) {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const glideRef = useRef(null);
@@ -21,35 +21,35 @@ export default function OffProducts() {
     }
   },[])
 
-  // useEffect(() => {
-  //   setIsLoading(true);
-  //   if (discountedProducts.length) {
-  //     setProducts(discountedProducts);
-  //     setIsLoading(false);
-  //   }
-  // }, [discountedProducts]);
-
-  useEffect(()=>{
-    if(!token) return
-    const getDiscountedProdut = async ()=>{
-      const res = await fetch('/api/products/discounted',{
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      console.log(res);
-      const result = await res.json()
-      console.log('result',result);
-      setProducts(result)
-      
+  useEffect(() => {
+    setIsLoading(true);
+    if (discountedProducts.length) {
+      setProducts(discountedProducts);
+      setIsLoading(false);
     }
-    getDiscountedProdut()
-  },[token])
+  }, [discountedProducts]);
 
-  useEffect(()=>{
-    console.log('products off',products);
+  // useEffect(()=>{
+  //   if(!token) return
+  //   const getDiscountedProdut = async ()=>{
+  //     const res = await fetch('/api/products/discounted',{
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     })
+  //     console.log(res);
+  //     const result = await res.json()
+  //     console.log('result',result);
+  //     setProducts(result)
+      
+  //   }
+  //   getDiscountedProdut()
+  // },[token])
+
+  // useEffect(()=>{
+  //   console.log('products off',products);
     
-  },[products])
+  // },[products])
 
   useEffect(() => {
     if (glideRef.current) {

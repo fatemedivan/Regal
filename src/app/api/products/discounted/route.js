@@ -1,8 +1,8 @@
 // app/api/products/discounted/route.js
 import { NextResponse } from "next/server";
-import { prisma } from "../../../../../lib/prisma"; // مسیر فایل prisma.js شما
-import { cookies } from "next/headers";
-import { verifyToken } from "../../../../../utils/auth"; // مسیر utils/auth شما
+import { prisma } from "../../../../../lib/prisma";
+import { cookies } from "next/headers"; // Changed from 'next/headers' for clarity
+import { verifyToken } from "../../../../../utils/auth";
 
 export async function GET() {
   try {
@@ -16,7 +16,7 @@ export async function GET() {
         userId = decoded.userId;
       } catch (tokenError) {
         console.warn("Invalid or expired token:", tokenError.message);
-        // اگر توکن نامعتبر بود، userId همچنان null می‌ماند که باعث می‌شود isLiked false شود
+        // if token is invalid, userId remains null, so isLiked will be false
       }
     }
 
@@ -26,7 +26,6 @@ export async function GET() {
       },
       include: {
         category: { select: { name: true } },
-        // ✅ include کردن روابط جدید
         productColors: {
           include: {
             color: { select: { hexCode: true } }
@@ -37,8 +36,15 @@ export async function GET() {
             size: { select: { name: true } }
           }
         },
+        images: {
+          select: { imageUrl: true },
+          orderBy: { createdAt: 'asc' }
+        },
         likes: {
-          where: { userId: userId || undefined }, // فقط لایک‌های کاربر فعلی (اگر لاگین کرده باشد)
+          // ✅ A user ID is only provided if the user is logged in and the token is valid.
+          // If userId is null, this where condition is effectively skipped for filtering by userId,
+          // and Prisma will not try to find likes for a non-existent user.
+          where: userId ? { userId: userId } : undefined, // Only filter by userId if it exists
           select: { userId: true },
         },
       },
@@ -52,21 +58,21 @@ export async function GET() {
         );
       }
 
-      // ✅ استخراج فقط کدهای هگز از productColors
       const availableColors = product.productColors.map(pc => pc.color.hexCode);
-      // ✅ استخراج فقط نام سایزها از productSizes
       const availableSizes = product.productSizes.map(ps => ps.size.name);
+      const mainImageUrl = product.images.length > 0 ? product.images[0].imageUrl : "/img/default-product.png";
 
       return {
         id: product.id,
-        img: product.imageUrl || "/img/default-product.png",
+        img: mainImageUrl,
         title: product.name,
         finalPrice: product.discountedPrice || product.price,
         price: product.price,
         offPercent: offPercent,
-        isLiked: product.likes.length > 0, // اگر لایکی برای این کاربر پیدا شد، true
-        colors: availableColors, // ✅ آرایه‌ای از کدهای هگز
-        sizes: availableSizes,   // ✅ آرایه‌ای از نام سایزها
+        // ✅ isLiked is true if the filtered 'likes' array contains an entry for this user
+        isLiked: product.likes.length > 0,
+        colors: availableColors,
+        sizes: availableSizes,
       };
     });
 
@@ -77,8 +83,5 @@ export async function GET() {
       { message: "خطا در دریافت محصولات تخفیف‌دار." },
       { status: 500 }
     );
-  } finally {
-    // ✅ مطمئن شوید این خط حذف شده است
-    // await prisma.$disconnect();
   }
 }

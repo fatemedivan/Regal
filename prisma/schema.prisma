@@ -10,17 +10,17 @@ datasource db {
 }
 
 model User {
-  id             String         @id @default(uuid())
-  phoneNumber    String         @unique
+  id             String @id @default(uuid())
+  phoneNumber    String @unique
   hashedPassword String
 
   firstName String?
   lastName  String?
   email     String?
 
-  role          String         @default("user")
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  role      String   @default("user")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   likedProducts LikedProduct[]
   carts         Cart[]
@@ -57,16 +57,16 @@ model Product {
   // ✅ روابط جدید برای چندین رنگ و سایز
   productColors ProductColor[]
   productSizes  ProductSize[]
-
-  cartItems  CartItem[]
-  orderItems OrderItem[]
+  images        ProductImage[]
+  cartItems     CartItem[]
+  orderItems    OrderItem[]
 }
 
 // ✅ مدل جدید برای رنگ‌ها
 model Color {
-  id       String   @id @default(uuid())
-  name     String   @unique // مثلا "مشکی", "قرمز"
-  hexCode  String   @unique // مثلا "#000000", "#FF0000"
+  id        String   @id @default(uuid())
+  name      String   @unique // مثلا "مشکی", "قرمز"
+  hexCode   String   @unique // مثلا "#000000", "#FF0000"
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -109,6 +109,16 @@ model ProductSize {
   @@unique([productId, sizeId]) // تضمین می‌کند هر محصول یک سایز را فقط یک بار داشته باشد
 }
 
+model ProductImage {
+  id        String   @id @default(uuid())
+  productId String
+  imageUrl  String // URL عکس
+  createdAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, imageUrl]) // یک محصول نباید دو بار یک عکس یکسان داشته باشد
+}
 
 model LikedProduct {
   id        String   @id @default(uuid())
@@ -123,12 +133,12 @@ model LikedProduct {
 }
 
 model Cart {
-  id        String     @id @default(uuid())
-  userId    String     @unique
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  user  User     @relation(fields: [userId], references: [id])
+  user  User       @relation(fields: [userId], references: [id])
   items CartItem[]
 }
 
@@ -153,12 +163,12 @@ model Order {
   status      String   @default("pending")
   orderDate   DateTime @default(now())
 
-  user  User      @relation(fields: [userId], references: [id])
+  user  User        @relation(fields: [userId], references: [id])
   items OrderItem[]
 }
 
 model OrderItem {
-  id           String   @id @default(uuid())
+  id           String @id @default(uuid())
   orderId      String
   productId    String
   quantity     Int

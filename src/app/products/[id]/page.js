@@ -11,19 +11,15 @@ import { useBasketContext } from "@/context/BasketContext";
 import { HashLoader } from "react-spinners";
 
 export default function Page() {
-  const sizes = ["XS", "S", "M", "L", "XL", "2XL"];
   const router = useRouter();
   const glideRef = useRef(null);
   const prevbtnRef = useRef(null);
   const nextbtnRef = useRef(null);
-  const [token, setToken] = useState(null);
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const { id } = useParams();
+
+  const [token, setToken] = useState(null);
   const [product, setProduct] = useState({});
   const [currentImgSrc, setCurrentImgSrc] = useState("");
-  const [categoryId, setCategoryId] = useState("");
-  const [slug, setSlug] = useState("");
-  const [parentCategory, setParentCategory] = useState("");
   const [similarProducts, setSimilarProducts] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
   const [isExistProduct, setIsExistProduct] = useState(true);
@@ -45,9 +41,8 @@ export default function Page() {
 
   //get product
   useEffect(() => {
-    if (!token) return;
     const getProduct = async () => {
-      const res = await fetch(`${baseUrl}/products/${id}`, {
+      const res = await fetch(`/api/products/${id}`, {
         headers: headers,
       });
       console.log(res);
@@ -57,12 +52,10 @@ export default function Page() {
         console.log(data);
 
         setProduct(data);
-        setCategoryId(data.categoryId);
-        setCurrentImgSrc(data?.images?.[0]?.src);
+        setCurrentImgSrc(data?.images[0]);
         setIsExistProduct(true);
-        setSlug(data.category.slug);
-        setParentCategory(data.category.parent.slug);
-        if (data.Favorite.length) {
+        setSimilarProducts(data.relatedProducts)
+        if (data.isLiked) {
           setIsLiked(true);
         }
       }
@@ -72,30 +65,6 @@ export default function Page() {
     };
     getProduct();
   }, [token]);
-
-  useEffect(() => {
-    setIsLoading(true);
-    const getSimilarProducts = async () => {
-      try {
-        const res = await fetch(
-          `${baseUrl}/products?categoryId=${categoryId}`,
-          {
-            headers: headers,
-          }
-        );
-        if (res.ok) {
-          const data = await res.json();
-          setSimilarProducts(data.products);
-          console.log("similar", data);
-        }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    getSimilarProducts();
-  }, [categoryId, token]);
 
   //handle sliders
   useEffect(() => {
@@ -159,7 +128,7 @@ export default function Page() {
       return;
     } else {
       try {
-        const res = await fetch(`${baseUrl}/products/${id}/favorite`, {
+        const res = await fetch(`/api/products/${id}/like`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -179,8 +148,8 @@ export default function Page() {
 
   const disLikeProduct = async (id) => {
     try {
-      const res = await fetch(`${baseUrl}/products/${id}/favorite`, {
-        method: "DELETE",
+      const res = await fetch(`/api/products/${id}/like`, {
+        method: "POST",
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
@@ -202,12 +171,11 @@ export default function Page() {
             autoClose={2000}
             className={"custom-toast-container"}
           />
-          {slug && parentCategory && (
+          {product.categoryName && (
             <Breadcrumb
               items={[
-                { label: parentCategory && parentCategory },
-                { label: slug && slug },
-                { label: product.title },
+                { label: product.categoryName },
+                { label: product.name },
               ]}
             />
           )}
@@ -216,7 +184,7 @@ export default function Page() {
             <div className="lg:flex gap-6 my-12">
               <div className="flex flex-col gap-4 lg:flex-row-reverse lg:gap-6">
                 <div className="mt-6 lg:my-0">
-                  {product?.images?.[0]?.src && (
+                  {product?.images && (
                     <Image
                       quality={100}
                       width={350}
@@ -230,11 +198,11 @@ export default function Page() {
                 <div className="flex items-center gap-2 mb-6 lg:hidden">
                   {product?.images?.map((img) => (
                     <Image
-                      onClick={() => setCurrentImgSrc(img?.src)}
-                      key={img.id}
+                      onClick={() => setCurrentImgSrc(img)}
+                      key={img}
                       width={64}
                       height={64}
-                      src={img?.src}
+                      src={img}
                       alt=""
                       className="rounded-lg cursor-pointer"
                     />
@@ -243,11 +211,11 @@ export default function Page() {
                 <div className="hidden lg:flex w-max flex-col gap-6 mb-6">
                   {product?.images?.map((img) => (
                     <Image
-                      onClick={() => setCurrentImgSrc(img?.src)}
-                      key={img.id}
+                      onClick={() => setCurrentImgSrc(img)}
+                      key={img}
                       width={90}
                       height={84}
-                      src={img?.src}
+                      src={img}
                       alt=""
                       className="rounded-lg cursor-pointer"
                     />
@@ -257,17 +225,10 @@ export default function Page() {
               <div>
                 <div className="flex justify-between gap-1 items-center mb-1">
                   <h4 className="text-xl font-semibold leading-5.5 text-neutral-gray-13 lg:text-[27px] lg:font-bold lg:leading-8">
-                    {product.title}
+                    {product.name}
                   </h4>
                   <div className="flex justify-center items-center gap-2">
-                    <div className="p-3 border border-cognac-tint-8 rounded-lg cursor-pointer">
-                      <Image
-                        width={16}
-                        height={16}
-                        src="/img/share.svg"
-                        alt=""
-                      />
-                    </div>
+                    
                     <div className="p-3 border border-cognac-tint-8 rounded-lg">
                       {isLiked ? (
                         <Image
@@ -330,21 +291,15 @@ export default function Page() {
                       alt=""
                     />
                   </div>
-                  <p className="text-sm leading-5 text-neutral-gray-11 lg:text-[1rem] lg:leading-7">
-                    ({product._count?.View} بازدید)
-                  </p>
+                  
                 </div>
                 <div className="hidden lg:flex items-center my-7">
                   <p className="line-through font-normal leading-7 text-neutral-gray-9">
-                    {product.latestPrice &&
-                      product.discount > 0 &&
-                      Math.round(
-                        product.latestPrice / (1 - product.discount / 100)
-                      )}
+                    {product.percentOff}
                   </p>
 
                   <p className="text-xl leading-5.5 font-bold text-neutral-gray-13 mr-2">
-                    {product.latestPrice} تومان
+                    {product.discountedPrice} تومان
                   </p>
                 </div>
                 <p className="leading-6 text-sm text-neutral-gray-13 mt-4 mb-2 lg:hidden">
@@ -391,10 +346,10 @@ export default function Page() {
                 <div className="mb-4 lg:mb-6">
                   <p className="text-sm leading-6 mb-1 text-black">رنگ بندی:</p>
                   <div className="flex flex-wrap items-center gap-2">
-                    {product.ProductColor &&
-                      product.ProductColor.map((item) => (
+                    {product.colors &&
+                      product.colors.map((item) => (
                         <label
-                          key={item.id}
+                          key={item.name}
                           className="relative cursor-pointer"
                         >
                           <input
@@ -404,11 +359,11 @@ export default function Page() {
                             defaultChecked
                           />
                           <div
-                            style={{ backgroundColor: item.color }}
+                            style={{ backgroundColor: item.hexCode }}
                             className="w-8 h-8 z-20 rounded-sm  flex justify-center items-center relative before:content-[''] before:absolute before:w-1.5 before:h-2.5 before:border-r-2 before:border-b-2 before:border-white before:rotate-45 before:opacity-0 peer-checked:before:opacity-100"
                           ></div>
                           <div
-                            style={{ borderColor: item.color }}
+                            style={{ borderColor: item.hexCode }}
                             className="absolute top-[-4px] left-[-4px] w-10 h-10 rounded-md border-2 opacity-0 peer-checked:opacity-100"
                           ></div>
                         </label>
@@ -418,7 +373,7 @@ export default function Page() {
                 <div className="mb-12">
                   <p className="text-sm leading-6 mb-1 text-black">سایزبندی:</p>
                   <div className="flex items-center gap-2">
-                    {sizes.map((size, index) => (
+                    {product.sizes && product.sizes.map((size, index) => (
                       <label key={index} className="relative cursor-pointer">
                         <input
                           type="radio"
@@ -501,11 +456,11 @@ export default function Page() {
                         similarProducts.map((product) => (
                           <li key={product.id} className="glide__slide">
                             <ProductItemOff
-                              img={"/img/product-off-1.png"}
-                              title={product.title}
-                              finalPrice={product.latestPrice}
+                              img={product.img}
+                              title={product.name}
+                              finalPrice={product.finalPrice}
                               isMore={false}
-                              colors={product.ProductColor}
+                              colors={product.color}
                               id={product.id}
                             />
                           </li>

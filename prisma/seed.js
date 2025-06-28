@@ -4,7 +4,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log("Starting seeding process for products with multiple colors and sizes...");
+  console.log("Starting seeding process for products with multiple colors, sizes, and images...");
 
   // --- Seed Categories and Subcategories ---
   const mainCategories = [
@@ -106,7 +106,7 @@ async function main() {
   }
   console.log("Size seeding complete.");
 
-  // --- Seed Products and Link Colors/Sizes ---
+  // --- Seed Products and Link Colors/Sizes/Images ---
   const productsData = [
     {
       name: "لباس مجلسی دکلته الی",
@@ -115,10 +115,10 @@ async function main() {
       price: 750000,
       discountedPrice: 600000,
       isDiscounted: true,
-      imageUrl: "/img/product-off-1.png",
       categoryName: "پیراهن شب",
       colors: ["#800080", "#000000"], // آرایه‌ای از کدهای هگز
       sizes: ["S", "M", "L"], // آرایه‌ای از نام سایزها
+      images: ["/img/product-off-1.png", "/img/category-page-desktop-3.png", "/img/category-page-2.png"], // ✅ آرایه‌ای از URL عکس‌ها
     },
     {
       name: "پیراهن شب گیپور",
@@ -127,10 +127,10 @@ async function main() {
       price: 2200000,
       discountedPrice: 1100000,
       isDiscounted: true,
-      imageUrl: "/img/product-off-2.png",
       categoryName: "پیراهن شب",
       colors: ["#8B0000", "#FFFFFF"],
       sizes: ["S", "XL"],
+      images: ["/img/product-off-2.png", "/img/category-page-4.png","/img/category-page-1.png"], // ✅
     },
     {
       name: "لباس مجلسی میدی",
@@ -139,10 +139,10 @@ async function main() {
       price: 1500000,
       discountedPrice: 1200000,
       isDiscounted: true,
-      imageUrl: "/img/product-off-3.png",
       categoryName: "پیراهن شب",
       colors: ["#006400", "#FF0000"],
       sizes: ["L", "XL"],
+      images: ["/img/product-off-3.png", "/img/category-page-5.png","/img/category-page-6.png"], // ✅
     },
     {
       name: "پیراهن مجلسی توری",
@@ -151,10 +151,10 @@ async function main() {
       price: 600000,
       discountedPrice: 400000,
       isDiscounted: true,
-      imageUrl: "/img/product-off-4.png",
       categoryName: "پیراهن شب",
       colors: ["#C0C0C0", "#000000"],
       sizes: ["M", "Free Size"],
+      images: ["/img/product-off-4.png","/img/category-page-7.png","/img/category-page-8.png"], // ✅
     },
   ];
 
@@ -168,7 +168,6 @@ async function main() {
           price: productData.price,
           discountedPrice: productData.discountedPrice || null,
           isDiscounted: productData.isDiscounted || false,
-          imageUrl: productData.imageUrl || null,
           categoryId: category.id,
         },
         create: {
@@ -177,7 +176,6 @@ async function main() {
           price: productData.price,
           discountedPrice: productData.discountedPrice,
           isDiscounted: productData.isDiscounted,
-          imageUrl: productData.imageUrl,
           categoryId: category.id,
         },
       });
@@ -223,6 +221,21 @@ async function main() {
         }
       }
 
+      // ✅ حذف روابط قدیمی عکس‌ها برای این محصول
+      await prisma.productImage.deleteMany({
+        where: { productId: product.id },
+      });
+      // ✅ لینک کردن عکس‌ها
+      for (const imageUrl of productData.images) {
+        await prisma.productImage.create({
+          data: {
+            productId: product.id,
+            imageUrl: imageUrl,
+          },
+        });
+        console.log(`  -> Linked image "${imageUrl}" to ${product.name}`);
+      }
+
     } else {
       console.warn(
         `Category "${productData.categoryName}" not found for product "${productData.name}". Skipping product.`
@@ -230,7 +243,7 @@ async function main() {
     }
   }
 
-  console.log("Products with multiple colors and sizes seeding complete!");
+  console.log("Products with multiple colors, sizes, and images seeding complete!");
 }
 
 main()

@@ -68,6 +68,16 @@ export default function Products({ allProducts, totalProductsPages }) {
     setCurrentPage(parseInt(searchParamsHook.get("page") || "1"));
   }, [searchParamsHook]);
 
+  useEffect(()=>{
+    const getCategory = async ()=>{
+      const res = await fetch('/api/category')
+      console.log('res category',res);
+      const result = await res.json()
+      console.log('result category',result); 
+    }
+    getCategory()
+  },[])
+
   return (
     <div>
       <div className="container mx-auto">

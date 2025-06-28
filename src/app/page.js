@@ -7,15 +7,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default async function Home() {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  //get categories
-  let categoriesData = [];
-  try {
-    const categoriesRes = await fetch(`${baseUrl}/categories`);
-    categoriesData = await categoriesRes.json();
-  } catch (error) {
-    console.log(error);
-  }
 
   //get off products
   const cookieStore = await cookies();
@@ -28,9 +19,8 @@ export default async function Home() {
     : {};
 
     try {
-      const res = await fetch(`${baseUrl}/products/discounted`, {
+      const res = await fetch('/api/products/discounted', {
         headers : headers,
-        cache: "no-store",
       });
 
       discountedProducts = await res.json();
@@ -185,7 +175,7 @@ export default async function Home() {
           </div>
         </div>
       </header>
-      <Categories categoriesData={categoriesData} />
+      <Categories />
       <section className="bg-neutral-gray-1 py-8 lg:py-16 overflow-x-hidden">
         <h5 className="font-semibold leading-5 text-center mb-2 lg:font-bold lg:leading-11 lg:text-4xl lg:mb-4">
           <span className="text-cognac-primery">طراحـــــی </span>و دوخــــت بر

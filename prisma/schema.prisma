@@ -14,7 +14,7 @@ model User {
 
   firstName String?
   lastName  String?
-  email     String? 
+  email     String?
 
   role      String   @default("user")
   createdAt DateTime @default(now())
@@ -27,8 +27,12 @@ model User {
 }
 
 model Category {
-  id       String    @id @default(uuid())
-  name     String    @unique
+  id            String     @id @default(uuid())
+  name          String     @unique
+  parentId      String?
+  parent        Category?  @relation("Subcategories", fields: [parentId], references: [id], onDelete: Cascade)
+  subcategories Category[] @relation("Subcategories")
+
   products Product[]
 }
 

@@ -6,7 +6,8 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("Starting seeding process for products with multiple colors, sizes, and images...");
 
-  // --- Seed Categories and Subcategories ---
+  // --- Seed Categories and Subcategories (UNCHANGED from your original code) ---
+  // این بخش دست نخورده باقی می‌ماند، دقیقاً همان کدی که شما ارائه کرده بودید.
   const mainCategories = [
     "لباس مجلسی", "شلوار", "سرهمی", "کت مجلسی", "دامن", "شومیز", "کراپ", "پالتو",
   ];
@@ -78,6 +79,9 @@ async function main() {
     { name: "سفید", hexCode: "#FFFFFF" },
     { name: "قرمز", hexCode: "#FF0000" },
     { name: "آبی", hexCode: "#0000FF" },
+    { name: "بژ", hexCode: "#F5F5DC" },
+    { name: "طوسی", hexCode: "#808080" },
+    { name: "آبی روشن", hexCode: "#ADD8E6" }, // hex code for LightBlue
   ];
 
   const createdColors = {};
@@ -93,7 +97,7 @@ async function main() {
   console.log("Color seeding complete.");
 
   // --- Seed Sizes ---
-  const sizesData = ["S", "M", "L", "XL", "XXL", "Free Size"];
+  const sizesData = ["S", "M", "L", "XL", "XXL", "Free Size"]; // سایزهای اصلی شما
   const createdSizes = {};
   for (const sizeName of sizesData) {
     const newSize = await prisma.size.upsert({
@@ -108,53 +112,161 @@ async function main() {
 
   // --- Seed Products and Link Colors/Sizes/Images ---
   const productsData = [
+    // 4 محصول اصلی شما
     {
       name: "لباس مجلسی دکلته الی",
-      description:
-        "دامن مجلسی کلوش با پارچه ساتن براق، انتخابی ایده‌آل برای ست کردن با شومیزهای مجلسی. فروش محدود!",
+      description: "دامن مجلسی کلوش با پارچه ساتن براق، انتخابی ایده‌آل برای ست کردن با شومیزهای مجلسی. فروش محدود!",
       price: 750000,
       discountedPrice: 600000,
       isDiscounted: true,
       categoryName: "پیراهن شب",
-      colors: ["#800080", "#000000"], // آرایه‌ای از کدهای هگز
-      sizes: ["S", "M", "L"], // آرایه‌ای از نام سایزها
-      images: ["/img/product-off-1.png", "/img/category-page-desktop-3.png", "/img/category-page-2.png"], // ✅ آرایه‌ای از URL عکس‌ها
+      colors: ["#800080", "#000000"],
+      sizes: ["S", "M", "L"],
+      images: ["/img/product-off-1.png", "/img/category-page-desktop-3.png", "/img/category-page-2.png"],
     },
     {
       name: "پیراهن شب گیپور",
-      description:
-        "پیراهن شب بلند تمام گیپور با آستر، بسیار شیک و مجلل. آف ویژه آخر فصل!",
+      description: "پیراهن شب بلند تمام گیپور با آستر، بسیار شیک و مجلل. آف ویژه آخر فصل!",
       price: 2200000,
       discountedPrice: 1100000,
       isDiscounted: true,
       categoryName: "پیراهن شب",
       colors: ["#8B0000", "#FFFFFF"],
       sizes: ["S", "XL"],
-      images: ["/img/product-off-2.png", "/img/category-page-4.png","/img/category-page-1.png"], // ✅
+      images: ["/img/product-off-2.png", "/img/category-page-4.png", "/img/category-page-1.png"],
     },
     {
       name: "لباس مجلسی میدی",
-      description:
-        "مانتو مجلسی مخمل با یقه فانتزی، مناسب فصول سرد و مجالس رسمی. تخفیف استثنایی!",
+      description: "مانتو مجلسی مخمل با یقه فانتزی، مناسب فصول سرد و مجالس رسمی. تخفیف استثنایی!",
       price: 1500000,
       discountedPrice: 1200000,
       isDiscounted: true,
       categoryName: "پیراهن شب",
       colors: ["#006400", "#FF0000"],
       sizes: ["L", "XL"],
-      images: ["/img/product-off-3.png", "/img/category-page-5.png","/img/category-page-6.png"], // ✅
+      images: ["/img/product-off-3.png", "/img/category-page-5.png", "/img/category-page-6.png"],
     },
     {
       name: "پیراهن مجلسی توری",
-      description:
-        "دامن مجلسی کوتاه از جنس تور لمه با آستر، مناسب مهمانی‌های غیررسمی. حراج ویژه!",
+      description: "دامن مجلسی کوتاه از جنس تور لمه با آستر، مناسب مهمانی‌های غیررسمی. حراج ویژه!",
       price: 600000,
       discountedPrice: 400000,
       isDiscounted: true,
       categoryName: "پیراهن شب",
       colors: ["#C0C0C0", "#000000"],
       sizes: ["M", "Free Size"],
-      images: ["/img/product-off-4.png","/img/category-page-7.png","/img/category-page-8.png"], // ✅
+      images: ["/img/product-off-4.png", "/img/category-page-7.png", "/img/category-page-8.png"],
+    },
+    // --- 10 محصول جدید (با استفاده از دسته‌بندی‌های موجود شما) ---
+    {
+      name: "شلوار جین زنانه فاق بلند",
+      description: "شلوار جین فاق بلند با برش جذب، مناسب برای استایل روزمره و ترکیب با کراپ تاپ.",
+      price: 890000,
+      discountedPrice: null,
+      isDiscounted: false,
+      categoryName: "شلوار جین",
+      colors: ["#0000FF", "#000000"], // آبی، مشکی
+      sizes: ["S", "M", "L"],
+      images: ["/img/category-page-desktop-5.png", "/img/category-page-desktop-2.png"],
+    },
+    {
+      name: "کت مجلسی اورسایز زنانه",
+      description: "کت مجلسی اورسایز با استایل مدرن، ایده‌آل برای مهمانی‌ها و قرارهای خاص.",
+      price: 1700000,
+      discountedPrice: 1500000,
+      isDiscounted: true,
+      categoryName: "کت تک",
+      colors: ["#808080", "#F5F5DC"], // طوسی، بژ
+      sizes: ["Free Size"],
+      images: ["/img/category-page-desktop-7.png", "/img/category-page-desktop-6.png"],
+    },
+    {
+      name: "شومیز حریر آستین پفی",
+      description: "شومیز حریر با آستین‌های پفی و طرح ساده، مناسب برای مجالس و ترکیب با دامن مجلسی.",
+      price: 720000,
+      discountedPrice: null,
+      isDiscounted: false,
+      categoryName: "شومیز رسمی",
+      colors: ["#FFFFFF", "#8B0000"], // سفید، زرشکی
+      sizes: ["S", "M", "L"],
+      images: ["/img/category-page-desktop-3.png", "/img/category-page-desktop-1.png"],
+    },
+    {
+      name: "دامن بلند پلیسه زنانه",
+      description: "دامن بلند پلیسه از جنس ساتن، انتخابی شیک و راحت برای میهمانی‌ها و استفاده روزمره.",
+      price: 950000,
+      discountedPrice: 800000,
+      isDiscounted: true,
+      categoryName: "دامن بلند",
+      colors: ["#000000", "#800080"], // مشکی، بنفش
+      sizes: ["M", "Free Size"],
+      images: ["/img/category-page-desktop-2.png", "/img/category-page-desktop-8.png"],
+    },
+    {
+      name: "کراپ تاپ نخی اسپرت",
+      description: "کراپ تاپ نخی با طراحی اسپرت، مناسب برای فعالیت‌های ورزشی و استایل کژوال.",
+      price: 320000,
+      discountedPrice: null,
+      isDiscounted: false,
+      categoryName: "تاپ کراپ",
+      colors: ["#FF0000", "#006400"], // قرمز، سبز تیره
+      sizes: ["S", "M"],
+      images: ["/img/category-page-desktop-4.png", "/img/category-page-desktop-5.png"],
+    },
+    {
+      name: "پالتو بلند پشمی زنانه",
+      description: "پالتو پشمی بلند و گرم، با طراحی کلاسیک و شیک، ایده‌آل برای فصول سرد.",
+      price: 2800000,
+      discountedPrice: 2400000,
+      isDiscounted: true,
+      categoryName: "پالتو بلند",
+      colors: ["#000000", "#808080"], // مشکی، طوسی
+      sizes: ["M", "L", "XL"],
+      images: ["/img/category-page-desktop-1.png", "/img/category-page-desktop-9.png"],
+    },
+    {
+      name: "سرهمی مجلسی مخمل",
+      description: "سرهمی مجلسی از جنس مخمل با جزئیات دانتل، انتخابی منحصر به فرد برای شب‌های خاص.",
+      price: 2100000,
+      discountedPrice: 1800000,
+      isDiscounted: true,
+      categoryName: "سرهمی مجلسی",
+      colors: ["#8B0000", "#000000"], // زرشکی، مشکی
+      sizes: ["S", "M"],
+      images: ["/img/category-page-desktop-3.png", "/img/category-page-desktop-2.png"],
+    },
+    {
+      name: "بلوز بافت ظریف زنانه",
+      description: "بلوز بافت ظریف و سبک، مناسب برای استفاده روزمره و ترکیب با کت و دامن.",
+      price: 480000,
+      discountedPrice: null,
+      isDiscounted: false,
+      categoryName: "بلوز",
+      colors: ["#FFFFFF", "#ADD8E6"], // سفید، آبی روشن
+      sizes: ["S", "M", "Free Size"],
+      images: ["/img/category-page-desktop-5.png", "/img/category-page-desktop-4.png"],
+    },
+    {
+      name: "دامن میدی چرم مصنوعی",
+      description: "دامن میدی از چرم مصنوعی با طراحی شیک و مدرن، مناسب برای استایل‌های جسورانه.",
+      price: 1100000,
+      discountedPrice: null,
+      isDiscounted: false,
+      categoryName: "دامن میدی",
+      colors: ["#000000", "#800080"], // مشکی، بنفش
+      sizes: ["S", "M"],
+      images: ["/img/category-page-desktop-7.png", "/img/category-page-desktop-6.png"],
+    },
+    {
+      name: "لگینگ ورزشی فشرده",
+      description: "لگینگ ورزشی با پارچه فشرده و کشی، ایده‌آل برای یوگا و تمرینات ورزشی.",
+      price: 650000,
+      discountedPrice: null,
+      isDiscounted: false,
+      categoryName: "لگینگ",
+      colors: ["#000000", "#0000FF"], // مشکی، آبی
+      sizes: ["S", "M", "L"],
+      images: ["/img/category-page-desktop-9.png", "/img/category-page-desktop-8.png"],
     },
   ];
 
@@ -181,11 +293,11 @@ async function main() {
       });
       console.log(`Product created or updated: ${product.name} (ID: ${product.id})`);
 
-      // ✅ حذف روابط قدیمی رنگ‌ها برای این محصول
+      // حذف روابط قدیمی رنگ‌ها برای این محصول
       await prisma.productColor.deleteMany({
         where: { productId: product.id },
       });
-      // ✅ لینک کردن رنگ‌ها
+      // لینک کردن رنگ‌ها
       for (const colorHexCode of productData.colors) {
         const color = createdColors[colorHexCode];
         if (color) {
@@ -195,17 +307,17 @@ async function main() {
               colorId: color.id,
             },
           });
-          console.log(`  -> Linked color ${color.name} (${color.hexCode}) to ${product.name}`);
+          console.log(`  -> Linked color ${color.name} (${color.hexCode}) to ${product.name}`);
         } else {
-          console.warn(`  -> Color with hex code "${colorHexCode}" not found for product "${productData.name}". Skipping linking.`);
+          console.warn(`  -> Color with hex code "${colorHexCode}" not found for product "${productData.name}". Skipping linking.`);
         }
       }
 
-      // ✅ حذف روابط قدیمی سایزها برای این محصول
+      // حذف روابط قدیمی سایزها برای این محصول
       await prisma.productSize.deleteMany({
         where: { productId: product.id },
       });
-      // ✅ لینک کردن سایزها
+      // لینک کردن سایزها
       for (const sizeName of productData.sizes) {
         const size = createdSizes[sizeName];
         if (size) {
@@ -215,25 +327,25 @@ async function main() {
               sizeId: size.id,
             },
           });
-          console.log(`  -> Linked size ${size.name} to ${product.name}`);
+          console.log(`  -> Linked size ${size.name} to ${product.name}`);
         } else {
-          console.warn(`  -> Size "${sizeName}" not found for product "${productData.name}". Skipping linking.`);
+          console.warn(`  -> Size "${sizeName}" not found for product "${productData.name}". Skipping linking.`);
         }
       }
 
-      // ✅ حذف روابط قدیمی عکس‌ها برای این محصول
-      await prisma.productImage.deleteMany({
+      // حذف روابط قدیمی عکس‌ها برای این محصول
+      await prisma.ProductImage.deleteMany({
         where: { productId: product.id },
       });
-      // ✅ لینک کردن عکس‌ها
+      // لینک کردن عکس‌ها
       for (const imageUrl of productData.images) {
-        await prisma.productImage.create({
+        await prisma.ProductImage.create({
           data: {
             productId: product.id,
             imageUrl: imageUrl,
           },
         });
-        console.log(`  -> Linked image "${imageUrl}" to ${product.name}`);
+        console.log(`  -> Linked image "${imageUrl}" to ${product.name}`);
       }
 
     } else {

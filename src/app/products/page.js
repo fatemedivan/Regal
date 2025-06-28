@@ -2,7 +2,7 @@ import Products from "@/components/products/Products";
 import { cookies } from "next/headers";
 
 export default async function Page({ searchParams }) {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const baseUrl = process.NEXT_PUBLIC_API_BASE_URL;
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
 
@@ -14,6 +14,7 @@ export default async function Page({ searchParams }) {
 
   let products = [];
   let totalPages = null;
+  let totalProducts = null
   const headers = token
     ? {
         Authorization: `Bearer ${token}`,
@@ -35,11 +36,18 @@ export default async function Page({ searchParams }) {
       console.log("data", data);
 
       products = data.products;
-      totalPages = data.latestPage;
+      totalPages = data.totalPages;
+      totalProducts = data.totalProducts;
     }
   } catch (error) {
     console.error(error);
   }
 
-  return <Products allProducts={products} totalProductsPages={totalPages} />;
+  return (
+    <Products
+      allProducts={products}
+      totalProducts={totalProducts}
+      totalProductsPages={totalPages}
+    />
+  );
 }

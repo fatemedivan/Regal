@@ -23,7 +23,7 @@ export default function Footer() {
             <input
               type="text"
               placeholder="ایمیل خود را وارد کنید..."
-              className="rounded-lg placeholder:text-neutral-gray-3 placeholder:text-sm placeholder:leading-5 border-1 border-neutral-gray-8 pr-6 py-3.5"
+              className="rounded-lg placeholder:text-neutral-gray-3 placeholder:text-sm placeholder:leading-5 border-1 border-neutral-gray-8 pr-6 py-3.5 text-neutral-100 outline-none"
             />
             <button className="px-6 py-3.25 border-1 border-neutral-gray-8 text-neutral-gray-3 rounded-[10px] flex justify-center items-center">
               عضویت

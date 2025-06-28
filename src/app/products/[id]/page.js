@@ -44,6 +44,7 @@ export default function Page() {
     const getProduct = async () => {
       const res = await fetch(`/api/products/${id}`, {
         headers: headers,
+        cache: "no-store",
       });
       console.log(res);
 
@@ -52,9 +53,9 @@ export default function Page() {
         console.log(data);
 
         setProduct(data);
-        setCurrentImgSrc(data?.images[0]);
+        setCurrentImgSrc(data?.images[1]);
         setIsExistProduct(true);
-        setSimilarProducts(data.relatedProducts)
+        setSimilarProducts(data.relatedProducts);
         if (data.isLiked) {
           setIsLiked(true);
         }
@@ -173,10 +174,7 @@ export default function Page() {
           />
           {product.categoryName && (
             <Breadcrumb
-              items={[
-                { label: product.categoryName },
-                { label: product.name },
-              ]}
+              items={[{ label: product.categoryName }, { label: product.name }]}
             />
           )}
 
@@ -228,7 +226,6 @@ export default function Page() {
                     {product.name}
                   </h4>
                   <div className="flex justify-center items-center gap-2">
-                    
                     <div className="p-3 border border-cognac-tint-8 rounded-lg">
                       {isLiked ? (
                         <Image
@@ -291,7 +288,6 @@ export default function Page() {
                       alt=""
                     />
                   </div>
-                  
                 </div>
                 <div className="hidden lg:flex items-center my-7">
                   <p className="line-through font-normal leading-7 text-neutral-gray-9">
@@ -299,7 +295,10 @@ export default function Page() {
                   </p>
 
                   <p className="text-xl leading-5.5 font-bold text-neutral-gray-13 mr-2">
-                    {product.discountedPrice} تومان
+                    {product.percentOff
+                      ? product.discountedPrice
+                      : product.price}{" "}
+                    تومان
                   </p>
                 </div>
                 <p className="leading-6 text-sm text-neutral-gray-13 mt-4 mb-2 lg:hidden">
@@ -373,21 +372,22 @@ export default function Page() {
                 <div className="mb-12">
                   <p className="text-sm leading-6 mb-1 text-black">سایزبندی:</p>
                   <div className="flex items-center gap-2">
-                    {product.sizes && product.sizes.map((size, index) => (
-                      <label key={index} className="relative cursor-pointer">
-                        <input
-                          type="radio"
-                          name="size"
-                          className="hidden peer"
-                        />
-                        <div className="w-8 h-8 text-neutral-gray-11 flex items-center justify-center rounded-sm border border-neutral-gray-4 peer-checked:bg-cognac-shade-4 peer-checked:text-white text-xs leading-4.5 pt-1">
-                          {size}
-                        </div>
-                        <div
-                          className={`absolute top-[-4px] left-[-4px] w-10 h-10 rounded-lg border-3 border-cognac-shade-4 opacity-0 peer-checked:opacity-100 transition-all`}
-                        ></div>
-                      </label>
-                    ))}
+                    {product.sizes &&
+                      product.sizes.map((size, index) => (
+                        <label key={index} className="relative cursor-pointer">
+                          <input
+                            type="radio"
+                            name="size"
+                            className="hidden peer"
+                          />
+                          <div className="w-8 h-8 text-neutral-gray-11 flex items-center justify-center rounded-sm border border-neutral-gray-4 peer-checked:bg-cognac-shade-4 peer-checked:text-white text-xs leading-4.5 pt-1">
+                            {size}
+                          </div>
+                          <div
+                            className={`absolute top-[-4px] left-[-4px] w-10 h-10 rounded-lg border-3 border-cognac-shade-4 opacity-0 peer-checked:opacity-100 transition-all`}
+                          ></div>
+                        </label>
+                      ))}
                   </div>
                 </div>
                 <div>
@@ -405,71 +405,72 @@ export default function Page() {
                 </div>
               </div>
             </div>
-
-            <div className="mb-16">
-              <div className="mb-6 flex justify-between items-center lg:mb-10">
-                <h5 className="font-semibold leading-5 lg:text-30 lg:bold lg:leading-9.5">
-                  محصولات مشابه
-                </h5>
-                <div className="flex items-center gap-2">
-                  <div
-                    className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer custom-prev"
-                    ref={prevbtnRef}
-                    onClick={() => glideRef.current?.glideInstance?.go("<")}
-                  >
-                    <Image
-                      width={16}
-                      height={16}
-                      quality={100}
-                      src="/img/arrow-right-3.svg"
-                      alt=""
-                    />
-                  </div>
-                  <div
-                    className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer custom-next"
-                    ref={nextbtnRef}
-                    onClick={() => glideRef.current?.glideInstance?.go(">")}
-                  >
-                    <Image
-                      width={16}
-                      height={16}
-                      quality={100}
-                      src="/img/arrow-left-4.svg"
-                      alt=""
-                    />
+            {similarProducts.length !== 0 && (
+              <div className="mb-16">
+                <div className="mb-6 flex justify-between items-center lg:mb-10">
+                  <h5 className="font-semibold leading-5 lg:text-30 lg:bold lg:leading-9.5">
+                    محصولات مشابه
+                  </h5>
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer custom-prev"
+                      ref={prevbtnRef}
+                      onClick={() => glideRef.current?.glideInstance?.go("<")}
+                    >
+                      <Image
+                        width={16}
+                        height={16}
+                        quality={100}
+                        src="/img/arrow-right-3.svg"
+                        alt=""
+                      />
+                    </div>
+                    <div
+                      className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer custom-next"
+                      ref={nextbtnRef}
+                      onClick={() => glideRef.current?.glideInstance?.go(">")}
+                    >
+                      <Image
+                        width={16}
+                        height={16}
+                        quality={100}
+                        src="/img/arrow-left-4.svg"
+                        alt=""
+                      />
+                    </div>
                   </div>
                 </div>
+
+                {isLoading ? (
+                  <div className="flex flex-col justify-center items-center h-[60vh]">
+                    <HashLoader color="#b19276" size={80} />
+                    <p className="mt-5 text-xl font-extrabold text-cognac-shade-3 animate-pulse">
+                      ...loading
+                    </p>
+                  </div>
+                ) : (
+                  <div className="glide" ref={glideRef}>
+                    <div className="glide__track" data-glide-el="track">
+                      <ul className="glide__slides scroll-smooth">
+                        {similarProducts &&
+                          similarProducts.map((product) => (
+                            <li key={product.id} className="glide__slide">
+                              <ProductItemOff
+                                img={product.img}
+                                title={product.name}
+                                finalPrice={product.finalPrice}
+                                isMore={false}
+                                colors={product.color}
+                                id={product.id}
+                              />
+                            </li>
+                          ))}
+                      </ul>
+                    </div>
+                  </div>
+                )}
               </div>
-
-              {isLoading ? (
-                <div className="flex flex-col justify-center items-center h-[60vh]">
-                  <HashLoader color="#b19276" size={80} />
-                  <p className="mt-5 text-xl font-extrabold text-cognac-shade-3 animate-pulse">
-                    ...loading
-                  </p>
-                </div>
-              ) : (
-                <div className="glide" ref={glideRef}>
-                  <div className="glide__track" data-glide-el="track">
-                    <ul className="glide__slides scroll-smooth">
-                      {similarProducts &&
-                        similarProducts.map((product) => (
-                          <li key={product.id} className="glide__slide">
-                            <ProductItemOff
-                              img={product.img}
-                              title={product.name}
-                              finalPrice={product.finalPrice}
-                              isMore={false}
-                              colors={product.color}
-                              id={product.id}
-                            />
-                          </li>
-                        ))}
-                    </ul>
-                  </div>
-                </div>
-              )}
-            </div>
+            )}
           </div>
         </>
       ) : (

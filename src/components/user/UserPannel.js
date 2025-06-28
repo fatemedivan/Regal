@@ -51,6 +51,7 @@ export default function UserPannel({
     sessionStorage.removeItem("full address");
     sessionStorage.removeItem("address");
     document.cookie = `token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC`;
+    router.refresh()
     router.push("/auth/login");
     setIsOpenLogoutModal(false);
     closeModal();

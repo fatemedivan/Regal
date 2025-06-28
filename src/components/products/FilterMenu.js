@@ -3,7 +3,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
 export default function FilterMenuMobile({ handleCloseFilter, setProducts }) {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+ 
   const [isOpenPriceFilter, setIsOpenPriceFilter] = useState(false);
   const [minPrice, setMinPrice] = useState(100000);
   const [maxPrice, setMaxPrice] = useState(250000);
@@ -45,7 +45,7 @@ export default function FilterMenuMobile({ handleCloseFilter, setProducts }) {
 
   useEffect(() => {
     const queryParams = [];
-    let url = `${baseUrl}/products`;
+    let url = `/api/products`;
 
     const applyFilters = async () => {
       selectedFilters.forEach((filter) => {
@@ -329,7 +329,7 @@ export default function FilterMenuMobile({ handleCloseFilter, setProducts }) {
           {isOpenPriceFilter && (
             <div>
               <div className="relative w-full">
-                {/* AI */}
+             
 
                 <input
                   type="range"

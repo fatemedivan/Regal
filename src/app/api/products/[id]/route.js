@@ -12,6 +12,7 @@ export async function GET(request, { params }) {
       try {
         const decoded = await verifyToken(token);
         userId = decoded.userId;
+         
       } catch (tokenError) {
         console.warn(
           "Invalid or expired token in single product fetch:",

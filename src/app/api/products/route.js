@@ -3,9 +3,18 @@ import { prisma } from "../../../../lib/prisma";
 import { verifyToken } from "../../../../utils/auth";
 
 export async function GET(request) {
+  let userId = null;
   try {
-    const { userId } = await verifyToken(request); // Verify token to get userId for liked status
+    const decoded = await verifyToken(request);
+    if (decoded && decoded.userId) {
+      userId = decoded.userId;
+    }
+  } catch (error) {
+    // Token verification failed, userId remains null, allowing unauthenticated access.
+    // console.warn("Token verification failed, proceeding as unauthenticated user:", error.message);
+  }
 
+  try {
     const { searchParams } = new URL(request.url);
 
     // Pagination
@@ -14,7 +23,7 @@ export async function GET(request) {
     const skip = (page - 1) * limit;
 
     // Sorting
-    const sort = searchParams.get("sort"); // 'cheapest', 'most_expensive', 'oldest', 'newest'
+    const sort = searchParams.get("sort");
     let orderBy = {};
 
     switch (sort) {
@@ -28,7 +37,7 @@ export async function GET(request) {
         orderBy = { createdAt: "asc" };
         break;
       case "newest":
-      default: // Default to newest if no valid sort is provided
+      default:
         orderBy = { createdAt: "desc" };
         break;
     }
@@ -39,8 +48,8 @@ export async function GET(request) {
     const maxPrice = parseFloat(searchParams.get("maxPrice"));
     const color = searchParams.get("color");
     const size = searchParams.get("size");
-    const categoryId = searchParams.get("categoryId"); // <-- Changed from 'type' to 'categoryId'
-    const isDiscounted = searchParams.get("isDiscounted"); // 'true' or 'false'
+    const categoryId = searchParams.get("categoryId");
+    const isDiscounted = searchParams.get("isDiscounted");
 
     if (minPrice && maxPrice) {
       filter.price = { gte: minPrice, lte: maxPrice };
@@ -50,9 +59,26 @@ export async function GET(request) {
       filter.price = { lte: maxPrice };
     }
 
-    if (color) filter.color = color;
-    if (size) filter.size = size;
-    if (categoryId) filter.categoryId = categoryId; // <-- Using categoryId for filtering
+    if (color) {
+      filter.productColors = {
+        some: {
+          color: {
+            hexCode: color, // Assuming 'color' param is hexCode. Change to 'name: color' if using color name.
+          },
+        },
+      };
+    }
+    if (size) {
+      filter.productSizes = {
+        some: {
+          size: {
+            name: size,
+          },
+        },
+      };
+    }
+
+    if (categoryId) filter.categoryId = categoryId;
     if (isDiscounted === "true") filter.isDiscounted = true;
     if (isDiscounted === "false") filter.isDiscounted = false;
 
@@ -65,35 +91,57 @@ export async function GET(request) {
         orderBy: orderBy,
         include: {
           category: {
-            select: { name: true }, // Include category name
+            select: { name: true },
           },
+          productColors: {
+            include: { color: true },
+          },
+          productSizes: {
+            include: { size: true },
+          },
+          images: true,
         },
       }),
       prisma.product.count({ where: filter }),
     ]);
 
-    // Check if each product is liked by the current user
-    const productIds = products.map((p) => p.id);
-    const likedProductsByUser = await prisma.likedProduct.findMany({
-      where: {
-        userId: userId,
-        productId: { in: productIds },
-      },
-      select: { productId: true },
+    // Check if each product is liked by the current user ONLY IF userId exists
+    let likedProductIds = new Set();
+    if (userId) {
+      const productIds = products.map((p) => p.id);
+      const likedProductsByUser = await prisma.likedProduct.findMany({
+        where: {
+          userId: userId,
+          productId: { in: productIds },
+        },
+        select: { productId: true },
+      });
+      likedProductIds = new Set(likedProductsByUser.map((lp) => lp.productId));
+    }
+
+    const productsWithCalculatedFields = products.map((product) => {
+      // Calculate offPercent
+      let offPercent = 0;
+      if (
+        product.isDiscounted &&
+        product.discountedPrice !== null &&
+        product.price > 0
+      ) {
+        offPercent =
+          ((product.price - product.discountedPrice) / product.price) * 100;
+        offPercent = Math.round(offPercent); // Round to nearest whole number
+      }
+
+      return {
+        ...product,
+        isLiked: userId ? likedProductIds.has(product.id) : false,
+        offPercent: offPercent, // Add the calculated offPercent
+      };
     });
-
-    const likedProductIds = new Set(
-      likedProductsByUser.map((lp) => lp.productId)
-    );
-
-    const productsWithLikedStatus = products.map((product) => ({
-      ...product,
-      isLiked: likedProductIds.has(product.id),
-    }));
 
     return NextResponse.json(
       {
-        products: productsWithLikedStatus,
+        products: productsWithCalculatedFields, // Use the new array with calculated offPercent
         currentPage: page,
         totalPages: Math.ceil(totalProducts / limit),
         totalProducts: totalProducts,
@@ -102,12 +150,6 @@ export async function GET(request) {
     );
   } catch (error) {
     console.error("Error fetching products:", error.message);
-    if (
-      error.message.includes("Authentication required") ||
-      error.message.includes("Invalid or expired token")
-    ) {
-      return NextResponse.json({ message: error.message }, { status: 401 });
-    }
     return NextResponse.json(
       { message: "Internal server error fetching products." },
       { status: 500 }

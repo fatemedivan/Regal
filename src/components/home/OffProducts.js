@@ -182,7 +182,7 @@ export default function OffProducts({discountedProducts}) {
                     offPercent={product.offPercent}
                     isMore={false}
                     colors={product.colors}
-                    favorites={product.Favorite}
+                    favorites={product.isLiked}
                   />
                 </li>
               ))}

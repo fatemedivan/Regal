@@ -9,7 +9,11 @@ import { useScrollLockContext } from "@/context/ScrollLockContext";
 import FilterMenu from "@/components/products/FilterMenu";
 import ProductSceleton from "../common/ProductSceleton";
 
-export default function Products({ allProducts, totalProductsPages }) {
+export default function Products({
+  allProducts,
+  totalProductsPages,
+  totalProducts,
+}) {
   const router = useRouter();
   const { openModal, closeModal } = useScrollLockContext();
   const searchParamsHook = useSearchParams();
@@ -68,16 +72,6 @@ export default function Products({ allProducts, totalProductsPages }) {
     setCurrentPage(parseInt(searchParamsHook.get("page") || "1"));
   }, [searchParamsHook]);
 
-  useEffect(()=>{
-    const getCategory = async ()=>{
-      const res = await fetch('/api/category')
-      console.log('res category',res);
-      const result = await res.json()
-      console.log('result category',result); 
-    }
-    getCategory()
-  },[])
-
   return (
     <div>
       <div className="container mx-auto">
@@ -124,13 +118,13 @@ export default function Products({ allProducts, totalProductsPages }) {
                   />
                   <h5 className="font-semibold leading-5 text-black lg:font-bold lg:text-[27px] lg:inline lg:leading-8">
                     <span className="hidden lg:inline mr-2 text-neutral-gray-8 font-bold leading-4.5 text-lg">
-                      ({products.length * totalPages} کالا)
+                      ({totalProducts && totalProducts} کالا)
                     </span>
                   </h5>
                 </div>
                 <div className="flex justify-between items-center mb-6 lg:hidden">
                   <p className="text-neutral-gray-8 text-sm leading-5">
-                    تعداد محصولات : {products.length * totalPages} کالا
+                    تعداد محصولات : {totalProducts && totalProducts} کالا
                   </p>
                   <div className="flex items-center gap-2">
                     <div
@@ -172,15 +166,13 @@ export default function Products({ allProducts, totalProductsPages }) {
                     <ProductItemOff
                       key={product.id}
                       id={product.id}
-                      img={"/img/category-page-2.png"}
-                      offPercent={product.discount}
-                      title={product.title}
-                      price={Math.round(
-                        product.latestPrice / (1 - product.discount / 100)
-                      )}
-                      finalPrice={product.latestPrice}
-                      colors={product.ProductColor}
-                      favorites={product.Favorite}
+                      img={product.images[0].imageUrl}
+                      offPercent={product.offPercent}
+                      title={product.name}
+                      price={product.price}
+                      finalPrice={product.discountedPrice}
+                      colors={product.colors}
+                      favorites={product.isLiked}
                     />
                   ))}
               </div>
@@ -274,15 +266,13 @@ export default function Products({ allProducts, totalProductsPages }) {
                         <ProductItemOff
                           key={product.id}
                           id={product.id}
-                          img={"/img/category-page-2.png"}
-                          offPercent={product.discount}
-                          title={product.title}
-                          price={Math.round(
-                            product.latestPrice / (1 - product.discount / 100)
-                          )}
-                          finalPrice={product.latestPrice}
-                          colors={product.ProductColor}
-                          favorites={product.Favorite}
+                          img={product.images[0].imageUrl}
+                          offPercent={product.offPercent}
+                          title={product.name}
+                          price={product.price}
+                          finalPrice={product.discountedPrice}
+                          colors={product.colors}
+                          favorites={product.isLiked}
                         />
                       ))}
                   </div>

@@ -31,7 +31,7 @@ export default function ProductItemOff({
               sizes="(min-width: 1024px) 318px, 167px"
             />
             <div className="absolute w-full top-3 lg:top-4 flex justify-between items-center px-3 lg:px-4">
-              {favorites && favorites.length ? (
+              {favorites ? (
                 <Image
                   width={24}
                   height={24}
@@ -79,27 +79,29 @@ export default function ProductItemOff({
                 </div>
               )}
 
-               <div className="flex items-center gap-1">
-            {colors && colors.map((hexCode, index) => (
-              <div
-                key={hexCode || index} 
-                className="w-5 h-5 rounded-sm border border-gray-300"
-                style={{ backgroundColor: hexCode }}
-                title={hexCode}
-              ></div>
-            ))}
-          </div>
+              <div className="flex items-center gap-1">
+                {colors &&
+                  colors.map((hexCode, index) => (
+                    <div
+                      key={hexCode || index}
+                      className="w-5 h-5 rounded-sm border border-gray-300"
+                      style={{ backgroundColor: hexCode }}
+                      title={hexCode}
+                    ></div>
+                  ))}
+              </div>
             </div>
           </div>
           <div className="flex items-center gap-2 text-black lg:justify-start">
-            {price && finalPrice && offPercent !== 0 && (
+            {offPercent !== 0 && (
               <p className="text-neutral-gray-8 text-xs leading-4.5 lg:text-sm lg:leading-4.5 lg:line-through">
                 {price}
               </p>
             )}
 
             <p className="text-sm leading-6 lg:text-[1rem] lg:leading-7">
-              <span className="ml-1">{finalPrice}</span>تومان
+              <span className="ml-1">{finalPrice ? finalPrice : price}</span>
+              تومان
             </p>
           </div>
         </Link>

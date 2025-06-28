@@ -21,10 +21,10 @@ export default async function Home() {
     try {
       const res = await fetch(`${baseUrl}/api/products/discounted`, {
         headers : headers,
+        cache: 'no-store'
       });
 
       discountedProducts = await res.json();
-      console.log(discountedProducts);
       
     } catch (error) {
       console.log(error);

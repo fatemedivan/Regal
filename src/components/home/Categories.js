@@ -14,14 +14,14 @@ export default function Categories() {
         const categoriesRes = await fetch("/api/category");
         if (categoriesRes.ok) {
           const categoryDate = await categoriesRes.json();
-          setData(categoryDate); 
+          setData(categoryDate);
         }
       } catch (error) {
         console.log(error);
       }
     };
-    getCategory()
-  },[]);
+    getCategory();
+  }, []);
 
   return (
     <section className="container mx-auto px-5 mb-16">
@@ -42,7 +42,7 @@ export default function Categories() {
               />
               <div className="absolute z-30 bottom-1 px-2">
                 <h5 className="leading-5 font-semibold text-white">
-                  {data[8]?.name}
+                  {data[4]?.name}
                 </h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -67,7 +67,7 @@ export default function Categories() {
               />
               <div className="absolute z-30 bottom-1 px-2">
                 <h5 className="leading-5 font-semibold text-white">
-                  {data[3]?.name}
+                  {data[1]?.name}
                 </h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -92,7 +92,7 @@ export default function Categories() {
               />
               <div className="absolute z-30 bottom-1 px-2">
                 <h5 className="leading-5 font-semibold text-white">
-                  {data[5]?.name}
+                  {data[3]?.name}
                 </h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -117,7 +117,7 @@ export default function Categories() {
               />
               <div className="absolute z-30 bottom-1 px-2">
                 <h5 className="leading-5 font-semibold text-white">
-                  {data[1]?.name}
+                  {data[7]?.name}
                 </h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -145,7 +145,7 @@ export default function Categories() {
               />
               <div className="absolute bottom-1 z-30 px-2">
                 <h5 className="leading-5 font-semibold text-white">
-                  {data[4]?.name}
+                  {data[2]?.name}
                 </h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -170,7 +170,7 @@ export default function Categories() {
               />
               <div className="absolute bottom-1 z-30 px-2">
                 <h5 className="leading-5 font-semibold text-white">
-                  {data[9]?.name}
+                  {data[6]?.name}
                 </h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -195,7 +195,7 @@ export default function Categories() {
               />
               <div className="absolute bottom-1 z-30 px-2">
                 <h5 className="leading-5 font-semibold text-white">
-                  {data[2]?.name}
+                  {data[0]?.name}
                 </h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -220,7 +220,7 @@ export default function Categories() {
               />
               <div className="absolute bottom-1 z-30 px-2">
                 <h5 className="leading-5 font-semibold text-white">
-                  {data[7]?.name}
+                  {data[5]?.name}
                 </h5>
                 <div className="flex items-center gap-1 mt-1 mb-2 text-white">
                   <div className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]">
@@ -250,7 +250,7 @@ export default function Categories() {
             quality={100}
           />
           <div className="absolute bottom-4 mr-4 text-white">
-            <h5 className="text-lg font-bold">{data[8]?.name}</h5>
+            <h5 className="text-lg font-bold">{data[4]?.name}</h5>
             <div className="flex gap-2 mt-2">
               <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
                 دخترانه
@@ -274,7 +274,7 @@ export default function Categories() {
             quality={100}
           />
           <div className="absolute bottom-4 mr-4 text-white">
-            <h5 className="text-lg font-bold">{data[4]?.name}</h5>
+            <h5 className="text-lg font-bold">{data[2]?.name}</h5>
             <div className="flex gap-2 mt-2">
               <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
                 استایل روزمره
@@ -298,7 +298,7 @@ export default function Categories() {
             quality={100}
           />
           <div className="absolute bottom-4 mr-4 text-white">
-            <h5 className="text-lg font-bold">{data[3]?.name}</h5>
+            <h5 className="text-lg font-bold">{data[1]?.name}</h5>
             <div className="flex gap-2 mt-2">
               <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
                 روزمره
@@ -322,7 +322,7 @@ export default function Categories() {
             quality={100}
           />
           <div className="absolute bottom-4 mr-4 text-white">
-            <h5 className="text-lg font-bold">{data[9]?.name}</h5>
+            <h5 className="text-lg font-bold">{data[6]?.name}</h5>
             <div className="flex gap-2 mt-2">
               <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
                 کلاسیک
@@ -346,7 +346,7 @@ export default function Categories() {
             quality={100}
           />
           <div className="absolute bottom-4 mr-4 text-white">
-            <h5 className="text-lg font-bold">{data[2]?.name}</h5>
+            <h5 className="text-lg font-bold">{data[0]?.name}</h5>
             <div className="flex gap-2 mt-2">
               <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
                 تابستانه
@@ -370,7 +370,7 @@ export default function Categories() {
             quality={100}
           />
           <div className="absolute bottom-4 mr-4 text-white">
-            <h5 className="text-lg font-bold">{data[5]?.name}</h5>
+            <h5 className="text-lg font-bold">{data[3]?.name}</h5>
             <div className="flex gap-2 mt-2">
               <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
                 تمام فصول
@@ -394,7 +394,7 @@ export default function Categories() {
             quality={100}
           />
           <div className="absolute bottom-4 mr-4 text-white">
-            <h5 className="text-lg font-bold">{data[1]?.name}</h5>
+            <h5 className="text-lg font-bold">{data[7]?.name}</h5>
             <div className="flex gap-2 mt-2">
               <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
                 مجلسی
@@ -418,7 +418,7 @@ export default function Categories() {
             quality={100}
           />
           <div className="absolute bottom-4 mr-4 text-white">
-            <h5 className="text-lg font-bold">{data[7]?.name}</h5>
+            <h5 className="text-lg font-bold">{data[5]?.name}</h5>
             <div className="flex gap-2 mt-2">
               <span className="bg-white-15 border border-white-20 rounded-full px-3 py-1 backdrop-blur-sm text-sm">
                 گرم و سبگ

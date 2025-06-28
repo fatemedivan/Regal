@@ -4,20 +4,11 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log(
-    "Starting seeding process for 6 discounted formal wear products (single color with hex code)..."
-  );
+  console.log("Starting seeding process for products with multiple colors and sizes...");
 
   // --- Seed Categories and Subcategories ---
   const mainCategories = [
-    "لباس مجلسی",
-    "شلوار",
-    "سرهمی",
-    "کت مجلسی",
-    "دامن",
-    "شومیز",
-    "کراپ",
-    "پالتو",
+    "لباس مجلسی", "شلوار", "سرهمی", "کت مجلسی", "دامن", "شومیز", "کراپ", "پالتو",
   ];
   const createdCategories = {};
 
@@ -28,9 +19,7 @@ async function main() {
       create: { name: categoryName },
     });
     createdCategories[categoryName] = category;
-    console.log(
-      `Main Category created or found: ${category.name} (ID: ${category.id})`
-    );
+    console.log(`Main Category created or found: ${category.name} (ID: ${category.id})`);
   }
 
   const subcategoriesToAdd = [
@@ -72,18 +61,52 @@ async function main() {
         },
       });
       createdCategories[subcategoryInfo.name] = subcategory;
-      console.log(
-        `Subcategory created or found: ${subcategory.name} (Parent: ${subcategoryInfo.parentName}, ID: ${subcategory.id})`
-      );
+      console.log(`Subcategory created or found: ${subcategory.name} (Parent: ${subcategoryInfo.parentName}, ID: ${subcategory.id})`);
     } else {
-      console.warn(
-        `Parent category "${subcategoryInfo.parentName}" not found for subcategory "${subcategoryInfo.name}".`
-      );
+      console.warn(`Parent category "${subcategoryInfo.parentName}" not found for subcategory "${subcategoryInfo.name}".`);
     }
   }
   console.log("Category and subcategory seeding complete.");
 
-  // --- Seed Products with Hex Color Code ---
+  // --- Seed Colors ---
+  const colorsData = [
+    { name: "بنفش", hexCode: "#800080" },
+    { name: "زرشکی", hexCode: "#8B0000" },
+    { name: "سبز تیره", hexCode: "#006400" },
+    { name: "نقره‌ای", hexCode: "#C0C0C0" },
+    { name: "مشکی", hexCode: "#000000" },
+    { name: "سفید", hexCode: "#FFFFFF" },
+    { name: "قرمز", hexCode: "#FF0000" },
+    { name: "آبی", hexCode: "#0000FF" },
+  ];
+
+  const createdColors = {};
+  for (const color of colorsData) {
+    const newColor = await prisma.color.upsert({
+      where: { name: color.name },
+      update: { hexCode: color.hexCode },
+      create: color,
+    });
+    createdColors[newColor.hexCode] = newColor; // Store by hexCode for easy lookup
+    console.log(`Color created or found: ${newColor.name} (Hex: ${newColor.hexCode}, ID: ${newColor.id})`);
+  }
+  console.log("Color seeding complete.");
+
+  // --- Seed Sizes ---
+  const sizesData = ["S", "M", "L", "XL", "XXL", "Free Size"];
+  const createdSizes = {};
+  for (const sizeName of sizesData) {
+    const newSize = await prisma.size.upsert({
+      where: { name: sizeName },
+      update: {},
+      create: { name: sizeName },
+    });
+    createdSizes[newSize.name] = newSize; // Store by name for easy lookup
+    console.log(`Size created or found: ${newSize.name} (ID: ${newSize.id})`);
+  }
+  console.log("Size seeding complete.");
+
+  // --- Seed Products and Link Colors/Sizes ---
   const productsData = [
     {
       name: "لباس مجلسی دکلته الی",
@@ -93,21 +116,21 @@ async function main() {
       discountedPrice: 600000,
       isDiscounted: true,
       imageUrl: "/img/product-off-1.png",
-      color: ["#800080"], // ✅ کد هگز به جای نام رنگ
-      size: "Free Size",
       categoryName: "پیراهن شب",
+      colors: ["#800080", "#000000"], // آرایه‌ای از کدهای هگز
+      sizes: ["S", "M", "L"], // آرایه‌ای از نام سایزها
     },
     {
       name: "پیراهن شب گیپور",
       description:
         "پیراهن شب بلند تمام گیپور با آستر، بسیار شیک و مجلل. آف ویژه آخر فصل!",
       price: 2200000,
-      discountedPrice: 1000000,
+      discountedPrice: 1100000,
       isDiscounted: true,
       imageUrl: "/img/product-off-2.png",
-      color: ["#8B0000"], // ✅ کد هگز
-      size: "S",
       categoryName: "پیراهن شب",
+      colors: ["#8B0000", "#FFFFFF"],
+      sizes: ["S", "XL"],
     },
     {
       name: "لباس مجلسی میدی",
@@ -117,9 +140,9 @@ async function main() {
       discountedPrice: 1200000,
       isDiscounted: true,
       imageUrl: "/img/product-off-3.png",
-      color: ["#006400"], // ✅ کد هگز
-      size: "XL",
       categoryName: "پیراهن شب",
+      colors: ["#006400", "#FF0000"],
+      sizes: ["L", "XL"],
     },
     {
       name: "پیراهن مجلسی توری",
@@ -129,9 +152,9 @@ async function main() {
       discountedPrice: 400000,
       isDiscounted: true,
       imageUrl: "/img/product-off-4.png",
-      color: ["#C0C0C0"], // ✅ کد هگز
-      size: "M",
       categoryName: "پیراهن شب",
+      colors: ["#C0C0C0", "#000000"],
+      sizes: ["M", "Free Size"],
     },
   ];
 
@@ -146,8 +169,6 @@ async function main() {
           discountedPrice: productData.discountedPrice || null,
           isDiscounted: productData.isDiscounted || false,
           imageUrl: productData.imageUrl || null,
-          color: productData.color, // ✅ فیلد color مستقیم از productData می‌آید
-          size: productData.size || null,
           categoryId: category.id,
         },
         create: {
@@ -157,14 +178,51 @@ async function main() {
           discountedPrice: productData.discountedPrice,
           isDiscounted: productData.isDiscounted,
           imageUrl: productData.imageUrl,
-          color: productData.color, // ✅ فیلد color مستقیم از productData می‌آید
-          size: productData.size,
           categoryId: category.id,
         },
       });
-      console.log(
-        `Product created or updated: ${product.name} (Category: ${productData.categoryName}, Color: ${product.color}, ID: ${product.id})`
-      );
+      console.log(`Product created or updated: ${product.name} (ID: ${product.id})`);
+
+      // ✅ حذف روابط قدیمی رنگ‌ها برای این محصول
+      await prisma.productColor.deleteMany({
+        where: { productId: product.id },
+      });
+      // ✅ لینک کردن رنگ‌ها
+      for (const colorHexCode of productData.colors) {
+        const color = createdColors[colorHexCode];
+        if (color) {
+          await prisma.productColor.create({
+            data: {
+              productId: product.id,
+              colorId: color.id,
+            },
+          });
+          console.log(`  -> Linked color ${color.name} (${color.hexCode}) to ${product.name}`);
+        } else {
+          console.warn(`  -> Color with hex code "${colorHexCode}" not found for product "${productData.name}". Skipping linking.`);
+        }
+      }
+
+      // ✅ حذف روابط قدیمی سایزها برای این محصول
+      await prisma.productSize.deleteMany({
+        where: { productId: product.id },
+      });
+      // ✅ لینک کردن سایزها
+      for (const sizeName of productData.sizes) {
+        const size = createdSizes[sizeName];
+        if (size) {
+          await prisma.productSize.create({
+            data: {
+              productId: product.id,
+              sizeId: size.id,
+            },
+          });
+          console.log(`  -> Linked size ${size.name} to ${product.name}`);
+        } else {
+          console.warn(`  -> Size "${sizeName}" not found for product "${productData.name}". Skipping linking.`);
+        }
+      }
+
     } else {
       console.warn(
         `Category "${productData.categoryName}" not found for product "${productData.name}". Skipping product.`
@@ -172,7 +230,7 @@ async function main() {
     }
   }
 
-  console.log("6 discounted formal wear products seeding complete!");
+  console.log("Products with multiple colors and sizes seeding complete!");
 }
 
 main()

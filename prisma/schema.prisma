@@ -1,3 +1,5 @@
+// prisma/schema.prisma
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,17 +10,17 @@ datasource db {
 }
 
 model User {
-  id             String @id @default(uuid())
-  phoneNumber    String @unique
+  id             String         @id @default(uuid())
+  phoneNumber    String         @unique
   hashedPassword String
 
   firstName String?
   lastName  String?
   email     String?
 
-  role      String   @default("user")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  role          String         @default("user")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 
   likedProducts LikedProduct[]
   carts         Cart[]
@@ -38,13 +40,11 @@ model Category {
 
 model Product {
   id              String   @id @default(uuid())
-  name            String    @unique 
+  name            String   @unique
   description     String?
   price           Float
   discountedPrice Float?
   isDiscounted    Boolean  @default(false)
-  color           String?
-  size            String?
   imageUrl        String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -52,10 +52,63 @@ model Product {
   categoryId String
   category   Category @relation(fields: [categoryId], references: [id])
 
-  likes      LikedProduct[]
+  likes LikedProduct[]
+
+  // ✅ روابط جدید برای چندین رنگ و سایز
+  productColors ProductColor[]
+  productSizes  ProductSize[]
+
   cartItems  CartItem[]
   orderItems OrderItem[]
 }
+
+// ✅ مدل جدید برای رنگ‌ها
+model Color {
+  id       String   @id @default(uuid())
+  name     String   @unique // مثلا "مشکی", "قرمز"
+  hexCode  String   @unique // مثلا "#000000", "#FF0000"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  productColors ProductColor[]
+}
+
+// ✅ مدل میانی برای رابطه Many-to-Many بین Product و Color
+model ProductColor {
+  id        String   @id @default(uuid())
+  productId String
+  colorId   String
+  createdAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id])
+  color   Color   @relation(fields: [colorId], references: [id])
+
+  @@unique([productId, colorId]) // تضمین می‌کند هر محصول یک رنگ را فقط یک بار داشته باشد
+}
+
+// ✅ مدل جدید برای سایزها
+model Size {
+  id        String   @id @default(uuid())
+  name      String   @unique // مثلا "S", "M", "L", "Free Size"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  productSizes ProductSize[]
+}
+
+// ✅ مدل میانی برای رابطه Many-to-Many بین Product و Size
+model ProductSize {
+  id        String   @id @default(uuid())
+  productId String
+  sizeId    String
+  createdAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id])
+  size    Size    @relation(fields: [sizeId], references: [id])
+
+  @@unique([productId, sizeId]) // تضمین می‌کند هر محصول یک سایز را فقط یک بار داشته باشد
+}
+
 
 model LikedProduct {
   id        String   @id @default(uuid())
@@ -70,12 +123,12 @@ model LikedProduct {
 }
 
 model Cart {
-  id        String   @id @default(uuid())
-  userId    String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String     @id @default(uuid())
+  userId    String     @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 
-  user  User       @relation(fields: [userId], references: [id])
+  user  User     @relation(fields: [userId], references: [id])
   items CartItem[]
 }
 
@@ -100,12 +153,12 @@ model Order {
   status      String   @default("pending")
   orderDate   DateTime @default(now())
 
-  user  User        @relation(fields: [userId], references: [id])
+  user  User      @relation(fields: [userId], references: [id])
   items OrderItem[]
 }
 
 model OrderItem {
-  id           String @id @default(uuid())
+  id           String   @id @default(uuid())
   orderId      String
   productId    String
   quantity     Int

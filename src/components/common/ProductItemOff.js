@@ -79,10 +79,16 @@ export default function ProductItemOff({
                 </div>
               )}
 
+               <div className="flex items-center gap-1">
+            {colors && colors.map((hexCode, index) => (
               <div
-                style={{ backgroundColor: colors }}
-                className={`w-5 h-5 rounded-sm`}
+                key={hexCode || index} 
+                className="w-5 h-5 rounded-sm border border-gray-300"
+                style={{ backgroundColor: hexCode }}
+                title={hexCode}
               ></div>
+            ))}
+          </div>
             </div>
           </div>
           <div className="flex items-center gap-2 text-black lg:justify-start">

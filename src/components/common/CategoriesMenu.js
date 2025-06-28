@@ -22,16 +22,12 @@ export default function CategoriesMenu({
       try {
         const res = await fetch("/api/category");
         const data = await res.json();
-        console.log("category data", data);
 
         const updatedData = data.map((item) => ({
           ...item,
           isOpen: false,
         }));
-        console.log("updated data", updatedData);
-
         setCategoriesData(updatedData);
-        console.log("category datas:", categoriesData);
       } catch (error) {
         console.log(error);
       }

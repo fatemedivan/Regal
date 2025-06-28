@@ -6,20 +6,50 @@ import ProductItemOff from "@/components/common/ProductItemOff";
 import Image from "next/image";
 import { HashLoader } from "react-spinners";
 
-export default function OffProducts({ discountedProducts }) {
+export default function OffProducts() {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const glideRef = useRef(null);
   const prevbtnRef = useRef(null);
   const nextbtnRef = useRef(null);
+  const [token, setToken] = useState('')
 
-  useEffect(() => {
-    setIsLoading(true);
-    if (discountedProducts.length) {
-      setProducts(discountedProducts);
-      setIsLoading(false);
+  useEffect(()=>{
+    const storedToken = localStorage.getItem('token')
+    if (storedToken) {
+      setToken(storedToken)
     }
-  }, [discountedProducts]);
+  },[])
+
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   if (discountedProducts.length) {
+  //     setProducts(discountedProducts);
+  //     setIsLoading(false);
+  //   }
+  // }, [discountedProducts]);
+
+  useEffect(()=>{
+    if(!token) return
+    const getDiscountedProdut = async ()=>{
+      const res = await fetch('/api/products/discounted',{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      console.log(res);
+      const result = await res.json()
+      console.log('result',result);
+      setProducts(result)
+      
+    }
+    getDiscountedProdut()
+  },[token])
+
+  useEffect(()=>{
+    console.log('products off',products);
+    
+  },[products])
 
   useEffect(() => {
     if (glideRef.current) {
@@ -141,25 +171,17 @@ export default function OffProducts({ discountedProducts }) {
         <div className="glide pr-5 lg:pr-12" ref={glideRef}>
           <div className="glide__track" data-glide-el="track">
             <ul className="glide__slides">
-              {products.map((product, index) => (
+              {products && products.map((product, index) => (
                 <li key={product.id} className="glide__slide">
                   <ProductItemOff
                     id={product.id}
-                    img={
-                      product.images &&
-                      product.images.length > 0 &&
-                      product.images[index]?.src
-                        ? product.images[index].src
-                        : "/img/product-off-1.png"
-                    }
+                    img={product.img}
                     title={product.title}
-                    finalPrice={product.latestPrice}
-                    price={Math.round(
-                      product.latestPrice / (1 - product.discount / 100)
-                    )}
-                    offPercent={product.discount}
+                    finalPrice={product.finalPrice}
+                    price={product.price}
+                    offPercent={product.offPercent}
                     isMore={false}
-                    colors={product.ProductColor}
+                    colors={product.colors}
                     favorites={product.Favorite}
                   />
                 </li>

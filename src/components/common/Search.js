@@ -10,12 +10,10 @@ import { HashLoader } from "react-spinners";
 
 export default function Search({ handleCloseSearch }) {
   const router = useRouter();
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const glideRef = useRef(null);
   const [isSearching, setIsSearching] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [token, setToken] = useState(null);
-  const [popularProducts, setPopularProducts] = useState([]);
   const [searchProducts, setSearchProducts] = useState([]);
   const [isEmptySearch, setIsEmptySearch] = useState(true);
   const [isNotFound, setIsNotFound] = useState(false);
@@ -29,36 +27,18 @@ export default function Search({ handleCloseSearch }) {
     }
   }, []);
 
-  useEffect(() => {
-    const headers = token
+  const headers = token
     ? {
         Authorization: `Bearer ${token}`,
       }
     : {};
 
-    const getPopularProducts = async () => {
-      try {
-        setIsLoading(true);
-        const res = await fetch(`${baseUrl}/products/popular`,{
-          headers : headers
-        });
-        if (res.ok) {
-          const data = await res.json();
-          setPopularProducts(data);
-          setIsLoading(false);
-        } else {
-          setIsLoading(false);
-        }
-      } catch (error) {
-        setIsLoading(false);
-      }
-    };
-    getPopularProducts();
-  }, [token, isEmptySearch]);
-
   const getProductsBySearch = async () => {
     try {
-      const res = await fetch(`${baseUrl}/products?search=${searchText}`);
+      setIsLoading(true);
+      const res = await fetch(`/api/products?search=${searchText}`, {
+        headers: headers,
+      });
       console.log(res);
       if (res.ok) {
         const data = await res.json();
@@ -74,61 +54,11 @@ export default function Search({ handleCloseSearch }) {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  useEffect(() => {
-    if (glideRef.current) {
-      const glide = new Glide(glideRef.current, {
-        type: "carousel",
-        perView: 5,
-        gap: 12,
-        direction: "rtl",
-
-        breakpoints: {
-          1530: {
-            perView: 4,
-            gap: 24,
-          },
-          1280: {
-            perView: 3,
-            gap: 24,
-          },
-          1024: {
-            perView: 4,
-            gap: 24,
-          },
-          768: {
-            perView: 3,
-            gap: 12,
-          },
-          680: {
-            perView: 2,
-            gap: 12,
-            peek: {
-              before: 0,
-              after: 50,
-            },
-          },
-          480: {
-            perView: 2,
-            gap: 12,
-            peek: {
-              before: 0,
-              after: 20,
-            },
-          },
-          380: {
-            perView: 1.5,
-            gap: 12,
-          },
-        },
-      });
-
-      glide.mount();
-      return () => glide.destroy();
-    }
-  }, [popularProducts]);
   return (
     <div>
       <div
@@ -164,9 +94,12 @@ export default function Search({ handleCloseSearch }) {
               placeholder="محصول مورد نظر خود را جستجو کنید..."
               className="placeholder:text-neutral-gray-7 w-full outline-none"
               onChange={(e) => {
-                setIsSearching(true);
                 setSearchText(e.target.value);
-                getProductsBySearch();
+              }}
+              onKeyDown={(e) => {
+                e.key === "Enter" && getProductsBySearch();
+                setIsSearching(true);
+
                 e.target.value
                   ? setIsEmptySearch(false)
                   : setIsEmptySearch(true);
@@ -190,7 +123,7 @@ export default function Search({ handleCloseSearch }) {
             )}
           </div>
 
-          {isSearching && searchText && !isNotFound ? (
+          {isSearching && searchText && searchProducts.length !== 0  && !isNotFound ? (
             <div className="mr-5 border-b border-b-neutral-gray-4 pb-6 lg:hidden">
               <p className="text-neutral-gray-13 mb-2 text-sm leading-6 lg:text-[1rem] lg:leading-7 lg:mb-5.5">
                 پیشنهادات
@@ -198,7 +131,7 @@ export default function Search({ handleCloseSearch }) {
               <ul>
                 {searchProducts.slice(0, 4).map((product) => (
                   <li key={product.id} className="mb-2 text-xs leading-4.5">
-                    {product.title}
+                    {product.name}
                   </li>
                 ))}
               </ul>
@@ -281,7 +214,7 @@ export default function Search({ handleCloseSearch }) {
               searchText && "flex justify-between"
             } pr-5 lg:px-40.5`}
           >
-            {isSearching && searchText && !isNotFound && (
+            {isSearching && searchText&& searchProducts.length !== 0 && !isNotFound && (
               <div className="hidden lg:block min-w-38.5 lg:ml-18.5 mt-6">
                 <p className="text-neutral-gray-13 mb-2 text-sm leading-6 lg:text-[1rem] lg:leading-7 lg:mb-5.5">
                   پیشنهادات
@@ -289,7 +222,7 @@ export default function Search({ handleCloseSearch }) {
                 <ul>
                   {searchProducts.slice(0, 4).map((product) => (
                     <li key={product.id} className="mb-2 text-xs leading-4.5">
-                      {product.title}
+                      {product.name}
                     </li>
                   ))}
                 </ul>
@@ -303,37 +236,34 @@ export default function Search({ handleCloseSearch }) {
             >
               {!isNotFound && (
                 <div className="mt-6 mb-4 flex justify-between items-center">
-                  {isSearching && searchText ? (
+                  {isSearching && searchText && searchProducts.length !== 0 && (
                     <p className="text-neutral-gray-13 text-sm leading-6">
-                      نمایش ۴ نتیجه از {searchProducts.length} نتیجه
-                    </p>
-                  ) : (
-                    <p className="text-neutral-gray-13 text-sm leading-6">
-                      محبوب‌ترین‌ها
+                      نمایش از {searchProducts.length} نتیجه
                     </p>
                   )}
-
-                  <div
-                    onClick={() => {
-                      if (searchText) {
-                        router.push(`/products?search=${searchText}&page=1`); 
-                      }else{
-                        router.push('/products')
-                      }
-                      handleCloseSearch();
-                      closeModal();
-                    }}
-                    className="text-neutral-gray-11 text-sm leading-5 flex items-center gap-2 px-4 cursor-pointer"
-                  >
-                    <p>مشاهده همه</p>
-                    <Image
-                      className="hidden lg:block cursor-pointer"
-                      width={16}
-                      height={16}
-                      src="/img/arrow-left-4.svg"
-                      alt=""
-                    />
-                  </div>
+                  {searchProducts.length !== 0 && searchText && (
+                    <div
+                      onClick={() => {
+                        if (searchText) {
+                          router.push(`/products?search=${searchText}&page=1`);
+                        } else {
+                          router.push("/products");
+                        }
+                        handleCloseSearch();
+                        closeModal();
+                      }}
+                      className="text-neutral-gray-11 text-sm leading-5 flex items-center gap-2 px-4 cursor-pointer"
+                    >
+                      <p>مشاهده همه</p>
+                      <Image
+                        className="hidden lg:block cursor-pointer"
+                        width={16}
+                        height={16}
+                        src="/img/arrow-left-4.svg"
+                        alt=""
+                      />
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -349,13 +279,17 @@ export default function Search({ handleCloseSearch }) {
                     <div key={product.id}>
                       <ProductSearchItem
                         handleCloseSearch={handleCloseSearch}
-                        img={"/img/product-off-1.png"}
-                        title={product.title}
-                        finalPrice={product.latestPrice}
                         isMore={false}
-                        colors={product.ProductColor}
                         id={product.id}
-                        favorites={product.Favorite}
+                        img={product.images[0]?.imageUrl}
+                        offPercent={product.offPercent}
+                        title={product.name}
+                        price={product.price}
+                        finalPrice={product.discountedPrice}
+                        colors={product.productColors.map(
+                          (pc) => pc.color.hexCode
+                        )}
+                        favorites={product.isLiked}
                       />
                     </div>
                   ))}
@@ -371,30 +305,7 @@ export default function Search({ handleCloseSearch }) {
                   </div>
                 </>
               ) : (
-                <div>
-                  {!searchText && (
-                    <div className="glide max-w-full" ref={glideRef}>
-                      <div className="glide__track" data-glide-el="track">
-                        <ul className="glide__slides">
-                          {popularProducts.map((product) => (
-                            <li key={product.id} className="glide__slide">
-                              <ProductSearchItem
-                                handleCloseSearch={handleCloseSearch}
-                                img={"/img/product-off-1.png"}
-                                title={product.title}
-                                finalPrice={product.latestPrice}
-                                isMore={false}
-                                colors={product.ProductColor}
-                                id={product.id}
-                                favorites={product.Favorite}
-                              />
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  )}
-                </div>
+                <div></div>
               )}
             </div>
           </div>

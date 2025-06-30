@@ -12,6 +12,7 @@ export default function ProductSearchItem({
   colors,
   favorites,
   handleCloseSearch,
+  price,
 }) {
   return (
     <div className="min-w-41.75 lg:max-w-51 relative">
@@ -48,7 +49,7 @@ export default function ProductSearchItem({
               />
             )}
 
-            {offPercent && (
+            {offPercent !== 0 && (
               <div className="bg-cognac-primery px-2 py-0.5 lg:px-3 lg:py-1 rounded-100 text-white text-xs leading-4.5">
                 {offPercent}٪
               </div>
@@ -73,23 +74,19 @@ export default function ProductSearchItem({
                 ۲+
               </div>
             )}
-            <div
-              className={`w-5 h-5 rounded-sm bg-[#97AAB4] ${
-                isMore && "hidden"
-              }`}
-            ></div>
-            {colors.map((color) => (
-              <div
-                key={color.id}
-                style={{ backgroundColor: color.color }}
-                className={`w-5 h-5 rounded-sm`}
-              ></div>
-            ))}
+
+            {colors &&
+              colors.map((color, index) => (
+                <div
+                  key={index}
+                  style={{ backgroundColor: color }}
+                  className={`w-5 h-5 rounded-sm`}
+                ></div>
+              ))}
           </div>
         </div>
         <p className="text-sm leading-6 lg:text-[1rem] lg:leading-7">
-          {" "}
-          <span className="ml-1">{finalPrice}</span>تومان
+          <span className="ml-1">{finalPrice ? finalPrice : price}</span>تومان
         </p>
       </Link>
     </div>

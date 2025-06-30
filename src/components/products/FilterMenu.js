@@ -1,3 +1,4 @@
+// components/products/FilterMenu.jsx
 "use client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
@@ -7,14 +8,26 @@ export default function FilterMenu({ handleCloseFilter }) {
   const router = useRouter();
   const searchParamsHook = useSearchParams();
 
+  // Define default min/max price values
+  const defaultMinPrice = 1000000;
+  const defaultMaxPrice = 2500000;
+
+  // Initialize state with values from URL search params or defaults
   const [isOpenPriceFilter, setIsOpenPriceFilter] = useState(false);
-  const [minPrice, setMinPrice] = useState(100000);
-  const [maxPrice, setMaxPrice] = useState(250000);
+  const [minPrice, setMinPrice] = useState(() => {
+    const price = parseFloat(searchParamsHook.get("minPrice"));
+    return isNaN(price) ? defaultMinPrice : price;
+  });
+  const [maxPrice, setMaxPrice] = useState(() => {
+    const price = parseFloat(searchParamsHook.get("maxPrice"));
+    return isNaN(price) ? defaultMaxPrice : price;
+  });
+
   const [filters, setFilters] = useState([
     {
       id: 1,
       title: "نوع لباس",
-      options: ["پیراهن کوتاه", "کت و شلوار", "شومیز", "شلوار"],
+      options: ["پیراهن کوتاه", "تاپ و کراپ", "شومیز", "شلوار"],
       isOpen: false,
       type: "clothes",
     },
@@ -22,7 +35,14 @@ export default function FilterMenu({ handleCloseFilter }) {
       id: 2,
       title: "رنگ‌بندی",
       options: [
-        "#8B0000", "#006400", "#808080", "#C0C0C0", "#000000", "#ADD8E6", "#0000FF","F5F5DC" 
+        "#8B0000",
+        "#006400",
+        "#808080",
+        "#C0C0C0",
+        "#000000",
+        "#ADD8E6",
+        "#0000FF",
+        "#F5F5DC",
       ],
       isOpen: false,
       type: "color",
@@ -34,11 +54,10 @@ export default function FilterMenu({ handleCloseFilter }) {
       isOpen: false,
       type: "size",
     },
-   
     {
       id: 4,
       title: "محصولات تخفیف‌دار",
-      options: ["دارد", "ندارد"], 
+      options: ["دارد", "ندارد"],
       isOpen: false,
       type: "isDiscounted",
     },
@@ -49,50 +68,71 @@ export default function FilterMenu({ handleCloseFilter }) {
   // Initialize selected filters from URL search params on mount or param change
   useEffect(() => {
     const currentSelected = [];
-    const currentMinPrice = parseFloat(searchParamsHook.get("minPrice"));
-    const currentMaxPrice = parseFloat(searchParamsHook.get("maxPrice"));
+    const urlMinPrice = parseFloat(searchParamsHook.get("minPrice"));
+    const urlMaxPrice = parseFloat(searchParamsHook.get("maxPrice"));
     const currentColor = searchParamsHook.get("color");
     const currentSize = searchParamsHook.get("size");
     const currentCategoryId = searchParamsHook.get("categoryId");
     const currentIsDiscounted = searchParamsHook.get("isDiscounted");
 
-    if (currentMinPrice && currentMaxPrice) {
+    // Update price states based on URL or reset to default if not present
+    setMinPrice(isNaN(urlMinPrice) ? defaultMinPrice : urlMinPrice);
+    setMaxPrice(isNaN(urlMaxPrice) ? defaultMaxPrice : urlMaxPrice);
+
+    if (!isNaN(urlMinPrice) && !isNaN(urlMaxPrice)) {
       currentSelected.push({
         type: "price",
         filterTitle: "قیمت",
-        option: { min: currentMinPrice, max: currentMaxPrice },
+        option: { min: urlMinPrice, max: urlMaxPrice },
       });
-      setMinPrice(currentMinPrice);
-      setMaxPrice(currentMaxPrice);
-    } else {
-      setMinPrice(100000); 
-      setMaxPrice(250000);
     }
 
     if (currentColor) {
-      currentSelected.push({ type: "color", filterTitle: "رنگ‌بندی", option: currentColor });
+      try {
+        currentSelected.push({
+          type: "color",
+          filterTitle: "رنگ‌بندی",
+          option: decodeURIComponent(currentColor),
+        });
+      } catch (e) {
+        console.error("Error decoding color URL parameter:", e);
+      }
     }
     if (currentSize) {
-      currentSelected.push({ type: "size", filterTitle: "سایزبندی", option: currentSize });
+      currentSelected.push({
+        type: "size",
+        filterTitle: "سایزبندی",
+        option: currentSize,
+      });
     }
     if (currentCategoryId) {
       let categoryName = "";
-      if (currentCategoryId === "1") categoryName = "پیراهن کوتاه";
-      if (currentCategoryId === "2") categoryName = "کت و شلوار";
-      if (currentCategoryId === "3") categoryName = "شومیز";
-      if (currentCategoryId === "4") categoryName = "شلوار";
+      if (currentCategoryId === "c97e7e43-8d6f-458e-b65a-fd9c8cefcc3b")
+        categoryName = "پیراهن کوتاه";
+      else if (currentCategoryId === "078aa167-ffea-4fec-af22-c4658529fd47")
+        categoryName = "تاپ و کراپ";
+      else if (currentCategoryId === "cdb03dd6-6d68-49f8-af01-a0daafad7d32")
+        categoryName = "شومیز";
+      else if (currentCategoryId === "758dc7e8-e0f8-4d41-81fd-e57976626ccc")
+        categoryName = "شلوار";
       if (categoryName) {
-        currentSelected.push({ type: "clothes", filterTitle: "نوع لباس", option: categoryName });
+        currentSelected.push({
+          type: "clothes",
+          filterTitle: "نوع لباس",
+          option: categoryName,
+        });
       }
     }
     if (currentIsDiscounted) {
-      currentSelected.push({ type: "isDiscounted", filterTitle: "محصولات تخفیف‌دار", option: currentIsDiscounted === "true" ? "دارد" : "ندارد" });
+      currentSelected.push({
+        type: "isDiscounted",
+        filterTitle: "محصولات تخفیف‌دار",
+        option: currentIsDiscounted === "true" ? "دارد" : "ندارد",
+      });
     }
 
     setSelectedFilters(currentSelected);
-
-  }, [searchParamsHook]);
-
+  }, [searchParamsHook, defaultMinPrice, defaultMaxPrice]); // Added defaults as dependencies
 
   const toggleFilter = (id) => {
     setFilters((prev) =>
@@ -103,21 +143,28 @@ export default function FilterMenu({ handleCloseFilter }) {
   };
 
   const handleOptionChange = (option, checked, parentFilter) => {
+    // IMPORTANT: Always create params from existing searchParamsHook to preserve all current filters
     const params = new URLSearchParams(searchParamsHook.toString());
-    params.set("page", "1");
+    params.set("page", "1"); // Always reset page to 1 when a filter changes
 
     if (checked) {
       if (parentFilter.type === "size") {
         params.set("size", option);
       } else if (parentFilter.type === "color") {
-        params.set("color", option);
+        params.set("color", encodeURIComponent(option));
       } else if (parentFilter.type === "clothes") {
-        if (option === "پیراهن کوتاه") params.set("categoryId", "1");
-        else if (option === "کت و شلوار") params.set("categoryId", "2");
-        else if (option === "شومیز") params.set("categoryId", "3");
-        else if (option === "شلوار") params.set("categoryId", "4");
-      }
-      else if (parentFilter.type === "isDiscounted") {
+        // Ensure that previous categoryId is replaced, not appended if multiple selected.
+        // If it's a multi-select, you'd need a different approach (e.g., get all, add new, set all).
+        // For single selection, `set` is correct.
+        if (option === "پیراهن کوتاه")
+          params.set("categoryId", "c97e7e43-8d6f-458e-b65a-fd9c8cefcc3b");
+        else if (option === "تاپ و کراپ")
+          params.set("categoryId", "078aa167-ffea-4fec-af22-c4658529fd47");
+        else if (option === "شومیز")
+          params.set("categoryId", "cdb03dd6-6d68-49f8-af01-a0daafad7d32");
+        else if (option === "شلوار")
+          params.set("categoryId", "758dc7e8-e0f8-4d41-81fd-e57976626ccc");
+      } else if (parentFilter.type === "isDiscounted") {
         params.set("isDiscounted", option === "دارد" ? "true" : "false");
       }
     } else {
@@ -128,34 +175,38 @@ export default function FilterMenu({ handleCloseFilter }) {
         params.delete("color");
       } else if (parentFilter.type === "clothes") {
         params.delete("categoryId");
-      }
-      else if (parentFilter.type === "isDiscounted") {
+      } else if (parentFilter.type === "isDiscounted") {
         params.delete("isDiscounted");
       }
     }
+    // Push the updated URL
     router.push(`?${params.toString()}`);
   };
 
   const handleClearFilters = () => {
-    const params = new URLSearchParams(); 
-    params.set("page", "1"); 
+    const params = new URLSearchParams(); // Start with a completely new URLSearchParams
+    params.set("page", "1"); // Always set page to 1 when clearing filters
+
+    // Preserve sort and search parameters if they exist
     const currentSort = searchParamsHook.get("sort");
     const currentSearch = searchParamsHook.get("search");
     if (currentSort) params.set("sort", currentSort);
     if (currentSearch) params.set("search", currentSearch);
 
     router.push(`?${params.toString()}`);
+    // Reset internal price states to default as well
+    setMinPrice(defaultMinPrice);
+    setMaxPrice(defaultMaxPrice);
     if (handleCloseFilter) handleCloseFilter(); // Close filter menu if applicable
   };
 
-
   // This useEffect will update the URL immediately when minPrice/maxPrice change.
-  // If you want it to apply ONLY on "اعمال کنید" button, move this logic into handleApplyFilters
   useEffect(() => {
     const params = new URLSearchParams(searchParamsHook.toString());
-    params.set("page", "1"); 
+    params.set("page", "1"); // Reset page on price change
 
-    const isPriceChangedFromDefault = minPrice !== 100000 || maxPrice !== 250000;
+    const isPriceChangedFromDefault =
+      minPrice !== defaultMinPrice || maxPrice !== defaultMaxPrice;
 
     if (isPriceChangedFromDefault) {
       params.set("minPrice", minPrice);
@@ -164,31 +215,38 @@ export default function FilterMenu({ handleCloseFilter }) {
       params.delete("minPrice");
       params.delete("maxPrice");
     }
-    // Only push if there's an actual change to avoid unnecessary renders
     const newUrl = `?${params.toString()}`;
-    if (router.asPath !== newUrl) { // Compare with current URL
+    // Only push if there's an actual change to avoid unnecessary renders
+    if (router.asPath !== newUrl) {
       router.push(newUrl);
     }
-  }, [minPrice, maxPrice, router, searchParamsHook]); 
+  }, [
+    minPrice,
+    maxPrice,
+    router,
+    searchParamsHook,
+    defaultMinPrice,
+    defaultMaxPrice,
+  ]); // Added defaults as dependencies
 
   // Function to remove individual selected filter chips
   const handleRemoveSelected = (optionToRemove, type) => {
     const params = new URLSearchParams(searchParamsHook.toString());
-    params.set("page", "1");
+    params.set("page", "1"); // Reset page on individual filter removal
 
     if (type === "price") {
       params.delete("minPrice");
       params.delete("maxPrice");
-      setMinPrice(100000); 
-      setMaxPrice(250000);
+      // Also reset the internal state for price filters
+      setMinPrice(defaultMinPrice);
+      setMaxPrice(defaultMaxPrice);
     } else if (type === "color") {
       params.delete("color");
     } else if (type === "size") {
       params.delete("size");
     } else if (type === "clothes") {
-      params.delete("categoryId"); 
-    }
-    else if (type === "isDiscounted") {
+      params.delete("categoryId");
+    } else if (type === "isDiscounted") {
       params.delete("isDiscounted");
     }
 
@@ -222,7 +280,7 @@ export default function FilterMenu({ handleCloseFilter }) {
               width={16}
               height={16}
               src="/img/close-filter.svg"
-              onClick={handleClearFilters} // Correctly calls clear filters
+              onClick={handleClearFilters}
               className="cursor-pointer"
               alt=""
             />
@@ -231,7 +289,7 @@ export default function FilterMenu({ handleCloseFilter }) {
         {selectedFilters.length !== 0 &&
           selectedFilters.map((item, index) => (
             <div
-              key={index}
+              key={item.type + (item.option?.min || item.option) || index} // Improved key for filter chips
               className="px-3 py-2 max-w-max rounded-100 border border-neutral-gray-4 bg-neutral-gray-1 flex items-center gap-2"
             >
               {item.type === "color" ? (
@@ -244,12 +302,12 @@ export default function FilterMenu({ handleCloseFilter }) {
                 </div>
               ) : item.type === "price" ? (
                 <p className="text-neutral-gray-13 text-sm leading-5">
-                  قیمت: {item.option.min.toLocaleString()} تا{" "}
+                  قیمت: {item.option.min.toLocaleString()} تا
                   {item.option.max.toLocaleString()}
                 </p>
               ) : (
                 <p className="text-neutral-gray-13 text-sm leading-5">
-                  {item.filterTitle === "سایزبندی" ? "سایز" : item.filterTitle}:{" "}
+                  {item.filterTitle === "سایزبندی" ? "سایز" : item.filterTitle}:
                   {item.option}
                 </p>
               )}
@@ -302,7 +360,8 @@ export default function FilterMenu({ handleCloseFilter }) {
                       type="checkbox"
                       className="peer hidden"
                       checked={selectedFilters.some(
-                        (item) => item.option === option && item.type === filter.type // Ensure type matches
+                        (item) =>
+                          item.option === option && item.type === filter.type // Ensure type matches
                       )}
                       onChange={(e) =>
                         handleOptionChange(option, e.target.checked, filter)
@@ -372,8 +431,8 @@ export default function FilterMenu({ handleCloseFilter }) {
                 {/* Range inputs for price filter */}
                 <input
                   type="range"
-                  min={100000}
-                  max={250000}
+                  min={defaultMinPrice}
+                  max={defaultMaxPrice}
                   step={10000}
                   value={minPrice}
                   onChange={(e) => setMinPrice(Number(e.target.value))}
@@ -382,8 +441,8 @@ export default function FilterMenu({ handleCloseFilter }) {
 
                 <input
                   type="range"
-                  min={100000}
-                  max={250000}
+                  min={defaultMinPrice}
+                  max={defaultMaxPrice}
                   step={10000}
                   value={maxPrice}
                   onChange={(e) => {
@@ -399,7 +458,7 @@ export default function FilterMenu({ handleCloseFilter }) {
                   <span className="mr-1">تومان</span>
                 </button>
                 <span className="leading-5 text-sm">تا</span>
-                <button className="border border-neutral-gray-5 rounded-lg py-2.75 px-9 text-xs leading-4.5 lg:px-5">
+                <button className="border border-gray-500 rounded-lg py-2.75 px-9 text-xs leading-4.5 lg:px-5">
                   {maxPrice.toLocaleString()}{" "}
                   <span className="mr-1">تومان</span>
                 </button>
@@ -412,9 +471,15 @@ export default function FilterMenu({ handleCloseFilter }) {
       <div className="mb-4 flex justify-center items-center gap-4 mt-10 px-5 lg:hidden">
         <button
           onClick={handleClearFilters}
-          disabled={selectedFilters.length === 0 && (minPrice === 100000 && maxPrice === 250000)} // Enable if any filter is active or price range changed
-          className={`px-10 py-3.25 border  ${
-            (selectedFilters.length > 0 || minPrice !== 100000 || maxPrice !== 250000)
+          disabled={
+            selectedFilters.length === 0 &&
+            minPrice === defaultMinPrice &&
+            maxPrice === defaultMaxPrice
+          } // Enable if any filter is active or price range changed
+          className={`px-10 py-3.25 border  ${
+            selectedFilters.length > 0 ||
+            minPrice !== defaultMinPrice ||
+            maxPrice !== defaultMaxPrice
               ? "border-neutral-gray-8 text-neutral-gray-11"
               : "border-neutral-gray-4 text-neutral-gray-4"
           } rounded-lg cursor-pointer`}
@@ -423,9 +488,15 @@ export default function FilterMenu({ handleCloseFilter }) {
         </button>
         <button
           onClick={handleCloseFilter} // This will just close the menu now if no direct filter application is needed here
-          disabled={selectedFilters.length === 0 && (minPrice === 100000 && maxPrice === 250000)} // Enable if any filter is active or price range changed
+          disabled={
+            selectedFilters.length === 0 &&
+            minPrice === defaultMinPrice &&
+            maxPrice === defaultMaxPrice
+          } // Enable if any filter is active or price range changed
           className={`px-11.75 py-3.25 ${
-            (selectedFilters.length > 0 || minPrice !== 100000 || maxPrice !== 250000)
+            selectedFilters.length > 0 ||
+            minPrice !== defaultMinPrice ||
+            maxPrice !== defaultMaxPrice
               ? "bg-[#B19276] text-white"
               : "bg-cognac-tint-2 text-cognac-tint-4"
           } rounded-lg cursor-pointer`}

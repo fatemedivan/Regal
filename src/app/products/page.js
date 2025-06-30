@@ -1,20 +1,20 @@
 import Products from "@/components/products/Products";
 import { cookies } from "next/headers";
 
-export const dynamic = "force-dynamic";
-
 export default async function Page({ searchParams }) {
+  console.log("Server Component: Page Rendered with searchParams:", searchParams);
+
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-  const cookieStore = await cookies();
+  const cookieStore = await cookies(); 
   const token = cookieStore.get("token")?.value;
 
-  const params = (await searchParams) || {};
+  const params = await searchParams || {};
   const page = params.page || 1;
   const sort = params.sort || "";
   const categoryId = params.categoryId || "";
   const minPrice = params.minPrice || "";
   const maxPrice = params.maxPrice || "";
-  const color = params.color || "";
+  const color = params.color || ""; 
   const size = params.size || "";
   const isDiscounted = params.isDiscounted || "";
   const search = params.search || "";
@@ -25,11 +25,12 @@ export default async function Page({ searchParams }) {
   if (categoryId) url += `&categoryId=${categoryId}`;
   if (minPrice) url += `&minPrice=${minPrice}`;
   if (maxPrice) url += `&maxPrice=${maxPrice}`;
-  if (color) url += `&color=${color}`;
+  if (color) url += `&color=${color}`; 
   if (size) url += `&size=${size}`;
   if (isDiscounted) url += `&isDiscounted=${isDiscounted}`;
   if (search) url += `&search=${search}`;
 
+  console.log("Server Component: Fetching URL:", url);
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
   let products = [];
@@ -39,7 +40,7 @@ export default async function Page({ searchParams }) {
   try {
     const res = await fetch(url, {
       headers,
-      cache: "no-store",
+      cache: "no-store", 
     });
 
     if (res.ok) {
@@ -47,17 +48,18 @@ export default async function Page({ searchParams }) {
       products = data.products;
       totalPages = data.totalPages;
       totalProducts = data.totalProducts;
-      console.log(data);
-      
+      console.log("Server Component: Data fetched successfully. Total pages:", totalPages, "Current page from API:", data.currentPage);
     } else {
-      console.error("Fetch failed with status", res.status);
+      console.error("Server Component: Fetch failed with status", res.status, await res.text());
     }
   } catch (err) {
-    console.error("Fetch error", err);
+    console.error("Server Component: Fetch error", err);
   }
 
   return (
     <Products
+      
+      key={JSON.stringify(params)}
       allProducts={products}
       totalProducts={totalProducts}
       totalProductsPages={totalPages}

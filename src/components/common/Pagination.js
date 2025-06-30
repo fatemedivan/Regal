@@ -1,3 +1,4 @@
+// components/common/Pagination.jsx
 "use client";
 import React from "react";
 import Image from "next/image";
@@ -7,16 +8,49 @@ export default function Pagination({
   latestPage,
   onPageChange,
 }) {
-  let pageNumbers = [];
+  // اگر تعداد کل صفحات 1 یا کمتر باشد، Pagination را نمایش نده
+  if (latestPage <= 1) {
+    return null;
+  }
 
-  for (let i = 1; i <= latestPage; i++) {
-    if (i === 1 || i === latestPage || Math.abs(i - currentPage) <= 1) {
+  let pageNumbers = [];
+  const maxPagesToShow = 5; // حداکثر تعداد دکمه‌های صفحه که می‌خواهیم نمایش دهیم (به اضافه دات‌دات)
+
+  // منطق جدید برای تولید شماره صفحات
+  if (latestPage <= maxPagesToShow) {
+    // اگر تعداد کل صفحات کم باشد، همه را نمایش بده
+    for (let i = 1; i <= latestPage; i++) {
       pageNumbers.push(i);
-    } else if (
-      (i === currentPage - 2 || i === currentPage + 2) &&
-      !pageNumbers.includes("...")
-    ) {
-      pageNumbers.push("...");
+    }
+  } else {
+    // اگر تعداد صفحات زیاد باشد، از منطق دات‌دات استفاده کن
+    const startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
+    const endPage = Math.min(latestPage, currentPage + Math.floor(maxPagesToShow / 2));
+
+    let pages = [];
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+
+    // اضافه کردن 1 و ... اگر نیاز باشد
+    if (pages[0] > 1) {
+      if (pages[0] > 2) {
+        pageNumbers.push(1, "...");
+      } else {
+        pageNumbers.push(1);
+      }
+    }
+
+    // اضافه کردن صفحات میانی
+    pageNumbers = pageNumbers.concat(pages);
+
+    // اضافه کردن ... و latestPage اگر نیاز باشد
+    if (pages[pages.length - 1] < latestPage) {
+      if (pages[pages.length - 1] < latestPage - 1) {
+        pageNumbers.push("...", latestPage);
+      } else {
+        pageNumbers.push(latestPage);
+      }
     }
   }
 
@@ -44,31 +78,23 @@ export default function Pagination({
       )}
 
       {/* Page Numbers */}
-      {pageNumbers
-        .filter((page) => {
-          return (
-            page === "..." ||
-            page < latestPage ||
-            (page === latestPage)
-          );
-        })
-        .map((item, index) => (
-          <div
-            key={index}
-            onClick={() => handleClick(item)}
-            className={`w-10 h-10 flex justify-center items-center rounded-sm text-sm leading-5
-              ${
-                item === "..."
-                  ? "text-neutral-gray-9 cursor-default"
-                  : item === currentPage
-                  ? "bg-neutral-gray-13 text-white cursor-default"
-                  : "bg-neutral-gray-2 text-neutral-gray-9 cursor-pointer"
-              }
-            `}
-          >
-            {item}
-          </div>
-        ))}
+      {pageNumbers.map((item, index) => (
+        <div
+          key={index} 
+          onClick={() => handleClick(item)}
+          className={`w-10 h-10 flex justify-center items-center rounded-sm text-sm leading-5
+            ${
+              item === "..."
+                ? "text-neutral-gray-9 cursor-default"
+                : item === currentPage
+                ? "bg-neutral-gray-13 text-white cursor-default"
+                : "bg-neutral-gray-2 text-neutral-gray-9 cursor-pointer"
+            }
+          `}
+        >
+          {item}
+        </div>
+      ))}
 
       {/* Next Arrow */}
       {currentPage < latestPage && (

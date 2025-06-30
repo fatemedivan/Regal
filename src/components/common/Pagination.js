@@ -5,7 +5,6 @@ import Image from "next/image";
 export default function Pagination({
   currentPage,
   latestPage,
-  products,
   onPageChange,
 }) {
   let pageNumbers = [];
@@ -50,7 +49,7 @@ export default function Pagination({
           return (
             page === "..." ||
             page < latestPage ||
-            (page === latestPage && products.length > 0)
+            (page === latestPage)
           );
         })
         .map((item, index) => (

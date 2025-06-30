@@ -1,9 +1,12 @@
 "use client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
-export default function FilterMenuMobile({ handleCloseFilter, setProducts }) {
- 
+export default function FilterMenu({ handleCloseFilter }) {
+  const router = useRouter();
+  const searchParamsHook = useSearchParams();
+
   const [isOpenPriceFilter, setIsOpenPriceFilter] = useState(false);
   const [minPrice, setMinPrice] = useState(100000);
   const [maxPrice, setMaxPrice] = useState(250000);
@@ -19,14 +22,7 @@ export default function FilterMenuMobile({ handleCloseFilter, setProducts }) {
       id: 2,
       title: "رنگ‌بندی",
       options: [
-        "red",
-        "blue",
-        "green",
-        "black",
-        "gray",
-        "pink",
-        "purple",
-        "yellow",
+        "#8B0000", "#006400", "#808080", "#C0C0C0", "#000000", "#ADD8E6", "#0000FF","F5F5DC" 
       ],
       isOpen: false,
       type: "color",
@@ -38,58 +34,65 @@ export default function FilterMenuMobile({ handleCloseFilter, setProducts }) {
       isOpen: false,
       type: "size",
     },
+   
+    {
+      id: 4,
+      title: "محصولات تخفیف‌دار",
+      options: ["دارد", "ندارد"], 
+      isOpen: false,
+      type: "isDiscounted",
+    },
   ]);
 
   const [selectedFilters, setSelectedFilters] = useState([]);
-  console.log(selectedFilters);
 
+  // Initialize selected filters from URL search params on mount or param change
   useEffect(() => {
-    const queryParams = [];
-    let url = `/api/products`;
+    const currentSelected = [];
+    const currentMinPrice = parseFloat(searchParamsHook.get("minPrice"));
+    const currentMaxPrice = parseFloat(searchParamsHook.get("maxPrice"));
+    const currentColor = searchParamsHook.get("color");
+    const currentSize = searchParamsHook.get("size");
+    const currentCategoryId = searchParamsHook.get("categoryId");
+    const currentIsDiscounted = searchParamsHook.get("isDiscounted");
 
-    const applyFilters = async () => {
-      selectedFilters.forEach((filter) => {
-        if (filter.filterTitle === "سایزبندی") {
-          queryParams.push(`size=${filter.option}`);
-        } else if (filter.filterTitle === "رنگ‌بندی") {
-          queryParams.push(`color=${filter.option}`);
-        } else if (filter.filterTitle === "قیمت") {
-          queryParams.push(
-            `minPrice=${filter.option.min}&maxPrice=${filter.option.max}`
-          );
-        } else if (filter.filterTitle === "نوع لباس") {
-          if (filter.option === "پیراهن کوتاه") {
-            queryParams.push(`categoryId=1`);
-          }
-          if (filter.option === "کت و شلوار") {
-            queryParams.push("categoryId=2");
-          }
-          if (filter.option === "شومیز") {
-            queryParams.push("categoryId=3");
-          }
-          if (filter.option === "شلوار") {
-            queryParams.push("categoryId=4");
-          }
-        }
+    if (currentMinPrice && currentMaxPrice) {
+      currentSelected.push({
+        type: "price",
+        filterTitle: "قیمت",
+        option: { min: currentMinPrice, max: currentMaxPrice },
       });
+      setMinPrice(currentMinPrice);
+      setMaxPrice(currentMaxPrice);
+    } else {
+      setMinPrice(100000); 
+      setMaxPrice(250000);
+    }
 
-      if (queryParams.length > 0) {
-        url += `?${queryParams.join("&")}`;
+    if (currentColor) {
+      currentSelected.push({ type: "color", filterTitle: "رنگ‌بندی", option: currentColor });
+    }
+    if (currentSize) {
+      currentSelected.push({ type: "size", filterTitle: "سایزبندی", option: currentSize });
+    }
+    if (currentCategoryId) {
+      let categoryName = "";
+      if (currentCategoryId === "1") categoryName = "پیراهن کوتاه";
+      if (currentCategoryId === "2") categoryName = "کت و شلوار";
+      if (currentCategoryId === "3") categoryName = "شومیز";
+      if (currentCategoryId === "4") categoryName = "شلوار";
+      if (categoryName) {
+        currentSelected.push({ type: "clothes", filterTitle: "نوع لباس", option: categoryName });
       }
+    }
+    if (currentIsDiscounted) {
+      currentSelected.push({ type: "isDiscounted", filterTitle: "محصولات تخفیف‌دار", option: currentIsDiscounted === "true" ? "دارد" : "ندارد" });
+    }
 
-      const res = await fetch(url);
-      console.log("filter res", res);
-      if (res.ok) {
-        const data = await res.json();
-        setProducts(data.products);
-        console.log("filter data", data);
-      }
-      if (res.status === 404) {
-        setProducts([]);
-      }
-    };
-    applyFilters();
-  }, [selectedFilters]);
+    setSelectedFilters(currentSelected);
+
+  }, [searchParamsHook]);
+
 
   const toggleFilter = (id) => {
     setFilters((prev) =>
@@ -100,59 +103,96 @@ export default function FilterMenuMobile({ handleCloseFilter, setProducts }) {
   };
 
   const handleOptionChange = (option, checked, parentFilter) => {
-    setSelectedFilters((prev) => {
-      const filteredPrev = prev.filter(
-        (item) => item.type !== parentFilter.type
-      );
-      return checked
-        ? [
-            ...filteredPrev,
-            {
-              option,
-              filterTitle: parentFilter.title,
-              type: parentFilter.type,
-            },
-          ]
-        : filteredPrev;
-    });
+    const params = new URLSearchParams(searchParamsHook.toString());
+    params.set("page", "1");
+
+    if (checked) {
+      if (parentFilter.type === "size") {
+        params.set("size", option);
+      } else if (parentFilter.type === "color") {
+        params.set("color", option);
+      } else if (parentFilter.type === "clothes") {
+        if (option === "پیراهن کوتاه") params.set("categoryId", "1");
+        else if (option === "کت و شلوار") params.set("categoryId", "2");
+        else if (option === "شومیز") params.set("categoryId", "3");
+        else if (option === "شلوار") params.set("categoryId", "4");
+      }
+      else if (parentFilter.type === "isDiscounted") {
+        params.set("isDiscounted", option === "دارد" ? "true" : "false");
+      }
+    } else {
+      // If unchecked, remove the parameter from URL
+      if (parentFilter.type === "size") {
+        params.delete("size");
+      } else if (parentFilter.type === "color") {
+        params.delete("color");
+      } else if (parentFilter.type === "clothes") {
+        params.delete("categoryId");
+      }
+      else if (parentFilter.type === "isDiscounted") {
+        params.delete("isDiscounted");
+      }
+    }
+    router.push(`?${params.toString()}`);
   };
 
   const handleClearFilters = () => {
-    setSelectedFilters([]);
+    const params = new URLSearchParams(); 
+    params.set("page", "1"); 
+    const currentSort = searchParamsHook.get("sort");
+    const currentSearch = searchParamsHook.get("search");
+    if (currentSort) params.set("sort", currentSort);
+    if (currentSearch) params.set("search", currentSearch);
+
+    router.push(`?${params.toString()}`);
+    if (handleCloseFilter) handleCloseFilter(); // Close filter menu if applicable
   };
 
-  const handleApplyFilters = () => {
-    handleCloseFilter();
-  };
 
+  // This useEffect will update the URL immediately when minPrice/maxPrice change.
+  // If you want it to apply ONLY on "اعمال کنید" button, move this logic into handleApplyFilters
   useEffect(() => {
-    const isPriceChanged = minPrice !== 100000 || maxPrice !== 250000;
+    const params = new URLSearchParams(searchParamsHook.toString());
+    params.set("page", "1"); 
 
-    setSelectedFilters((prev) => {
-      const withoutPrice = prev.filter((item) => item.type !== "price");
+    const isPriceChangedFromDefault = minPrice !== 100000 || maxPrice !== 250000;
 
-      if (!isPriceChanged) return withoutPrice;
+    if (isPriceChangedFromDefault) {
+      params.set("minPrice", minPrice);
+      params.set("maxPrice", maxPrice);
+    } else {
+      params.delete("minPrice");
+      params.delete("maxPrice");
+    }
+    // Only push if there's an actual change to avoid unnecessary renders
+    const newUrl = `?${params.toString()}`;
+    if (router.asPath !== newUrl) { // Compare with current URL
+      router.push(newUrl);
+    }
+  }, [minPrice, maxPrice, router, searchParamsHook]); 
 
-      return [
-        ...withoutPrice,
-        {
-          type: "price",
-          filterTitle: "قیمت",
-          option: { min: minPrice, max: maxPrice },
-        },
-      ];
-    });
-  }, [minPrice, maxPrice]);
+  // Function to remove individual selected filter chips
+  const handleRemoveSelected = (optionToRemove, type) => {
+    const params = new URLSearchParams(searchParamsHook.toString());
+    params.set("page", "1");
 
-  const handleRemoveSelected = (option) => {
-    setSelectedFilters((prev) =>
-      prev.filter((itemfilter) =>
-        itemfilter.type === "price" ? false : itemfilter.option !== option
-      )
-    );
+    if (type === "price") {
+      params.delete("minPrice");
+      params.delete("maxPrice");
+      setMinPrice(100000); 
+      setMaxPrice(250000);
+    } else if (type === "color") {
+      params.delete("color");
+    } else if (type === "size") {
+      params.delete("size");
+    } else if (type === "clothes") {
+      params.delete("categoryId"); 
+    }
+    else if (type === "isDiscounted") {
+      params.delete("isDiscounted");
+    }
 
-    setMinPrice(100000);
-    setMaxPrice(250000);
+    router.push(`?${params.toString()}`);
   };
 
   return (
@@ -172,7 +212,7 @@ export default function FilterMenuMobile({ handleCloseFilter, setProducts }) {
       <div className="flex items-center flex-wrap gap-1 mt-7 mx-5 mb-6">
         <div
           className={`hidden lg:${
-            selectedFilters.length && "flex"
+            selectedFilters.length ? "flex" : "hidden"
           } w-full justify-between items-center gap-12 border-b border-neutral-gray-4 pb-4.5 mb-4`}
         >
           <p className="leading-4.5">فیلترهای اعمال شده</p>
@@ -182,7 +222,7 @@ export default function FilterMenuMobile({ handleCloseFilter, setProducts }) {
               width={16}
               height={16}
               src="/img/close-filter.svg"
-              onClick={() => handleClearFilters()}
+              onClick={handleClearFilters} // Correctly calls clear filters
               className="cursor-pointer"
               alt=""
             />
@@ -214,7 +254,7 @@ export default function FilterMenuMobile({ handleCloseFilter, setProducts }) {
                 </p>
               )}
               <Image
-                onClick={() => handleRemoveSelected(item.option)}
+                onClick={() => handleRemoveSelected(item.option, item.type)}
                 width={12}
                 height={12}
                 src="/img/close-icon-filter.svg"
@@ -262,7 +302,7 @@ export default function FilterMenuMobile({ handleCloseFilter, setProducts }) {
                       type="checkbox"
                       className="peer hidden"
                       checked={selectedFilters.some(
-                        (item) => item.option === option
+                        (item) => item.option === option && item.type === filter.type // Ensure type matches
                       )}
                       onChange={(e) =>
                         handleOptionChange(option, e.target.checked, filter)
@@ -329,8 +369,7 @@ export default function FilterMenuMobile({ handleCloseFilter, setProducts }) {
           {isOpenPriceFilter && (
             <div>
               <div className="relative w-full">
-             
-
+                {/* Range inputs for price filter */}
                 <input
                   type="range"
                   min={100000}
@@ -373,9 +412,9 @@ export default function FilterMenuMobile({ handleCloseFilter, setProducts }) {
       <div className="mb-4 flex justify-center items-center gap-4 mt-10 px-5 lg:hidden">
         <button
           onClick={handleClearFilters}
-          disabled={selectedFilters.length === 0 ? true : false}
-          className={`px-10 py-3.25 border  ${
-            selectedFilters.length
+          disabled={selectedFilters.length === 0 && (minPrice === 100000 && maxPrice === 250000)} // Enable if any filter is active or price range changed
+          className={`px-10 py-3.25 border  ${
+            (selectedFilters.length > 0 || minPrice !== 100000 || maxPrice !== 250000)
               ? "border-neutral-gray-8 text-neutral-gray-11"
               : "border-neutral-gray-4 text-neutral-gray-4"
           } rounded-lg cursor-pointer`}
@@ -383,10 +422,10 @@ export default function FilterMenuMobile({ handleCloseFilter, setProducts }) {
           حذف فیلترها
         </button>
         <button
-          disabled={selectedFilters.length === 0 ? true : false}
-          onClick={handleApplyFilters}
+          onClick={handleCloseFilter} // This will just close the menu now if no direct filter application is needed here
+          disabled={selectedFilters.length === 0 && (minPrice === 100000 && maxPrice === 250000)} // Enable if any filter is active or price range changed
           className={`px-11.75 py-3.25 ${
-            selectedFilters.length
+            (selectedFilters.length > 0 || minPrice !== 100000 || maxPrice !== 250000)
               ? "bg-[#B19276] text-white"
               : "bg-cognac-tint-2 text-cognac-tint-4"
           } rounded-lg cursor-pointer`}

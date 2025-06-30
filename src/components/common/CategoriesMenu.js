@@ -28,6 +28,7 @@ export default function CategoriesMenu({
           isOpen: false,
         }));
         setCategoriesData(updatedData);
+        
       } catch (error) {
         console.log(error);
       }

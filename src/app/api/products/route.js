@@ -18,7 +18,8 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
 
     // Pagination
-    const page = parseInt(searchParams.get("page")) || 1;
+    // اطمینان حاصل کنید که page همیشه یک عدد است، حتی اگر از URL نرسیده باشد
+    const page = parseInt(searchParams.get("page")) || 1; 
     const limit = parseInt(searchParams.get("limit")) || 10;
     const skip = (page - 1) * limit;
 
@@ -50,6 +51,7 @@ export async function GET(request) {
     const size = searchParams.get("size");
     const categoryId = searchParams.get("categoryId");
     const isDiscounted = searchParams.get("isDiscounted");
+    const search = searchParams.get("search");
 
     if (minPrice && maxPrice) {
       filter.price = { gte: minPrice, lte: maxPrice };
@@ -63,7 +65,7 @@ export async function GET(request) {
       filter.productColors = {
         some: {
           color: {
-            hexCode: color, // Assuming 'color' param is hexCode. Change to 'name: color' if using color name.
+            hexCode: color,
           },
         },
       };
@@ -81,6 +83,14 @@ export async function GET(request) {
     if (categoryId) filter.categoryId = categoryId;
     if (isDiscounted === "true") filter.isDiscounted = true;
     if (isDiscounted === "false") filter.isDiscounted = false;
+
+    // Search functionality
+    if (search) {
+      filter.OR = [
+        { name: { contains: search } },
+        { description: { contains: search } },
+      ];
+    }
 
     // Fetch products
     const [products, totalProducts] = await prisma.$transaction([
@@ -129,19 +139,19 @@ export async function GET(request) {
       ) {
         offPercent =
           ((product.price - product.discountedPrice) / product.price) * 100;
-        offPercent = Math.round(offPercent); // Round to nearest whole number
+        offPercent = Math.round(offPercent);
       }
 
       return {
         ...product,
         isLiked: userId ? likedProductIds.has(product.id) : false,
-        offPercent: offPercent, // Add the calculated offPercent
+        offPercent: offPercent,
       };
     });
 
     return NextResponse.json(
       {
-        products: productsWithCalculatedFields, // Use the new array with calculated offPercent
+        products: productsWithCalculatedFields,
         currentPage: page,
         totalPages: Math.ceil(totalProducts / limit),
         totalProducts: totalProducts,

@@ -1,46 +1,59 @@
 import Products from "@/components/products/Products";
 import { cookies } from "next/headers";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page({ searchParams }) {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
 
-  const params = await searchParams;
-  const search = params?.search || "";
-  const categoryId = params?.categoryId || "";
-  const orderBy = params?.orderBy || "";
-  const currentPage = params?.page || 1;
+  const params = (await searchParams) || {};
+  const page = params.page || 1;
+  const sort = params.sort || "";
+  const categoryId = params.categoryId || "";
+  const minPrice = params.minPrice || "";
+  const maxPrice = params.maxPrice || "";
+  const color = params.color || "";
+  const size = params.size || "";
+  const isDiscounted = params.isDiscounted || "";
+  const search = params.search || "";
+
+  let url = `${baseUrl}/api/products?page=${page}`;
+
+  if (sort) url += `&sort=${sort}`;
+  if (categoryId) url += `&categoryId=${categoryId}`;
+  if (minPrice) url += `&minPrice=${minPrice}`;
+  if (maxPrice) url += `&maxPrice=${maxPrice}`;
+  if (color) url += `&color=${color}`;
+  if (size) url += `&size=${size}`;
+  if (isDiscounted) url += `&isDiscounted=${isDiscounted}`;
+  if (search) url += `&search=${search}`;
+
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
   let products = [];
-  let totalPages = null;
-  let totalProducts = null
-  const headers = token
-    ? {
-        Authorization: `Bearer ${token}`,
-      }
-    : {};
+  let totalPages = 1;
+  let totalProducts = 0;
 
   try {
-    let url = `${baseUrl}/api/products?page=${currentPage}`;
-    if (search) url += `&search=${search}`;
-    if (categoryId) url += `&categoryId=${categoryId}`;
-    if (orderBy) url += `&orderBy=${orderBy}`;
-
     const res = await fetch(url, {
-      headers: headers,
+      headers,
       cache: "no-store",
     });
+
     if (res.ok) {
       const data = await res.json();
-      console.log("data", data);
-
       products = data.products;
       totalPages = data.totalPages;
       totalProducts = data.totalProducts;
+      console.log(data);
+      
+    } else {
+      console.error("Fetch failed with status", res.status);
     }
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.error("Fetch error", err);
   }
 
   return (

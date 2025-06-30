@@ -15,6 +15,8 @@ export default function Categories() {
         if (categoriesRes.ok) {
           const categoryDate = await categoriesRes.json();
           setData(categoryDate);
+          console.log(categoryDate);
+          
         }
       } catch (error) {
         console.log(error);

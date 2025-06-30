@@ -164,7 +164,7 @@ export default function Products({
             </div>
 
             {!isLoading && products.length > 0 ? (
-              <div className="flex flex-wrap gap-4 lg:hidden">
+              <div className="flex flex-wrap justify-center gap-4 lg:hidden">
                 {products.map((product) => (
                   <ProductItemOff
                     key={product.id}
@@ -268,7 +268,7 @@ export default function Products({
                   </div>
                 )}
                 {!isLoading && products.length > 0 ? (
-                  <div className="flex items-center flex-wrap gap-x-6 gap-y-8 2xl:justify-between">
+                  <div className="flex items-center flex-wrap gap-x-6 gap-y-8">
                     {products.map((product) => (
                       <ProductItemOff
                         key={product.id}

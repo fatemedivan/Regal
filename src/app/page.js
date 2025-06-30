@@ -75,7 +75,7 @@ export default async function Home() {
               <div className="leading-4.5 text-xs text-neutral-gray-11 px-4 py-0.5 bg-neutral-gray-2 border-1 border-neutral-gray-4 rounded-100 md:py-2.5 md:px-6 md:text-sm md:leading-5 text-nowrap">
                 استایل‌های خاص
               </div>
-              <div className="leading-4.5 text-xs text-neutral-gray-11 px-4 py-0.5 bg-neutral-gray-2 border-1 border-neutral-gray-4 rounded-100 md:py-2.5 md:px-6 flex gap-3 md:text-sm md:leading-5 text-nowrap">
+              <div className="leading-4.5 text-xs text-neutral-gray-11 px-4 py-0.5 bg-neutral-gray-2 border-1 border-neutral-gray-4 rounded-100 md:py-2.5 md:px-6  gap-3 md:text-sm md:leading-5 text-nowrap hidden sm:flex">
                 رنگ‌بندی‌های جذاب
                 <div className="w-2 h-2 my-auto rounded-100 bg-[#D5AC97] md:w-4 md:h-4"></div>
                 <div className="w-2 h-2 my-auto rounded-100 bg-[#C5AF86] md:w-4 md:h-4"></div>
@@ -135,7 +135,7 @@ export default async function Home() {
                 <Image
                   width={150}
                   height={150}
-                  className="object-cover lg:hidden rounded-xl"
+                  className="object-cover lg:hidden rounded-xl ml-5"
                   src="/img/header-mobile-3.png"
                   alt=""
                   quality={100}

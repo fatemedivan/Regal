@@ -30,7 +30,7 @@ export default function Categories() {
       <h5 className="font-semibold leading-5 text-black mt-16 mb-6">
         دسته بندی محصولات
       </h5>
-      <div className="flex flex-wrap gap-4 lg:hidden">
+      <div className="flex flex-wrap justify-center md:justify-start gap-4 lg:hidden">
         <div className="flex flex-col gap-4">
           <Link href={"/products?categoryId=1&page=1"}>
             <div className="h-71 relative w-41.75">

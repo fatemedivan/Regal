@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { verifyToken } from '../../../../../utils/auth';
 import { prisma } from '../../../../../lib/prisma';
 
-// GET: دریافت جزئیات یک آدرس خاص
+
 export async function GET(request, { params }) {
   try {
     const { userId } = await verifyToken(request);
@@ -16,7 +16,6 @@ export async function GET(request, { params }) {
       return NextResponse.json({ message: 'آدرس یافت نشد.' }, { status: 404 });
     }
 
-    // اطمینان حاصل کنید که کاربر فقط به آدرس‌های خودش دسترسی دارد
     if (address.userId !== userId) {
       return NextResponse.json({ message: 'شما اجازه دسترسی به این آدرس را ندارید.' }, { status: 403 });
     }
@@ -31,15 +30,15 @@ export async function GET(request, { params }) {
   }
 }
 
-// PUT: به‌روزرسانی یک آدرس
+
 export async function PUT(request, { params }) {
   try {
     const { userId } = await verifyToken(request);
     const addressId = params.id;
-    // حالا فقط fullAddress, province, city, postalCode و details را دریافت می‌کنیم
+
     const { fullAddress, province, city, postalCode, details } = await request.json();
 
-    // ابتدا آدرس را پیدا می‌کنیم تا مطمئن شویم به کاربر فعلی تعلق دارد
+
     const existingAddress = await prisma.address.findUnique({
       where: { id: addressId },
     });
@@ -51,8 +50,6 @@ export async function PUT(request, { params }) {
       return NextResponse.json({ message: 'شما اجازه به‌روزرسانی این آدرس را ندارید.' }, { status: 403 });
     }
 
-    // isDefault حذف شده است، بنابراین کد مربوط به آن نیز حذف می شود.
-    // اگر همچنان نیاز به یک آدرس پیش‌فرض دارید، باید منطق جدیدی برای آن پیاده‌سازی کنید.
 
     const updatedAddress = await prisma.address.update({
       where: { id: addressId },
@@ -71,18 +68,17 @@ export async function PUT(request, { params }) {
     if (error.message.includes('Authentication required') || error.message.includes('Invalid or expired token')) {
       return NextResponse.json({ message: 'برای به‌روزرسانی آدرس، احراز هویت لازم است.' }, { status: 401 });
     }
-    // خطای منحصر به فرد بودن عنوان آدرس (P2002) حذف شد زیرا title دیگر وجود ندارد.
+
     return NextResponse.json({ message: 'خطای داخلی سرور در به‌روزرسانی آدرس.' }, { status: 500 });
   }
 }
 
-// DELETE: حذف یک آدرس
 export async function DELETE(request, { params }) {
   try {
     const { userId } = await verifyToken(request);
     const addressId = params.id;
 
-    // ابتدا آدرس را پیدا می‌کنیم تا مطمئن شویم به کاربر فعلی تعلق دارد
+
     const existingAddress = await prisma.address.findUnique({
       where: { id: addressId },
     });

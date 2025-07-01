@@ -20,8 +20,7 @@ export default function AdressCard({
   const [isOpenAddAddressModal, setIsOpenAddAddressModal] = useState(false);
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
   const [token, setToken] = useState("");
-  const { phoneNumber, name ,family } = useAuthContext();
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const { phoneNumber, name, family } = useAuthContext();
   const handleCloseDeleteModal = () => {
     setIsOpenDeleteModal(false);
     closeModal();
@@ -77,9 +76,8 @@ export default function AdressCard({
   return (
     <div
       onClick={() => setSelectedAddressId(id)}
-      className={`border ${
-        selectedAddressId === id ? "border-cognac-primery" : "border-neutral-gray-4"
-      }  rounded-lg p-6 mb-2 lg:mb-4 cursor-pointer`}
+      className={`border ${selectedAddressId === id ? "border-cognac-primery" : "border-neutral-gray-4"
+        }  rounded-lg p-6 mb-2 lg:mb-4 cursor-pointer`}
     >
       <ToastContainer autoClose={2000} className={"custom-toast-container"} />
       <div className="flex items-start justify-between gap-3 mb-4 lg:mb-3">
@@ -170,7 +168,7 @@ export default function AdressCard({
         />
       )}
       {isOpenDetailsModal && (
-        <DetailsModalAddAddress handleCloseModal={handleCloseDetailsModal} />
+        <DetailsModalAddAddress onSuccess={() => getAddresses()} handleCloseModal={handleCloseDetailsModal} />
       )}
     </div>
   );

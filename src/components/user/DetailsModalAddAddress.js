@@ -6,14 +6,13 @@ import { toast, ToastContainer } from "react-toastify";
 export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) {
   const [city, setCity] = useState("");
   const [province, setProvince] = useState("");
-  const [details, setDetails] = useState(""); // تغییر یافته: حالا 'details'
+  const [details, setDetails] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [fullAddress, setFullAddress] = useState("");
   const [addressId, setAddressId] = useState("");
   const [token, setToken] = useState("");
   const [isOpenProvince, setIsOpenProvince] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const [isBluredCity, setIsBluredCity] = useState(false);
   const [isBluredPostalCode, setIsBluredPostalCode] = useState(false);
@@ -22,9 +21,9 @@ export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) 
   const isValidProvince = province.length >= 2 && province.length <= 32;
   const isValidCity = city.length >= 2 && city.length <= 32;
   const isValidPostalCode = /^[0-9]{6,10}$/.test(postalCode);
-  const isValidDetail = details.length >= 4 && details.length <= 32; // برای جزئیات
+  const isValidDetail = details.length >= 4 && details.length <= 32;
   const isValidFullAddress =
-    fullAddress.length >= 32 && fullAddress.length <= 255; // برای آدرس کامل
+    fullAddress.length >= 32 && fullAddress.length <= 255;
   const isValidAll =
     isValidCity &&
     isValidProvince &&
@@ -89,8 +88,8 @@ export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) 
           province: province,
           city: city,
           postalCode: postalCode,
-          fullAddress: fullAddress.slice(0, 254), // برش به حداکثر طول 255 کاراکتر
-          details: details, // تغییر یافته: حالا 'details'
+          fullAddress: fullAddress.slice(0, 254),
+          details: details,
         }),
       });
 
@@ -98,9 +97,8 @@ export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) 
 
       if (res.ok) {
         toast.success("آدرس با موفقیت اضافه/ویرایش شد.");
-       // onSuccess();
         sessionStorage.removeItem("addressId");
-        handleCloseModal(); // بعد از موفقیت، مودال را ببند
+        handleCloseModal();
       } else {
         const errorData = await res.json();
         toast.error(errorData.message || "عملیات ناموفق بود.");
@@ -113,7 +111,7 @@ export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) 
   };
 
   useEffect(() => {
-    if (!token || !addressId) return; // اگر توکن یا addressId نباشد، درخواست نده
+    if (!token || !addressId) return;
 
     const getAddress = async () => {
       try {
@@ -126,7 +124,7 @@ export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) 
         if (res.ok) {
           setProvince(data.province || "");
           setCity(data.city || "");
-          setDetails(data.details || ""); // تغییر یافته: حالا 'details'
+          setDetails(data.details || "");
           setPostalCode(data.postalCode || "");
           setFullAddress(data.fullAddress || "");
         } else {
@@ -139,7 +137,7 @@ export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) 
       }
     };
     getAddress();
-  }, [token, addressId]); // dependencies برای useEffect
+  }, [token, addressId]);
 
   const iranProvinces = [
     "آذربایجان شرقی",
@@ -204,13 +202,13 @@ export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) 
               onChange={(e) => setFullAddress(e.target.value)}
               maxLength={255}
               className="text-neutral-gray-11 text-sm leading-5 w-full resize-none outline-none"
-              defaultValue={fullAddress} // استفاده مستقیم از fullAddress
+              defaultValue={fullAddress}
             />
             <p className="absolute right-4 -top-2 bg-white px-1 text-neutral-gray-7 text-xs leading-4.5">
               آدرس کامل
             </p>
           </div>
-          {!isValidFullAddress && fullAddress && ( // چک کردن که کاربر چیزی وارد کرده باشد
+          {!isValidFullAddress && fullAddress && (
             <p className="text-xs leading-4.5 my-3 transition duration-200 ease-in-out text-error-primery">
               آدرس کامل باید حداقل ۳۲ و حداکثر۲۵۵ حرف باشد.
             </p>
@@ -386,11 +384,11 @@ export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) 
 
           <div className="flex items-center justify-center">
             <button
-              onClick={addAdress} // تماس مستقیم با addAdress
-              disabled={!isValidAll || isLoading} // دکمه در زمان isLoading غیرفعال شود
+              onClick={addAdress}
+              disabled={!isValidAll || isLoading}
               className={`leading-5.5 rounded-lg py-3.25 w-full flex justify-center items-center cursor-pointer ${isValidAll && !isLoading
-                  ? "bg-cognac-primery text-white"
-                  : "bg-cognac-tint-2 text-cognac-tint-4"
+                ? "bg-cognac-primery text-white"
+                : "bg-cognac-tint-2 text-cognac-tint-4"
                 }`}
             >
               {isLoading ? (

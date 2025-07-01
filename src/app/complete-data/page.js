@@ -97,7 +97,7 @@ export default function Page() {
   }, [token]);
 
   const getAddresses = async () => {
-    const res = await fetch(`${baseUrl}/user/addresses`, {
+    const res = await fetch(`/api/addresses`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (res.ok) {

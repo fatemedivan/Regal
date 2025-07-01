@@ -268,16 +268,16 @@ export default function Page() {
             <div className="my-6">
               {orders && orders.length ? (
                 orders.map((order) => (
+
                   <OrderDetailsCardDesktop
                     key={order.id}
-                    date={order.orderDate}
-                    address={order.fullAddress}
                     status={order.status}
-                    deliveryStatus={"تاریخ تحویل تخمینی"}
                     deliveryType={order.deliveryMethod}
-                    orderItems={order.items}
-                    amountPaid={order.totalAmount}
                     paymentMethod={order.paymentMethod}
+                    address={order.fullAddress}
+                    date={order.orderDate}
+                    time={order.deliveryTime}
+                    orderItems={order.items}
 
                   />
                 ))

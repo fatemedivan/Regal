@@ -1,5 +1,3 @@
-// src/components/user/OrderDetailsCardDesktop.jsx
-
 "use client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
@@ -12,10 +10,8 @@ export default function OrderDetailsCardDesktop({
   paymentMethod,
   address,
   date,
-  time, 
-  orderItems, 
-  totalAmount, 
-  amountDiscount,
+  time,
+  orderItems,
 }) {
   const [isShownDetails, setIsShownDetails] = useState(false);
   const [formattedDate, setFormattedDate] = useState("");
@@ -33,6 +29,7 @@ export default function OrderDetailsCardDesktop({
       case "processing":
         return "در حال آماده‌سازی";
       case "shipped":
+      case "delivering":
         return "ارسال شده";
       case "delivered":
         return "تحویل شده";
@@ -75,14 +72,45 @@ export default function OrderDetailsCardDesktop({
     }
   }, [date]);
 
-  // محاسبه تخفیف کل از آیتم‌ها اگر amountDiscount از API نیامده باشد
+  // تابع کمکی برای فرمت کردن اعداد (با قابلیت مدیریت ناعدد)
+  const formatPrice = (price) => {
+    const numericPrice = Number(price);
+    if (isNaN(numericPrice)) {
+      return ""; 
+    }
+    return numericPrice.toLocaleString('fa-IR');
+  };
+
+
+  const shippingCost = 80000;
+
+  const calculatedProductsTotal = orderItems?.reduce((sum, item) => {
+    const priceAtOrder = Number(item.priceAtOrder || 0);
+    const quantity = Number(item.quantity || 0);
+
+    const validPriceAtOrder = isNaN(priceAtOrder) ? 0 : priceAtOrder;
+    const validQuantity = isNaN(quantity) ? 0 : quantity;
+
+    return sum + (validPriceAtOrder * validQuantity);
+  }, 0) || 0; 
+
+  // 2. محاسبه تخفیف کل (تفاوت قیمت اصلی و قیمت پرداخت شده در لحظه سفارش)
   const calculatedTotalDiscount = orderItems?.reduce((sum, item) => {
-    const originalPrice = item.product?.price || 0;
-    const discountedPrice = item.product?.isDiscounted && item.product?.discountedPrice !== null
-      ? item.product.discountedPrice
-      : originalPrice;
-    return sum + (originalPrice - discountedPrice) * item.quantity;
+    const originalPrice = Number(item.product?.price || 0);
+    const priceAtOrder = Number(item.priceAtOrder || 0);
+    const quantity = Number(item.quantity || 0);
+
+    const validOriginalPrice = isNaN(originalPrice) ? 0 : originalPrice;
+    const validPriceAtOrder = isNaN(priceAtOrder) ? 0 : priceAtOrder;
+    const validQuantity = isNaN(quantity) ? 0 : quantity;
+
+    if (validOriginalPrice > validPriceAtOrder) {
+      return sum + (validOriginalPrice - validPriceAtOrder) * validQuantity;
+    }
+    return sum;
   }, 0) || 0;
+
+  const finalOrderTotalAmount = calculatedProductsTotal + shippingCost;
 
   return (
     <div className="border border-neutral-gray-4 rounded-xl p-6 mb-4">
@@ -91,11 +119,11 @@ export default function OrderDetailsCardDesktop({
           <div className="flex items-center gap-1">
             <Image width={20} height={20} src="/img/wallet-2.svg" alt="" />
             <p className="text-neutral-gray-11 text-sm leading-5">
-              مبلغ کل: {totalAmount?.toLocaleString('fa-IR') || '0'} تومان
+              مبلغ کل: {formatPrice(finalOrderTotalAmount)} تومان
             </p>
           </div>
-          
-          {(amountDiscount !== undefined && amountDiscount > 0) || (calculatedTotalDiscount > 0) ? (
+
+          {calculatedTotalDiscount > 0 ? (
             <div className="flex items-center gap-1">
               <Image
                 width={20}
@@ -104,14 +132,14 @@ export default function OrderDetailsCardDesktop({
                 alt=""
               />
               <p className="text-neutral-gray-11 text-sm leading-5">
-                تخفیف کل: {(amountDiscount || calculatedTotalDiscount)?.toLocaleString('fa-IR')} تومان
+                تخفیف کل: {formatPrice(calculatedTotalDiscount)} تومان
               </p>
             </div>
           ) : null}
           <div className="flex items-center gap-1">
             <Image width={20} height={20} src="/img/truck-fast-2.svg" alt="" />
             <p className="text-neutral-gray-11 text-sm leading-5">
-              هزینه ارسال: 80,000 تومان
+              هزینه ارسال: {formatPrice(shippingCost)} تومان
             </p>
           </div>
         </div>
@@ -120,17 +148,16 @@ export default function OrderDetailsCardDesktop({
             {translateDeliveryMethod(deliveryType)}
           </div>
           <div
-            className={`text-xs leading-4.5 py-0.5 px-2 rounded-100 text-nowrap ${
-              status === "pending"
+            className={`text-xs leading-4.5 py-0.5 px-2 rounded-100 text-nowrap ${status === "pending"
                 ? "border border-neutral-gray-4 bg-neutral-gray-1 text-neutral-gray-11"
                 : status === "delivered"
-                ? "bg-success-tint-1 text-success-primery"
-                : status === "cancelled"
-                ? "bg-error-tint-1 text-error-primery"
-                : status === "returned"
-                ? "bg-warning-tint-1 text-warning-primery"
-                : "bg-gray-100 text-gray-700"
-            }`}
+                  ? "bg-success-tint-1 text-success-primery"
+                  : status === "cancelled"
+                    ? "bg-error-tint-1 text-error-primery"
+                    : status === "returned"
+                      ? "bg-warning-tint-1 text-warning-primery"
+                      : "bg-gray-100 text-gray-700"
+              }`}
           >
             {translateStatus(status)}
           </div>
@@ -151,25 +178,22 @@ export default function OrderDetailsCardDesktop({
         )}
       </div>
       <div
-        className={`flex items-center gap-1 ${
-          status === "pending" && deliveryType === "delivery" ? "mb-8" : "mb-4"
-        }`}
+        className={`flex items-center gap-1 ${status === "pending" && deliveryType === "delivery" ? "mb-8" : "mb-4"
+          }`}
       >
         <Image width={20} height={20} src="/img/calendar.svg" alt="" />
         <p className="text-neutral-gray-11 text-sm leading-5">{formattedDate || 'تاریخ ثبت نشده'}</p>
       </div>
-      
+
       <div className="flex items-center gap-1 mb-4">
-      
         <p className="text-neutral-gray-11 text-sm leading-5">
           روش پرداخت: <span className="font-medium">{translatePaymentMethod(paymentMethod)}</span>
         </p>
       </div>
 
       <div
-        className={`mb-4 border-b border-dashed border-neutral-gray-4 ${
-          status === "pending" && deliveryType === "delivery" ? "pb-8" : "pb-0"
-        }`}
+        className={`mb-4 border-b border-dashed border-neutral-gray-4 ${status === "pending" && deliveryType === "delivery" ? "pb-8" : "pb-0"
+          }`}
       >
         {status === "pending" && deliveryType === "delivery" && (
           <ProgressBarProfile />
@@ -184,9 +208,8 @@ export default function OrderDetailsCardDesktop({
           <Image
             width={20}
             height={20}
-            className={`transition duration-300 ease-in-out ${
-              isShownDetails ? "rotate-180" : "rotate-0"
-            }`}
+            className={`transition duration-300 ease-in-out ${isShownDetails ? "rotate-180" : "rotate-0"
+              }`}
             src="/img/arrow-down-5.svg"
             alt=""
           />
@@ -205,12 +228,18 @@ export default function OrderDetailsCardDesktop({
             <div className="grid grid-cols-5 gap-y-2 gap-x-4 mt-5 px-4 text-right">
               {orderItems && orderItems.length > 0 ? (
                 orderItems.map((item) => {
-                  const originalPrice = item.product?.price || 0;
-                  const discountedPrice = item.product?.isDiscounted && item.product?.discountedPrice !== null
-                    ? item.product.discountedPrice
-                    : originalPrice;
-                  const itemDiscount = originalPrice - discountedPrice;
-                  const itemTotalPrice = discountedPrice * item.quantity; // قیمت تخفیف خورده * تعداد
+                  // استفاده از || 0 برای اطمینان از اینکه null/undefined به 0 تبدیل شوند
+                  const originalPrice = Number(item.product?.price || 0);
+                  const priceAtOrder = Number(item.priceAtOrder || 0);
+                  const quantity = Number(item.quantity || 0);
+
+                  // اگر بعد از تبدیل هم همچنان NaN بود، آن را 0 در نظر بگیر
+                  const validOriginalPrice = isNaN(originalPrice) ? 0 : originalPrice;
+                  const validPriceAtOrder = isNaN(priceAtOrder) ? 0 : priceAtOrder;
+                  const validQuantity = isNaN(quantity) ? 0 : quantity;
+
+                  const itemDiscount = validOriginalPrice > validPriceAtOrder ? validOriginalPrice - validPriceAtOrder : 0;
+                  const itemTotalPrice = validPriceAtOrder * validQuantity;
 
                   return (
                     <React.Fragment key={item.id}>
@@ -218,16 +247,16 @@ export default function OrderDetailsCardDesktop({
                         {item.product?.name || 'نامشخص'}
                       </p>
                       <p className="text-neutral-gray-11 text-sm leading-6">
-                        {item.quantity} عدد
+                        {formatPrice(validQuantity)} عدد
                       </p>
                       <p className="text-neutral-gray-11 text-sm leading-6">
-                        {originalPrice?.toLocaleString('fa-IR')} تومان
+                        {formatPrice(validOriginalPrice)} تومان
                       </p>
                       <p className="text-neutral-gray-11 text-sm leading-6">
-                        {itemDiscount?.toLocaleString('fa-IR')} تومان
+                        {formatPrice(itemDiscount)} تومان
                       </p>
                       <p className="text-neutral-gray-11 text-sm leading-6">
-                        {itemTotalPrice?.toLocaleString('fa-IR')} تومان
+                        {formatPrice(itemTotalPrice)} تومان
                       </p>
                     </React.Fragment>
                   );

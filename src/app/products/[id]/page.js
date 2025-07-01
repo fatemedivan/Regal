@@ -492,7 +492,7 @@ export default function Page() {
                           <li key={product.id} className="glide__slide">
                             <ProductItemOff
                               img={product.img}
-                              title={product.name}
+                              title={product.title}
                               finalPrice={product.finalPrice}
                               isMore={false}
                               colors={product.colors}

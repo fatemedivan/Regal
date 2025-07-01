@@ -2,7 +2,6 @@ import Products from "@/components/products/Products";
 import { cookies } from "next/headers";
 
 export default async function Page({ searchParams }) {
-  console.log("Server Component: Page Rendered with searchParams:", searchParams);
 
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const cookieStore = await cookies(); 
@@ -30,7 +29,6 @@ export default async function Page({ searchParams }) {
   if (isDiscounted) url += `&isDiscounted=${isDiscounted}`;
   if (search) url += `&search=${search}`;
 
-  console.log("Server Component: Fetching URL:", url);
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
   let products = [];
@@ -48,7 +46,6 @@ export default async function Page({ searchParams }) {
       products = data.products;
       totalPages = data.totalPages;
       totalProducts = data.totalProducts;
-      console.log("Server Component: Data fetched successfully. Total pages:", totalPages, "Current page from API:", data.currentPage);
     } else {
       console.error("Server Component: Fetch failed with status", res.status, await res.text());
     }

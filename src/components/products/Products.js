@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Pagination from "../common/Pagination";
 import ProductItemOff from "../common/ProductItemOff";
 import Image from "next/image";
-import Sort from "./Sort"; // Assuming this is your Sort component for mobile
+import Sort from "./Sort";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
 import FilterMenu from "@/components/products/FilterMenu";
 import ProductSceleton from "../common/ProductSceleton";
@@ -25,7 +25,7 @@ export default function Products({
     { id: 4, title: "گران‌ترین", value: "most_expensive" },
   ];
 
-  const currentPage = parseInt(searchParamsHook.get("page") || "1", 10); // Ensure base 10 for parseInt
+  const currentPage = parseInt(searchParamsHook.get("page") || "1", 10);
 
   const [searchValue, setSearchValue] = useState(
     searchParamsHook.get("search") || ""
@@ -33,8 +33,7 @@ export default function Products({
 
   const [isOpenFilterMenu, setIsOpenFilterMenu] = useState(false);
   const [isOpenSort, setIsOpenSort] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Start as loading
-
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedOption, setSelectedOption] = useState(() => {
     const currentSort = searchParamsHook.get("sort");
     // Find the option based on URL or default to "newest"
@@ -46,14 +45,8 @@ export default function Products({
 
   // Effect to update products and manage loading state when `allProducts` (from server) changes
   useEffect(() => {
-    // console.log("Products.jsx: allProducts changed, setting products and isLoading.");
     setProducts(allProducts);
-    setIsLoading(true); // Start loading whenever new `allProducts` come in
-    const timer = setTimeout(() => {
-      setIsLoading(false); // End loading after a short delay
-      // console.log("Products.jsx: isLoading set to false after timeout.");
-    }, 500);
-    return () => clearTimeout(timer);
+    setIsLoading(false);
   }, [allProducts]);
 
   // Effect to sync search and sort states with URL search params
@@ -63,10 +56,10 @@ export default function Products({
     const currentSort = searchParamsHook.get("sort");
     const option = sortOptions.find((opt) => opt.value === currentSort);
     setSelectedOption(option || { id: 1, title: "جدیدترین", value: "newest" });
-  }, [searchParamsHook]); // Dependency on searchParamsHook is correct here
+  }, [searchParamsHook]);
 
   const totalPages = totalProductsPages || 1;
-  // `notFound` is true if loading is complete AND there are no products
+
   const notFound = !isLoading && products.length === 0;
 
   const handleSortChange = (option) => {
@@ -80,6 +73,8 @@ export default function Products({
   const handlePageChange = (page) => {
     const params = new URLSearchParams(searchParamsHook.toString());
     params.set("page", page);
+    console.log("params page", params);
+    console.log("page in handle", page);
     router.push(`?${params.toString()}`);
   };
 

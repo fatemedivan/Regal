@@ -11,32 +11,34 @@ export default function BasketDetails({
   step,
   count,
   totalPric,
-  cart,
+  cart, // این `cart` حالا باید شامل product.imageUrl و product.offPercent باشد
   addOrders,
-  deleteCart
+  deleteCart,
 }) {
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
-  const [showError, setShowError] = useState(false)
+  const [showError, setShowError] = useState(false);
 
   const handleCloseDetailsModal = () => {
     setIsOpenDetailsModal(false);
     closeModal();
   };
   const handleCloseDeleteModal = () => {
-    deleteCart()
+    deleteCart();
     setIsOpenDeleteModal(false);
     closeModal();
   };
   const shippingCost = step === 3 ? 50000 : 0;
-  const cleanTotalPrice = parseInt((totalPric || "0").replace(/,/g, ""));
+  const cleanTotalPrice = parseInt(
+    (totalPric || 0).toString().replace(/,/g, "")
+  );
   const finalAmount = cleanTotalPrice + shippingCost;
 
   const { openModal, closeModal } = useScrollLockContext();
 
   const handleClick = () => {
     if (step === 2 && !selectedAddressId) {
-      setShowError(true)
+      setShowError(true);
     }
     if (step === 3) {
       addOrders();
@@ -71,14 +73,23 @@ export default function BasketDetails({
             <div className="pb-6 mb-6 border-b border-neutral-gray-4">
               <table className="w-full text-sm text-neutral-gray-11">
                 <tbody>
-                  {cart.map((cartItem) => (
+                 
+                  {cart?.items?.map((cartItem) => (
                     <tr key={cartItem.id}>
-                      <td className="py-1">لباس میدی رکسان</td>
+                     
+                      <td className="py-1">
+                        {cartItem.product?.name || "نامشخص"}
+                      </td>
                       <td className="py-1 text-center">
                         {cartItem.quantity} عدد
                       </td>
                       <td className="py-1 text-left">
-                        {cartItem.Entity.price} تومان
+                      
+                        {cartItem.product?.isDiscounted &&
+                        cartItem.product?.discountedPrice !== null
+                          ? cartItem.product.discountedPrice
+                          : cartItem.product?.price}{" "}
+                        تومان
                       </td>
                     </tr>
                   ))}

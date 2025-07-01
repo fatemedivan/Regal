@@ -1,4 +1,3 @@
-// components/products/FilterMenu.jsx
 "use client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
@@ -8,7 +7,6 @@ export default function FilterMenu({ handleCloseFilter }) {
   const router = useRouter();
   const searchParamsHook = useSearchParams();
 
-  // Define default min/max price values
   const defaultMinPrice = 1000000;
   const defaultMaxPrice = 2500000;
 
@@ -132,8 +130,7 @@ export default function FilterMenu({ handleCloseFilter }) {
     }
 
     setSelectedFilters(currentSelected);
-  }, [searchParamsHook, defaultMinPrice, defaultMaxPrice]); // Added defaults as dependencies
-
+  }, [searchParamsHook, defaultMinPrice, defaultMaxPrice]);
   const toggleFilter = (id) => {
     setFilters((prev) =>
       prev.map((filter) =>
@@ -145,17 +142,13 @@ export default function FilterMenu({ handleCloseFilter }) {
   const handleOptionChange = (option, checked, parentFilter) => {
     // IMPORTANT: Always create params from existing searchParamsHook to preserve all current filters
     const params = new URLSearchParams(searchParamsHook.toString());
-    params.set("page", "1"); // Always reset page to 1 when a filter changes
-
+    params.set("page", "1");
     if (checked) {
       if (parentFilter.type === "size") {
         params.set("size", option);
       } else if (parentFilter.type === "color") {
         params.set("color", encodeURIComponent(option));
       } else if (parentFilter.type === "clothes") {
-        // Ensure that previous categoryId is replaced, not appended if multiple selected.
-        // If it's a multi-select, you'd need a different approach (e.g., get all, add new, set all).
-        // For single selection, `set` is correct.
         if (option === "پیراهن کوتاه")
           params.set("categoryId", "c97e7e43-8d6f-458e-b65a-fd9c8cefcc3b");
         else if (option === "تاپ و کراپ")
@@ -185,8 +178,7 @@ export default function FilterMenu({ handleCloseFilter }) {
 
   const handleClearFilters = () => {
     const params = new URLSearchParams(); // Start with a completely new URLSearchParams
-    params.set("page", "1"); // Always set page to 1 when clearing filters
-
+    params.set("page", "1"); 
     // Preserve sort and search parameters if they exist
     const currentSort = searchParamsHook.get("sort");
     const currentSearch = searchParamsHook.get("search");
@@ -227,13 +219,12 @@ export default function FilterMenu({ handleCloseFilter }) {
     searchParamsHook,
     defaultMinPrice,
     defaultMaxPrice,
-  ]); // Added defaults as dependencies
+  ]);
 
   // Function to remove individual selected filter chips
   const handleRemoveSelected = (optionToRemove, type) => {
     const params = new URLSearchParams(searchParamsHook.toString());
-    params.set("page", "1"); // Reset page on individual filter removal
-
+    params.set("page", "1");
     if (type === "price") {
       params.delete("minPrice");
       params.delete("maxPrice");

@@ -21,19 +21,23 @@ export default function DetailsModal({ handleCloseModal, cart }) {
           />
         </div>
         <div>
-          {cart.map((cartItem) => (
+          {cart?.items?.map((cartItem) => (
             <div
               key={cartItem.id}
               className="flex justify-between items-center mb-2"
             >
               <p className="text-sm leading-6 text-neutral-gray-11">
-                لباس میدی رکسان
+                {cartItem.product?.name}
               </p>
               <p className="text-sm leading-6 text-neutral-gray-11">
                 {cartItem.quantity} عدد
               </p>
               <p className="text-sm leading-6 text-neutral-gray-10">
-                {Math.round(cartItem.Entity.price)} تومان
+                {cartItem.product?.isDiscounted &&
+                cartItem.product?.discountedPrice !== null
+                  ? cartItem.product.discountedPrice
+                  : cartItem.product?.price}{" "}
+                تومان
               </p>
             </div>
           ))}

@@ -176,7 +176,7 @@ export default function OffProducts({discountedProducts}) {
                   <ProductItemOff
                     id={product.id}
                     img={product.img}
-                    title={product.title}
+                    title={product.name}
                     finalPrice={product.finalPrice}
                     price={product.price}
                     offPercent={product.offPercent}

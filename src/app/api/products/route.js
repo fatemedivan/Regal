@@ -19,7 +19,7 @@ export async function GET(request) {
 
     // Pagination
     // اطمینان حاصل کنید که page همیشه یک عدد است، حتی اگر از URL نرسیده باشد
-    const page = parseInt(searchParams.get("page")) || 1; 
+    const page = parseInt(searchParams.get("page")) || 1;
     const limit = parseInt(searchParams.get("limit")) || 10;
     const skip = (page - 1) * limit;
 
@@ -141,11 +141,13 @@ export async function GET(request) {
           ((product.price - product.discountedPrice) / product.price) * 100;
         offPercent = Math.round(offPercent);
       }
+      const imageUrl = product.images.length > 0 ? product.images[0].url : null;
 
       return {
         ...product,
         isLiked: userId ? likedProductIds.has(product.id) : false,
         offPercent: offPercent,
+        imageUrl: imageUrl,
       };
     });
 

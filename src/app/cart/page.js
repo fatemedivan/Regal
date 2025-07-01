@@ -6,89 +6,61 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import DeleteModal from "@/components/common/DeleteModal";
 import { useRouter } from "next/navigation";
-import { useScrollLockContext } from "@/context/ScrollLockContext";
 import { useBasketContext } from "@/context/BasketContext";
 import { toast, ToastContainer } from "react-toastify";
 
 export default function Page() {
   const router = useRouter();
   const {
-    removeFromCart,
-    getCart,
     cart,
     countOfProduct,
     totalPric,
     isEmptyCart,
+
+    updateCartItemQuantity,
+    removeCartItem,
+    clearEntireCart,
   } = useBasketContext();
+
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
-  const [token, setToken] = useState("");
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-      getCart();
-    }
-  }, []);
-
-  const increaseQuantity = async (id) => {
+  // تابع افزایش تعداد
+  const handleIncreaseQuantity = async (cartItemId, currentQuantity) => {
     try {
-      const res = await fetch(`${baseUrl}/cart/${id}`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log(res);
-      if (res.ok) {
-        toast.success("با موفقیت افزایش یافت");
-        await getCart();
-      } else {
-        toast.error("ناموفق");
-      }
+      await updateCartItemQuantity(cartItemId, currentQuantity + 1);
+      toast.success("تعداد با موفقیت افزایش یافت.");
     } catch (error) {
-      console.log(error);
-      toast.error("خطایی رخ داد");
+      console.error("Error increasing quantity:", error);
+      toast.error("خطایی در افزایش تعداد رخ داد.");
     }
   };
 
-  const decreaseQuantity = async (id) => {
+  // تابع کاهش تعداد
+  const handleDecreaseQuantity = async (cartItemId, currentQuantity) => {
     try {
-      const res = await fetch(`${baseUrl}/cart/${id}/stockQuantity`, {
-        method: "PATCH",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      console.log(res);
-      if (res.ok) {
-        toast.success("با موفقیت کاهش یافت");
-        await getCart();
+      if (currentQuantity === 1) {
+        await removeCartItem(cartItemId);
+        toast.success("آیتم از سبد خرید حذف شد.");
       } else {
-        toast.error("ناموفق");
+        await updateCartItemQuantity(cartItemId, currentQuantity - 1);
+        toast.success("تعداد با موفقیت کاهش یافت.");
       }
     } catch (error) {
-      console.log(error);
-      toast.error("خطایی رخ داد");
+      console.error("Error decreasing quantity:", error);
+      toast.error("خطایی در کاهش تعداد رخ داد.");
     }
   };
 
-  const deleteCart = async () => {
-    if (!token) return;
+  // تابع حذف کامل سبد خرید
+  const handleDeleteEntireBasket = async () => {
     try {
-      const res = await fetch(`${baseUrl}/cart`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      console.log(res);
-
-      if (res.ok) {
-        getCart();
-        toast.success("با موفقیت حذف شد");
-      } else {
-        toast.error("ناموفق");
-      }
+      await clearEntireCart();
+      toast.success("سبد خرید با موفقیت خالی شد.");
+      setIsOpenDeleteModal(false);
+      closeModal();
     } catch (error) {
-      toast.error("خطایی رخ داد");
+      console.error("Error deleting entire cart:", error);
+      toast.error("خطایی در حذف سبد خرید رخ داد.");
     }
   };
 
@@ -96,13 +68,6 @@ export default function Page() {
     setIsOpenDeleteModal(false);
     closeModal();
   };
-  const handleDeleteBasket = () => {
-    deleteCart();
-    console.log("deleted");
-    closeModal();
-    setIsOpenDeleteModal(false);
-  };
-  const { openModal, closeModal } = useScrollLockContext();
 
   return (
     <div className="container mx-auto px-5 mb-22 lg:px-12">
@@ -116,7 +81,7 @@ export default function Page() {
                 height={162}
                 className="lg:w-62.5 lg:h-56.5"
                 src="/img/error-404.svg"
-                alt=""
+                alt="Empty Cart"
               />
               <p className="leading-7 text-neutral-gray-9 mt-6 text-center">
                 سبد خرید شما خالی است
@@ -140,7 +105,7 @@ export default function Page() {
               height={24}
               className="cursor-pointer"
               src="/img/arrow-right-6.svg"
-              alt=""
+              alt="Back"
               onClick={() => router.back()}
             />
             <h3 className="text-xl font-semibold leading-6 text-neutral-gray-13">
@@ -151,7 +116,7 @@ export default function Page() {
               height={24}
               className="cursor-pointer"
               src="/img/trash-2.svg"
-              alt=""
+              alt="Clear Cart"
               onClick={() => {
                 setIsOpenDeleteModal(true);
                 openModal();
@@ -164,89 +129,111 @@ export default function Page() {
 
           <div className="lg:hidden">
             {cart &&
-              cart.map((item) => (
+              cart.items &&
+              cart.items.map((item) => (
                 <div
-                  key={`${item.id}-${item.Entity.size}-${item.Entity.productColor.color}`}
+                  key={item.id}
                   className="flex items-center gap-2 border-b border-neutral-gray-4 pb-4 mb-4"
                 >
                   <Image
                     width={88}
                     height={116}
-                    src="/img/itemCard-1.svg"
-                    alt=""
+                    src={item.product.images[0].imageUrl}
+                    alt={item.product.name}
                   />
                   <div className="w-full">
                     <p className="text-sm leading-5 text-neutral-gray-11">
-                      {item.Entity.title}
+                      {item.product.name}
                     </p>
                     <div className="flex items-center gap-4 my-3.75">
-                      <p className="text-xs leading-4.5 text-neutral-gray-9">
-                        سایز: {item.Entity.size}
-                      </p>
-                      <div className="flex items-center gap-2">
+                      {item.productSize && (
                         <p className="text-xs leading-4.5 text-neutral-gray-9">
-                          رنگ:
+                          سایز: {item.productSize.size.name}
                         </p>
-                        <div
-                          style={{
-                            backgroundColor: item.Entity.productColor.color,
-                          }}
-                          className="w-5 h-5 rounded-sm"
-                        ></div>
-                      </div>
+                      )}
+                      {item.productColor && (
+                        <div className="flex items-center gap-2">
+                          <p className="text-xs leading-4.5 text-neutral-gray-9">
+                            رنگ:
+                          </p>
+                          <div
+                            style={{
+                              backgroundColor: item.productColor.color.hexCode,
+                            }}
+                            className="w-5 h-5 rounded-sm"
+                          ></div>
+                        </div>
+                      )}
                     </div>
 
                     <div className="flex items-center justify-between gap-4">
                       <div>
-                        {item.percentOff && (
+                        {item.product.isDiscounted ? (
                           <div className="flex items-center gap-1">
                             <p className="text-sm leading-4.5 text-neutral-gray-7 line-through">
-                              {item.Entity.price.toLocaleString()}
+                              {item.product.price.toLocaleString()}
                             </p>
                             <div className="px-2 py-0.5 bg-cognac-primery rounded-100 text-white text-sm leading-5">
-                              {item.percentOff}
+                              {(
+                                ((item.product.price -
+                                  item.product.discountedPrice) /
+                                  item.product.price) *
+                                100
+                              ).toFixed(0) + "%"}
                             </div>
                           </div>
-                        )}
+                        ) : null}
                         <p className="text-neutral-gray-11 text-sm leading-5 mt-1">
-                          {item.Entity.price.toLocaleString()} تومان
+                          {item.product.isDiscounted
+                            ? item.product.discountedPrice.toLocaleString()
+                            : item.product.price.toLocaleString()}{" "}
+                          تومان
                         </p>
                       </div>
                       <div className="flex items-center gap-4">
                         <button
-                          onClick={() => increaseQuantity(item.entityId)}
+                          onClick={() =>
+                            handleIncreaseQuantity(
+                              item.id,
+                              item.productId,
+                              item.productColorId,
+                              item.productSizeId,
+                              item.quantity
+                            )
+                          }
                           className="p-3 rounded-lg border border-neutral-gray-8 cursor-pointer"
                         >
                           <Image
                             width={16}
                             height={16}
                             src="/img/add.svg"
-                            alt=""
+                            alt="Add"
                           />
                         </button>
                         <span>{item.quantity}</span>
-                        <button className="p-3 rounded-lg  border border-neutral-gray-8">
+                        <button className="p-3 rounded-lg border border-neutral-gray-8">
                           {item.quantity === 1 ? (
                             <Image
                               onClick={async () => {
-                                await removeFromCart(item.entityId);
+                                await removeCartItem(item.id);
+                                toast.success("آیتم از سبد خرید حذف شد.");
                               }}
                               width={16}
                               height={16}
                               src="/img/trash.svg"
                               className="cursor-pointer"
-                              alt=""
+                              alt="Remove"
                             />
                           ) : (
                             <Image
                               onClick={() => {
-                                decreaseQuantity(item.entityId);
+                                handleDecreaseQuantity(item.id, item.quantity);
                               }}
                               width={16}
                               height={16}
                               src="/img/minus.svg"
                               className="cursor-pointer"
-                              alt=""
+                              alt="Minus"
                             />
                           )}
                         </button>
@@ -267,113 +254,143 @@ export default function Page() {
                   <div className="text-left">جمع کل</div>
                 </div>
 
-                {cart.map((item, index) => (
-                  <div key={item.id} className="space-y-3">
-                    <div
-                      className={`grid grid-cols-4 items-center ${
-                        index !== cart.length - 1
-                          ? "border-b border-gray-200 pb-6"
-                          : ""
-                      }`}
-                    >
-                      <div className="flex gap-4">
-                        <Image
-                          className="object-cover max-w-21 max-h-21 rounded-lg"
-                          width={84}
-                          height={84}
-                          src="/img/itemCard-1.svg"
-                          alt=""
-                        />
-                        <div>
-                          <p className="leading-7 text-neutral-gray-10 xl:text-nowrap">
-                            {item.title}
-                          </p>
-                          <p className="text-sm leading-6 text-neutral-gray-10">
-                            سایز: {item.Entity.size}
-                          </p>
-                          <div className="flex items-center gap-2">
-                            <p className="text-sm leading-6 text-neutral-gray-10">
-                              رنگ:
+                {cart &&
+                  cart.items &&
+                  cart.items.map((item, index) => (
+                    <div key={item.id} className="space-y-3">
+                      <div
+                        className={`grid grid-cols-4 items-center ${
+                          index !== cart.items.length - 1
+                            ? "border-b border-gray-200 pb-6"
+                            : ""
+                        }`}
+                      >
+                        <div className="flex gap-4">
+                          <Image
+                            className="object-cover max-w-21 max-h-21 rounded-lg"
+                            width={84}
+                            height={84}
+                            src={item.product.images[0].imageUrl}
+                            alt={item.product.name}
+                          />
+                          <div>
+                            <p className="leading-7 text-neutral-gray-10 xl:text-nowrap">
+                              {item.product.name}
                             </p>
-                            <div
-                              style={{
-                                backgroundColor: item.Entity.productColor.color,
-                              }}
-                              className="w-5 h-5 rounded-sm"
-                            ></div>
+                            {item.productSize && (
+                              <p className="text-sm leading-6 text-neutral-gray-10">
+                                سایز: {item.productSize.size.name}
+                              </p>
+                            )}
+                            {item.productColor && (
+                              <div className="flex items-center gap-2">
+                                <p className="text-sm leading-6 text-neutral-gray-10">
+                                  رنگ:
+                                </p>
+                                <div
+                                  style={{
+                                    backgroundColor:
+                                      item.productColor.color.hexCode,
+                                  }}
+                                  className="w-5 h-5 rounded-sm"
+                                ></div>
+                              </div>
+                            )}
                           </div>
                         </div>
-                      </div>
 
-                      <div className="flex justify-center items-center">
-                        <div>
-                          {item.percentOff && (
-                            <div className="flex items-center gap-1">
-                              <p className="text-sm leading-6 text-neutral-gray-7 line-through">
-                                {item.Entity.price.toLocaleString()}
-                              </p>
-                              <div className="px-3 py-1 bg-cognac-primery rounded-100 text-white text-sm leading-5">
-                                {item.percentOff}
+                        <div className="flex justify-center items-center">
+                          <div>
+                            {item.product.isDiscounted ? (
+                              <div className="flex items-center gap-1">
+                                <p className="text-sm leading-6 text-neutral-gray-7 line-through">
+                                  {item.product.price.toLocaleString()}
+                                </p>
+                                <div className="px-3 py-1 bg-cognac-primery rounded-100 text-white text-sm leading-5">
+                                  {(
+                                    ((item.product.price -
+                                      item.product.discountedPrice) /
+                                      item.product.price) *
+                                    100
+                                  ).toFixed(0) + "%"}
+                                </div>
                               </div>
-                            </div>
-                          )}
-                          <p className="text-neutral-gray-10 text-sm leading-6">
-                            {item.Entity.price.toLocaleString()}
+                            ) : null}
+                            <p className="text-neutral-gray-10 text-sm leading-6">
+                              {item.product.isDiscounted
+                                ? item.product.discountedPrice.toLocaleString()
+                                : item.product.price.toLocaleString()}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex justify-center items-center">
+                          <div className="flex items-center gap-4">
+                            <button
+                              onClick={() =>
+                                handleIncreaseQuantity(
+                                  item.id,
+                                  item.productId,
+                                  item.productColorId,
+                                  item.productSizeId,
+                                  item.quantity
+                                )
+                              }
+                              className="p-3 rounded-lg border border-neutral-gray-8 cursor-pointer"
+                            >
+                              <Image
+                                width={16}
+                                height={16}
+                                src="/img/add.svg"
+                                alt="Add"
+                              />
+                            </button>
+                            <span>{item.quantity}</span>
+                            <button className="p-3 rounded-lg border border-neutral-gray-8">
+                              {item.quantity === 1 ? (
+                                <Image
+                                  onClick={async () => {
+                                    await removeCartItem(item.id);
+                                    toast.success("آیتم از سبد خرید حذف شد.");
+                                  }}
+                                  width={16}
+                                  height={16}
+                                  src="/img/trash.svg"
+                                  className="cursor-pointer"
+                                  alt="Remove"
+                                />
+                              ) : (
+                                <Image
+                                  onClick={() => {
+                                    handleDecreaseQuantity(
+                                      item.id,
+                                      item.quantity
+                                    );
+                                  }}
+                                  width={16}
+                                  height={16}
+                                  src="/img/minus.svg"
+                                  className="cursor-pointer"
+                                  alt="Minus"
+                                />
+                              )}
+                            </button>
+                          </div>
+                        </div>
+
+                        <div className="flex justify-end items-center">
+                          <p className="text-sm leading-6 text-neutral-gray-10">
+                            {(
+                              (item.product.isDiscounted
+                                ? item.product.discountedPrice
+                                : item.product.price) * item.quantity
+                            ).toLocaleString()}{" "}
+                            تومان
                           </p>
                         </div>
                       </div>
-
-                      <div className="flex justify-center items-center">
-                        <div className="flex items-center gap-4">
-                          <button
-                            onClick={() => increaseQuantity(item.entityId)}
-                            className="p-3 rounded-lg border border-neutral-gray-8 cursor-pointer"
-                          >
-                            <Image
-                              width={16}
-                              height={16}
-                              src="/img/add.svg"
-                              alt=""
-                            />
-                          </button>
-                          <span>{item.quantity}</span>
-                          <button className="p-3 rounded-lg border border-neutral-gray-8">
-                            {item.quantity === 1 ? (
-                              <Image
-                                onClick={async () => {
-                                  await removeFromCart(item.entityId);
-                                }}
-                                width={16}
-                                height={16}
-                                src="/img/trash.svg"
-                                className="cursor-pointer"
-                                alt=""
-                              />
-                            ) : (
-                              <Image
-                                onClick={() => {
-                                  decreaseQuantity(item.entityId);
-                                }}
-                                width={16}
-                                height={16}
-                                src="/img/minus.svg"
-                                className="cursor-pointer"
-                                alt=""
-                              />
-                            )}
-                          </button>
-                        </div>
-                      </div>
-
-                      <div className="flex justify-end items-center">
-                        <p className="text-sm leading-6 text-neutral-gray-10">
-                          {(item.Entity.price * item.quantity).toLocaleString()}{" "}
-                          تومان
-                        </p>
-                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             </div>
             <BasketDetailsCard
@@ -381,15 +398,18 @@ export default function Page() {
               count={countOfProduct}
               totalPric={totalPric}
               cart={cart}
-              deleteCart={deleteCart}
+              deleteCart={() => {
+                setIsOpenDeleteModal(true);
+                openModal();
+              }}
             />
           </div>
           {isOpenDeleteModal && (
             <DeleteModal
               handleCloseModal={handleCloseDeleteModal}
-              handleAction={handleDeleteBasket}
+              handleAction={handleDeleteEntireBasket}
               title={"حذف سبد خرید"}
-              subtitle={"آیا از حذف سبد خرید اطمینان دارید؟"}
+              subtitle={"آیا از حذف کل سبد خرید اطمینان دارید؟"}
               actiontitle={"حذف"}
             />
           )}

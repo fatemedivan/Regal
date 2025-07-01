@@ -1,23 +1,20 @@
 "use client";
 
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 import { toast } from "react-toastify";
-
-const { createContext, useContext, useState, useEffect } = require("react");
 
 const BasketContext = createContext();
 
-export const useBasketContext = () => {
-  const context = useContext(BasketContext);
-  return context;
-};
-
-export const BasketContextProvider = ({ children }) => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const [token, setToken] = useState("");
-  const [totalPric, setTotalPrice] = useState(null);
-  const [cart, setCart] = useState([]);
-  const [isEmptyCart, setIsEmptyCart] = useState(true);
-  const [countOfProduct, setCountOfPrroduct] = useState(0);
+export const BasketProvider = ({ children }) => {
+  const [cart, setCart] = useState(null);
+  const [token, setToken] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -26,91 +23,250 @@ export const BasketContextProvider = ({ children }) => {
     }
   }, []);
 
-  const addToCart = async (productId) => {
-    try {
-      const res = await fetch(`${baseUrl}/cart/${productId}`, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (res.status === 201) {
-        toast.success("با موفقیت به سبد خرید اضافه شد");
-      } else if (res.status === 401) {
-        toast.error("لطفاً ابتدا ثبت نام کنید");
-      } else {
-        toast.error(" ناموفق");
-      }
-    } catch (error) {
-      //console.log(error);
-      toast.error("خطایی رخ داد");
+  const getCart = useCallback(async () => {
+    if (!token) {
+      setCart({ items: [] });
+      setIsLoading(false);
+      return;
     }
-  };
-
-  const removeFromCart = async (productId) => {
+    setIsLoading(true);
     try {
-      const res = await fetch(`${baseUrl}/cart/${productId}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
+      const res = await fetch("/api/cart", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
-      if (res.ok) {
-        toast.success("با موفقیت حذف شد");
-        await getCart();
-      } else {
-        toast.error("ناموفق");
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("خطایی رخ داد");
-    }
-  };
-  useEffect(() => {
-    if (!token) return;
-    getCart();
-  }, [token]);
 
-  const getCart = async () => {
-    try {
-      const res = await fetch(`${baseUrl}/cart`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
       if (res.ok) {
         const data = await res.json();
-        setIsEmptyCart(false);
+        console.log(data);
+        
         setCart(data);
-        const total = Math.floor(
-          data.reduce((sum, cartItem) => {
-            return sum + cartItem.quantity * cartItem.Entity.price;
-          }, 0)
-        );
-
-        setTotalPrice(total.toLocaleString());
-      }
-      if (res.status === 404) {
-        setIsEmptyCart(true);
+      } else {
+        const errorData = await res.json();
+        toast.error(errorData.message || "خطا در دریافت سبد خرید.");
+        setCart({ items: [] });
       }
     } catch (error) {
-     // console.log(error);
+      console.error("Error fetching cart:", error);
+      toast.error("خطا در ارتباط با سرور برای دریافت سبد خرید.");
+      setCart({ items: [] });
+    } finally {
+      setIsLoading(false);
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (token) {
+      getCart();
+    }
+  }, [token, getCart]);
+
+  const addToCart = async (
+    productId,
+    quantity = 1,
+    productColorId = null,
+    productSizeId = null
+  ) => {
+    if (!token) {
+      toast.error("برای افزودن به سبد خرید، وارد شوید.");
+      return;
+    }
+    try {
+      const res = await fetch("/api/cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          productId,
+          quantity,
+          productColorId,
+          productSizeId,
+        }),
+      });
+
+      if (res.ok) {
+        toast.success("محصول به سبد خرید اضافه شد.");
+        await getCart();
+        return true;
+      } else {
+        const errorData = await res.json();
+        toast.error(errorData.message || "افزودن به سبد خرید ناموفق بود.");
+        return false;
+      }
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      toast.error("خطایی در افزودن محصول به سبد خرید رخ داد.");
+      return false;
     }
   };
-  useEffect(() => {
-    const totalCount = cart.reduce(
-      (sum, cartItem) => sum + cartItem.quantity,
-      0
-    );
-    setCountOfPrroduct(totalCount);
-  }, [cart]);
+
+  const updateCartItemQuantity = async (cartItemId, newQuantity) => {
+    if (!token) {
+      toast.error("برای به‌روزرسانی سبد خرید، وارد شوید.");
+      return;
+    }
+    if (newQuantity < 0) return; // از تعداد منفی جلوگیری کن
+
+    setIsLoading(true);
+    try {
+      const res = await fetch(`/api/cart`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          productId: cart.items.find((item) => item.id === cartItemId)
+            ?.productId,
+          productColorId: cart.items.find((item) => item.id === cartItemId)
+            ?.productColorId,
+          productSizeId: cart.items.find((item) => item.id === cartItemId)
+            ?.productSizeId,
+          quantity: newQuantity,
+        }),
+      });
+
+      if (res.ok) {
+        await getCart();
+        return true;
+      } else {
+        const errorData = await res.json();
+        toast.error(errorData.message || "به‌روزرسانی تعداد ناموفق بود.");
+        return false;
+      }
+    } catch (error) {
+      console.error("Error updating cart item quantity:", error);
+      toast.error("خطایی در به‌روزرسانی تعداد آیتم سبد خرید رخ داد.");
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const removeCartItem = async (cartItemId) => {
+    if (!token) {
+      toast.error("برای حذف از سبد خرید، وارد شوید.");
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const itemToRemove = cart.items.find((item) => item.id === cartItemId);
+      if (!itemToRemove) {
+        toast.error("آیتم مورد نظر برای حذف در سبد خرید یافت نشد.");
+        setIsLoading(false);
+        return false;
+      }
+
+      // ارسال این اطلاعات به عنوان query parameters
+      const queryParams = new URLSearchParams({
+        productId: itemToRemove.productId,
+      });
+      if (itemToRemove.productColorId) {
+        queryParams.append("productColorId", itemToRemove.productColorId);
+      }
+      if (itemToRemove.productSizeId) {
+        queryParams.append("productSizeId", itemToRemove.productSizeId);
+      }
+
+      const res = await fetch(`/api/cart?${queryParams.toString()}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.ok) {
+        await getCart();
+        return true;
+      } else {
+        const errorData = await res.json();
+        toast.error(errorData.message || "حذف آیتم ناموفق بود.");
+        return false;
+      }
+    } catch (error) {
+      console.error("Error removing cart item:", error);
+      toast.error("خطایی در حذف آیتم سبد خرید رخ داد.");
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const clearEntireCart = async () => {
+    if (!token) {
+      toast.error("برای پاک کردن سبد خرید، وارد شوید.");
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const res = await fetch("/api/cart/clear-all", {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.ok) {
+        setCart({ items: [] });
+        toast.success("سبد خرید شما پاک شد.");
+        return true;
+      } else {
+        const errorData = await res.json();
+        toast.error(errorData.message || "پاک کردن سبد خرید ناموفق بود.");
+        return false;
+      }
+    } catch (error) {
+      console.error("Error clearing entire cart:", error);
+      toast.error("خطایی در پاک کردن سبد خرید رخ داد.");
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // محاسبه تعداد کل محصولات
+  const countOfProduct =
+    cart?.items?.reduce((acc, item) => acc + item.quantity, 0) || 0;
+
+  // محاسبه قیمت کل (با در نظر گرفتن تخفیف و تعداد)
+  const totalPric =
+    cart?.items?.reduce((acc, item) => {
+      const itemPrice = item.product.isDiscounted
+        ? item.product.discountedPrice
+        : item.product.price;
+      return acc + itemPrice * item.quantity;
+    }, 0) || 0;
+
+  // بررسی خالی بودن سبد خرید
+  const isEmptyCart = !cart || !cart.items || cart.items.length === 0;
+
+  const contextValue = {
+    cart,
+    getCart,
+    addToCart,
+    updateCartItemQuantity,
+    removeCartItem,
+    clearEntireCart,
+    countOfProduct,
+    totalPric,
+    isEmptyCart,
+    isLoading,
+  };
+
   return (
-    <BasketContext.Provider
-      value={{
-        addToCart,
-        removeFromCart,
-        getCart,
-        cart,
-        totalPric,
-        countOfProduct,
-        isEmptyCart,
-      }}
-    >
+    <BasketContext.Provider value={contextValue}>
       {children}
     </BasketContext.Provider>
   );
+};
+
+export const useBasketContext = () => {
+  const context = useContext(BasketContext);
+  if (!context) {
+    throw new Error("useBasketContext must be used within a BasketProvider");
+  }
+  return context;
 };

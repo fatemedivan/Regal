@@ -6,7 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) {
   const [city, setCity] = useState("");
   const [province, setProvince] = useState("");
-  const [details, setDetails] = useState("");
+  const [details, setDetails] = useState(""); // تغییر یافته: حالا 'details'
   const [postalCode, setPostalCode] = useState("");
   const [fullAddress, setFullAddress] = useState("");
   const [addressId, setAddressId] = useState("");
@@ -22,9 +22,9 @@ export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) 
   const isValidProvince = province.length >= 2 && province.length <= 32;
   const isValidCity = city.length >= 2 && city.length <= 32;
   const isValidPostalCode = /^[0-9]{6,10}$/.test(postalCode);
-  const isValidDetail = details.length >= 4 && details.length <= 32;
+  const isValidDetail = details.length >= 4 && details.length <= 32; // برای جزئیات
   const isValidFullAddress =
-    fullAddress.length >= 32 && fullAddress.length <= 255;
+    fullAddress.length >= 32 && fullAddress.length <= 255; // برای آدرس کامل
   const isValidAll =
     isValidCity &&
     isValidProvince &&
@@ -41,6 +41,7 @@ export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) 
     lastname: false,
     phone: false,
   });
+
   const floatLabel = (value, focus) =>
     value || focus ? "-top-2.5" : "top-4.5";
 
@@ -66,13 +67,18 @@ export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) 
 
   const addAdress = async () => {
     try {
-      if (!token && !addressId) return;
+      if (!token && !addressId) {
+        toast.error("توکن احراز هویت یا شناسه آدرس موجود نیست.");
+        return;
+      }
       setIsLoading(true);
-      const url = addressId
-        ? `${baseUrl}/user/addresses/${addressId}`
-        : `${baseUrl}/user/addresses`;
 
-      const method = addressId ? "PATCH" : "POST";
+      const url = addressId
+        ? `/api/addresses/${addressId}`
+        : `/api/addresses`;
+
+      const method = addressId ? "PUT" : "POST";
+
       const res = await fetch(url, {
         method,
         headers: {
@@ -83,41 +89,57 @@ export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) 
           province: province,
           city: city,
           postalCode: postalCode,
-          fullAddress: fullAddress.slice(0, 254),
-          detail: details,
+          fullAddress: fullAddress.slice(0, 254), // برش به حداکثر طول 255 کاراکتر
+          details: details, // تغییر یافته: حالا 'details'
         }),
       });
+
       setIsLoading(false);
+
       if (res.ok) {
-        toast.success("ادرس با موفقیت اضافه شد");
-        onSuccess()
+        toast.success("آدرس با موفقیت اضافه/ویرایش شد.");
+       // onSuccess();
         sessionStorage.removeItem("addressId");
+        handleCloseModal(); // بعد از موفقیت، مودال را ببند
       } else {
-        toast.error("ناموفق");
+        const errorData = await res.json();
+        toast.error(errorData.message || "عملیات ناموفق بود.");
       }
     } catch (error) {
-      toast.error("خطایی رخ داد");
+      console.error("خطا در افزودن/ویرایش آدرس:", error);
+      toast.error("خطایی رخ داد.");
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    if (!token && !addressId) return;
+    if (!token || !addressId) return; // اگر توکن یا addressId نباشد، درخواست نده
+
     const getAddress = async () => {
-      const res = await fetch(`${baseUrl}/user/addresses/${addressId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      console.log(res);
-      const data = await res.json();
-      if (data) {
-        setProvince(data.province || "");
-        setCity(data.city || "");
-        setDetails(data.detail || "");
-        setPostalCode(data.postalCode || "");
+      try {
+        const res = await fetch(`/api/addresses/${addressId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          setProvince(data.province || "");
+          setCity(data.city || "");
+          setDetails(data.details || ""); // تغییر یافته: حالا 'details'
+          setPostalCode(data.postalCode || "");
+          setFullAddress(data.fullAddress || "");
+        } else {
+          console.error("خطا در دریافت جزئیات آدرس:", data.message);
+          toast.error(data.message || "خطا در دریافت آدرس.");
+        }
+      } catch (error) {
+        console.error("خطا در شبکه هنگام دریافت آدرس:", error);
+        toast.error("خطا در دریافت آدرس.");
       }
     };
     getAddress();
-  }, [token, addressId]);
+  }, [token, addressId]); // dependencies برای useEffect
 
   const iranProvinces = [
     "آذربایجان شرقی",
@@ -182,15 +204,15 @@ export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) 
               onChange={(e) => setFullAddress(e.target.value)}
               maxLength={255}
               className="text-neutral-gray-11 text-sm leading-5 w-full resize-none outline-none"
-              defaultValue={fullAddress && fullAddress.slice(0.254)}
+              defaultValue={fullAddress} // استفاده مستقیم از fullAddress
             />
             <p className="absolute right-4 -top-2 bg-white px-1 text-neutral-gray-7 text-xs leading-4.5">
               آدرس کامل
             </p>
           </div>
-          {!isValidFullAddress && (
+          {!isValidFullAddress && fullAddress && ( // چک کردن که کاربر چیزی وارد کرده باشد
             <p className="text-xs leading-4.5 my-3 transition duration-200 ease-in-out text-error-primery">
-              ادرس کامل باید حداقل ۳۲ و حداکثر۲۵۵ حرف باشد
+              آدرس کامل باید حداقل ۳۲ و حداکثر۲۵۵ حرف باشد.
             </p>
           )}
 
@@ -226,7 +248,7 @@ export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) 
               </div>
               {isBluredCity && !isValidCity && (
                 <p className="text-xs leading-4.5 my-3 transition duration-200 ease-in-out text-error-primery">
-                  شهر باید حداقل ۲ و حداکثر ۳۲ حرف باشد
+                  شهر باید حداقل ۲ و حداکثر ۳۲ حرف باشد.
                 </p>
               )}
             </div>
@@ -241,9 +263,8 @@ export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) 
                   </p>
                 ) : (
                   <p
-                    className={`text-xs leading-4.5 text-neutral-gray-7 absolute -top-3 bg-white px-1 ${
-                      isOpenProvince ? "-top-3" : "top-4"
-                    } `}
+                    className={`text-xs leading-4.5 text-neutral-gray-7 absolute -top-3 bg-white px-1 ${isOpenProvince ? "-top-3" : "top-4"
+                      } `}
                   >
                     استان
                   </p>
@@ -252,9 +273,8 @@ export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) 
 
               <img
                 src="/img/arrow-down-3.svg"
-                className={`${
-                  isOpenProvince ? "rotate-180" : "rotate-0"
-                } transition`}
+                className={`${isOpenProvince ? "rotate-180" : "rotate-0"
+                  } transition`}
                 onClick={() => setIsOpenProvince(!isOpenProvince)}
                 alt=""
               />
@@ -309,7 +329,7 @@ export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) 
               </div>
               {isBluredDetail && !isValidDetail && (
                 <p className="text-xs leading-4.5 my-3 transition duration-200 ease-in-out text-error-primery">
-                  جزئیات باید حداقل ۴ و حداکثر ۳۲ حرف باشد
+                  جزئیات باید حداقل ۴ و حداکثر ۳۲ حرف باشد.
                 </p>
               )}
             </div>
@@ -344,7 +364,7 @@ export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) 
               </div>
               {isBluredPostalCode && !isValidPostalCode && (
                 <p className="text-xs leading-4.5 my-3 transition duration-200 ease-in-out text-error-primery">
-                  کد پستی باید حداقل ۶ و حداکثر ۱۰ حرف انگلیسی باشد
+                  کد پستی باید شامل ۶ تا ۱۰ عدد باشد.
                 </p>
               )}
             </div>
@@ -366,18 +386,12 @@ export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) 
 
           <div className="flex items-center justify-center">
             <button
-              onClick={() => {
-                addAdress();
-                setTimeout(() => {
-                  handleCloseModal();
-                }, 2500);
-              }}
-              disabled={!isValidAll}
-              className={`leading-5.5 rounded-lg py-3.25 w-full flex justify-center items-center cursor-pointer ${
-                isValidAll
+              onClick={addAdress} // تماس مستقیم با addAdress
+              disabled={!isValidAll || isLoading} // دکمه در زمان isLoading غیرفعال شود
+              className={`leading-5.5 rounded-lg py-3.25 w-full flex justify-center items-center cursor-pointer ${isValidAll && !isLoading
                   ? "bg-cognac-primery text-white"
                   : "bg-cognac-tint-2 text-cognac-tint-4"
-              }`}
+                }`}
             >
               {isLoading ? (
                 <div className="flex items-center gap-2">

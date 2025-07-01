@@ -9,216 +9,190 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// مدل User: اطلاعات کاربران
 model User {
-  id              String         @id @default(uuid())
-  phoneNumber     String         @unique // شماره تلفن کاربر (منحصربه‌فرد)
-  hashedPassword  String         // رمز عبور هش شده
+  id             String @id @default(uuid())
+  phoneNumber    String @unique
+  hashedPassword String
 
-  firstName String? // نام کوچک (اختیاری)
-  lastName  String? // نام خانوادگی (اختیاری)
-  email     String? // ایمیل (اختیاری)
+  firstName String?
+  lastName  String?
+  email     String?
 
-  role          String         @default("user") // نقش کاربر (پیش‌فرض: user)
-  createdAt     DateTime       @default(now()) // زمان ساخت کاربر
-  updatedAt     DateTime       @updatedAt // زمان آخرین به‌روزرسانی
+  role      String   @default("user")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  likedProducts LikedProduct[] // محصولاتی که کاربر پسندیده است
-  carts         Cart[]         // سبدهای خرید کاربر
-  orders        Order[]        // سفارشات کاربر
-  addresses     Address[]      // آدرس‌های کاربر
+  likedProducts LikedProduct[]
+  carts         Cart[]
+  orders        Order[]
+  addresses     Address[]
 }
 
-// مدل Category: دسته‌بندی محصولات
 model Category {
   id            String     @id @default(uuid())
-  name          String     @unique // نام دسته‌بندی (منحصربه‌فرد)
-  parentId      String?    // ID دسته‌بندی والد (برای زیردسته‌ها)
-  parent        Category?  @relation("Subcategories", fields: [parentId], references: [id], onDelete: Cascade) // رابطه با دسته‌بندی والد
-  subcategories Category[] @relation("Subcategories") // زیردسته‌های این دسته‌بندی
+  name          String     @unique
+  parentId      String?
+  parent        Category?  @relation("Subcategories", fields: [parentId], references: [id], onDelete: Cascade)
+  subcategories Category[] @relation("Subcategories")
 
-  products Product[] // محصولاتی که در این دسته‌بندی قرار دارند
+  products Product[]
 }
 
-// مدل Product: اطلاعات محصولات
 model Product {
-  id              String         @id @default(uuid())
-  name            String         @unique // نام محصول (منحصربه‌فرد)
-  description     String?        // توضیحات محصول (اختیاری)
-  price           Float          // قیمت محصول
-  discountedPrice Float?         // قیمت با تخفیف (اختیاری)
-  isDiscounted    Boolean        @default(false) // آیا محصول تخفیف دارد؟
-  imageUrl        String?        // URL تصویر اصلی محصول (اختیاری)
-  createdAt       DateTime       @default(now()) // زمان ساخت محصول
-  updatedAt       DateTime       @updatedAt // زمان آخرین به‌روزرسانی
+  id              String   @id @default(uuid())
+  name            String   @unique
+  description     String?
+  price           Float
+  discountedPrice Float?
+  isDiscounted    Boolean  @default(false)
+  imageUrl        String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
-  categoryId String   // ID دسته‌بندی محصول
-  category   Category @relation(fields: [categoryId], references: [id]) // رابطه با دسته‌بندی
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
 
-  likes LikedProduct[] // لایک‌های این محصول
+  likes LikedProduct[]
 
-  // روابط برای مدیریت رنگ‌ها و سایزهای محصول
-  productColors ProductColor[] // رنگ‌های موجود برای این محصول
-  productSizes  ProductSize[]  // سایزهای موجود برای این محصول
-  images        ProductImage[] // تصاویر بیشتر محصول
-  cartItems     CartItem[]     // آیتم‌های سبد خرید مرتبط با این محصول
-  orderItems    OrderItem[]    // آیتم‌های سفارش مرتبط با این محصول
+  productColors ProductColor[]
+  productSizes  ProductSize[]
+  images        ProductImage[]
+  cartItems     CartItem[]
+  orderItems    OrderItem[]
 }
 
-// مدل Color: اطلاعات رنگ‌ها
 model Color {
-  id        String       @id @default(uuid())
-  name      String       @unique // نام رنگ (مثلا "مشکی", "قرمز")
-  hexCode   String       @unique // کد هگز رنگ (مثلا "#000000", "#FF0000")
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
+  id        String   @id @default(uuid())
+  name      String   @unique
+  hexCode   String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  productColors ProductColor[] // محصولاتی که این رنگ را دارند
+  productColors ProductColor[]
 }
 
-// مدل ProductColor: رابطه میانی محصول و رنگ (Many-to-Many)
-// هر رکورد نشان‌دهنده این است که یک محصول خاص، یک رنگ خاص را دارد.
 model ProductColor {
   id        String   @id @default(uuid())
   productId String
   colorId   String
   createdAt DateTime @default(now())
 
-  product Product @relation(fields: [productId], references: [id]) // محصول مرتبط
-  color   Color   @relation(fields: [colorId], references: [id])   // رنگ مرتبط
+  product Product @relation(fields: [productId], references: [id])
+  color   Color   @relation(fields: [colorId], references: [id])
 
-  // NEW: فیلد برگشتی برای اشاره به CartItem هایی که از این ProductColor استفاده می‌کنند
-  cartItems CartItem[] // این خط جدید اضافه شده است
+  cartItems CartItem[]
 
-  @@unique([productId, colorId]) // تضمین می‌کند که یک محصول یک رنگ را فقط یک بار داشته باشد (مثلا محصول A فقط یک بار رنگ مشکی داشته باشد)
+  @@unique([productId, colorId])
 }
 
-// مدل Size: اطلاعات سایزها
 model Size {
-  id        String        @id @default(uuid())
-  name      String        @unique // نام سایز (مثلا "S", "M", "L", "Free Size")
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  productSizes ProductSize[] // محصولاتی که این سایز را دارند
+  productSizes ProductSize[]
 }
 
-// مدل ProductSize: رابطه میانی محصول و سایز (Many-to-Many)
-// هر رکورد نشان‌دهنده این است که یک محصول خاص، یک سایز خاص را دارد.
 model ProductSize {
   id        String   @id @default(uuid())
   productId String
   sizeId    String
   createdAt DateTime @default(now())
 
-  product Product @relation(fields: [productId], references: [id]) // محصول مرتبط
-  size    Size    @relation(fields: [sizeId], references: [id])   // سایز مرتبط
+  product Product @relation(fields: [productId], references: [id])
+  size    Size    @relation(fields: [sizeId], references: [id])
 
-  // NEW: فیلد برگشتی برای اشاره به CartItem هایی که از این ProductSize استفاده می‌کنند
-  cartItems CartItem[] // این خط جدید اضافه شده است
+  cartItems CartItem[]
 
-  @@unique([productId, sizeId]) // تضمین می‌کند که یک محصول یک سایز را فقط یک بار داشته باشد
+  @@unique([productId, sizeId])
 }
 
-// مدل ProductImage: تصاویر اضافی برای هر محصول
 model ProductImage {
   id        String   @id @default(uuid())
   productId String
-  imageUrl  String   // URL عکس
+  imageUrl  String
   createdAt DateTime @default(now())
 
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade) // محصول مرتبط
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
-  @@unique([productId, imageUrl]) // یک محصول نباید دو بار یک عکس یکسان داشته باشد
+  @@unique([productId, imageUrl])
 }
 
-// مدل LikedProduct: محصولاتی که توسط کاربران لایک شده‌اند
 model LikedProduct {
   id        String   @id @default(uuid())
   userId    String
   productId String
   createdAt DateTime @default(now())
 
-  user    User    @relation(fields: [userId], references: [id])     // کاربری که لایک کرده
-  product Product @relation(fields: [productId], references: [id]) // محصول لایک شده
+  user    User    @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
 
-  @@unique([userId, productId]) // تضمین می‌کند که یک کاربر یک محصول را فقط یک بار لایک کند
+  @@unique([userId, productId])
 }
 
-// مدل Cart: سبد خرید کاربران
 model Cart {
-  id        String     @id @default(uuid())
-  userId    String     @unique // ID کاربر صاحب سبد خرید (منحصربه‌فرد برای هر کاربر)
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  user  User       @relation(fields: [userId], references: [id]) // کاربر صاحب سبد خرید
-  items CartItem[] // آیتم‌های داخل این سبد خرید
+  user  User       @relation(fields: [userId], references: [id])
+  items CartItem[]
 }
 
-// مدل CartItem: آیتم‌های داخل سبد خرید
-// این مدل برای ذخیره جزئیات هر محصول در سبد خرید استفاده می‌شود.
 model CartItem {
-  id             String        @id @default(uuid())
-  cartId         String        // ID سبد خریدی که این آیتم به آن تعلق دارد
-  productId      String        // ID محصول اصلی
-  productColorId String?       // NEW: ID رنگ انتخابی برای این محصول (اختیاری)
-  productSizeId  String?       // NEW: ID سایز انتخابی برای این محصول (اختیاری)
-  quantity       Int           @default(1) // تعداد این محصول در سبد خرید
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
+  id             String   @id @default(uuid())
+  cartId         String
+  productId      String
+  productColorId String?
+  productSizeId  String?
+  quantity       Int      @default(1)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
-  cart         Cart          @relation(fields: [cartId], references: [id]) // سبد خرید مرتبط
-  product      Product       @relation(fields: [productId], references: [id]) // محصول اصلی مرتبط
-  productColor ProductColor? @relation(fields: [productColorId], references: [id]) // NEW: رنگ خاص انتخاب شده برای این آیتم
-  productSize  ProductSize?  @relation(fields: [productSizeId], references: [id])   // NEW: سایز خاص انتخاب شده برای این آیتم
+  cart         Cart          @relation(fields: [cartId], references: [id])
+  product      Product       @relation(fields: [productId], references: [id])
+  productColor ProductColor? @relation(fields: [productColorId], references: [id])
+  productSize  ProductSize?  @relation(fields: [productSizeId], references: [id])
 
-  // NEW UNIQUE CONSTRAINT: تضمین می‌کند که یک محصول با یک رنگ و سایز خاص
-  // فقط یک بار در یک سبد خرید وجود داشته باشد.
-  // اگر کاربر دوباره همان محصول را با همان رنگ و سایز اضافه کند، فقط quantity افزایش می‌یابد.
   @@unique([cartId, productId, productColorId, productSizeId])
 }
 
-// مدل Order: سفارشات کاربران
 model Order {
-  id          String    @id @default(uuid())
-  userId      String    // ID کاربر سفارش‌دهنده
-  totalAmount Float     // مبلغ کل سفارش
-  status      String    @default("pending") // وضعیت سفارش (مثلا "pending", "completed", "cancelled")
-  orderDate   DateTime  @default(now()) // تاریخ ثبت سفارش
+  id          String   @id @default(uuid())
+  userId      String
+  totalAmount Float
+  status      String   @default("pending")
+  orderDate   DateTime @default(now())
 
-  user  User        @relation(fields: [userId], references: [id]) // کاربر صاحب سفارش
-  items OrderItem[] // آیتم‌های این سفارش
+  user  User        @relation(fields: [userId], references: [id])
+  items OrderItem[]
 }
 
-// مدل OrderItem: آیتم‌های داخل سفارش
 model OrderItem {
   id           String @id @default(uuid())
-  orderId      String // ID سفارشی که این آیتم به آن تعلق دارد
-  productId    String // ID محصول
-  quantity     Int    // تعداد محصول در این سفارش
-  priceAtOrder Float  // قیمت محصول در زمان ثبت سفارش (برای جلوگیری از تغییر قیمت در آینده)
+  orderId      String
+  productId    String
+  quantity     Int
+  priceAtOrder Float
 
-  order   Order   @relation(fields: [orderId], references: [id])   // سفارش مرتبط
-  product Product @relation(fields: [productId], references: [id]) // محصول مرتبط
+  order   Order   @relation(fields: [orderId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
 
-  @@unique([orderId, productId]) // تضمین می‌کند که یک محصول فقط یک بار در یک سفارش وجود داشته باشد
+  @@unique([orderId, productId])
 }
 
-// مدل Address: آدرس‌های کاربران
 model Address {
-  id         String   @id @default(uuid())
-  userId     String   // ID کاربر صاحب آدرس
-  title      String?  // عنوان آدرس (مثلا "خانه", "محل کار") (اختیاری)
-  province   String   // استان
-  city       String   // شهر
-  postalCode String   // کد پستی
-  details    String   // جزئیات آدرس (خیابان، پلاک و ...)
-  isDefault  Boolean  @default(false) // آیا این آدرس پیش‌فرض است؟
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id          String   @id @default(uuid())
+  userId      String
+  fullAddress String
+  province    String
+  city        String
+  postalCode  String
+  details     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id]) // کاربر صاحب آدرس
-
-  @@unique([userId, title], name: "UserAddressTitleUnique") // تضمین می‌کند که یک کاربر دو آدرس با یک عنوان نداشته باشد
+  user User @relation(fields: [userId], references: [id])
 }

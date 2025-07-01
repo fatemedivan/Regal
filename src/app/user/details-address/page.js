@@ -1,7 +1,7 @@
 "use client";
 import { useAuthContext } from "@/context/AuthContext";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "next/link"; // این اگر استفاده نمیشه، حذفش کن
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
@@ -10,14 +10,14 @@ export default function Page() {
   const router = useRouter();
   const [city, setCity] = useState("");
   const [province, setProvince] = useState("");
-  const [details, setDetails] = useState("");
+  const [details, setDetails] = useState(""); // تغییر یافته: حالا 'details'
   const [postalCode, setPostalCode] = useState("");
   const [fullAddress, setFullAddress] = useState("");
   const [token, setToken] = useState("");
   const [addressId, setAddressId] = useState(null);
   const [isOpenProvince, setIsOpenProvince] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  // const baseUrl = process.env.NEXT_PUBLIC_API_URL; // این متغیر در اینجا استفاده نشده، اگر نیازی نیست حذفش کن
 
   const [isBluredCity, setIsBluredCity] = useState(false);
   const [isBluredPostalCode, setIsBluredPostalCode] = useState(false);
@@ -35,7 +35,7 @@ export default function Page() {
     isValidPostalCode &&
     isValidDetail &&
     isValidFullAddress;
-    
+
   const [isFocused, setIsFocused] = useState({
     city: false,
     province: false,
@@ -45,6 +45,7 @@ export default function Page() {
     lastname: false,
     phone: false,
   });
+
   const floatLabel = (value, focus) =>
     value || focus ? "-top-2.5" : "top-4.5";
 
@@ -58,6 +59,7 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
+    // این useEffect برای 'full address' از sessionStorage
     const storedFullAddress = sessionStorage.getItem("full address");
     if (storedFullAddress) {
       setFullAddress(storedFullAddress);
@@ -65,18 +67,25 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
+    // این useEffect برای 'addressId' از sessionStorage
     setAddressId(sessionStorage.getItem("addressId"));
   }, []);
 
+
   const addAdress = async () => {
     try {
-      if (!token && !addressId) return;
+      if (!token) { // اگر توکن نباشد، عملیات انجام نشود
+        toast.error("توکن احراز هویت موجود نیست. لطفا وارد شوید.");
+        return;
+      }
       setIsLoading(true);
-      const url = addressId
-        ? `${baseUrl}/user/addresses/${addressId}`
-        : `${baseUrl}/user/addresses`;
 
-      const method = addressId ? "PATCH" : "POST";
+      const url = addressId // اگر addressId باشد یعنی حالت ویرایش است
+        ? `/api/addresses/${addressId}`
+        : `/api/addresses`;
+
+      const method = addressId ? "PUT" : "POST"; // ✅ تغییر یافته: از PATCH به PUT
+
       const res = await fetch(url, {
         method,
         headers: {
@@ -87,44 +96,57 @@ export default function Page() {
           province: province,
           city: city,
           postalCode: postalCode,
-          fullAddress: fullAddress.slice(0, 254),
-          detail: details,
+          fullAddress: fullAddress.slice(0, 254), // برش به حداکثر طول 255 کاراکتر
+          details: details, // ✅ تغییر یافته: حالا 'details'
         }),
       });
+
       setIsLoading(false);
 
       if (res.ok) {
-        toast.success("ادرس با موفقیت اضافه شد");
-        sessionStorage.removeItem("addressId");
-        setTimeout(() => {
-          router.push("/user/addresses");
-        }, 2500);
+        toast.success("آدرس با موفقیت اضافه/ویرایش شد.");
+        sessionStorage.removeItem("addressId"); // پاک کردن addressId بعد از عملیات موفق
+        router.push("/user/addresses"); // ✅ هدایت مستقیم بدون setTimeout
       } else {
-        toast.error("ناموفق");
+        const errorData = await res.json();
+        console.error("خطا از سرور:", errorData);
+        toast.error(errorData.message || "عملیات ناموفق بود.");
       }
     } catch (error) {
-      toast.error("خطایی رخ داد");
+      console.error("خطا در افزودن/ویرایش آدرس:", error);
+      toast.error("خطایی رخ داد.");
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    if (!token && !addressId) return;
+    // این useEffect برای واکشی اطلاعات آدرس موجود در حالت ویرایش است
+    if (!token || !addressId) return; // ✅ اگر توکن یا addressId نباشد، درخواست نده
+
     const getAddress = async () => {
-      const res = await fetch(`${baseUrl}/user/addresses/${addressId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      console.log(res);
-      const data = await res.json();
-      if (data) {
-        setProvince(data.province || "");
-        setCity(data.city || "");
-        setDetails(data.detail || "");
-        setPostalCode(data.postalCode || "");
+      try {
+        const res = await fetch(`/api/addresses/${addressId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          setProvince(data.province || "");
+          setCity(data.city || "");
+          setDetails(data.details || ""); // ✅ تغییر یافته: حالا 'details'
+          setPostalCode(data.postalCode || "");
+          setFullAddress(data.fullAddress || "");
+        } else {
+          console.error("خطا در دریافت جزئیات آدرس:", data.message);
+          toast.error(data.message || "خطا در دریافت آدرس.");
+        }
+      } catch (error) {
+        console.error("خطا در شبکه هنگام دریافت آدرس:", error);
+        toast.error("خطا در دریافت آدرس.");
       }
     };
     getAddress();
-  }, [token]);
+  }, [token, addressId]); // ✅ اضافه شدن addressId به dependencies
 
   const iranProvinces = [
     "آذربایجان شرقی",
@@ -175,22 +197,22 @@ export default function Page() {
         <p className="font-semibold text-xl leading-6 text-neutral-gray-13">
           جزئیات آدرس
         </p>
-        <div></div>
+        <div></div> {/* یک div خالی برای حفظ تراز افقی */}
       </div>
       <div className="px-4 pt-4 pb-9.5 border border-neutral-gray-4 rounded-lg relative">
         <textarea
           onChange={(e) => setFullAddress(e.target.value)}
           maxLength={255}
           className="text-neutral-gray-11 text-sm leading-5 w-full resize-none outline-none"
-          defaultValue={fullAddress && fullAddress.slice(0.254)}
+          defaultValue={fullAddress} // ✅ اصلاح شده
         />
         <p className="absolute right-4 -top-2 bg-white px-1 text-neutral-gray-7 text-xs leading-4.5">
           آدرس کامل
         </p>
       </div>
-      {!isValidFullAddress && (
+      {!isValidFullAddress && fullAddress && ( // چک کردن که کاربر چیزی وارد کرده باشد
         <p className="text-xs leading-4.5 my-3 transition duration-200 ease-in-out text-error-primery">
-          ادرس کامل باید حداقل ۳۲ و حداکثر۲۵۵ حرف باشد
+          آدرس کامل باید حداقل ۳۲ و حداکثر۲۵۵ حرف باشد.
         </p>
       )}
 
@@ -223,7 +245,7 @@ export default function Page() {
         </div>
         {isBluredCity && !isValidCity && (
           <p className="text-xs leading-4.5 my-3 transition duration-200 ease-in-out text-error-primery">
-            شهر باید حداقل ۲ و حداکثر ۳۲ حرف باشد
+            شهر باید حداقل ۲ و حداکثر ۳۲ حرف باشد.
           </p>
         )}
         <div
@@ -237,9 +259,8 @@ export default function Page() {
               </p>
             ) : (
               <p
-                className={`text-xs leading-4.5 text-neutral-gray-7 absolute -top-3 bg-white px-1 ${
-                  isOpenProvince ? "-top-3" : "top-4"
-                } `}
+                className={`text-xs leading-4.5 text-neutral-gray-7 absolute -top-3 bg-white px-1 ${isOpenProvince ? "-top-3" : "top-4"
+                  } `}
               >
                 استان
               </p>
@@ -248,9 +269,8 @@ export default function Page() {
 
           <img
             src="/img/arrow-down-3.svg"
-            className={`${
-              isOpenProvince ? "rotate-180" : "rotate-0"
-            } transition`}
+            className={`${isOpenProvince ? "rotate-180" : "rotate-0"
+              } transition`}
             onClick={() => setIsOpenProvince(!isOpenProvince)}
             alt=""
           />
@@ -300,7 +320,7 @@ export default function Page() {
         </div>
         {isBluredDetail && !isValidDetail && (
           <p className="text-xs leading-4.5 my-3 transition duration-200 ease-in-out text-error-primery">
-            جزئیات باید حداقل ۴ و حداکثر ۳۲ حرف باشد
+            جزئیات باید حداقل ۴ و حداکثر ۳۲ حرف باشد.
           </p>
         )}
         <div className="relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg mb-4">
@@ -333,7 +353,7 @@ export default function Page() {
         </div>
         {isBluredPostalCode && !isValidPostalCode && (
           <p className="text-xs leading-4.5 my-3 transition duration-200 ease-in-out text-error-primery">
-            کد پستی باید حداقل ۶ و حداکثر ۱۰ حرف انگلیسی باشد
+            کد پستی باید شامل ۶ تا ۱۰ رقم باشد.
           </p>
         )}
         <div className="relative border border-neutral-gray-4 rounded-lg flex mb-4">
@@ -352,13 +372,12 @@ export default function Page() {
         </div>
         <div className="flex items-center justify-center">
           <button
-            disabled={!isValidAll}
-            onClick={() => addAdress()}
-            className={`leading-5.5 rounded-lg py-3.25 w-full cursor-pointer flex justify-center items-center ${
-              isValidAll
+            onClick={addAdress}
+            disabled={!isValidAll || isLoading}
+            className={`leading-5.5 rounded-lg py-3.25 w-full cursor-pointer flex justify-center items-center ${isValidAll && !isLoading
                 ? "bg-cognac-primery text-white"
                 : "bg-cognac-tint-2 text-cognac-tint-4"
-            }`}
+              }`}
           >
             {isLoading ? (
               <div className="flex items-center gap-2">

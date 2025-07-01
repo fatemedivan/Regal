@@ -39,8 +39,6 @@ export const BasketProvider = ({ children }) => {
 
       if (res.ok) {
         const data = await res.json();
-        console.log(data);
-        
         setCart(data);
       } else {
         const errorData = await res.json();

@@ -22,7 +22,6 @@ export async function GET(request, { params }) {
     }
 
     return NextResponse.json(address, { status: 200 });
-
   } catch (error) {
     console.error('Error fetching single address:', error.message);
     if (error.message.includes('Authentication required') || error.message.includes('Invalid or expired token')) {
@@ -37,8 +36,8 @@ export async function PUT(request, { params }) {
   try {
     const { userId } = await verifyToken(request);
     const addressId = params.id;
-    // حالا فقط title, province, city, postalCode, details و isDefault را دریافت می‌کنیم
-    const { title, province, city, postalCode, details, isDefault } = await request.json();
+    // حالا فقط fullAddress, province, city, postalCode و details را دریافت می‌کنیم
+    const { fullAddress, province, city, postalCode, details } = await request.json();
 
     // ابتدا آدرس را پیدا می‌کنیم تا مطمئن شویم به کاربر فعلی تعلق دارد
     const existingAddress = await prisma.address.findUnique({
@@ -52,37 +51,27 @@ export async function PUT(request, { params }) {
       return NextResponse.json({ message: 'شما اجازه به‌روزرسانی این آدرس را ندارید.' }, { status: 403 });
     }
 
-    // اگر آدرس جدید به عنوان پیش‌فرض تنظیم شده باشد، آدرس‌های پیش‌فرض قبلی کاربر را غیرفعال کن
-    if (isDefault === true) { // از === true استفاده می‌کنیم تا undefined را شامل نشود
-      await prisma.address.updateMany({
-        where: { userId: userId, isDefault: true, id: { not: addressId } }, // همه به جز این آدرس
-        data: { isDefault: false },
-      });
-    }
+    // isDefault حذف شده است، بنابراین کد مربوط به آن نیز حذف می شود.
+    // اگر همچنان نیاز به یک آدرس پیش‌فرض دارید، باید منطق جدیدی برای آن پیاده‌سازی کنید.
 
     const updatedAddress = await prisma.address.update({
       where: { id: addressId },
       data: {
-        title: title ?? existingAddress.title,
+        fullAddress: fullAddress ?? existingAddress.fullAddress,
         province: province ?? existingAddress.province,
         city: city ?? existingAddress.city,
         postalCode: postalCode ?? existingAddress.postalCode,
-        details: details ?? existingAddress.details, // به‌روزرسانی فیلد details
-        isDefault: isDefault ?? existingAddress.isDefault,
+        details: details ?? existingAddress.details,
       },
     });
 
     return NextResponse.json({ message: 'آدرس با موفقیت به‌روز شد.', address: updatedAddress }, { status: 200 });
-
   } catch (error) {
     console.error('Error updating address:', error.message);
     if (error.message.includes('Authentication required') || error.message.includes('Invalid or expired token')) {
       return NextResponse.json({ message: 'برای به‌روزرسانی آدرس، احراز هویت لازم است.' }, { status: 401 });
     }
-    // مدیریت خطای منحصر به فرد بودن عنوان آدرس
-    if (error.code === 'P2002' && error.meta?.target?.includes('title')) {
-        return NextResponse.json({ message: 'شما قبلاً یک آدرس با این عنوان ثبت کرده‌اید. لطفاً عنوان دیگری انتخاب کنید.' }, { status: 409 });
-    }
+    // خطای منحصر به فرد بودن عنوان آدرس (P2002) حذف شد زیرا title دیگر وجود ندارد.
     return NextResponse.json({ message: 'خطای داخلی سرور در به‌روزرسانی آدرس.' }, { status: 500 });
   }
 }
@@ -110,7 +99,6 @@ export async function DELETE(request, { params }) {
     });
 
     return NextResponse.json({ message: 'آدرس با موفقیت حذف شد.' }, { status: 200 });
-
   } catch (error) {
     console.error('Error deleting address:', error.message);
     if (error.message.includes('Authentication required') || error.message.includes('Invalid or expired token')) {

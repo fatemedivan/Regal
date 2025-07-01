@@ -35,7 +35,7 @@ export default function AdressCard({
 
   const deleteAddress = async () => {
     try {
-      const res = await fetch(`${baseUrl}/user/addresses/${id}`, {
+      const res = await fetch(`/api/addresses/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

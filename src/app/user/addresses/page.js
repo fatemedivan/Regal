@@ -15,7 +15,6 @@ export default function Page() {
   const [isOpenAddAddressModal, setIsOpenAddAddressModal] = useState(false);
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const { openModal, closeModal } = useScrollLockContext();
   const [token, setToken] = useState("");
   const [addresses, setAddresses] = useState([]);
@@ -37,15 +36,19 @@ export default function Page() {
   }, [token]);
 
   const getAddresses = async () => {
-    const res = await fetch(`${baseUrl}/user/addresses`, {
+    const res = await fetch(`/api/addresses`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     console.log("res address", res);
     if (res.ok) {
       const data = await res.json();
-      if (data) {
+      if (data && data.length !== 0) {
         setIsHadAddress(true);
+        console.log(isHadAddress);
+        
         setAddresses(data);
+      } else {
+        setIsHadAddress(false)
       }
       console.log(data);
     }

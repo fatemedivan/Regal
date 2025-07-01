@@ -168,7 +168,7 @@ export default function AdressCard({
         />
       )}
       {isOpenDetailsModal && (
-        <DetailsModalAddAddress onSuccess={() => getAddresses()} handleCloseModal={handleCloseDetailsModal} />
+        <DetailsModalAddAddress onSuccess={getAddresses} handleCloseModal={handleCloseDetailsModal} />
       )}
     </div>
   );

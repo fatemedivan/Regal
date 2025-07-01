@@ -17,7 +17,8 @@ export default function UserPannel({
   selectedOrderType,
   setSelectedOrderTypeValue,
   selectedOrderTypeValue,
-  orderTypes
+  orderTypes,
+  getAddresses
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -366,7 +367,7 @@ export default function UserPannel({
         />
       )}
       {isOpenDetailsModal && (
-        <DetailsModalAddAddress handleCloseModal={handleCloseDetailsModal} />
+        <DetailsModalAddAddress onSuccess={getAddresses} handleCloseModal={handleCloseDetailsModal} />
       )}
     </div>
   );

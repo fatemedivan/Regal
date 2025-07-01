@@ -221,6 +221,7 @@ export default function Page() {
                           selectedAddressId={selectedAddressId}
                           setSelectedAddressId={setSelectedAddressId}
                           id={address.id}
+                          getAddresses={getAddresses}
                         />
                       ))}
                   </>

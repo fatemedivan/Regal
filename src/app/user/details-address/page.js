@@ -1,7 +1,6 @@
 "use client";
 import { useAuthContext } from "@/context/AuthContext";
 import Image from "next/image";
-import Link from "next/link"; // این اگر استفاده نمیشه، حذفش کن
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
@@ -10,14 +9,14 @@ export default function Page() {
   const router = useRouter();
   const [city, setCity] = useState("");
   const [province, setProvince] = useState("");
-  const [details, setDetails] = useState(""); // تغییر یافته: حالا 'details'
+  const [details, setDetails] = useState(""); 
   const [postalCode, setPostalCode] = useState("");
   const [fullAddress, setFullAddress] = useState("");
   const [token, setToken] = useState("");
   const [addressId, setAddressId] = useState(null);
   const [isOpenProvince, setIsOpenProvince] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  // const baseUrl = process.env.NEXT_PUBLIC_API_URL; // این متغیر در اینجا استفاده نشده، اگر نیازی نیست حذفش کن
+  
 
   const [isBluredCity, setIsBluredCity] = useState(false);
   const [isBluredPostalCode, setIsBluredPostalCode] = useState(false);
@@ -59,7 +58,7 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
-    // این useEffect برای 'full address' از sessionStorage
+   
     const storedFullAddress = sessionStorage.getItem("full address");
     if (storedFullAddress) {
       setFullAddress(storedFullAddress);
@@ -67,24 +66,24 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
-    // این useEffect برای 'addressId' از sessionStorage
+   
     setAddressId(sessionStorage.getItem("addressId"));
   }, []);
 
 
   const addAdress = async () => {
     try {
-      if (!token) { // اگر توکن نباشد، عملیات انجام نشود
+      if (!token) { 
         toast.error("توکن احراز هویت موجود نیست. لطفا وارد شوید.");
         return;
       }
       setIsLoading(true);
 
-      const url = addressId // اگر addressId باشد یعنی حالت ویرایش است
+      const url = addressId 
         ? `/api/addresses/${addressId}`
         : `/api/addresses`;
 
-      const method = addressId ? "PUT" : "POST"; // ✅ تغییر یافته: از PATCH به PUT
+      const method = addressId ? "PUT" : "POST"; 
 
       const res = await fetch(url, {
         method,
@@ -96,8 +95,8 @@ export default function Page() {
           province: province,
           city: city,
           postalCode: postalCode,
-          fullAddress: fullAddress.slice(0, 254), // برش به حداکثر طول 255 کاراکتر
-          details: details, // ✅ تغییر یافته: حالا 'details'
+          fullAddress: fullAddress.slice(0, 254),
+          details: details,
         }),
       });
 
@@ -105,8 +104,11 @@ export default function Page() {
 
       if (res.ok) {
         toast.success("آدرس با موفقیت اضافه/ویرایش شد.");
-        sessionStorage.removeItem("addressId"); // پاک کردن addressId بعد از عملیات موفق
-        router.push("/user/addresses"); // ✅ هدایت مستقیم بدون setTimeout
+        sessionStorage.removeItem("addressId");
+        setTimeout(() => {
+          router.push("/user/addresses");
+          
+        }, 500);
       } else {
         const errorData = await res.json();
         console.error("خطا از سرور:", errorData);
@@ -120,8 +122,8 @@ export default function Page() {
   };
 
   useEffect(() => {
-    // این useEffect برای واکشی اطلاعات آدرس موجود در حالت ویرایش است
-    if (!token || !addressId) return; // ✅ اگر توکن یا addressId نباشد، درخواست نده
+   
+    if (!token || !addressId) return; 
 
     const getAddress = async () => {
       try {
@@ -133,7 +135,7 @@ export default function Page() {
         if (res.ok) {
           setProvince(data.province || "");
           setCity(data.city || "");
-          setDetails(data.details || ""); // ✅ تغییر یافته: حالا 'details'
+          setDetails(data.details || ""); 
           setPostalCode(data.postalCode || "");
           setFullAddress(data.fullAddress || "");
         } else {
@@ -146,7 +148,7 @@ export default function Page() {
       }
     };
     getAddress();
-  }, [token, addressId]); // ✅ اضافه شدن addressId به dependencies
+  }, [token, addressId]); 
 
   const iranProvinces = [
     "آذربایجان شرقی",
@@ -197,20 +199,20 @@ export default function Page() {
         <p className="font-semibold text-xl leading-6 text-neutral-gray-13">
           جزئیات آدرس
         </p>
-        <div></div> {/* یک div خالی برای حفظ تراز افقی */}
+        <div></div> 
       </div>
       <div className="px-4 pt-4 pb-9.5 border border-neutral-gray-4 rounded-lg relative">
         <textarea
           onChange={(e) => setFullAddress(e.target.value)}
           maxLength={255}
           className="text-neutral-gray-11 text-sm leading-5 w-full resize-none outline-none"
-          defaultValue={fullAddress} // ✅ اصلاح شده
+          defaultValue={fullAddress}
         />
         <p className="absolute right-4 -top-2 bg-white px-1 text-neutral-gray-7 text-xs leading-4.5">
           آدرس کامل
         </p>
       </div>
-      {!isValidFullAddress && fullAddress && ( // چک کردن که کاربر چیزی وارد کرده باشد
+      {!isValidFullAddress && fullAddress && ( 
         <p className="text-xs leading-4.5 my-3 transition duration-200 ease-in-out text-error-primery">
           آدرس کامل باید حداقل ۳۲ و حداکثر۲۵۵ حرف باشد.
         </p>
@@ -375,8 +377,8 @@ export default function Page() {
             onClick={addAdress}
             disabled={!isValidAll || isLoading}
             className={`leading-5.5 rounded-lg py-3.25 w-full cursor-pointer flex justify-center items-center ${isValidAll && !isLoading
-                ? "bg-cognac-primery text-white"
-                : "bg-cognac-tint-2 text-cognac-tint-4"
+              ? "bg-cognac-primery text-white"
+              : "bg-cognac-tint-2 text-cognac-tint-4"
               }`}
           >
             {isLoading ? (

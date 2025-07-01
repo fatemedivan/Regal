@@ -141,7 +141,7 @@ export default function Page() {
       </div>
 
       <div className="hidden lg:block">
-        <UserPannel rout={"addresses"} isHadAddress={isHadAddress}>
+        <UserPannel rout={"addresses"} isHadAddress={isHadAddress} getAddresses={getAddresses}>
           {isHadAddress ? (
             <div className="mt-4">
               {addresses.map((address) => (
@@ -186,10 +186,9 @@ export default function Page() {
               {isOpenDetailsModal && (
                 <DetailsModalAddAddress
                   handleCloseModal={handleCloseDetailsModal}
-                  onSuccess={() => {
-                    getAddresses();
-                  }}
+                  onSuccess={getAddresses}
                 />
+              
               )}
             </div>
           )}

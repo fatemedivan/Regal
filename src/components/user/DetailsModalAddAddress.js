@@ -66,7 +66,7 @@ export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) 
 
   const addAdress = async () => {
     try {
-      if (!token && !addressId) {
+      if (!token) {
         toast.error("توکن احراز هویت یا شناسه آدرس موجود نیست.");
         return;
       }
@@ -98,7 +98,12 @@ export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) 
       if (res.ok) {
         toast.success("آدرس با موفقیت اضافه/ویرایش شد.");
         sessionStorage.removeItem("addressId");
-        handleCloseModal();
+        // اگر میخواهید حتما Toast نمایش داده شود قبل از بسته شدن مودال
+        setTimeout(() => {
+          handleCloseModal();
+          onSuccess()
+       
+        }, 500); 
       } else {
         const errorData = await res.json();
         toast.error(errorData.message || "عملیات ناموفق بود.");
@@ -113,32 +118,32 @@ export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) 
   useEffect(() => {
     if (!token || !addressId) return;
 
-    const getAddress = async () => {
-      try {
-        const res = await fetch(`/api/addresses/${addressId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        const data = await res.json();
-
-        if (res.ok) {
-          setProvince(data.province || "");
-          setCity(data.city || "");
-          setDetails(data.details || "");
-          setPostalCode(data.postalCode || "");
-          setFullAddress(data.fullAddress || "");
-        } else {
-          console.error("خطا در دریافت جزئیات آدرس:", data.message);
-          toast.error(data.message || "خطا در دریافت آدرس.");
-        }
-      } catch (error) {
-        console.error("خطا در شبکه هنگام دریافت آدرس:", error);
-        toast.error("خطا در دریافت آدرس.");
-      }
-    };
     getAddress();
   }, [token, addressId]);
 
+  const getAddress = async () => {
+    try {
+      const res = await fetch(`/api/addresses/${addressId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setProvince(data.province || "");
+        setCity(data.city || "");
+        setDetails(data.details || "");
+        setPostalCode(data.postalCode || "");
+        setFullAddress(data.fullAddress || "");
+      } else {
+        console.error("خطا در دریافت جزئیات آدرس:", data.message);
+        toast.error(data.message || "خطا در دریافت آدرس.");
+      }
+    } catch (error) {
+      console.error("خطا در شبکه هنگام دریافت آدرس:", error);
+      toast.error("خطا در دریافت آدرس.");
+    }
+  };
   const iranProvinces = [
     "آذربایجان شرقی",
     "آذربایجان غربی",

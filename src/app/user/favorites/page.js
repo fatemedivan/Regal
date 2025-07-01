@@ -9,70 +9,105 @@ import { toast, ToastContainer } from "react-toastify";
 import ProductSceleton from "@/components/common/ProductSceleton";
 
 export default function Page() {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const [isHadFavourite, setIsHadFavourite] = useState(true);
+
+  const [isHadFavourite, setIsHadFavourite] = useState(false);
   const [isOpenSort, setIsOpenSort] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedOptionSort, setSelectedOptionSort] = useState("");
   const [token, setToken] = useState("");
   const [favoriteProductes, setFavoriteProductes] = useState([]);
+
   const router = useRouter();
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
       setToken(storedToken);
+    } else {
+
+      setIsLoading(false);
+      setIsHadFavourite(false);
+      toast.info("برای مشاهده علاقه‌مندی‌ها، ابتدا وارد شوید.");
+
     }
   }, []);
 
   const getFavoriteProducts = async () => {
-    if (!token) return;
+
+    if (!token) {
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
     try {
-      const res = await fetch(`${baseUrl}/user/favorites`, {
+      const res = await fetch(`/api/user/favorites`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (res.status === 404) {
+
+      if (res.status === 401) {
+
+        toast.error("احراز هویت شما منقضی شده است. لطفا دوباره وارد شوید.");
+        setToken("");
+        localStorage.removeItem("token");
         setFavoriteProductes([]);
         setIsHadFavourite(false);
         return;
       }
+
       if (res.ok) {
         const data = await res.json();
-        if (data.length > 0) {
-          setFavoriteProductes(data);
-          setIsHadFavourite(true);
-        } else {
-          setIsHadFavourite(false);
-        }
         console.log(data);
+
+        setFavoriteProductes(data);
+        setIsHadFavourite(data.length > 0);
+      } else {
+
+        toast.error("خطا در دریافت لیست علاقه‌مندی‌ها.");
+        setFavoriteProductes([]);
+        setIsHadFavourite(false);
       }
     } catch (error) {
-      toast.error("خطایی رخ داد");
+      console.error("خطا در getFavoriteProducts:", error);
+      toast.error("خطایی در ارتباط با سرور رخ داد.");
+      setFavoriteProductes([]);
+      setIsHadFavourite(false);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
+
     if (token) {
       getFavoriteProducts();
     }
   }, [token]);
 
   const disLikeProduct = async (id) => {
+
+    if (!token) {
+      toast.error("برای انجام این عملیات، ابتدا وارد شوید.");
+      return;
+    }
+
     try {
-      const res = await fetch(`${baseUrl}/products/${id}/favorite`, {
-        method: "DELETE",
+      const res = await fetch(`/api/products/${id}/like`, {
+        method: "POST",
         headers: { Authorization: `Bearer ${token}` },
       });
+
       if (!res.ok) {
-        toast.error("ناموفق");
+        const errorData = await res.json();
+        toast.error(errorData.message || "عملیات ناموفق بود.");
       } else {
+        const successData = await res.json();
+        toast.success(successData.message || "عملیات با موفقیت انجام شد.");
         getFavoriteProducts();
       }
     } catch (error) {
-      console.log(error);
-      toast.error("خطایی رخ داد");
+      console.error("خطا در disLikeProduct:", error);
+      toast.error("خطایی رخ داد.");
     }
   };
 
@@ -107,9 +142,8 @@ export default function Page() {
               width={16}
               height={16}
               alt="dropdown icon"
-              className={`absolute top-1/2 left-3 -translate-y-1/2 pointer-events-none transition ${
-                isOpenSort && "rotate-180"
-              }`}
+              className={`absolute top-1/2 left-3 -translate-y-1/2 pointer-events-none transition ${isOpenSort && "rotate-180"
+                }`}
             />
           </button>
 
@@ -132,33 +166,34 @@ export default function Page() {
             </ul>
           )}
         </div>
-        {isHadFavourite ? (
-          <div>
-            {isLoading ? (
-              <div className="mt-4 flex items-center flex-wrap gap-4 lg:hidden">
-                {favoriteProductes.map((product) => (
-                  <ProductSceleton key={product.id} />
-                ))}
-              </div>
-            ) : (
-              <div className="flex flex-wrap gap-4">
-                {favoriteProductes &&
-                  favoriteProductes.map((product) => (
-                    <FavouriteProduct
-                      key={product.id}
-                      id={product.id}
-                      img={"/img/product-off-1.png"}
-                      title={product.title}
-                      finalPrice={product.latestPrice}
-                      isMore={false}
-                      colors={product.ProductColor.map((item) => item.color)}
-                      disLikeProduct={disLikeProduct}
-                    />
-                  ))}
-              </div>
-            )}
+
+
+        {isLoading ? (
+
+          <div className="mt-4 flex items-center flex-wrap gap-4 lg:hidden">
+            {[...Array(6)].map((_, index) => (
+              <ProductSceleton key={index} />
+            ))}
+          </div>
+        ) : isHadFavourite ? (
+
+          <div className="flex flex-wrap gap-4">
+            {favoriteProductes.map((product) => (
+              <FavouriteProduct
+                key={product.id}
+                id={product.id}
+                img={product.imageUrl || "/img/product-off-1.png"}
+                title={product.name}
+                finalPrice={product.discountedPrice || product.price}
+                isMore={false}
+
+                colors={product.ProductColor && product.ProductColor.length > 0 ? product.ProductColor.map((item) => item.color) : []}
+                disLikeProduct={disLikeProduct}
+              />
+            ))}
           </div>
         ) : (
+
           <div className="flex flex-col justify-center items-center gap-6 mt-28">
             <Image
               width={128}
@@ -179,33 +214,32 @@ export default function Page() {
           </div>
         )}
       </div>
+
+
       <div className="hidden lg:block">
         <UserPannel rout={"favorites"}>
-          {isHadFavourite ? (
-            <div>
-              {isLoading ? (
-                <div className="mt-6 flex items-center flex-wrap gap-6">
-                  {favoriteProductes.map((product) => (
-                    <ProductSceleton key={product.id} />
-                  ))}
-                </div>
-              ) : (
-                <div className="w-full flex flex-wrap gap-4 my-6">
-                  {favoriteProductes &&
-                    favoriteProductes.map((product) => (
-                      <FavouriteProduct
-                        key={product.id}
-                        id={product.id}
-                        img={"/img/product-off-1.png"}
-                        title={product.title}
-                        finalPrice={product.lastPrice}
-                        isMore={false}
-                        colors={product.ProductColor.map((item) => item.color)}
-                        disLikeProduct={disLikeProduct}
-                      />
-                    ))}
-                </div>
-              )}
+          {isLoading ? (
+
+            <div className="mt-6 flex items-center flex-wrap gap-6">
+              {[...Array(6)].map((_, index) => (
+                <ProductSceleton key={index} />
+              ))}
+            </div>
+          ) : isHadFavourite ? (
+
+            <div className="w-full flex flex-wrap gap-4 my-6">
+              {favoriteProductes.map((product) => (
+                <FavouriteProduct
+                  key={product.id}
+                  id={product.id}
+                  img={product.imageUrl || "/img/product-off-1.png"}
+                  title={product.name}
+                  finalPrice={product.discountedPrice || product.price}
+                  isMore={false}
+                  colors={product.ProductColor && product.ProductColor.length > 0 ? product.ProductColor.map((item) => item.color) : []}
+                  disLikeProduct={disLikeProduct}
+                />
+              ))}
             </div>
           ) : (
             <div className="flex flex-col justify-center items-center gap-8 my-12.5">

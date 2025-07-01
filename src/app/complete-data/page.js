@@ -14,7 +14,6 @@ import jalali from "jalali-dayjs";
 import "dayjs/locale/fa";
 
 export default function Page() {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const router = useRouter();
   const maxLenght = 200;
   const [text, setText] = useState("");

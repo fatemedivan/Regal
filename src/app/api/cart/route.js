@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { prisma } from "../../../../lib/prisma";
-import { verifyToken } from "../../../../utils/auth";
+import { prisma } from "../../../../lib/prisma"; 
+import { verifyToken } from "../../../../utils/auth"; 
 
 export async function GET(request) {
   try {
@@ -12,7 +12,6 @@ export async function GET(request) {
         items: {
           include: {
             product: {
-              // اینجا مهم‌ترین تغییر است: images را include می‌کنیم
               include: { images: true },
             },
             productColor: {
@@ -31,14 +30,13 @@ export async function GET(request) {
     });
 
     if (!userCart) {
-      // اگر سبد خریدی نبود، یک سبد خرید جدید ایجاد می‌کنیم و این بار هم images را include می‌کنیم
       const newCart = await prisma.cart.create({
         data: { userId: userId },
         include: {
           items: {
             include: {
               product: {
-                include: { images: true }, // اینجا هم برای اطمینان include می‌کنیم
+                include: { images: true },
               },
               productColor: { include: { color: true } },
               productSize: { include: { size: true } },
@@ -46,18 +44,15 @@ export async function GET(request) {
           },
         },
       });
-      userCart = newCart; // سبد خرید جدید را به userCart اختصاص می‌دهیم تا در ادامه پردازش شود
+      userCart = newCart;
     }
 
-    // بعد از دریافت اطلاعات سبد خرید (چه موجود و چه تازه ایجاد شده)، imageUrl و offPercent را به هر آیتم اضافه می‌کنیم
     const cartWithCalculatedFields = {
       ...userCart,
       items: userCart.items.map((item) => {
-        // محاسبه imageUrl از آرایه images
         const imageUrl =
           item.product.images.length > 0 ? item.product.images[0].url : null;
 
-        // محاسبه offPercent
         let offPercent = 0;
         if (
           item.product.isDiscounted &&
@@ -75,8 +70,8 @@ export async function GET(request) {
           ...item,
           product: {
             ...item.product,
-            imageUrl: imageUrl, // اضافه کردن imageUrl
-            offPercent: offPercent, // اضافه کردن offPercent
+            imageUrl: imageUrl,
+            offPercent: offPercent,
           },
         };
       }),
@@ -209,12 +204,33 @@ export async function POST(request) {
 export async function PUT(request) {
   try {
     const { userId } = await verifyToken(request);
-    const { productId, quantity, productColorId, productSizeId } =
-      await request.json();
+    let requestBody;
 
-    if (!productId || typeof quantity !== "number" || quantity < 0) {
+    try {
+      requestBody = await request.json();
+      // ✅ لاگ برای نمایش محتوای بدنه
+      console.log("Parsed PUT Request Body:", requestBody);
+    } catch (jsonError) {
+      console.error("Error parsing request body as JSON in PUT:", jsonError.message);
       return NextResponse.json(
-        { message: "شناسه محصول و تعداد معتبر لازم است." },
+        { message: "فرمت بدنه درخواست نامعتبر است (باید JSON باشد)." },
+        { status: 400 }
+      );
+    }
+
+    const { productId, quantity, productColorId, productSizeId } = requestBody;
+
+    if (!productId) {
+      console.error("PUT Validation Error: productId is missing.");
+      return NextResponse.json(
+        { message: "شناسه محصول لازم است." },
+        { status: 400 }
+      );
+    }
+    if (typeof quantity !== "number" || quantity < 0) {
+      console.error("PUT Validation Error: Invalid quantity.", { quantity });
+      return NextResponse.json(
+        { message: "تعداد معتبر لازم است (عدد مثبت یا صفر)." },
         { status: 400 }
       );
     }
@@ -223,11 +239,19 @@ export async function PUT(request) {
       where: { userId: userId },
     });
     if (!userCart) {
+      console.error("PUT Error: Cart not found for user:", userId);
       return NextResponse.json(
         { message: "سبد خرید یافت نشد." },
         { status: 404 }
       );
     }
+
+    console.log("Searching for cart item with:", {
+      cartId: userCart.id,
+      productId: productId,
+      productColorId: productColorId || null,
+      productSizeId: productSizeId || null,
+    });
 
     const existingCartItem = await prisma.cartItem.findUnique({
       where: {
@@ -240,7 +264,15 @@ export async function PUT(request) {
       },
     });
 
+    console.log("Found existingCartItem for PUT:", existingCartItem);
+
     if (!existingCartItem) {
+      console.error("PUT Error: Product not found in cart for update:", {
+        cartId: userCart.id,
+        productId,
+        productColorId,
+        productSizeId,
+      });
       return NextResponse.json(
         { message: "محصول در سبد خرید یافت نشد." },
         { status: 404 }
@@ -250,6 +282,7 @@ export async function PUT(request) {
     let updatedItem;
     if (quantity === 0) {
       await prisma.cartItem.delete({ where: { id: existingCartItem.id } });
+      console.log("PUT: Cart item deleted (quantity 0):", existingCartItem.id);
       return NextResponse.json(
         { message: "محصول از سبد خرید حذف شد.", removed: true },
         { status: 200 }
@@ -259,6 +292,7 @@ export async function PUT(request) {
         where: { id: existingCartItem.id },
         data: { quantity: quantity },
       });
+      console.log("PUT: Cart item quantity updated:", updatedItem);
     }
 
     return NextResponse.json(
@@ -269,7 +303,7 @@ export async function PUT(request) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error updating cart item quantity:", error.message);
+    console.error("Unhandled error in PUT handler:", error.message, error.stack);
     if (
       error.message.includes("Authentication required") ||
       error.message.includes("Invalid or expired token")

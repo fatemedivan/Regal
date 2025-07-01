@@ -8,6 +8,7 @@ import DeleteModal from "@/components/common/DeleteModal";
 import { useRouter } from "next/navigation";
 import { useBasketContext } from "@/context/BasketContext";
 import { toast, ToastContainer } from "react-toastify";
+import { useScrollLockContext } from "@/context/ScrollLockContext";
 
 export default function Page() {
   const router = useRouter();
@@ -16,7 +17,6 @@ export default function Page() {
     countOfProduct,
     totalPric,
     isEmptyCart,
-
     updateCartItemQuantity,
     removeCartItem,
     clearEntireCart,
@@ -24,38 +24,39 @@ export default function Page() {
 
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
 
-  // تابع افزایش تعداد
+  // تابع افزایش تعداد (ساده‌سازی شده)
   const handleIncreaseQuantity = async (cartItemId, currentQuantity) => {
+
     try {
       await updateCartItemQuantity(cartItemId, currentQuantity + 1);
-      toast.success("تعداد با موفقیت افزایش یافت.");
+
     } catch (error) {
-      console.error("Error increasing quantity:", error);
+      console.error("Error increasing quantity in handler:", error);
+
       toast.error("خطایی در افزایش تعداد رخ داد.");
     }
   };
 
-  // تابع کاهش تعداد
+  // تابع کاهش تعداد (ساده‌سازی شده)
   const handleDecreaseQuantity = async (cartItemId, currentQuantity) => {
     try {
       if (currentQuantity === 1) {
         await removeCartItem(cartItemId);
-        toast.success("آیتم از سبد خرید حذف شد.");
+
       } else {
         await updateCartItemQuantity(cartItemId, currentQuantity - 1);
-        toast.success("تعداد با موفقیت کاهش یافت.");
+
       }
     } catch (error) {
-      console.error("Error decreasing quantity:", error);
+      console.error("Error decreasing quantity in handler:", error);
       toast.error("خطایی در کاهش تعداد رخ داد.");
     }
   };
 
-  // تابع حذف کامل سبد خرید
+  // تابع حذف کامل سبد خرید (ساده‌سازی شده)
   const handleDeleteEntireBasket = async () => {
     try {
       await clearEntireCart();
-      toast.success("سبد خرید با موفقیت خالی شد.");
       setIsOpenDeleteModal(false);
       closeModal();
     } catch (error) {
@@ -64,6 +65,7 @@ export default function Page() {
     }
   };
 
+  const { openModal, closeModal } = useScrollLockContext();
   const handleCloseDeleteModal = () => {
     setIsOpenDeleteModal(false);
     closeModal();
@@ -193,13 +195,7 @@ export default function Page() {
                       <div className="flex items-center gap-4">
                         <button
                           onClick={() =>
-                            handleIncreaseQuantity(
-                              item.id,
-                              item.productId,
-                              item.productColorId,
-                              item.productSizeId,
-                              item.quantity
-                            )
+                            handleIncreaseQuantity(item.id, item.quantity)
                           }
                           className="p-3 rounded-lg border border-neutral-gray-8 cursor-pointer"
                         >
@@ -216,7 +212,7 @@ export default function Page() {
                             <Image
                               onClick={async () => {
                                 await removeCartItem(item.id);
-                                toast.success("آیتم از سبد خرید حذف شد.");
+
                               }}
                               width={16}
                               height={16}
@@ -259,11 +255,10 @@ export default function Page() {
                   cart.items.map((item, index) => (
                     <div key={item.id} className="space-y-3">
                       <div
-                        className={`grid grid-cols-4 items-center ${
-                          index !== cart.items.length - 1
-                            ? "border-b border-gray-200 pb-6"
-                            : ""
-                        }`}
+                        className={`grid grid-cols-4 items-center ${index !== cart.items.length - 1
+                          ? "border-b border-gray-200 pb-6"
+                          : ""
+                          }`}
                       >
                         <div className="flex gap-4">
                           <Image
@@ -328,13 +323,7 @@ export default function Page() {
                           <div className="flex items-center gap-4">
                             <button
                               onClick={() =>
-                                handleIncreaseQuantity(
-                                  item.id,
-                                  item.productId,
-                                  item.productColorId,
-                                  item.productSizeId,
-                                  item.quantity
-                                )
+                                handleIncreaseQuantity(item.id, item.quantity)
                               }
                               className="p-3 rounded-lg border border-neutral-gray-8 cursor-pointer"
                             >
@@ -351,7 +340,7 @@ export default function Page() {
                                 <Image
                                   onClick={async () => {
                                     await removeCartItem(item.id);
-                                    toast.success("آیتم از سبد خرید حذف شد.");
+
                                   }}
                                   width={16}
                                   height={16}

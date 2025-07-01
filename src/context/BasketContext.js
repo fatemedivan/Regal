@@ -20,6 +20,9 @@ export const BasketProvider = ({ children }) => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
       setToken(storedToken);
+    } else {
+      setCart({ items: [] });
+      setIsLoading(false);
     }
   }, []);
 
@@ -68,8 +71,9 @@ export const BasketProvider = ({ children }) => {
   ) => {
     if (!token) {
       toast.error("برای افزودن به سبد خرید، وارد شوید.");
-      return;
+      return false;
     }
+    setIsLoading(true);
     try {
       const res = await fetch("/api/cart", {
         method: "POST",
@@ -98,18 +102,39 @@ export const BasketProvider = ({ children }) => {
       console.error("Error adding to cart:", error);
       toast.error("خطایی در افزودن محصول به سبد خرید رخ داد.");
       return false;
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const updateCartItemQuantity = async (cartItemId, newQuantity) => {
     if (!token) {
       toast.error("برای به‌روزرسانی سبد خرید، وارد شوید.");
-      return;
+      return false;
     }
-    if (newQuantity < 0) return; // از تعداد منفی جلوگیری کن
+    if (newQuantity === 0) {
+      return await removeCartItem(cartItemId);
+    }
+    if (newQuantity < 0) {
+      toast.error("تعداد محصول نمی‌تواند منفی باشد.");
+      return false;
+    }
 
     setIsLoading(true);
     try {
+      if (!cart || !cart.items) {
+        toast.error("سبد خرید در دسترس نیست. لطفاً دوباره تلاش کنید.");
+        setIsLoading(false);
+        return false;
+      }
+
+      const itemToUpdate = cart.items.find((item) => item.id === cartItemId);
+      if (!itemToUpdate) {
+        toast.error("آیتم مورد نظر برای به‌روزرسانی در سبد خرید یافت نشد.");
+        setIsLoading(false);
+        return false;
+      }
+
       const res = await fetch(`/api/cart`, {
         method: "PUT",
         headers: {
@@ -117,18 +142,16 @@ export const BasketProvider = ({ children }) => {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          productId: cart.items.find((item) => item.id === cartItemId)
-            ?.productId,
-          productColorId: cart.items.find((item) => item.id === cartItemId)
-            ?.productColorId,
-          productSizeId: cart.items.find((item) => item.id === cartItemId)
-            ?.productSizeId,
+          productId: itemToUpdate.productId,
+          productColorId: itemToUpdate.productColorId || null,
+          productSizeId: itemToUpdate.productSizeId || null,
           quantity: newQuantity,
         }),
       });
 
       if (res.ok) {
         await getCart();
+        toast.success("تعداد محصول به‌روزرسانی شد.");
         return true;
       } else {
         const errorData = await res.json();
@@ -147,10 +170,16 @@ export const BasketProvider = ({ children }) => {
   const removeCartItem = async (cartItemId) => {
     if (!token) {
       toast.error("برای حذف از سبد خرید، وارد شوید.");
-      return;
+      return false;
     }
     setIsLoading(true);
     try {
+      if (!cart || !cart.items) {
+        toast.error("سبد خرید در دسترس نیست. لطفاً دوباره تلاش کنید.");
+        setIsLoading(false);
+        return false;
+      }
+
       const itemToRemove = cart.items.find((item) => item.id === cartItemId);
       if (!itemToRemove) {
         toast.error("آیتم مورد نظر برای حذف در سبد خرید یافت نشد.");
@@ -158,7 +187,6 @@ export const BasketProvider = ({ children }) => {
         return false;
       }
 
-      // ارسال این اطلاعات به عنوان query parameters
       const queryParams = new URLSearchParams({
         productId: itemToRemove.productId,
       });
@@ -178,6 +206,7 @@ export const BasketProvider = ({ children }) => {
 
       if (res.ok) {
         await getCart();
+        toast.success("آیتم از سبد خرید حذف شد.");
         return true;
       } else {
         const errorData = await res.json();
@@ -196,10 +225,11 @@ export const BasketProvider = ({ children }) => {
   const clearEntireCart = async () => {
     if (!token) {
       toast.error("برای پاک کردن سبد خرید، وارد شوید.");
-      return;
+      return false;
     }
     setIsLoading(true);
     try {
+
       const res = await fetch("/api/cart/clear-all", {
         method: "DELETE",
         headers: {
@@ -208,8 +238,9 @@ export const BasketProvider = ({ children }) => {
       });
 
       if (res.ok) {
+
         setCart({ items: [] });
-        toast.success("سبد خرید شما پاک شد.");
+        toast.success("سبد خرید شما با موفقیت خالی شد.");
         return true;
       } else {
         const errorData = await res.json();
@@ -225,11 +256,9 @@ export const BasketProvider = ({ children }) => {
     }
   };
 
-  // محاسبه تعداد کل محصولات
   const countOfProduct =
     cart?.items?.reduce((acc, item) => acc + item.quantity, 0) || 0;
 
-  // محاسبه قیمت کل (با در نظر گرفتن تخفیف و تعداد)
   const totalPric =
     cart?.items?.reduce((acc, item) => {
       const itemPrice = item.product.isDiscounted
@@ -238,7 +267,6 @@ export const BasketProvider = ({ children }) => {
       return acc + itemPrice * item.quantity;
     }, 0) || 0;
 
-  // بررسی خالی بودن سبد خرید
   const isEmptyCart = !cart || !cart.items || cart.items.length === 0;
 
   const contextValue = {

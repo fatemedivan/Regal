@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 export default async function Page({ searchParams }) {
 
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-  const cookieStore = await cookies(); 
+  const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
 
   const params = await searchParams || {};
@@ -13,7 +13,7 @@ export default async function Page({ searchParams }) {
   const categoryId = params.categoryId || "";
   const minPrice = params.minPrice || "";
   const maxPrice = params.maxPrice || "";
-  const color = params.color || ""; 
+  const color = params.color || "";
   const size = params.size || "";
   const isDiscounted = params.isDiscounted || "";
   const search = params.search || "";
@@ -24,7 +24,7 @@ export default async function Page({ searchParams }) {
   if (categoryId) url += `&categoryId=${categoryId}`;
   if (minPrice) url += `&minPrice=${minPrice}`;
   if (maxPrice) url += `&maxPrice=${maxPrice}`;
-  if (color) url += `&color=${color}`; 
+  if (color) url += `&color=${color}`;
   if (size) url += `&size=${size}`;
   if (isDiscounted) url += `&isDiscounted=${isDiscounted}`;
   if (search) url += `&search=${search}`;
@@ -38,7 +38,7 @@ export default async function Page({ searchParams }) {
   try {
     const res = await fetch(url, {
       headers,
-      cache: "no-store", 
+      cache: "no-store",
     });
 
     if (res.ok) {
@@ -55,7 +55,6 @@ export default async function Page({ searchParams }) {
 
   return (
     <Products
-      
       key={JSON.stringify(params)}
       allProducts={products}
       totalProducts={totalProducts}

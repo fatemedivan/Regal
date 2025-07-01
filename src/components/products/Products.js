@@ -262,9 +262,8 @@ export default function Products({
                         width={16}
                         height={16}
                         alt="dropdown icon"
-                        className={`absolute top-1/2 left-3 -translate-y-1/2 pointer-events-none transition ${
-                          isOpenSort ? "rotate-180" : ""
-                        }`}
+                        className={`absolute top-1/2 left-3 -translate-y-1/2 pointer-events-none transition ${isOpenSort ? "rotate-180" : ""
+                          }`}
                       />
                     </button>
 
@@ -322,6 +321,7 @@ export default function Products({
               </div>
             </div>
 
+            {/* Common Pagination for both Mobile and Desktop */}
             {!notFound && (
               <Pagination
                 currentPage={currentPage}

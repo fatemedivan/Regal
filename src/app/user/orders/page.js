@@ -7,9 +7,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-
+import { toast } from "react-toastify";
 export default function Page() {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const router = useRouter();
   const [isHadOrders, setIsHadOrders] = useState(true);
   const [isOpenTypeOrder, setIsOpenTypeOrder] = useState(false);
@@ -20,45 +19,66 @@ export default function Page() {
   const [token, setToken] = useState("");
   const orderTypes = [
     { label: "همه", value: "ALL" },
-    { label: "جاری", value: "CURRENT" },
-    { label: "تحویل شده", value: "DELIVERED" },
-    { label: "مرجوع شده", value: "RETURNED" },
+    { label: "جاری", value: "pending" },
+    { label: "تحویل شده", value: "delivered" },
+    { label: "مرجوع شده", value: "returned" },
   ];
   const { isModalOpen, openModal, closeModal } = useScrollLockContext();
+
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
       setToken(storedToken);
+    } else {
+      toast.error("برای مشاهده سفارشات، لطفاً ابتدا وارد حساب کاربری خود شوید.");
+      router.push("/auth/login");
     }
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     if (!token) return;
-    const getOrders = async () => {
-      const res = await fetch(`${baseUrl}/orders`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      console.log(res);
-      if (res.ok) {
-        const result = await res.json();
-        console.log(result);
 
-        if (result.length) {
-          setAllOrders(result);
-          setOrders(result);
-          setIsHadOrders(true);
-          console.log(result);
+    const getOrders = async () => {
+      try {
+        const res = await fetch(`/api/orders`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (res.ok) {
+          const result = await res.json();
+          console.log("Fetched Orders:", result);
+
+          if (result && result.length > 0) {
+            setAllOrders(result);
+            setOrders(result);
+            setIsHadOrders(true);
+          } else {
+            setIsHadOrders(false);
+            setAllOrders([]);
+            setOrders([]);
+          }
         } else {
+          const errorData = await res.json();
+          toast.error(errorData.message || "خطا در دریافت سفارشات.");
+          if (res.status === 401) {
+            router.push("/auth/login");
+          }
           setIsHadOrders(false);
+          setAllOrders([]);
+          setOrders([]);
         }
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+        toast.error("خطا در برقراری ارتباط با سرور برای دریافت سفارشات.");
+        setIsHadOrders(false);
+        setAllOrders([]);
+        setOrders([]);
       }
     };
     getOrders();
-  }, [token]);
+  }, [token, router]);
 
   useEffect(() => {
-    console.log(selectedOrderTypeValue);
-
     if (selectedOrderTypeValue === "ALL") {
       setOrders(allOrders);
     } else {
@@ -126,15 +146,16 @@ export default function Page() {
                 orders.map((order) => (
                   <OrderDetailsCard
                     key={order.id}
-                    date={order.createdAt}
-                    receivingTime={"۱۳:۴۵"}
+                    date={order.orderDate}
+                    receivingTime={"اعلام نشده"}
                     address={order.fullAddress}
                     status={order.status}
-                    deliveryStatus={"تحویل تا"}
+                    deliveryStatus={"تاریخ تحویل تخمینی"}
                     deliveryType={order.deliveryMethod}
-                    orderItem={order.OrderItem}
-                    amountPaid={order.amountPaid}
-                    amountDiscount={order.amountDiscount}
+                    orderItems={order.items}
+                    amountPaid={order.totalAmount}
+                    paymentMethod={order.paymentMethod}
+
                   />
                 ))
               ) : (
@@ -146,7 +167,7 @@ export default function Page() {
                     alt=""
                   />
                   <p className="text-sm leading-6 text-neutral-gray-9">
-                    هیچ سفارشی پیدا نشد
+                    هیچ سفارشی با این وضعیت پیدا نشد.
                   </p>
                 </div>
               )}
@@ -211,6 +232,8 @@ export default function Page() {
                     onChange={() => {
                       setSelectedOrderType(type.label);
                       setSelectedOrderTypeValue(type.value);
+                      setIsOpenTypeOrder(false);
+                      closeModal();
                     }}
                     checked={selectedOrderTypeValue === type.value}
                   />
@@ -219,12 +242,10 @@ export default function Page() {
                   </p>
                   <div
                     className="w-5 h-5 border border-neutral-gray-10 rounded-sm relative flex items-center justify-center
-                     before:content-[''] before:absolute before:w-1.5 before:h-2.5 before:border-r-2 before:border-b-2 
-                     before:border-neutral-gray-10 before:rotate-45 before:opacity-0 peer-checked:before:opacity-100 pb-1"
+                    before:content-[''] before:absolute before:w-1.5 before:h-2.5 before:border-r-2 before:border-b-2
+                    before:border-neutral-gray-10 before:rotate-45 before:opacity-0 peer-checked:before:opacity-100 pb-1"
                   >
-                    {type.value === "ALL" && selectedOrderType !== "همه"
-                      ? "ـــ"
-                      : ""}
+
                   </div>
                 </label>
               ))}
@@ -233,6 +254,7 @@ export default function Page() {
         </div>
       )}
 
+      {/* Desktop Version */}
       <div className="hidden lg:block">
         <UserPannel
           rout={"order"}
@@ -248,14 +270,15 @@ export default function Page() {
                 orders.map((order) => (
                   <OrderDetailsCardDesktop
                     key={order.id}
-                    date={order.createdAt}
+                    date={order.orderDate}
                     address={order.fullAddress}
                     status={order.status}
-                    deliveryStatus={"_"}
+                    deliveryStatus={"تاریخ تحویل تخمینی"}
                     deliveryType={order.deliveryMethod}
-                    orderItem={order.OrderItem}
-                    amountPaid={order.amountPaid}
-                    amountDiscount={order.amountDiscount}
+                    orderItems={order.items}
+                    amountPaid={order.totalAmount}
+                    paymentMethod={order.paymentMethod}
+
                   />
                 ))
               ) : (

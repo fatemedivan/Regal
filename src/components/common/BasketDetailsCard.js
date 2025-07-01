@@ -5,15 +5,18 @@ import Image from "next/image";
 import DetailsModal from "./DetailsModal";
 import DeleteModal from "./DeleteModal";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
+// فرض می‌کنیم تابع convertPriceToPersian رو دارید
+// import { convertPriceToPersian } from "@/utils/convertPriceToPersian"; 
 
 export default function BasketDetails({
   selectedAddressId,
   step,
   count,
   totalPric,
-  cart, // این `cart` حالا باید شامل product.imageUrl و product.offPercent باشد
+  cart,
   addOrders,
   deleteCart,
+  isLoading, // <--- این پروپرتی جدید رو اضافه کردیم
 }) {
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
@@ -28,21 +31,23 @@ export default function BasketDetails({
     setIsOpenDeleteModal(false);
     closeModal();
   };
-  const shippingCost = step === 3 ? 50000 : 0;
+  
+  // تبدیل totalPric به عدد برای محاسبات (اگر String با کاما است)
   const cleanTotalPrice = parseInt(
-    (totalPric || 0).toString().replace(/,/g, "")
+    (totalPric || "0").toString().replace(/,/g, "")
   );
+  // هزینه ارسال ثابت (مثلاً 50000 تومان) یا بر اساس منطق شما
+  const shippingCost = step === 3 ? 50000 : 0; 
   const finalAmount = cleanTotalPrice + shippingCost;
 
   const { openModal, closeModal } = useScrollLockContext();
 
+  // این تابع handleClick فقط برای step 1 و 2 کار می‌کنه
   const handleClick = () => {
     if (step === 2 && !selectedAddressId) {
       setShowError(true);
-    }
-    if (step === 3) {
-      addOrders();
-    }
+    } 
+    // addOrders در step 3 از طریق onClick روی Link مدیریت میشه، نه اینجا
   };
 
   return (
@@ -73,10 +78,8 @@ export default function BasketDetails({
             <div className="pb-6 mb-6 border-b border-neutral-gray-4">
               <table className="w-full text-sm text-neutral-gray-11">
                 <tbody>
-                 
                   {cart?.items?.map((cartItem) => (
                     <tr key={cartItem.id}>
-                     
                       <td className="py-1">
                         {cartItem.product?.name || "نامشخص"}
                       </td>
@@ -84,7 +87,6 @@ export default function BasketDetails({
                         {cartItem.quantity} عدد
                       </td>
                       <td className="py-1 text-left">
-                      
                         {cartItem.product?.isDiscounted &&
                         cartItem.product?.discountedPrice !== null
                           ? cartItem.product.discountedPrice
@@ -209,25 +211,40 @@ export default function BasketDetails({
               </h6>
             </div>
             <div className="flex justify-center items-center">
+              {showError && (
+                <p className="text-xs text-center leading-4.5 mb-4 transition duration-200 ease-in-out text-error-primery">
+                  باید روی یک ادرس کلیک کرده و ان را انتخاب کنید
+                </p>
+              )}
               <Link
                 href={
                   step === 1
                     ? "complete-data"
                     : step === 2 && selectedAddressId
                     ? "payment"
-                    : ""
+                    : "#" // اگر آدرس انتخاب نشده، لینک به هیچ جا نرود
                 }
+                onClick={(e) => {
+                  if (step === 2 && !selectedAddressId) {
+                    e.preventDefault(); // جلوگیری از ناوبری لینک
+                    setShowError(true);
+                  } else if (step === 3) {
+                    // فقط برای step 3، تابع addOrders را فراخوانی می‌کنیم
+                    // و اجازه می‌دهیم لینک به صورت پیش‌فرض عمل نکند
+                    e.preventDefault(); 
+                    addOrders(); 
+                  }
+                }}
               >
-                {showError && (
-                  <p className="text-xs text-center leading-4.5 mb-4 transition duration-200 ease-in-out text-error-primery">
-                    باید روی یک ادرس کلیک کرده و ان را انتخاب کنید
-                  </p>
-                )}
                 <button
-                  onClick={handleClick}
-                  className="bg-cognac-primery leading-5.5 text-white rounded-lg py-3.25 px-26 lg:px-24 xl:px-36 cursor-pointer"
+                  onClick={step !== 3 ? handleClick : undefined} // `handleClick` فقط برای step 1 و 2 فعال باشد
+                  disabled={isLoading || (step === 2 && !selectedAddressId)} // دکمه را در حال بارگذاری یا عدم انتخاب آدرس در step 2 غیرفعال کن
+                  className={`bg-cognac-primery leading-5.5 text-white rounded-lg py-3.25 px-26 lg:px-24 xl:px-36 cursor-pointer transition-opacity duration-300
+                             ${isLoading || (step === 2 && !selectedAddressId) ? "opacity-50 cursor-not-allowed" : ""}`}
                 >
-                  {step === 1
+                  {isLoading && step === 3
+                    ? "در حال ثبت سفارش..."
+                    : step === 1
                     ? " ثبت سفارش"
                     : step === 2
                     ? "تایید و ادامه"

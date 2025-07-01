@@ -1,3 +1,5 @@
+// src/app/payment/page.jsx
+
 "use client";
 import BasketDetailsCard from "@/components/common/BasketDetailsCard";
 import ProgressBar from "@/components/common/ProgressBar";
@@ -5,44 +7,125 @@ import { useBasketContext } from "@/context/BasketContext";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify"; // مطمئن شوید این پکیج نصب شده است: npm install react-hot-toast
 
 export default function Page() {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const [payment, setPayment] = useState("online");
-  const { countOfProduct, totalPric, cart } = useBasketContext();
+  const [payment, setPayment] = useState("online"); // 'online' یا 'store'
+  const { countOfProduct, totalPric, cart, clearEntireCart } = useBasketContext(); 
   const router = useRouter();
   const [token, setToken] = useState("");
   const [fullAddress, setFullAddress] = useState("");
   const [deliveryMethod, setDeliveryMethod] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // وضعیت بارگذاری برای دکمه
+  const [errorMessage, setErrorMessage] = useState(null); // پیام خطای داخلی کامپوننت
 
   useEffect(() => {
+    // 1. بررسی وجود توکن
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
       setToken(storedToken);
+    } else {
+      toast.error("برای ادامه فرآیند سفارش، لطفاً ابتدا وارد حساب کاربری خود شوید.");
+      router.push("/auth/login"); // هدایت به صفحه ورود
+      return; 
     }
-    const storedFullAddress = sessionStorage.getItem("full address");
-    setFullAddress(storedFullAddress);
 
-    setDeliveryMethod(sessionStorage.getItem("deliveryMethod"));
-  }, []);
+    // 2. بررسی وجود آدرس کامل
+    const storedFullAddress = sessionStorage.getItem("full address");
+    if (storedFullAddress) {
+      setFullAddress(storedFullAddress);
+    } else {
+      toast.error("لطفاً آدرس تحویل سفارش را مشخص کنید.");
+      // router.push("/checkout/address"); // شاید لازم باشد به صفحه آدرس دهی هدایت کنید
+      return;
+    }
+
+    // 3. بررسی وجود روش تحویل
+    const storedDeliveryMethod = sessionStorage.getItem("deliveryMethod");
+    if (storedDeliveryMethod) {
+      setDeliveryMethod(storedDeliveryMethod);
+    } else {
+      toast.error("لطفاً روش ارسال سفارش را انتخاب کنید.");
+      // router.push("/checkout/delivery"); // شاید لازم باشد به صفحه انتخاب روش تحویل هدایت کنید
+      return;
+    }
+
+    // 4. بررسی خالی نبودن سبد خرید (اگرچه در بک‌اند هم چک می‌شود، اینجا برای UX بهتر است)
+    if (!cart || cart.length === 0) {
+      toast.error("سبد خرید شما خالی است و امکان ثبت سفارش وجود ندارد.");
+      router.push("/cart"); // هدایت به صفحه سبد خرید
+      return;
+    }
+
+  }, [router, cart]); // `router` و `cart` برای اطمینان از اجرای مجدد `useEffect` در صورت تغییر
 
   const addOrders = async () => {
-    if (!token) return
-    const res = await fetch(`${baseUrl}/orders`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        "fullAddress": fullAddress,
-        "deliveryMethod": deliveryMethod,
-      }),
-    });
-    console.log(res);
-   if (res.ok) {
-    router.push('/payment/success')
-   }
+    setErrorMessage(null); // پاک کردن خطاهای قبلی
+    setIsLoading(true); // فعال کردن وضعیت بارگذاری
+
+    // اعتبارسنجی نهایی در فرانت‌اند قبل از ارسال درخواست
+    if (!token) {
+      toast.error("خطا: توکن احراز هویت یافت نشد. لطفاً دوباره وارد شوید.");
+      setIsLoading(false);
+      return;
+    }
+    if (!fullAddress) {
+      toast.error("خطا: آدرس تحویل سفارش مشخص نشده است.");
+      setIsLoading(false);
+      return;
+    }
+    if (!deliveryMethod) {
+      toast.error("خطا: روش ارسال سفارش مشخص نشده است.");
+      setIsLoading(false);
+      return;
+    }
+    if (!cart || cart.length === 0) {
+      toast.error("خطا: سبد خرید شما خالی است و نمی‌توانید سفارش ثبت کنید.");
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/orders`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullAddress: fullAddress,
+          deliveryMethod: deliveryMethod,
+          paymentMethod: payment, // ارسال روش پرداخت انتخاب شده
+        }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        toast.success(`سفارش شما با موفقیت ثبت شد! کد سفارش: ${data.orderId}`);
+        clearEntireCart(); // خالی کردن سبد خرید در کانتکست
+        sessionStorage.removeItem("full address"); // پاک کردن اطلاعات آدرس از sessionStorage
+        sessionStorage.removeItem("deliveryMethod"); // پاک کردن اطلاعات روش ارسال از sessionStorage
+        router.push("/payment/success"); // هدایت به صفحه موفقیت
+      } else {
+        const errorData = await res.json();
+        const apiErrorMessage = errorData.message || "خطا در ثبت سفارش.";
+        setErrorMessage(apiErrorMessage); // ذخیره پیام خطا برای نمایش زیر فرم
+        toast.error(apiErrorMessage); // نمایش پیام خطا به کاربر به صورت پاپ‌آپ
+
+        // مدیریت خطاهای خاص از API برای هدایت کاربر
+        if (res.status === 401) {
+          router.push("/auth/login"); // توکن نامعتبر یا منقضی شده
+        } else if (res.status === 400 && apiErrorMessage.includes("سبد خرید شما خالی است.")) {
+          router.push("/cart"); // سبد خرید خالی شده است
+        }
+      }
+    } catch (err) {
+      console.error("خطا در برقراری ارتباط با سرور هنگام ثبت سفارش:", err);
+      setErrorMessage("مشکل در اتصال به سرور. لطفاً از اتصال اینترنت خود مطمئن شده و دوباره امتحان کنید.");
+      toast.error("خطای شبکه یا سرور. لطفاً دوباره تلاش کنید.");
+    } finally {
+      setIsLoading(false); // غیرفعال کردن وضعیت بارگذاری در هر صورت
+    }
   };
 
   return (
@@ -202,8 +285,15 @@ export default function Page() {
           count={countOfProduct}
           cart={cart}
           addOrders={addOrders}
+          isLoading={isLoading} // پاس دادن وضعیت بارگذاری به کامپوننت فرزند
         />
       </div>
+      {/* نمایش پیام خطا در پایین صفحه (اختیاری) */}
+      {errorMessage && (
+        <div className="text-red-600 text-center mt-4 p-2 border border-red-400 rounded-md bg-red-50">
+          {errorMessage}
+        </div>
+      )}
     </div>
   );
 }

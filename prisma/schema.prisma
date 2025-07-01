@@ -160,11 +160,14 @@ model CartItem {
 }
 
 model Order {
-  id          String   @id @default(uuid())
-  userId      String
-  totalAmount Float
-  status      String   @default("pending")
-  orderDate   DateTime @default(now())
+  id             String   @id @default(uuid())
+  userId         String
+  totalAmount    Float
+  status         String   @default("pending")
+  orderDate      DateTime @default(now())
+  fullAddress    String? // <--- اضافه شد
+  deliveryMethod String? // <--- اضافه شد
+  paymentMethod  String? // <--- اضافه شد
 
   user  User        @relation(fields: [userId], references: [id])
   items OrderItem[]

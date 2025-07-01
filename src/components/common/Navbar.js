@@ -269,7 +269,7 @@ export default function Navbar() {
                 quality={100}
               />
             </div>
-            <Link href={"/products"}>
+            <Link href={"/cart"}>
               <div
                 onClick={() => {
                   setIsOpenMenu(false);
@@ -277,7 +277,7 @@ export default function Navbar() {
                 }}
                 className="flex justify-between items-center pb-4 mt-4 border-b-1 border-neutral-gray-4 cursor-pointer"
               >
-                <p className="text-sm leading-5">تخفیف‌دارها</p>
+                <p className="text-sm leading-5">سبد خرید</p>
                 <Image
                   width={16}
                   height={16}

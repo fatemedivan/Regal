@@ -2,10 +2,12 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useScrollLockContext } from "@/context/ScrollLockContext";
 
 export default function FilterMenu({ handleCloseFilter }) {
   const router = useRouter();
   const searchParamsHook = useSearchParams();
+  const { closeModal } = useScrollLockContext()
 
   const defaultMinPrice = 1000000;
   const defaultMaxPrice = 2500000;
@@ -178,7 +180,7 @@ export default function FilterMenu({ handleCloseFilter }) {
 
   const handleClearFilters = () => {
     const params = new URLSearchParams(); // Start with a completely new URLSearchParams
-    params.set("page", "1"); 
+    params.set("page", "1");
     // Preserve sort and search parameters if they exist
     const currentSort = searchParamsHook.get("sort");
     const currentSearch = searchParamsHook.get("search");
@@ -189,7 +191,10 @@ export default function FilterMenu({ handleCloseFilter }) {
     // Reset internal price states to default as well
     setMinPrice(defaultMinPrice);
     setMaxPrice(defaultMaxPrice);
-    if (handleCloseFilter) handleCloseFilter(); // Close filter menu if applicable
+    if (handleCloseFilter) {
+      handleCloseFilter()
+      closeModal()
+    }; // Close filter menu if applicable
   };
 
   // This useEffect will update the URL immediately when minPrice/maxPrice change.
@@ -211,6 +216,7 @@ export default function FilterMenu({ handleCloseFilter }) {
     // Only push if there's an actual change to avoid unnecessary renders
     if (router.asPath !== newUrl) {
       router.push(newUrl);
+      closeModal()
     }
   }, [
     minPrice,
@@ -260,9 +266,8 @@ export default function FilterMenu({ handleCloseFilter }) {
       </div>
       <div className="flex items-center flex-wrap gap-1 mt-7 mx-5 mb-6">
         <div
-          className={`hidden lg:${
-            selectedFilters.length ? "flex" : "hidden"
-          } w-full justify-between items-center gap-4 border-b border-neutral-gray-4 pb-4.5 mb-4`}
+          className={`hidden lg:${selectedFilters.length ? "flex" : "hidden"
+            } w-full justify-between items-center gap-4 border-b border-neutral-gray-4 pb-4.5 mb-4`}
         >
           <p className="leading-4.5">فیلترهای اعمال شده</p>
           <div className="flex items-center gap-2 px-4 py-3">
@@ -336,11 +341,10 @@ export default function FilterMenu({ handleCloseFilter }) {
 
             {filter.isOpen && (
               <div
-                className={`flex ${
-                  filter.type === "color" || filter.type === "size"
+                className={`flex ${filter.type === "color" || filter.type === "size"
                     ? "flex-wrap gap-3"
                     : "flex-col gap-4"
-                } mb-6`}
+                  } mb-6`}
               >
                 {filter.options.map((option, index) => (
                   <label
@@ -467,17 +471,16 @@ export default function FilterMenu({ handleCloseFilter }) {
             minPrice === defaultMinPrice &&
             maxPrice === defaultMaxPrice
           } // Enable if any filter is active or price range changed
-          className={`px-10 py-3.25 border  ${
-            selectedFilters.length > 0 ||
-            minPrice !== defaultMinPrice ||
-            maxPrice !== defaultMaxPrice
+          className={`px-10 py-3.25 border  ${selectedFilters.length > 0 ||
+              minPrice !== defaultMinPrice ||
+              maxPrice !== defaultMaxPrice
               ? "border-neutral-gray-8 text-neutral-gray-11"
               : "border-neutral-gray-4 text-neutral-gray-4"
-          } rounded-lg cursor-pointer`}
+            } rounded-lg cursor-pointer`}
         >
           حذف فیلترها
         </button>
-        
+
       </div>
     </div>
   );

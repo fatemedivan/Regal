@@ -99,7 +99,6 @@ export default function Products({
             <FilterMenu
               handleCloseFilter={() => {
                 setIsOpenFilterMenu(false);
-                closeModal();
               }}
             />
           </div>

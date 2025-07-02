@@ -67,6 +67,7 @@ export default function Products({
     params.set("sort", option.value);
     params.set("page", "1"); // Reset page to 1 on sort change
     router.push(`?${params.toString()}`);
+    closeModal();
     // No need to set selectedOption here as useEffect for searchParamsHook will handle it
   };
 

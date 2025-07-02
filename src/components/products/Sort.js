@@ -46,19 +46,6 @@ export default function Sort({
             </p>
           </label>
         ))}
-        <button
-          disabled={!selectedOption}
-          onClick={() => {
-            handleCloseSort();
-          }}
-          className={`px-11.75 py-3.25 ${
-            selectedOption.length !== 0
-              ? "bg-[#B19276] text-white"
-              : "bg-cognac-tint-2 text-cognac-tint-4"
-          } rounded-lg cursor-pointer`}
-        >
-          اعمال کنید
-        </button>
       </ul>
     </div>
   );

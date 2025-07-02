@@ -477,23 +477,7 @@ export default function FilterMenu({ handleCloseFilter }) {
         >
           حذف فیلترها
         </button>
-        <button
-          onClick={handleCloseFilter} // This will just close the menu now if no direct filter application is needed here
-          disabled={
-            selectedFilters.length === 0 &&
-            minPrice === defaultMinPrice &&
-            maxPrice === defaultMaxPrice
-          } // Enable if any filter is active or price range changed
-          className={`px-11.75 py-3.25 ${
-            selectedFilters.length > 0 ||
-            minPrice !== defaultMinPrice ||
-            maxPrice !== defaultMaxPrice
-              ? "bg-[#B19276] text-white"
-              : "bg-cognac-tint-2 text-cognac-tint-4"
-          } rounded-lg cursor-pointer`}
-        >
-          اعمال کنید
-        </button>
+        
       </div>
     </div>
   );

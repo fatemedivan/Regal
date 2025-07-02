@@ -262,10 +262,10 @@ export default function FilterMenu({ handleCloseFilter }) {
         <div
           className={`hidden lg:${
             selectedFilters.length ? "flex" : "hidden"
-          } w-full justify-between items-center gap-12 border-b border-neutral-gray-4 pb-4.5 mb-4`}
+          } w-full justify-between items-center gap-4 border-b border-neutral-gray-4 pb-4.5 mb-4`}
         >
           <p className="leading-4.5">فیلترهای اعمال شده</p>
-          <div className=" flex items-center gap-2 px-4 py-3">
+          <div className="flex items-center gap-2 px-4 py-3">
             <p className="text-cognac-primery text-sm leading-5">حذف همه</p>
             <Image
               width={16}

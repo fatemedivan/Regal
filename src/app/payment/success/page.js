@@ -11,7 +11,7 @@ export default function Page() {
             <p className="text-neutral-gray-12 text-lg leading-7.5 lg:leading-10 lg:text-2xl">پرداخت شما با موفقیت انجام شد!</p>
         </div>
       </div>
-      <div className="mt-41 lg:flex lg:flex-row-reverse lg:justify-center lg:items-center lg:gap-6">
+      <div className="mt-41 flex flex-col justify-center mx-3 lg:flex-row-reverse lg:items-center lg:gap-6">
         <Link href={'/'}>
         <button className="leading-5.5 bg-cognac-primery text-white w-full py-3.25 mb-4 rounded-lg lg:px-6.5 lg:py-3.75 lg:mb-0 cursor-pointer">بازگشت به صفحه اصلی</button>
         </Link>

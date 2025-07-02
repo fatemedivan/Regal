@@ -165,7 +165,6 @@ export default function Page() {
     }
 
     addToCart(product.id, 1, selectedColor, selectedSize);
-    toast.success("محصول به سبد خرید اضافه شد!");
   };
 
   return (

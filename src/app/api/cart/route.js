@@ -80,15 +80,15 @@ export async function GET(request) {
     return NextResponse.json(cartWithCalculatedFields, { status: 200 });
   } catch (error) {
     console.error("Error fetching cart:", error.message);
-    if (
-      error.message.includes("Authentication required") ||
-      error.message.includes("Invalid or expired token")
-    ) {
-      return NextResponse.json(
-        { message: "برای دسترسی به سبد خرید، احراز هویت لازم است." },
-        { status: 401 }
-      );
-    }
+    // if (
+    //   error.message.includes("Authentication required") ||
+    //   error.message.includes("Invalid or expired token")
+    // ) {
+    //   return NextResponse.json(
+    //     { message: "برای دسترسی به سبد خرید، احراز هویت لازم است." },
+    //     { status: 401 }
+    //   );
+    // }
     return NextResponse.json(
       { message: "خطای داخلی سرور در دریافت سبد خرید." },
       { status: 500 }

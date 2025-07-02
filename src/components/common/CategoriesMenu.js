@@ -135,7 +135,7 @@ export default function CategoriesMenu({
                   </ul>
                 ))}
             </div>
-            <div className="flex gap-7 mb-6 justify-between">
+            <div className="flex gap-12 mb-6">
               {categoriesData &&
                 categoriesData.slice(6, 10).map((category) => (
                   <ul key={category.id}>

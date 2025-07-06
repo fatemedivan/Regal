@@ -1,12 +1,10 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import DetailsModal from "./DetailsModal";
 import DeleteModal from "./DeleteModal";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
-// فرض می‌کنیم تابع convertPriceToPersian رو دارید
-// import { convertPriceToPersian } from "@/utils/convertPriceToPersian"; 
 
 export default function BasketDetails({
   selectedAddressId,
@@ -16,7 +14,7 @@ export default function BasketDetails({
   cart,
   addOrders,
   deleteCart,
-  isLoading, // <--- این پروپرتی جدید رو اضافه کردیم
+  isLoading,
 }) {
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
@@ -31,23 +29,22 @@ export default function BasketDetails({
     setIsOpenDeleteModal(false);
     closeModal();
   };
-  
-  // تبدیل totalPric به عدد برای محاسبات (اگر String با کاما است)
+
   const cleanTotalPrice = parseInt(
     (totalPric || "0").toString().replace(/,/g, "")
   );
-  // هزینه ارسال ثابت (مثلاً 50000 تومان) یا بر اساس منطق شما
-  const shippingCost = step === 3 ? 50000 : 0; 
+
+  const shippingCost = step === 3 ? 50000 : 0;
   const finalAmount = cleanTotalPrice + shippingCost;
 
   const { openModal, closeModal } = useScrollLockContext();
 
-  // این تابع handleClick فقط برای step 1 و 2 کار می‌کنه
+
   const handleClick = () => {
     if (step === 2 && !selectedAddressId) {
       setShowError(true);
-    } 
-    // addOrders در step 3 از طریق onClick روی Link مدیریت میشه، نه اینجا
+    }
+
   };
 
   return (
@@ -88,7 +85,7 @@ export default function BasketDetails({
                       </td>
                       <td className="py-1 text-left">
                         {cartItem.product?.isDiscounted &&
-                        cartItem.product?.discountedPrice !== null
+                          cartItem.product?.discountedPrice !== null
                           ? cartItem.product.discountedPrice
                           : cartItem.product?.price}{" "}
                         تومان
@@ -184,9 +181,8 @@ export default function BasketDetails({
           )}
 
           <div
-            className={`flex justify-between items-center mb-4 ${
-              step === 1 && "border-b pb-4 border-neutral-gray-4"
-            }`}
+            className={`flex justify-between items-center mb-4 ${step === 1 && "border-b pb-4 border-neutral-gray-4"
+              }`}
           >
             <p className="text-sm leading-6 text-neutral-gray-11">
               مبلغ قابل پرداخت
@@ -221,36 +217,39 @@ export default function BasketDetails({
                   step === 1
                     ? "complete-data"
                     : step === 2 && selectedAddressId
-                    ? "payment"
-                    : "#" // اگر آدرس انتخاب نشده، لینک به هیچ جا نرود
+                      ? "payment"
+                      : "#"
                 }
                 onClick={(e) => {
                   if (step === 2 && !selectedAddressId) {
-                    e.preventDefault(); // جلوگیری از ناوبری لینک
+                    e.preventDefault();
                     setShowError(true);
                   } else if (step === 3) {
-                    // فقط برای step 3، تابع addOrders را فراخوانی می‌کنیم
-                    // و اجازه می‌دهیم لینک به صورت پیش‌فرض عمل نکند
-                    e.preventDefault(); 
-                    addOrders(); 
+
+                    e.preventDefault();
+                    addOrders();
                   }
                 }}
               >
+                {
+                  (step === 2 && !selectedAddressId) && <p className="text-sm leading-4.5 text-error-primery mx-auto mb-2"> لطفا روی ادرس موردنظر خود کلیک کرده و ان را انتخاب کنید</p>
+                }
+
                 <button
-                  onClick={step !== 3 ? handleClick : undefined} // `handleClick` فقط برای step 1 و 2 فعال باشد
-                  disabled={isLoading || (step === 2 && !selectedAddressId)} // دکمه را در حال بارگذاری یا عدم انتخاب آدرس در step 2 غیرفعال کن
+                  onClick={step !== 3 ? handleClick : undefined}
+                  disabled={isLoading || (step === 2 && !selectedAddressId)}
                   className={`bg-cognac-primery leading-5.5 text-white rounded-lg py-3.25 px-26 lg:px-24 xl:px-36 cursor-pointer transition-opacity duration-300
                              ${isLoading || (step === 2 && !selectedAddressId) ? "opacity-50 cursor-not-allowed" : ""}`}
                 >
                   {isLoading && step === 3
                     ? "در حال ثبت سفارش..."
                     : step === 1
-                    ? " ثبت سفارش"
-                    : step === 2
-                    ? "تایید و ادامه"
-                    : step === 3
-                    ? "پرداخت"
-                    : ""}
+                      ? " ثبت سفارش"
+                      : step === 2
+                        ? "تایید و ادامه"
+                        : step === 3
+                          ? "پرداخت"
+                          : ""}
                 </button>
               </Link>
             </div>

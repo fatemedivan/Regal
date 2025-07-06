@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 
-export default function TimeModal({ handleCloseModal }) {
+export default function TimeModal({ handleCloseModal, mainTime, setMainTime }) {
   return (
     <>
       <div
@@ -23,20 +23,19 @@ export default function TimeModal({ handleCloseModal }) {
           />
         </div>
         <div>
-          <div className="flex items-center justify-center border-b border-neutral-gray-4 pb-4 mb-4">
-            <p className="text-neutral-gray-6 text-sm leading-5">
-              ساعت ۹ تا ۱۲
-            </p>
-          </div>
-          <div className="flex items-center justify-center border-b border-neutral-gray-4 pb-4 mb-4">
-            <p className="text-neutral-gray-11 text-sm leading-5">
-              ساعت ۱۲ تا ۱۵
-            </p>
-          </div>
-          <div className="flex items-center justify-center mb-8">
-            <p className="text-neutral-gray-6 text-sm leading-5">
-              ساعت ۱۵ تا ۱۸
-            </p>
+          <div className="flex flex-col gap-4">
+            <input className={`border-b border-neutral-gray-4 pb-4 ${mainTime === 'ساعت ۹ تا ۱۲' ? "text-cognac-primery font-bold" : ''} outline-none cursor-pointer`} readOnly value={'ساعت ۹ تا ۱۲'} onClick={(e) => {
+              setMainTime(e.target.value)
+              handleCloseModal()
+            }} />
+            <input className={`border-b border-neutral-gray-4 pb-4 ${mainTime === 'ساعت ۱۲ تا ۱۵' ? "text-cognac-primery font-bold" : ''} outline-none cursor-pointer`} readOnly value={'ساعت ۱۲ تا ۱۵'} onClick={(e) => {
+              setMainTime(e.target.value)
+              handleCloseModal()
+            }} />
+            <input className={`pb-4 ${mainTime === 'ساعت ۱۵ تا ۱۸' ? "text-cognac-primery font-bold" : ''} outline-none cursor-pointer`} readOnly value={'ساعت ۱۵ تا ۱۸'} onClick={(e) => {
+              setMainTime(e.target.value)
+              handleCloseModal()
+            }} />
           </div>
           <div className="flex items-center justify-center">
             <button

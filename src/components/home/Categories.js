@@ -32,7 +32,7 @@ export default function Categories() {
       </h5>
       <div className="flex flex-wrap justify-center md:justify-start gap-4 lg:hidden">
         <div className="flex flex-col gap-4">
-          <Link href={"/products?categoryId=324c4787-1838-4c56-880b-653fe601c0e2&page=1"}>
+          <Link href={"/products?categoryId=324c4787-1838-4c56-880b-653fe601c0e2"}>
             <div className="h-71 relative w-41.75">
               <Image
                 className="relative w-full h-auto z-20"

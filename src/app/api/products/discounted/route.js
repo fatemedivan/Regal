@@ -1,7 +1,6 @@
-// app/api/products/discounted/route.js
 import { NextResponse } from "next/server";
 import { prisma } from "../../../../../lib/prisma";
-import { cookies } from "next/headers"; // Changed from 'next/headers' for clarity
+import { cookies } from "next/headers";
 import { verifyToken } from "../../../../../utils/auth";
 
 export async function GET() {
@@ -16,7 +15,6 @@ export async function GET() {
         userId = decoded.userId;
       } catch (tokenError) {
         console.warn("Invalid or expired token:", tokenError.message);
-        // if token is invalid, userId remains null, so isLiked will be false
       }
     }
 
@@ -41,10 +39,7 @@ export async function GET() {
           orderBy: { createdAt: 'asc' }
         },
         likes: {
-          // ✅ A user ID is only provided if the user is logged in and the token is valid.
-          // If userId is null, this where condition is effectively skipped for filtering by userId,
-          // and Prisma will not try to find likes for a non-existent user.
-          where: userId ? { userId: userId } : undefined, // Only filter by userId if it exists
+          where: userId ? { userId: userId } : { id: "a_non_existent_like_id" },
           select: { userId: true },
         },
       },
@@ -69,7 +64,6 @@ export async function GET() {
         finalPrice: product.discountedPrice || product.price,
         price: product.price,
         offPercent: offPercent,
-        // ✅ isLiked is true if the filtered 'likes' array contains an entry for this user
         isLiked: product.likes.length > 0,
         colors: availableColors,
         sizes: availableSizes,

@@ -16,6 +16,7 @@ export async function GET(request, { params }) {
           "Invalid or expired token in single product fetch:",
           tokenError.message
         );
+        // اگر توکن نامعتبر یا منقضی باشد، userId باید null بماند تا isLiked به false تبدیل شود.
       }
     }
 
@@ -43,8 +44,9 @@ export async function GET(request, { params }) {
           select: { imageUrl: true },
           orderBy: { createdAt: "asc" },
         },
+        // *** خطی که باید تغییر کند (برای محصول اصلی) ***
         likes: {
-          where: userId ? { userId: userId } : undefined,
+          where: userId ? { userId: userId } : { id: "a_non_existent_like_id" }, // تغییر این خط
           select: { userId: true },
         },
       },
@@ -80,8 +82,9 @@ export async function GET(request, { params }) {
           select: { imageUrl: true },
           orderBy: { createdAt: "asc" },
         },
+        // *** خطی که باید تغییر کند (برای محصولات مشابه) ***
         likes: {
-          where: userId ? { userId: userId } : undefined,
+          where: userId ? { userId: userId } : { id: "a_non_existent_like_id" }, // تغییر این خط
           select: { userId: true },
         },
       },
@@ -99,7 +102,7 @@ export async function GET(request, { params }) {
         offPercent = Math.round(
           ((relatedProduct.price - relatedProduct.discountedPrice) /
             relatedProduct.price) *
-            100
+          100
         );
       }
 
@@ -121,7 +124,7 @@ export async function GET(request, { params }) {
         finalPrice: relatedProduct.discountedPrice || relatedProduct.price,
         price: relatedProduct.price,
         offPercent: offPercent,
-        isLiked: relatedProduct.likes.length > 0,
+        isLiked: relatedProduct.likes.length > 0, // این اکنون به درستی کار می‌کند
         colors: availableColors,
         sizes: availableSizes,
       };
@@ -148,17 +151,17 @@ export async function GET(request, { params }) {
         name: ps.size.name,
       })),
       images: product.images.map((img) => img.imageUrl),
-      isLiked: product.likes.length > 0,
+      isLiked: product.likes.length > 0, // این اکنون به درستی کار می‌کند
       createdAt: product.createdAt,
       updatedAt: product.updatedAt,
       offPercent:
         product.isDiscounted &&
-        product.price &&
-        product.discountedPrice &&
-        product.price > 0
+          product.price &&
+          product.discountedPrice &&
+          product.price > 0
           ? Math.round(
-              ((product.price - product.discountedPrice) / product.price) * 100
-            )
+            ((product.price - product.discountedPrice) / product.price) * 100
+          )
           : 0,
       relatedProducts: formattedRelatedProducts,
     };
@@ -170,6 +173,9 @@ export async function GET(request, { params }) {
       error.message.includes("Authentication required") ||
       error.message.includes("Invalid or expired token")
     ) {
+      // این بخش مدیریت خطا برای 401 است که باعث می‌شود isLiked در فرانت‌اند false شود.
+      // اما اگر توکن نامعتبر باشد، userId از ابتدا null می‌شود و فیلتر کارش را می‌کند.
+      // بنابراین، این خطوط ممکن است در واقعیت کمتر فراخوانی شوند.
       return NextResponse.json({ message: error.message }, { status: 401 });
     }
     return NextResponse.json(

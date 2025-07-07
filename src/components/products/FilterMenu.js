@@ -1,27 +1,32 @@
 "use client";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect, useState, useCallback, useTransition } from "react";
+import { useRouter, useSearchParams, usePathname } from "next/navigation"; 
 import { useScrollLockContext } from "@/context/ScrollLockContext";
 
 export default function FilterMenu({ handleCloseFilter }) {
   const router = useRouter();
   const searchParamsHook = useSearchParams();
-  const { closeModal } = useScrollLockContext()
+  const pathname = usePathname(); 
+  const { closeModal } = useScrollLockContext();
+
+  const [isPending, startTransition] = useTransition(); 
 
   const defaultMinPrice = 1000000;
   const defaultMaxPrice = 2500000;
 
-  // Initialize state with values from URL search params or defaults
+  useEffect(() => {
+    const urlMinPrice = parseFloat(searchParamsHook.get("minPrice"));
+    const urlMaxPrice = parseFloat(searchParamsHook.get("maxPrice"));
+
+    setMinPrice(isNaN(urlMinPrice) ? defaultMinPrice : urlMinPrice);
+    setMaxPrice(isNaN(urlMaxPrice) ? defaultMaxPrice : urlMaxPrice);
+  }, [searchParamsHook, defaultMinPrice, defaultMaxPrice]);
+
+
   const [isOpenPriceFilter, setIsOpenPriceFilter] = useState(false);
-  const [minPrice, setMinPrice] = useState(() => {
-    const price = parseFloat(searchParamsHook.get("minPrice"));
-    return isNaN(price) ? defaultMinPrice : price;
-  });
-  const [maxPrice, setMaxPrice] = useState(() => {
-    const price = parseFloat(searchParamsHook.get("maxPrice"));
-    return isNaN(price) ? defaultMaxPrice : price;
-  });
+  const [minPrice, setMinPrice] = useState(defaultMinPrice); 
+  const [maxPrice, setMaxPrice] = useState(defaultMaxPrice); 
 
   const [filters, setFilters] = useState([
     {
@@ -75,11 +80,7 @@ export default function FilterMenu({ handleCloseFilter }) {
     const currentCategoryId = searchParamsHook.get("categoryId");
     const currentIsDiscounted = searchParamsHook.get("isDiscounted");
 
-    // Update price states based on URL or reset to default if not present
-    setMinPrice(isNaN(urlMinPrice) ? defaultMinPrice : urlMinPrice);
-    setMaxPrice(isNaN(urlMaxPrice) ? defaultMaxPrice : urlMaxPrice);
-
-    if (!isNaN(urlMinPrice) && !isNaN(urlMaxPrice)) {
+    if (!isNaN(urlMinPrice) && !isNaN(urlMaxPrice) && (urlMinPrice !== defaultMinPrice || urlMaxPrice !== defaultMaxPrice)) {
       currentSelected.push({
         type: "price",
         filterTitle: "قیمت",
@@ -132,7 +133,8 @@ export default function FilterMenu({ handleCloseFilter }) {
     }
 
     setSelectedFilters(currentSelected);
-  }, [searchParamsHook, defaultMinPrice, defaultMaxPrice]);
+  }, [searchParamsHook, defaultMinPrice, defaultMaxPrice]); 
+
   const toggleFilter = (id) => {
     setFilters((prev) =>
       prev.map((filter) =>
@@ -142,9 +144,9 @@ export default function FilterMenu({ handleCloseFilter }) {
   };
 
   const handleOptionChange = (option, checked, parentFilter) => {
-    // IMPORTANT: Always create params from existing searchParamsHook to preserve all current filters
     const params = new URLSearchParams(searchParamsHook.toString());
     params.set("page", "1");
+
     if (checked) {
       if (parentFilter.type === "size") {
         params.set("size", option);
@@ -163,7 +165,6 @@ export default function FilterMenu({ handleCloseFilter }) {
         params.set("isDiscounted", option === "دارد" ? "true" : "false");
       }
     } else {
-      // If unchecked, remove the parameter from URL
       if (parentFilter.type === "size") {
         params.delete("size");
       } else if (parentFilter.type === "color") {
@@ -174,58 +175,55 @@ export default function FilterMenu({ handleCloseFilter }) {
         params.delete("isDiscounted");
       }
     }
-    // Push the updated URL
-    router.push(`?${params.toString()}`);
+    startTransition(() => {
+      router.push(`${pathname}?${params.toString()}`);
+    });
   };
 
   const handleClearFilters = () => {
-    const params = new URLSearchParams(); // Start with a completely new URLSearchParams
+    const params = new URLSearchParams();
     params.set("page", "1");
-    // Preserve sort and search parameters if they exist
     const currentSort = searchParamsHook.get("sort");
     const currentSearch = searchParamsHook.get("search");
     if (currentSort) params.set("sort", currentSort);
     if (currentSearch) params.set("search", currentSearch);
 
-    router.push(`?${params.toString()}`);
-    // Reset internal price states to default as well
+    startTransition(() => { 
+      router.push(`${pathname}?${params.toString()}`);
+    });
     setMinPrice(defaultMinPrice);
     setMaxPrice(defaultMaxPrice);
     if (handleCloseFilter) {
-      handleCloseFilter()
-      closeModal()
-    }; // Close filter menu if applicable
+      handleCloseFilter();
+      closeModal();
+    }
   };
 
-  // This useEffect will update the URL immediately when minPrice/maxPrice change.
-  useEffect(() => {
+
+  const applyPriceFilter = useCallback(() => {
     const params = new URLSearchParams(searchParamsHook.toString());
-    params.set("page", "1"); // Reset page on price change
+    params.set("page", "1"); 
 
     const isPriceChangedFromDefault =
       minPrice !== defaultMinPrice || maxPrice !== defaultMaxPrice;
 
     if (isPriceChangedFromDefault) {
-      params.set("minPrice", minPrice);
-      params.set("maxPrice", maxPrice);
+      params.set("minPrice", minPrice.toString());
+      params.set("maxPrice", maxPrice.toString());
     } else {
       params.delete("minPrice");
       params.delete("maxPrice");
     }
-    const newUrl = `?${params.toString()}`;
-    // Only push if there's an actual change to avoid unnecessary renders
-    if (router.asPath !== newUrl) {
-      router.push(newUrl);
-      closeModal()
+
+    
+    const newUrl = `${pathname}?${params.toString()}`;
+    if (router.asPath !== newUrl) { 
+      startTransition(() => { 
+        router.push(newUrl);
+      });
     }
-  }, [
-    minPrice,
-    maxPrice,
-    router,
-    searchParamsHook,
-    defaultMinPrice,
-    defaultMaxPrice,
-  ]);
+    closeModal();
+  }, [minPrice, maxPrice, router, pathname, searchParamsHook, defaultMinPrice, defaultMaxPrice, closeModal]);
 
   // Function to remove individual selected filter chips
   const handleRemoveSelected = (optionToRemove, type) => {
@@ -234,7 +232,6 @@ export default function FilterMenu({ handleCloseFilter }) {
     if (type === "price") {
       params.delete("minPrice");
       params.delete("maxPrice");
-      // Also reset the internal state for price filters
       setMinPrice(defaultMinPrice);
       setMaxPrice(defaultMaxPrice);
     } else if (type === "color") {
@@ -247,7 +244,9 @@ export default function FilterMenu({ handleCloseFilter }) {
       params.delete("isDiscounted");
     }
 
-    router.push(`?${params.toString()}`);
+    startTransition(() => { 
+      router.push(`${pathname}?${params.toString()}`);
+    });
   };
 
   return (
@@ -285,7 +284,7 @@ export default function FilterMenu({ handleCloseFilter }) {
         {selectedFilters.length !== 0 &&
           selectedFilters.map((item, index) => (
             <div
-              key={item.type + (item.option?.min || item.option) || index} // Improved key for filter chips
+              key={item.type + (item.option?.min || item.option) || index} 
               className="px-3 py-2 max-w-max rounded-100 border border-neutral-gray-4 bg-neutral-gray-1 flex items-center gap-2"
             >
               {item.type === "color" ? (
@@ -356,7 +355,7 @@ export default function FilterMenu({ handleCloseFilter }) {
                       className="peer hidden"
                       checked={selectedFilters.some(
                         (item) =>
-                          item.option === option && item.type === filter.type // Ensure type matches
+                          item.option === option && item.type === filter.type
                       )}
                       onChange={(e) =>
                         handleOptionChange(option, e.target.checked, filter)
@@ -458,6 +457,15 @@ export default function FilterMenu({ handleCloseFilter }) {
                   <span className="mr-1">تومان</span>
                 </button>
               </div>
+              {/* Add an "Apply" button for price filter */}
+              <div className="mt-4 text-center">
+                <button
+                  onClick={applyPriceFilter} 
+                  className="px-6 py-2 bg-cognac-primary text-white rounded-lg text-sm"
+                >
+                  اعمال قیمت
+                </button>
+              </div>
             </div>
           )}
         </li>
@@ -470,8 +478,8 @@ export default function FilterMenu({ handleCloseFilter }) {
             selectedFilters.length === 0 &&
             minPrice === defaultMinPrice &&
             maxPrice === defaultMaxPrice
-          } // Enable if any filter is active or price range changed
-          className={`px-10 py-3.25 border  ${selectedFilters.length > 0 ||
+          }
+          className={`px-10 py-3.25 border ${selectedFilters.length > 0 ||
               minPrice !== defaultMinPrice ||
               maxPrice !== defaultMaxPrice
               ? "border-neutral-gray-8 text-neutral-gray-11"
@@ -480,7 +488,6 @@ export default function FilterMenu({ handleCloseFilter }) {
         >
           حذف فیلترها
         </button>
-
       </div>
     </div>
   );

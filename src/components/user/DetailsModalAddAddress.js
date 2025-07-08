@@ -98,7 +98,6 @@ export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) 
       if (res.ok) {
         toast.success("آدرس با موفقیت اضافه/ویرایش شد.");
         sessionStorage.removeItem("addressId");
-        // اگر میخواهید حتما Toast نمایش داده شود قبل از بسته شدن مودال
         setTimeout(() => {
           handleCloseModal();
           onSuccess()

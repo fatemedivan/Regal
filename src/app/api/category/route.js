@@ -1,7 +1,5 @@
-// app/api/category/route.js
-
 import { NextResponse } from "next/server";
-import { prisma } from '../../../../lib/prisma'; // ⚠️ مطمئن شو این مسیر درسته
+import { prisma } from '../../../../lib/prisma';
 
 export async function GET(request) {
   try {

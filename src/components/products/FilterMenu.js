@@ -108,13 +108,13 @@ export default function FilterMenu({ handleCloseFilter }) {
     }
     if (currentCategoryId) {
       let categoryName = "";
-      if (currentCategoryId === "c97e7e43-8d6f-458e-b65a-fd9c8cefcc3b")
+      if (currentCategoryId === "9bb293e1-285d-4a28-846f-46e8c1d55ef7")
         categoryName = "پیراهن کوتاه";
-      else if (currentCategoryId === "078aa167-ffea-4fec-af22-c4658529fd47")
+      else if (currentCategoryId === "87d187eb-2cf5-4875-aab1-fad320fef6fa")
         categoryName = "تاپ و کراپ";
-      else if (currentCategoryId === "cdb03dd6-6d68-49f8-af01-a0daafad7d32")
+      else if (currentCategoryId === "a7a6e495-32ec-4f61-a8b3-d8e25ce9721c")
         categoryName = "شومیز";
-      else if (currentCategoryId === "758dc7e8-e0f8-4d41-81fd-e57976626ccc")
+      else if (currentCategoryId === "4840fca4-41eb-4aa5-b914-7ebdb5daa21d")
         categoryName = "شلوار";
       if (categoryName) {
         currentSelected.push({
@@ -154,13 +154,13 @@ export default function FilterMenu({ handleCloseFilter }) {
         params.set("color", encodeURIComponent(option));
       } else if (parentFilter.type === "clothes") {
         if (option === "پیراهن کوتاه")
-          params.set("categoryId", "c97e7e43-8d6f-458e-b65a-fd9c8cefcc3b");
+          params.set("categoryId", "9bb293e1-285d-4a28-846f-46e8c1d55ef7");
         else if (option === "تاپ و کراپ")
-          params.set("categoryId", "078aa167-ffea-4fec-af22-c4658529fd47");
+          params.set("categoryId", "87d187eb-2cf5-4875-aab1-fad320fef6fa");
         else if (option === "شومیز")
-          params.set("categoryId", "cdb03dd6-6d68-49f8-af01-a0daafad7d32");
+          params.set("categoryId", "a7a6e495-32ec-4f61-a8b3-d8e25ce9721c");
         else if (option === "شلوار")
-          params.set("categoryId", "758dc7e8-e0f8-4d41-81fd-e57976626ccc");
+          params.set("categoryId", "4840fca4-41eb-4aa5-b914-7ebdb5daa21d");
       } else if (parentFilter.type === "isDiscounted") {
         params.set("isDiscounted", option === "دارد" ? "true" : "false");
       }
@@ -177,6 +177,7 @@ export default function FilterMenu({ handleCloseFilter }) {
     }
     startTransition(() => {
       router.push(`${pathname}?${params.toString()}`);
+      closeModal()
     });
   };
 
@@ -246,6 +247,7 @@ export default function FilterMenu({ handleCloseFilter }) {
 
     startTransition(() => { 
       router.push(`${pathname}?${params.toString()}`);
+      closeModal()
     });
   };
 

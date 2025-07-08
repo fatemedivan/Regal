@@ -10,20 +10,16 @@ export async function GET(request) {
       userId = decoded.userId;
     }
   } catch (error) {
-    // Token verification failed, userId remains null, allowing unauthenticated access.
-    // console.warn("Token verification failed, proceeding as unauthenticated user:", error.message);
+   
   }
 
   try {
     const { searchParams } = new URL(request.url);
 
-    // Pagination
-    // اطمینان حاصل کنید که page همیشه یک عدد است، حتی اگر از URL نرسیده باشد
     const page = parseInt(searchParams.get("page")) || 1;
     const limit = parseInt(searchParams.get("limit")) || 10;
     const skip = (page - 1) * limit;
 
-    // Sorting
     const sort = searchParams.get("sort");
     let orderBy = {};
 
@@ -43,7 +39,6 @@ export async function GET(request) {
         break;
     }
 
-    // Filtering
     const filter = {};
     const minPrice = parseFloat(searchParams.get("minPrice"));
     const maxPrice = parseFloat(searchParams.get("maxPrice"));
@@ -84,7 +79,6 @@ export async function GET(request) {
     if (isDiscounted === "true") filter.isDiscounted = true;
     if (isDiscounted === "false") filter.isDiscounted = false;
 
-    // Search functionality
     if (search) {
       filter.OR = [
         { name: { contains: search } },
@@ -92,7 +86,6 @@ export async function GET(request) {
       ];
     }
 
-    // Fetch products
     const [products, totalProducts] = await prisma.$transaction([
       prisma.product.findMany({
         where: filter,
@@ -115,7 +108,6 @@ export async function GET(request) {
       prisma.product.count({ where: filter }),
     ]);
 
-    // Check if each product is liked by the current user ONLY IF userId exists
     let likedProductIds = new Set();
     if (userId) {
       const productIds = products.map((p) => p.id);
@@ -130,7 +122,6 @@ export async function GET(request) {
     }
 
     const productsWithCalculatedFields = products.map((product) => {
-      // Calculate offPercent
       let offPercent = 0;
       if (
         product.isDiscounted &&

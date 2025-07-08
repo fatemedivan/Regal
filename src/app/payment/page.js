@@ -12,7 +12,6 @@ export default function Page() {
   const router = useRouter();
   const [token, setToken] = useState("");
   const [fullAddress, setFullAddress] = useState("");
-  const [deliveryMethod, setDeliveryMethod] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 

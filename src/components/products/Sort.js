@@ -6,13 +6,9 @@ export default function Sort({
   handleCloseSort,
   selectedOption,
   handleSortChange,
+  sortOptions, 
 }) {
-  const [sortOption, setSortOption] = useState([
-    { id: 1, title: "جدیدترین", value: "earliest" },
-    { id: 2, title: "قدیمی‌ترین", value: "latest" },
-    { id: 3, title: "ارزان‌ترین", value: "cheapest" },
-    { id: 4, title: "گران‌ترین", value: "expensive" },
-  ]);
+  
 
   return (
     <div className="p-5">
@@ -28,13 +24,14 @@ export default function Sort({
         <p className="">مرتب سازی بر اساس</p>
       </div>
       <ul>
-        {sortOption.map((option) => (
+        {sortOptions.map((option) => ( 
           <label key={option.id} className="flex items-center gap-2 mb-4">
             <input
               type="radio"
               name="sortOption"
               className="hidden peer"
-              value={option}
+              value={option.value} 
+              checked={selectedOption.value === option.value} 
               onChange={() => handleSortChange(option)}
             />
             <div

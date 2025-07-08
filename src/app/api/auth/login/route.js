@@ -13,12 +13,10 @@ export async function POST(request) {
   try {
     const { phoneNumber, password } = await request.json();
 
-    // 1. Validation
     if (!phoneNumber || !password) {
       return NextResponse.json({ message: 'Phone number and password are required.' }, { status: 400 });
     }
 
-    // 2. Find user
     const user = await prisma.user.findUnique({
       where: { phoneNumber },
     });
@@ -27,21 +25,18 @@ export async function POST(request) {
       return NextResponse.json({ message: 'Invalid phone number or password.' }, { status: 401 });
     }
 
-    // 3. Compare password
     const isPasswordValid = await bcrypt.compare(password, user.hashedPassword);
 
     if (!isPasswordValid) {
       return NextResponse.json({ message: 'Invalid phone number or password.' }, { status: 401 });
     }
 
-    // 4. Generate JWT token
     const token = jwt.sign(
-      { userId: user.id, phoneNumber: user.phoneNumber, role: user.role }, // role added to token payload
+      { userId: user.id, phoneNumber: user.phoneNumber, role: user.role },
       JWT_SECRET,
       { expiresIn: '7d' }
     );
 
-    // 5. Return success response with token
     return NextResponse.json({ message: 'Login successful.', token }, { status: 200 });
 
   } catch (error) {

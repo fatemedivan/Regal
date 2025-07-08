@@ -24,7 +24,6 @@ export default function Page() {
 
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
 
-  // تابع افزایش تعداد (ساده‌سازی شده)
   const handleIncreaseQuantity = async (cartItemId, currentQuantity) => {
 
     try {
@@ -37,7 +36,6 @@ export default function Page() {
     }
   };
 
-  // تابع کاهش تعداد (ساده‌سازی شده)
   const handleDecreaseQuantity = async (cartItemId, currentQuantity) => {
     try {
       if (currentQuantity === 1) {
@@ -53,7 +51,6 @@ export default function Page() {
     }
   };
 
-  // تابع حذف کامل سبد خرید (ساده‌سازی شده)
   const handleDeleteEntireBasket = async () => {
     try {
       await clearEntireCart();

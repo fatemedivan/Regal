@@ -98,7 +98,7 @@ export default function Page() {
             <div className="flex flex-col justify-center items-center h-[60vh]">
               <HashLoader color="#b19276" size={80} />
               <p className="mt-5 text-xl font-extrabold text-cognac-shade-3 animate-pulse">
-                ...loading
+                ...Loading
               </p>
             </div>
           ) : (

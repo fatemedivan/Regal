@@ -154,7 +154,10 @@ export default function Page() {
   const addProductToBasket = () => {
     const needsColor = product.colors && product.colors.length > 0;
     const needsSize = product.sizes && product.sizes.length > 0;
-
+    if (!token) {
+      toast.warn("برای اضافه کردن به سبد خرید باید وارد حساب کاربری شوید")
+      return;
+    }
     if (needsColor && !selectedColor) {
       toast.warn("لطفا رنگ مورد نظر خود را انتخاب کنید.");
       return;

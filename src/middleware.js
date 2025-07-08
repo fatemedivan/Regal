@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 
-// AI
 export function middleware(request) {
   const token = request.cookies.get("token")?.value;
   const role = request.cookies.get("role")?.value;

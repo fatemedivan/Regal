@@ -88,7 +88,7 @@ export default function OrderDetailsCard({
             {receivingTime && (
               <span className="text-cognac-primery mr-1">{receivingTime}</span>
             )}
-            {!deliveryStatus && !receivingTime && "زمان تحویل: نامشخص"} {/* پیام پیش فرض */}
+            {!deliveryStatus && !receivingTime && "زمان تحویل: نامشخص"} 
           </p>
         </div>
         <div className="flex items-center gap-2">

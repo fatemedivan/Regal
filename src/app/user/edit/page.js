@@ -120,7 +120,6 @@ export default function Page() {
               }}
               className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent"
             />
-            {/* AI */}
             <label
               htmlFor="firstName"
               className={`absolute right-4 bg-white px-1 text-xs text-neutral-gray-7 transition-all ${floatLabel(

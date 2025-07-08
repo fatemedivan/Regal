@@ -8,7 +8,6 @@ import Link from "next/link";
 
 export default async function Home() {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-  //get off products
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
   let discountedProducts = [];

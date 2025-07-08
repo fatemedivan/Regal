@@ -1,6 +1,6 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import Pagination from "../common/Pagination";
 import ProductItemOff from "../common/ProductItemOff";
 import Image from "next/image";
@@ -17,6 +17,7 @@ export default function Products({
   const router = useRouter();
   const { openModal, closeModal } = useScrollLockContext();
   const searchParamsHook = useSearchParams();
+  const [isPending, startTransition] = useTransition();
 
   const sortOptions = [
     { id: 1, title: "جدیدترین", value: "newest" },
@@ -65,18 +66,20 @@ export default function Products({
   const handleSortChange = (option) => {
     const params = new URLSearchParams(searchParamsHook.toString());
     params.set("sort", option.value);
-    params.set("page", "1"); // Reset page to 1 on sort change
-    router.push(`?${params.toString()}`);
-    closeModal();
-    // No need to set selectedOption here as useEffect for searchParamsHook will handle it
+    params.set("page", "1");
+    startTransition(() => { 
+      router.push(`?${params.toString()}`);
+      setIsOpenSort(false); 
+      closeModal(); 
+    });
   };
 
   const handlePageChange = (page) => {
     const params = new URLSearchParams(searchParamsHook.toString());
     params.set("page", page);
-    console.log("params page", params);
-    console.log("page in handle", page);
-    router.push(`?${params.toString()}`);
+    startTransition(() => { 
+      router.push(`?${params.toString()}`);
+    });
   };
 
   const handleSearch = () => {
@@ -86,8 +89,10 @@ export default function Products({
     } else {
       params.delete("search");
     }
-    params.set("page", "1"); // Reset page to 1 on search
-    router.push(`?${params.toString()}`);
+    params.set("page", "1");
+    startTransition(() => { 
+      router.push(`?${params.toString()}`);
+    });
   };
 
   return (
@@ -99,6 +104,7 @@ export default function Products({
             <FilterMenu
               handleCloseFilter={() => {
                 setIsOpenFilterMenu(false);
+                closeModal(); 
               }}
             />
           </div>
@@ -112,8 +118,8 @@ export default function Products({
               selectedOption={selectedOption}
               handleSortChange={handleSortChange}
               handleCloseSort={() => {
-                setIsOpenSort(false);
                 closeModal();
+                setIsOpenSort(false);
               }}
               sortOptions={sortOptions}
             />
@@ -179,19 +185,16 @@ export default function Products({
 
             {/* Mobile Product Display Area */}
             {isLoading ? (
-              // Skeletons while loading
               <div className="mt-6 flex items-center flex-wrap gap-4 lg:hidden">
                 {Array.from({ length: 6 }).map((_, index) => (
                   <ProductSceleton key={index} />
                 ))}
               </div>
             ) : notFound ? (
-              // "Not Found" message after loading and no products
               <p className="text-center w-full text-red-500 text-xl font-bold mt-10 lg:hidden">
                 محصولی یافت نشد
               </p>
             ) : (
-              // Actual products
               <div className="flex flex-wrap justify-center gap-4 lg:hidden">
                 {products.map((product) => (
                   <ProductItemOff
@@ -262,8 +265,9 @@ export default function Products({
                         width={16}
                         height={16}
                         alt="dropdown icon"
-                        className={`absolute top-1/2 left-3 -translate-y-1/2 pointer-events-none transition ${isOpenSort ? "rotate-180" : ""
-                          }`}
+                        className={`absolute top-1/2 left-3 -translate-y-1/2 pointer-events-none transition ${
+                          isOpenSort ? "rotate-180" : ""
+                        }`}
                       />
                     </button>
 
@@ -274,7 +278,7 @@ export default function Products({
                             key={option.id}
                             onClick={() => {
                               handleSortChange(option);
-                              setIsOpenSort(false);
+                              
                             }}
                             className="px-4 py-2 hover:bg-neutral-gray-2 cursor-pointer text-xs leading-4.5 text-neutral-gray-7"
                           >
@@ -287,19 +291,16 @@ export default function Products({
                 </div>
 
                 {isLoading ? (
-                  // Skeletons while loading
                   <div className="mt-8 flex items-center flex-wrap gap-6">
                     {Array.from({ length: 9 }).map((_, index) => (
                       <ProductSceleton key={index} />
                     ))}
                   </div>
                 ) : notFound ? (
-                  // "Not Found" message after loading and no products
                   <div className="text-center w-full text-red-500 text-3xl font-bold mt-10">
                     محصولی یافت نشد
                   </div>
                 ) : (
-                  // Actual products
                   <div className="flex items-center flex-wrap gap-x-6 gap-y-8">
                     {products.map((product) => (
                       <ProductItemOff

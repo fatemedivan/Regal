@@ -1,13 +1,9 @@
-// prisma/seed.js
-
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function main() {
   console.log("Starting seeding process for products with multiple colors, sizes, and images...");
 
-  // --- Seed Categories and Subcategories (UNCHANGED from your original code) ---
-  // این بخش دست نخورده باقی می‌ماند، دقیقاً همان کدی که شما ارائه کرده بودید.
   const mainCategories = [
     "لباس مجلسی", "شلوار", "سرهمی", "کت مجلسی", "دامن", "شومیز", "کراپ", "پالتو",
   ];
@@ -69,7 +65,6 @@ async function main() {
   }
   console.log("Category and subcategory seeding complete.");
 
-  // --- Seed Colors ---
   const colorsData = [
     { name: "بنفش", hexCode: "#800080" },
     { name: "زرشکی", hexCode: "#8B0000" },
@@ -81,7 +76,7 @@ async function main() {
     { name: "آبی", hexCode: "#0000FF" },
     { name: "بژ", hexCode: "#F5F5DC" },
     { name: "طوسی", hexCode: "#808080" },
-    { name: "آبی روشن", hexCode: "#ADD8E6" }, // hex code for LightBlue
+    { name: "آبی روشن", hexCode: "#ADD8E6" },
   ];
 
   const createdColors = {};
@@ -91,13 +86,12 @@ async function main() {
       update: { hexCode: color.hexCode },
       create: color,
     });
-    createdColors[newColor.hexCode] = newColor; // Store by hexCode for easy lookup
+    createdColors[newColor.hexCode] = newColor;
     console.log(`Color created or found: ${newColor.name} (Hex: ${newColor.hexCode}, ID: ${newColor.id})`);
   }
   console.log("Color seeding complete.");
 
-  // --- Seed Sizes ---
-  const sizesData = ["S", "M", "L", "XL", "XXL", "Free Size"]; // سایزهای اصلی شما
+  const sizesData = ["S", "M", "L", "XL", "XXL", "Free Size"];
   const createdSizes = {};
   for (const sizeName of sizesData) {
     const newSize = await prisma.size.upsert({
@@ -105,14 +99,12 @@ async function main() {
       update: {},
       create: { name: sizeName },
     });
-    createdSizes[newSize.name] = newSize; // Store by name for easy lookup
+    createdSizes[newSize.name] = newSize;
     console.log(`Size created or found: ${newSize.name} (ID: ${newSize.id})`);
   }
   console.log("Size seeding complete.");
 
-  // --- Seed Products and Link Colors/Sizes/Images ---
   const productsData = [
-    // 4 محصول اصلی شما
     {
       name: "لباس مجلسی دکلته الی",
       description: "دامن مجلسی کلوش با پارچه ساتن براق، انتخابی ایده‌آل برای ست کردن با شومیزهای مجلسی. فروش محدود!",
@@ -157,7 +149,7 @@ async function main() {
       sizes: ["M", "Free Size"],
       images: ["/img/product-off-4.png", "/img/category-page-7.png", "/img/category-page-8.png"],
     },
-    // --- 10 محصول جدید (با استفاده از دسته‌بندی‌های موجود شما) ---
+
     {
       name: "شلوار جین زنانه فاق بلند",
       description: "شلوار جین فاق بلند با برش جذب، مناسب برای استایل روزمره و ترکیب با کراپ تاپ.",
@@ -165,7 +157,7 @@ async function main() {
       discountedPrice: null,
       isDiscounted: false,
       categoryName: "شلوار جین",
-      colors: ["#0000FF", "#000000"], // آبی، مشکی
+      colors: ["#0000FF", "#000000"], 
       sizes: ["S", "M", "L"],
       images: ["/img/category-page-desktop-5.png", "/img/category-page-desktop-2.png"],
     },
@@ -176,7 +168,7 @@ async function main() {
       discountedPrice: 1500000,
       isDiscounted: true,
       categoryName: "کت تک",
-      colors: ["#808080", "#F5F5DC"], // طوسی، بژ
+      colors: ["#808080", "#F5F5DC"],
       sizes: ["Free Size"],
       images: ["/img/category-page-desktop-7.png", "/img/category-page-desktop-6.png"],
     },
@@ -187,7 +179,7 @@ async function main() {
       discountedPrice: null,
       isDiscounted: false,
       categoryName: "شومیز رسمی",
-      colors: ["#FFFFFF", "#8B0000"], // سفید، زرشکی
+      colors: ["#FFFFFF", "#8B0000"],
       sizes: ["S", "M", "L"],
       images: ["/img/category-page-desktop-3.png", "/img/category-page-desktop-1.png"],
     },
@@ -198,7 +190,7 @@ async function main() {
       discountedPrice: 800000,
       isDiscounted: true,
       categoryName: "دامن بلند",
-      colors: ["#000000", "#800080"], // مشکی، بنفش
+      colors: ["#000000", "#800080"],
       sizes: ["M", "Free Size"],
       images: ["/img/category-page-desktop-2.png", "/img/category-page-desktop-8.png"],
     },
@@ -209,7 +201,7 @@ async function main() {
       discountedPrice: null,
       isDiscounted: false,
       categoryName: "تاپ کراپ",
-      colors: ["#FF0000", "#006400"], // قرمز، سبز تیره
+      colors: ["#FF0000", "#006400"],
       sizes: ["S", "M"],
       images: ["/img/category-page-desktop-4.png", "/img/category-page-desktop-5.png"],
     },
@@ -220,7 +212,7 @@ async function main() {
       discountedPrice: 2400000,
       isDiscounted: true,
       categoryName: "پالتو بلند",
-      colors: ["#000000", "#808080"], // مشکی، طوسی
+      colors: ["#000000", "#808080"],
       sizes: ["M", "L", "XL"],
       images: ["/img/category-page-desktop-1.png", "/img/category-page-desktop-9.png"],
     },
@@ -231,7 +223,7 @@ async function main() {
       discountedPrice: 1800000,
       isDiscounted: true,
       categoryName: "سرهمی مجلسی",
-      colors: ["#8B0000", "#000000"], // زرشکی، مشکی
+      colors: ["#8B0000", "#000000"],
       sizes: ["S", "M"],
       images: ["/img/category-page-desktop-3.png", "/img/category-page-desktop-2.png"],
     },
@@ -242,7 +234,7 @@ async function main() {
       discountedPrice: null,
       isDiscounted: false,
       categoryName: "بلوز",
-      colors: ["#FFFFFF", "#ADD8E6"], // سفید، آبی روشن
+      colors: ["#FFFFFF", "#ADD8E6"],
       sizes: ["S", "M", "Free Size"],
       images: ["/img/category-page-desktop-5.png", "/img/category-page-desktop-4.png"],
     },
@@ -253,7 +245,7 @@ async function main() {
       discountedPrice: null,
       isDiscounted: false,
       categoryName: "دامن میدی",
-      colors: ["#000000", "#800080"], // مشکی، بنفش
+      colors: ["#000000", "#800080"],
       sizes: ["S", "M"],
       images: ["/img/category-page-desktop-7.png", "/img/category-page-desktop-6.png"],
     },
@@ -264,7 +256,7 @@ async function main() {
       discountedPrice: null,
       isDiscounted: false,
       categoryName: "لگینگ",
-      colors: ["#000000", "#0000FF"], // مشکی، آبی
+      colors: ["#000000", "#0000FF"],
       sizes: ["S", "M", "L"],
       images: ["/img/category-page-desktop-9.png", "/img/category-page-desktop-8.png"],
     },
@@ -293,11 +285,9 @@ async function main() {
       });
       console.log(`Product created or updated: ${product.name} (ID: ${product.id})`);
 
-      // حذف روابط قدیمی رنگ‌ها برای این محصول
       await prisma.productColor.deleteMany({
         where: { productId: product.id },
       });
-      // لینک کردن رنگ‌ها
       for (const colorHexCode of productData.colors) {
         const color = createdColors[colorHexCode];
         if (color) {
@@ -313,11 +303,9 @@ async function main() {
         }
       }
 
-      // حذف روابط قدیمی سایزها برای این محصول
       await prisma.productSize.deleteMany({
         where: { productId: product.id },
       });
-      // لینک کردن سایزها
       for (const sizeName of productData.sizes) {
         const size = createdSizes[sizeName];
         if (size) {
@@ -333,11 +321,9 @@ async function main() {
         }
       }
 
-      // حذف روابط قدیمی عکس‌ها برای این محصول
       await prisma.ProductImage.deleteMany({
         where: { productId: product.id },
       });
-      // لینک کردن عکس‌ها
       for (const imageUrl of productData.images) {
         await prisma.ProductImage.create({
           data: {

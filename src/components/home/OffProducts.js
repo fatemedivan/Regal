@@ -6,7 +6,7 @@ import ProductItemOff from "@/components/common/ProductItemOff";
 import Image from "next/image";
 import { HashLoader } from "react-spinners";
 
-export default function OffProducts({discountedProducts}) {
+export default function OffProducts({ discountedProducts }) {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const glideRef = useRef(null);
@@ -14,12 +14,12 @@ export default function OffProducts({discountedProducts}) {
   const nextbtnRef = useRef(null);
   const [token, setToken] = useState('')
 
-  useEffect(()=>{
+  useEffect(() => {
     const storedToken = localStorage.getItem('token')
     if (storedToken) {
       setToken(storedToken)
     }
-  },[])
+  }, [])
 
   useEffect(() => {
     setIsLoading(true);
@@ -41,14 +41,14 @@ export default function OffProducts({discountedProducts}) {
   //     const result = await res.json()
   //     console.log('result',result);
   //     setProducts(result)
-      
+
   //   }
   //   getDiscountedProdut()
   // },[token])
 
   // useEffect(()=>{
   //   console.log('products off',products);
-    
+
   // },[products])
 
   useEffect(() => {
@@ -113,6 +113,10 @@ export default function OffProducts({discountedProducts}) {
     }
   }, [products]);
 
+  useEffect(() => {
+    console.log('products', products);
+
+  }, [products])
   return (
     <section className="container mx-auto mt-17 mb-16 lg:mt-22">
       <div className="mx-5 mb-6 flex justify-between items-center lg:mx-12 lg:mb-10">
@@ -176,7 +180,7 @@ export default function OffProducts({discountedProducts}) {
                   <ProductItemOff
                     id={product.id}
                     img={product.img}
-                    title={product.name}
+                    title={product.title}
                     finalPrice={product.finalPrice}
                     price={product.price}
                     offPercent={product.offPercent}

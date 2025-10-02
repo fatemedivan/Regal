@@ -54,7 +54,7 @@ export default function Articles() {
 
   return (
 
-    <section className="bg-neutral-gray-1 py-8 pr-5 lg:px-12 mt-16 lg:py-16 lg:mt-22">
+    <section className="bg-neutral-gray-1 py-8 pr-5 lg:px-12 lg:py-16">
       <div className="container mx-auto">
 
       <div className="flex justify-between items-center pl-5">

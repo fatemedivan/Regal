@@ -1,5 +1,6 @@
-import Products from "@/components/products/Products";
+import Products from "./components/Products";
 import { cookies } from "next/headers";
+
 
 export default async function Page({ searchParams }) {
 

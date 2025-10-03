@@ -1,13 +1,13 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState, useTransition } from "react";
-import Pagination from "../common/Pagination";
-import ProductItemOff from "../common/ProductItemOff";
 import Image from "next/image";
 import Sort from "./Sort";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
 import FilterMenu from "@/app/products/components/FilterMenu";
-import ProductSceleton from "../common/ProductSceleton";
+import Pagination from "@/components/Pagination";
+import ProductItemOff from "@/components/ProductItemOff";
+import ProductSceleton from "@/components/ProductSceleton";
 
 export default function Products({
   allProducts,

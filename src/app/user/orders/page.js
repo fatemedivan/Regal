@@ -1,6 +1,6 @@
 "use client";
-import OrderDetailsCard from "@/app/user/components/user/OrderDetailsCard";
-import OrderDetailsCardDesktop from "@/app/user/components/user/OrderDetailsCardDesktop";
+import OrderDetailsCard from "../components/OrderDetailsCard";
+import OrderDetailsCardDesktop from "../components/OrderDetailsCardDesktop";
 import UserPannel from "@/app/user/components/UserPannel";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
 import Image from "next/image";

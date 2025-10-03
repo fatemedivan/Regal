@@ -3,11 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import DeleteModal from "@/components/DeleteModal";
-import AddAddressModal from "../../app/user/components/AddAddressModal";
-import DetailsModalAddAddress from "../../app/user/components/DetailsModalAddAddress";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
 import { useAuthContext } from "@/context/AuthContext";
 import { toast, ToastContainer } from "react-toastify";
+import AddAddressModal from "@/app/user/components/AddAddressModal";
+import DetailsModalAddAddress from "@/app/user/components/DetailsModalAddAddress";
 
 export default function AdressCard({
   selectedAddressId,

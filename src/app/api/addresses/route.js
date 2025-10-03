@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '../../../../lib/prisma';
-import { verifyToken } from '../../../../utils/auth';
+import { prisma } from '../../../lib/prisma';
+import { verifyToken } from '../../../utils/auth';
 
 
 export async function GET(request) {
@@ -9,7 +9,7 @@ export async function GET(request) {
 
     const addresses = await prisma.address.findMany({
       where: { userId: userId },
-     
+
       orderBy: { createdAt: 'asc' },
     });
 
@@ -26,15 +26,15 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     const { userId } = await verifyToken(request);
-   
+
     const { fullAddress, province, city, postalCode, details } = await request.json();
 
-  
+
     if (!fullAddress || !province || !city || !postalCode || !details) {
       return NextResponse.json({ message: 'لطفاً تمام فیلدهای اجباری آدرس (آدرس کامل، استان، شهر، کد پستی، جزئیات) را پر کنید.' }, { status: 400 });
     }
 
-   
+
     const newAddress = await prisma.address.create({
       data: {
         userId: userId,
@@ -42,7 +42,7 @@ export async function POST(request) {
         province: province,
         city: city,
         postalCode: postalCode,
-        details: details, 
+        details: details,
       },
     });
 
@@ -52,7 +52,7 @@ export async function POST(request) {
     if (error.message.includes('Authentication required') || error.message.includes('Invalid or expired token')) {
       return NextResponse.json({ message: 'برای افزودن آدرس، احراز هویت لازم است.' }, { status: 401 });
     }
-   
+
     return NextResponse.json({ message: 'خطای داخلی سرور در افزودن آدرس.' }, { status: 500 });
   }
 }

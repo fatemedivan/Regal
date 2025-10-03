@@ -1,21 +1,21 @@
 import { NextResponse } from "next/server";
-import { prisma } from "../../../../../lib/prisma"; 
-import { verifyToken } from "../../../../../utils/auth"; 
+import { prisma } from "../../../../lib/prisma";
+import { verifyToken } from "../../../../utils/auth";
 
 export async function GET(request) {
   try {
-    
+
     const { userId } = await verifyToken(request);
 
-   
+
     const likedProducts = await prisma.likedProduct.findMany({
       where: { userId: userId },
       include: {
         product: {
-        
+
           select: {
             id: true,
-            name: true, 
+            name: true,
             description: true,
             price: true,
             discountedPrice: true,
@@ -23,18 +23,18 @@ export async function GET(request) {
             createdAt: true,
             updatedAt: true,
             categoryId: true,
-            
+
             images: true,
           },
         },
       },
     });
 
-   
+
     const productsData = likedProducts.map((likedItem) => {
       const product = likedItem.product;
 
-     
+
       const imageUrl = product.images.length > 0
         ? product.images[0].imageUrl
         : null;
@@ -51,17 +51,17 @@ export async function GET(request) {
       }
 
       return {
-        ...product, 
-        imageUrl: imageUrl, 
+        ...product,
+        imageUrl: imageUrl,
         offPercent: offPercent,
       };
     });
 
-   
+
     return NextResponse.json(productsData, { status: 200 });
   } catch (error) {
     console.error("خطا در دریافت محصولات لایک شده:", error.message);
-   
+
     if (
       error.message.includes("Authentication required") ||
       error.message.includes("Invalid or expired token")
@@ -71,7 +71,7 @@ export async function GET(request) {
         { status: 401 }
       );
     }
-    
+
     return NextResponse.json(
       { message: "خطای داخلی سرور رخ داد." },
       { status: 500 }

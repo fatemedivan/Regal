@@ -1,8 +1,8 @@
 "use client";
 import Image from "next/image";
 import React, { useState } from "react";
-import Search from "@/components/common/Search";
-import Categories from "@/components/common/CategoriesMenu";
+import Search from "@/components/Search";
+import Categories from "@/components/CategoriesMenu";
 import Link from "next/link";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
 import { useAuthContext } from "@/context/AuthContext";

@@ -1,10 +1,10 @@
 "use client";
 
 import BasketDetailsCard from "@/components/common/BasketDetailsCard";
-import ProgressBar from "@/components/common/ProgressBar";
+import ProgressBar from "@/components/ProgressBar";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import DeleteModal from "@/components/common/DeleteModal";
+import DeleteModal from "@/components/DeleteModal";
 import { useRouter } from "next/navigation";
 import { useBasketContext } from "@/context/BasketContext";
 import { toast, ToastContainer } from "react-toastify";

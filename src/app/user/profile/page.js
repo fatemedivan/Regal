@@ -1,5 +1,5 @@
 "use client";
-import UserPannel from "@/components/user/UserPannel";
+import UserPannel from "@/app/user/components/UserPannel";
 import { useAuthContext } from "@/context/AuthContext";
 import React, { useEffect, useState } from "react";
 

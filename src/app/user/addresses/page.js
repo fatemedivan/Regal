@@ -1,8 +1,8 @@
 "use client";
 import AdressCard from "@/components/completeData/AdressCard";
-import AddAddressModal from "@/components/user/AddAddressModal";
-import DetailsModalAddAddress from "@/components/user/DetailsModalAddAddress";
-import UserPannel from "@/components/user/UserPannel";
+import AddAddressModal from "@/app/user/components/AddAddressModal";
+import DetailsModalAddAddress from "@/app/user/components/DetailsModalAddAddress";
+import UserPannel from "@/app/user/components/UserPannel";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
 import Image from "next/image";
 import Link from "next/link";
@@ -45,7 +45,7 @@ export default function Page() {
       if (data && data.length !== 0) {
         setIsHadAddress(true);
         console.log(isHadAddress);
-        
+
         setAddresses(data);
       } else {
         setIsHadAddress(false)
@@ -188,7 +188,7 @@ export default function Page() {
                   handleCloseModal={handleCloseDetailsModal}
                   onSuccess={getAddresses}
                 />
-              
+
               )}
             </div>
           )}

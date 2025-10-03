@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { prisma } from "../../../../../lib/prisma";
-import { verifyToken } from "../../../../../utils/auth";
+import { prisma } from "../../../../lib/prisma";
+import { verifyToken } from "../../../../utils/auth";
 
 export async function GET(request, { params }) {
   try {
@@ -80,9 +80,9 @@ export async function GET(request, { params }) {
           select: { imageUrl: true },
           orderBy: { createdAt: "asc" },
         },
-       
+
         likes: {
-          where: userId ? { userId: userId } : { id: "a_non_existent_like_id" }, 
+          where: userId ? { userId: userId } : { id: "a_non_existent_like_id" },
           select: { userId: true },
         },
       },

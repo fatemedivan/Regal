@@ -1,5 +1,5 @@
 "use client";
-import UserPannel from "@/components/user/UserPannel";
+import UserPannel from "@/app/user/components/UserPannel";
 import { useAuthContext } from "@/context/AuthContext";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -98,9 +98,8 @@ export default function Page() {
         </div>
         <div>
           <div
-            className={`relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg ${
-              isBluredFirstName && !isValidFirstName ? "mb-0" : "mb-4"
-            }`}
+            className={`relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg ${isBluredFirstName && !isValidFirstName ? "mb-0" : "mb-4"
+              }`}
           >
             <input
               type="text"
@@ -137,9 +136,8 @@ export default function Page() {
           )}
 
           <div
-            className={`relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg mb-4 ${
-              isBluredLastName && !isValidLastName ? "mb-0" : "mb-4"
-            }`}
+            className={`relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg mb-4 ${isBluredLastName && !isValidLastName ? "mb-0" : "mb-4"
+              }`}
           >
             <input
               type="text"
@@ -190,9 +188,8 @@ export default function Page() {
           </div>
 
           <div
-            className={`relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg ${
-              isBluredEmail && !isValidEmail ? "mb-0" : "mb-4"
-            }`}
+            className={`relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg ${isBluredEmail && !isValidEmail ? "mb-0" : "mb-4"
+              }`}
           >
             <input
               type="text"
@@ -230,11 +227,10 @@ export default function Page() {
           <button
             onClick={() => editUser()}
             disabled={!(isValidFirstName && isValidLastName && isValidEmail)}
-            className={`${
-              isValidFirstName && isValidLastName && isValidEmail
-                ? "bg-cognac-primery text-white"
-                : "bg-cognac-tint-2 text-cognac-tint-4"
-            } py-3.25 px-31.5 rounded-lg w-full mb-4 cursor-pointer`}
+            className={`${isValidFirstName && isValidLastName && isValidEmail
+              ? "bg-cognac-primery text-white"
+              : "bg-cognac-tint-2 text-cognac-tint-4"
+              } py-3.25 px-31.5 rounded-lg w-full mb-4 cursor-pointer`}
           >
             {isLoading ? (
               <div className="flex justify-center items-center gap-2  py-1.5">
@@ -401,11 +397,10 @@ export default function Page() {
             <button
               disabled={!(isValidFirstName && isValidLastName && isValidEmail)}
               onClick={() => editUser()}
-              className={`${
-                isValidFirstName && isValidLastName && isValidEmail
-                  ? "bg-cognac-primery text-white"
-                  : "bg-cognac-tint-2 text-cognac-tint-4"
-              } py-3.25 px-16 rounded-lg cursor-pointer`}
+              className={`${isValidFirstName && isValidLastName && isValidEmail
+                ? "bg-cognac-primery text-white"
+                : "bg-cognac-tint-2 text-cognac-tint-4"
+                } py-3.25 px-16 rounded-lg cursor-pointer`}
             >
               {isLoading ? (
                 <div className="flex items-center gap-2 py-1.5">

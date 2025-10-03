@@ -1,6 +1,6 @@
 "use client";
 import BasketDetailsCard from "@/components/common/BasketDetailsCard";
-import ProgressBar from "@/components/common/ProgressBar";
+import ProgressBar from "@/components/ProgressBar";
 import { useBasketContext } from "@/context/BasketContext";
 import Image from "next/image";
 import { useRouter } from "next/navigation";

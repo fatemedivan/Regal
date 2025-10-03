@@ -1,24 +1,24 @@
 import { NextResponse } from "next/server";
-import { prisma } from "../../../../../../lib/prisma";
-import { verifyToken } from "../../../../../../utils/auth"; 
+import { prisma } from "../../../../../lib/prisma";
+import { verifyToken } from "../../../../../utils/auth";
 
 export async function POST(request, { params }) {
   try {
 
     const { userId } = await verifyToken(request);
-    const productId = params.id; 
+    const productId = params.id;
 
-    
+
     const productExists = await prisma.product.findUnique({
       where: { id: productId },
-      select: { id: true }, 
+      select: { id: true },
     });
 
     if (!productExists) {
       return NextResponse.json({ message: "محصول یافت نشد." }, { status: 404 });
     }
 
-   
+
     const existingLike = await prisma.likedProduct.findUnique({
       where: {
         userId_productId: {
@@ -29,10 +29,10 @@ export async function POST(request, { params }) {
     });
 
     if (existingLike) {
-      
+
       await prisma.likedProduct.delete({
         where: {
-          id: existingLike.id, 
+          id: existingLike.id,
         },
       });
       return NextResponse.json(
@@ -40,7 +40,7 @@ export async function POST(request, { params }) {
         { status: 200 }
       );
     } else {
-     
+
       await prisma.likedProduct.create({
         data: {
           userId: userId,
@@ -54,7 +54,7 @@ export async function POST(request, { params }) {
     }
   } catch (error) {
     console.error("خطا در لایک/دیسلایک کردن محصول:", error.message);
-  
+
     if (
       error.message.includes("Authentication required") ||
       error.message.includes("Invalid or expired token")
@@ -64,7 +64,7 @@ export async function POST(request, { params }) {
         { status: 401 }
       );
     }
-    
+
     return NextResponse.json(
       { message: "خطای داخلی سرور رخ داد." },
       { status: 500 }

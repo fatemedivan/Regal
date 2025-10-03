@@ -1,9 +1,9 @@
 "use client";
 import AdressCard from "@/components/completeData/AdressCard";
 import BasketDetailsCard from "@/components/common/BasketDetailsCard";
-import DateModal from "@/components/completeData/DateModal";
-import ProgressBar from "@/components/common/ProgressBar";
-import TimeModal from "@/components/completeData/TimeModal";
+import DateModal from "@/app/complete-data/components/DateModal";
+import ProgressBar from "@/components/ProgressBar";
+import TimeModal from "@/app/complete-data/components/TimeModal";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -314,7 +314,7 @@ export default function Page() {
           <DateModal handleCloseModal={handleCloseDateModal} mainDate={mainDate} setMainDate={setMainDate} />
         )}
         {isShowTimeModal && (
-          <TimeModal handleCloseModal={handleCloseTimeModal} mainTime={mainTime} setMainTime={setMainTime}/>
+          <TimeModal handleCloseModal={handleCloseTimeModal} mainTime={mainTime} setMainTime={setMainTime} />
         )}
       </div>
     </div>

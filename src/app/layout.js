@@ -1,6 +1,6 @@
 import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
-import Layout from "@/components/common/Layout";
+import Layout from "@/components/Layout";
 
 export const metadata = {
   title: "Regal",

@@ -1,11 +1,10 @@
 "use client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import "@glidejs/glide/dist/css/glide.core.min.css";
-import ProductSearchItem from "./ProductSearchItem";
 import { useRouter } from "next/navigation";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
 import { HashLoader } from "react-spinners";
+import ProductSearchItem from "./ProductSearchItem";
 
 export default function Search({ handleCloseSearch }) {
   const router = useRouter();

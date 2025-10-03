@@ -6,7 +6,7 @@ import ProductItemOff from "../common/ProductItemOff";
 import Image from "next/image";
 import Sort from "./Sort";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
-import FilterMenu from "@/components/products/FilterMenu";
+import FilterMenu from "@/app/products/components/FilterMenu";
 import ProductSceleton from "../common/ProductSceleton";
 
 export default function Products({

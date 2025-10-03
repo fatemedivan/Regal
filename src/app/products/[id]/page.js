@@ -1,6 +1,6 @@
 "use client";
-import Breadcrumb from "@/components/common/Breadcrumb";
-import ProductItemOff from "@/components/common/ProductItemOff";
+import Breadcrumb from "@/components/Breadcrumb";
+import ProductItemOff from "@/components/ProductItemOff";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import Glide from "@glidejs/glide";
@@ -37,8 +37,8 @@ export default function Page() {
 
   const headers = token
     ? {
-        Authorization: `Bearer ${token}`,
-      }
+      Authorization: `Bearer ${token}`,
+    }
     : {};
 
   useEffect(() => {

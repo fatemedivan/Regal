@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import DeleteModal from "@/components/common/DeleteModal";
+import DeleteModal from "@/components/DeleteModal";
 import AddAddressModal from "./AddAddressModal";
 import DetailsModalAddAddress from "./DetailsModalAddAddress";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
@@ -88,14 +88,13 @@ export default function UserPannel({
         <div className="border border-neutral-gray-4 rounded-xl px-7 py-5 mt-4">
           <Link href={"/user/profile"}>
             <div
-              className={`flex items-center gap-2 mb-5 pb-5  border-b border-neutral-gray-4 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:pb-3 lg:mb-0 lg:rounded-lg  lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer ${
-                (pathname.includes("/user/profile") ||
-                  pathname.includes("/user/edit")) &&
+              className={`flex items-center gap-2 mb-5 pb-5  border-b border-neutral-gray-4 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:pb-3 lg:mb-0 lg:rounded-lg  lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer ${(pathname.includes("/user/profile") ||
+                pathname.includes("/user/edit")) &&
                 "lg:bg-neutral-gray-1 lg:border-r-4"
-              }`}
+                }`}
             >
               {pathname.includes("/user/profile") ||
-              pathname.includes("/user/edit") ? (
+                pathname.includes("/user/edit") ? (
                 <Image
                   width={20}
                   height={20}
@@ -112,10 +111,9 @@ export default function UserPannel({
           </Link>
           <Link href={"/user/orders"}>
             <div
-              className={`flex items-center gap-2 mb-5 pb-5 border-b border-neutral-gray-4 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:pb-3 lg:mb-0  lg:rounded-lg lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer ${
-                pathname.includes("/user/orders") &&
+              className={`flex items-center gap-2 mb-5 pb-5 border-b border-neutral-gray-4 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:pb-3 lg:mb-0  lg:rounded-lg lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer ${pathname.includes("/user/orders") &&
                 "lg:bg-neutral-gray-1 lg:border-r-4"
-              }`}
+                }`}
             >
               {pathname.includes("/user/orders") ? (
                 <Image
@@ -134,10 +132,9 @@ export default function UserPannel({
           </Link>
           <Link href={"/user/favorites"}>
             <div
-              className={`flex items-center gap-2 mb-5 pb-5 border-b border-neutral-gray-4 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:pb-3 lg:mb-0  lg:rounded-lg lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer ${
-                pathname.includes("/user/favorites") &&
+              className={`flex items-center gap-2 mb-5 pb-5 border-b border-neutral-gray-4 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:pb-3 lg:mb-0  lg:rounded-lg lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer ${pathname.includes("/user/favorites") &&
                 "lg:bg-neutral-gray-1 lg:border-r-4"
-              }`}
+                }`}
             >
               {pathname.includes("/user/favorites") ? (
                 <Image
@@ -156,10 +153,9 @@ export default function UserPannel({
           </Link>
           <Link href={"/user/addresses"}>
             <div
-              className={`flex items-center gap-2 mb-5 pb-5 border-b border-neutral-gray-4 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:pb-3 lg:mb-0  lg:rounded-lg lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer ${
-                pathname.includes("/user/addresses") &&
+              className={`flex items-center gap-2 mb-5 pb-5 border-b border-neutral-gray-4 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:pb-3 lg:mb-0  lg:rounded-lg lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer ${pathname.includes("/user/addresses") &&
                 "lg:bg-neutral-gray-1 lg:border-r-4"
-              }`}
+                }`}
             >
               {pathname.includes("/user/addresses") ? (
                 <Image
@@ -200,12 +196,12 @@ export default function UserPannel({
             {rout === "edit" || rout === "profile"
               ? " اطلاعات حساب کاربری"
               : rout === "order"
-              ? " تاریخچه سفارشات"
-              : rout === "favorites"
-              ? " لیست علاقه‌مندی‌ها"
-              : rout === "addresses"
-              ? "لیست آدرس‌ها"
-              : ""}
+                ? " تاریخچه سفارشات"
+                : rout === "favorites"
+                  ? " لیست علاقه‌مندی‌ها"
+                  : rout === "addresses"
+                    ? "لیست آدرس‌ها"
+                    : ""}
           </h6>
 
           {rout === "profile" ? (
@@ -243,9 +239,8 @@ export default function UserPannel({
                   width={16}
                   height={16}
                   src="/img/arrow-down-4.svg"
-                  className={`transition duration-200 ease-in-out ${
-                    isShownOrderTypes ? "rotate-180" : "rotate-0"
-                  }`}
+                  className={`transition duration-200 ease-in-out ${isShownOrderTypes ? "rotate-180" : "rotate-0"
+                    }`}
                   alt=""
                 />
               </div>
@@ -297,9 +292,8 @@ export default function UserPannel({
                   width={16}
                   height={16}
                   alt="dropdown icon"
-                  className={`absolute top-1/2 left-3 -translate-y-1/2 pointer-events-none transition ${
-                    isOpenSort && "rotate-180"
-                  }`}
+                  className={`absolute top-1/2 left-3 -translate-y-1/2 pointer-events-none transition ${isOpenSort && "rotate-180"
+                    }`}
                 />
               </button>
 

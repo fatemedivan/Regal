@@ -1,12 +1,12 @@
 "use client";
-import UserPannel from "@/components/user/UserPannel";
-import FavouriteProduct from "@/components/user/FavouriteProduct";
+import UserPannel from "@/app/user/components/UserPannel";
+import FavouriteProduct from "@/app/user/components/FavouriteProduct";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
-import ProductSceleton from "@/components/common/ProductSceleton";
+import ProductSceleton from "@/components/ProductSceleton";
 
 export default function Page() {
 

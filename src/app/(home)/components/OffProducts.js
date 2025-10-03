@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Glide from "@glidejs/glide";
 import "@glidejs/glide/dist/css/glide.core.min.css";
-import ProductItemOff from "@/components/common/ProductItemOff";
+import ProductItemOff from "@/components/ProductItemOff";
 import Image from "next/image";
 import { HashLoader } from "react-spinners";
 

@@ -1,7 +1,6 @@
-import Articles from "@/components/home/Articles";
-import Categories from "@/components/home/Categories";
-import Comments from "@/components/home/Comments";
-import OffProducts from "@/components/home/OffProducts";
+import Articles from "@/app/(home)/components/Articles";
+import Categories from "@/app/(home)/components/Categories";
+import OffProducts from "@/app/(home)/components/OffProducts";
 import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";

@@ -22,13 +22,13 @@ export async function POST(request) {
     });
 
     if (!user) {
-      return NextResponse.json({ message: 'Invalid phone number or password.' }, { status: 401 });
+      return NextResponse.json({ message:'کاربری با این مشخصات پیدا نشد لطفا ثبت نام کنید' }, { status: 401 });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.hashedPassword);
 
     if (!isPasswordValid) {
-      return NextResponse.json({ message: 'Invalid phone number or password.' }, { status: 401 });
+      return NextResponse.json({ message: 'کاربری با این مشخصات پیدا نشد لطفا ثبت نام کنید' }, { status: 401 });
     }
 
     const token = jwt.sign(

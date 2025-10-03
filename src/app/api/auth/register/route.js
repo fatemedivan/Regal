@@ -42,7 +42,7 @@ export async function POST(request) {
       }
     });
 
-    return NextResponse.json({ message: 'Registration successful.', user: newUser }, { status: 201 });
+    return NextResponse.json({ message: 'با موفقیت ثبت نام شدید لطفا وارد شوید', user: newUser }, { status: 201 });
 
   } catch (error) {
     console.error('Error during user registration:', error);

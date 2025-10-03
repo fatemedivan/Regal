@@ -2,25 +2,21 @@
 import Image from "next/image";
 import { ToastContainer } from "react-toastify";
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 
 export default function AuthForm({ type, onSubmit }) {
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
-  const [isBluredPhone, setIsBluredPhone] = useState(false);
-  const [isBluredPassword, setIsBluredPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid, isSubmitting },
+  } = useForm({ mode: "onChange" });
 
   const phoneRegex = /^9\d{9}$/;
   const passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,32}$/;
 
-  const isValidPhone = phoneRegex.test(phone);
-  const isValidPassword = passwordRegex.test(password);
-
-  const handleClick = async () => {
-    setIsLoading(true);
-    await onSubmit(phone, password);
-    setIsLoading(false);
+  const handleClick = async (data) => {
+    await onSubmit(data.phone, data.password);
   };
 
   return (
@@ -40,7 +36,7 @@ export default function AuthForm({ type, onSubmit }) {
               به <span className="text-cognac-primery">رگــــال</span> خوش آمدید
             </p>
           </div>
-          <div>
+          <form onSubmit={handleSubmit(handleClick)}>
             <p className="font-semibold mb-4 lg:text-lg lg:font-bold">
               {type === "login" ? "ورود" : "ثبت‌نام"}
             </p>
@@ -48,16 +44,19 @@ export default function AuthForm({ type, onSubmit }) {
             {/* Phone input */}
             <div
               className={`border ${
-                isBluredPhone && !isValidPhone
-                  ? "border-error-primery"
-                  : "border-neutral-gray-4"
+                errors.phone ? "border-error-primery" : "border-neutral-gray-4"
               } rounded-lg flex w-full relative`}
             >
               <input
                 type="text"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                onBlur={() => setIsBluredPhone(true)}
+                {...register("phone", {
+                  required: "شماره موبایل الزامی است",
+                  pattern: {
+                    value: phoneRegex,
+                    message:
+                      " شماره موبایل را بدون ۰ و با اعداد انگلیسی وارد کنید",
+                  },
+                })}
                 maxLength={10}
                 placeholder="شماره موبایل"
                 className="w-full outline-none py-3.75 px-4 placeholder:text-xs"
@@ -66,48 +65,52 @@ export default function AuthForm({ type, onSubmit }) {
                 ۹۸+
               </div>
             </div>
-            {isBluredPhone && !isValidPhone && (
+            {errors.phone && (
               <p className="text-xs mt-2 text-error-primery">
-                شماره موبایل را بدون ۰ و با اعداد انگلیسی وارد کنید
+                {errors.phone.message}
               </p>
             )}
 
             {/* Password input */}
             <div
               className={`border rounded-lg mt-4 w-full ${
-                isBluredPassword && !isValidPassword
+                errors.password
                   ? "border-error-primery"
                   : "border-neutral-gray-4"
               }`}
             >
               <input
                 type="text"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                onBlur={() => setIsBluredPassword(true)}
+                {...register("password", {
+                  required: "رمز عبور الزامی است",
+                  pattern: {
+                    value: passwordRegex,
+                    message:
+                      "رمز عبور باید ۸ تا ۳۲ کاراکتر شامل عدد، حروف بزرگ/کوچک و کاراکتر باشد",
+                  },
+                })}
                 maxLength={32}
                 placeholder="رمز عبور"
                 className="w-full outline-none py-3.75 px-4 placeholder:text-xs"
               />
             </div>
-            {isBluredPassword && !isValidPassword && (
+            {errors.password && (
               <p className="text-xs mt-2 text-error-primery">
-                رمز عبور باید ۸ تا ۳۲ کاراکتر شامل عدد، حروف بزرگ/کوچک و کاراکتر
-                باشد
+                {errors.password.message}
               </p>
             )}
 
             <div className="mt-56 flex flex-col justify-center items-center lg:items-start lg:mt-7.5">
               <button
-                disabled={!(isValidPassword && isValidPhone)}
-                onClick={handleClick}
+                disabled={!isValid}
+                type="submit"
                 className={`leading-5.5 rounded-lg py-3.25 px-25 cursor-pointer w-full lg:text-lg lg:leading-6.5 lg:py-3.75 flex items-center justify-center ${
-                  isValidPassword && isValidPhone
+                  isValid
                     ? "bg-cognac-primery text-white"
                     : "bg-neutral-gray-4 text-neutral-gray-5"
                 }`}
               >
-                {isLoading ? (
+                {isSubmitting ? (
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[0ms]"></div>
                     <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[150ms]"></div>
@@ -118,7 +121,7 @@ export default function AuthForm({ type, onSubmit }) {
                 )}
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
       <Image

@@ -4,7 +4,7 @@ export function middleware(request) {
   const token = request.cookies.get("token")?.value;
   const role = request.cookies.get("role")?.value;
   const protectedPaths = ["/user", "/complete-data", "/payment"];
-  const authPaths = ["/auth/login", "/auth/sign-up"];
+  const authPaths = ["/auth/login", "/auth/register"];
   const pathname = request.nextUrl.pathname;
 
   const isProtectedPath = protectedPaths.some((path) =>
@@ -14,7 +14,7 @@ export function middleware(request) {
 
 
   if (!token && isProtectedPath) {
-    const signUpUrl = new URL("/auth/sign-up", request.url);
+    const signUpUrl = new URL("/auth/register", request.url);
     return NextResponse.redirect(signUpUrl);
   }
 
@@ -37,6 +37,6 @@ export const config = {
     "/complete-data",
     "/payment",
     "/auth/login",
-    "/auth/sign-up",
+    "/auth/register",
   ],
 };

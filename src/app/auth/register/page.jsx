@@ -19,7 +19,7 @@ export default function Page() {
         sessionStorage.setItem("signupPhone", phone);
         sessionStorage.setItem("signupPassword", password);
         toast.success(result.message);
-        setTimeout(() => router.push("/auth/login"), 1000);
+        setTimeout(() => router.push("/auth/login"), 1500);
       } else {
         toast.error(result.message);
       }

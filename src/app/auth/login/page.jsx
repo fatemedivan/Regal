@@ -28,7 +28,7 @@ export default function Page() {
         sessionStorage.removeItem("signupPassword");
       } else {
         toast.error(result.message);
-        setTimeout(() => router.push("/auth/sign-up"), 1000);
+        setTimeout(() => router.push("/auth/register"), 1500);
       }
     } catch {
       toast.error("خطایی رخ داد");

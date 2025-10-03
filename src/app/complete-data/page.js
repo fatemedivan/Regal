@@ -1,6 +1,6 @@
 "use client";
-import AdressCard from "@/components/completeData/AdressCard";
-import BasketDetailsCard from "@/components/common/BasketDetailsCard";
+import AdressCard from "@/components/AdressCard";
+import BasketDetailsCard from "@/components/BasketDetailsCard";
 import DateModal from "@/app/complete-data/components/DateModal";
 import ProgressBar from "@/components/ProgressBar";
 import TimeModal from "@/app/complete-data/components/TimeModal";

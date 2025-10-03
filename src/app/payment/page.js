@@ -1,5 +1,5 @@
 "use client";
-import BasketDetailsCard from "@/components/common/BasketDetailsCard";
+import BasketDetailsCard from "@/components/BasketDetailsCard";
 import ProgressBar from "@/components/ProgressBar";
 import { useBasketContext } from "@/context/BasketContext";
 import Image from "next/image";

@@ -1,5 +1,5 @@
 "use client";
-import AdressCard from "@/components/completeData/AdressCard";
+import AdressCard from "@/app/complete-data/components/AdressCard";
 import AddAddressModal from "@/app/user/components/AddAddressModal";
 import DetailsModalAddAddress from "@/app/user/components/DetailsModalAddAddress";
 import UserPannel from "@/app/user/components/UserPannel";

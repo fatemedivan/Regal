@@ -1,13 +1,15 @@
 "use client";
-import Breadcrumb from "@/components/Breadcrumb";
-import ProductItemOff from "@/components/ProductItemOff";
-import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
-import Glide from "@glidejs/glide";
-import "@glidejs/glide/dist/css/glide.core.min.css";
 import { useParams, useRouter } from "next/navigation";
-import { toast, ToastContainer } from "react-toastify";
+import Image from "next/image";
+
+import Breadcrumb from "@/components/Breadcrumb";
+import ProductCard from "@/components/ProductCard";
 import { useBasketContext } from "@/context/BasketContext";
+
+import "@glidejs/glide/dist/css/glide.core.min.css";
+import Glide from "@glidejs/glide";
+import { toast, ToastContainer } from "react-toastify";
 import { HashLoader } from "react-spinners";
 
 export default function Page() {
@@ -492,7 +494,7 @@ export default function Page() {
                       <ul className="glide__slides scroll-smooth">
                         {similarProducts.map((product) => (
                           <li key={product.id} className="glide__slide">
-                            <ProductItemOff
+                            <ProductCard
                               img={product.img}
                               title={product.title}
                               finalPrice={product.finalPrice}

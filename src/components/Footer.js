@@ -1,8 +1,8 @@
+
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 
-export default function Footer() {
+export default function Footer() { 
   return (
     <>
       <div className="bg-[#0B0C17] p-5 lg:hidden">
@@ -21,9 +21,10 @@ export default function Footer() {
           </p>
           <div className="flex items-center gap-3.5">
             <input
+           
               type="text"
               placeholder="ایمیل خود را وارد کنید..."
-              className="rounded-lg placeholder:text-neutral-gray-3 placeholder:text-sm placeholder:leading-5 border-1 border-neutral-gray-8 pr-6 py-3.5 text-neutral-100 outline-none"
+              className="rounded-lg placeholder:text-neutral-gray-3 placeholder:text-sm placeholder:leading-5 border-1 border-neutral-gray-8 pr-6 py-3.5 text-white outline-none"
             />
             <button className="px-6 py-3.25 border-1 border-neutral-gray-8 text-neutral-gray-3 rounded-[10px] flex justify-center items-center">
               عضویت
@@ -177,7 +178,7 @@ export default function Footer() {
                 <input
                   type="text"
                   placeholder="ایمیل خود را وارد کنید..."
-                  className="rounded-lg placeholder:text-neutral-gray-3 placeholder:text-sm placeholder:leading-5 border-1 border-neutral-gray-8 pr-6 pl-22 py-3.5"
+                  className="rounded-lg placeholder:text-neutral-gray-3 placeholder:text-sm placeholder:leading-5 border-1 border-neutral-gray-8 text-white pr-6 pl-22 py-3.5"
                 />
                 <button className="px-6 py-3.25 border-1 border-neutral-gray-8 text-neutral-gray-3 rounded-[10px] text-center leading-5.5">
                   عضویت

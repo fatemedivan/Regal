@@ -1,25 +1,18 @@
 "use client";
+
 import React, { useEffect, useRef, useState } from "react";
-import Glide from "@glidejs/glide";
-import "@glidejs/glide/dist/css/glide.core.min.css";
-import ProductItemOff from "@/components/ProductItemOff";
 import Image from "next/image";
 import { HashLoader } from "react-spinners";
+import "@glidejs/glide/dist/css/glide.core.min.css";
+import Glide from "@glidejs/glide";
+import ProductCard from "@/components/ProductCard";
 
-export default function OffProducts({ discountedProducts }) {
+export default function DiscountedProducts({ discountedProducts }) {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const glideRef = useRef(null);
   const prevbtnRef = useRef(null);
   const nextbtnRef = useRef(null);
-  const [token, setToken] = useState('')
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem('token')
-    if (storedToken) {
-      setToken(storedToken)
-    }
-  }, [])
 
   useEffect(() => {
     setIsLoading(true);
@@ -28,28 +21,6 @@ export default function OffProducts({ discountedProducts }) {
       setIsLoading(false);
     }
   }, [discountedProducts]);
-
-  // useEffect(()=>{
-  //   if(!token) return
-  //   const getDiscountedProdut = async ()=>{
-  //     const res = await fetch('/api/products/discounted',{
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     })
-  //     console.log(res);
-  //     const result = await res.json()
-  //     console.log('result',result);
-  //     setProducts(result)
-
-  //   }
-  //   getDiscountedProdut()
-  // },[token])
-
-  // useEffect(()=>{
-  //   console.log('products off',products);
-
-  // },[products])
 
   useEffect(() => {
     if (glideRef.current) {
@@ -113,10 +84,6 @@ export default function OffProducts({ discountedProducts }) {
     }
   }, [products]);
 
-  useEffect(() => {
-    console.log('products', products);
-
-  }, [products])
   return (
     <section className="container mx-auto mt-17 mb-16 lg:mt-22">
       <div className="mx-5 mb-6 flex justify-between items-center lg:mx-12 lg:mb-10">
@@ -175,21 +142,22 @@ export default function OffProducts({ discountedProducts }) {
         <div className="glide pr-5 lg:pr-12" ref={glideRef}>
           <div className="glide__track" data-glide-el="track">
             <ul className="glide__slides">
-              {products && products.map((product, index) => (
-                <li key={product.id} className="glide__slide">
-                  <ProductItemOff
-                    id={product.id}
-                    img={product.img}
-                    title={product.title}
-                    finalPrice={product.finalPrice}
-                    price={product.price}
-                    offPercent={product.offPercent}
-                    isMore={false}
-                    colors={product.colors}
-                    favorites={product.isLiked}
-                  />
-                </li>
-              ))}
+              {products &&
+                products.map((product, index) => (
+                  <li key={product.id} className="glide__slide">
+                    <ProductCard
+                      id={product.id}
+                      img={product.img}
+                      title={product.title}
+                      finalPrice={product.finalPrice}
+                      price={product.price}
+                      offPercent={product.offPercent}
+                      isMore={false}
+                      colors={product.colors}
+                      favorites={product.isLiked}
+                    />
+                  </li>
+                ))}
             </ul>
           </div>
         </div>

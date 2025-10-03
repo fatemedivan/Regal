@@ -4,7 +4,7 @@ import Link from "next/link";
 import React from "react";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function ProductItemOff({
+export default function ProductCard({
   id,
   img,
   title,
@@ -15,8 +15,6 @@ export default function ProductItemOff({
   colors,
   favorites,
 }) {
-  console.log('title',title);
-  
   return (
     <>
       <div className="min-w-41.75 lg:min-w-79.5 relative">

@@ -6,8 +6,8 @@ import Sort from "./Sort";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
 import FilterMenu from "@/app/products/components/FilterMenu";
 import Pagination from "@/components/Pagination";
-import ProductItemOff from "@/components/ProductItemOff";
 import ProductSceleton from "@/components/ProductSceleton";
+import ProductCard from "@/components/ProductCard";
 
 export default function Products({
   allProducts,
@@ -67,17 +67,17 @@ export default function Products({
     const params = new URLSearchParams(searchParamsHook.toString());
     params.set("sort", option.value);
     params.set("page", "1");
-    startTransition(() => { 
+    startTransition(() => {
       router.push(`?${params.toString()}`);
-      setIsOpenSort(false); 
-      closeModal(); 
+      setIsOpenSort(false);
+      closeModal();
     });
   };
 
   const handlePageChange = (page) => {
     const params = new URLSearchParams(searchParamsHook.toString());
     params.set("page", page);
-    startTransition(() => { 
+    startTransition(() => {
       router.push(`?${params.toString()}`);
     });
   };
@@ -90,7 +90,7 @@ export default function Products({
       params.delete("search");
     }
     params.set("page", "1");
-    startTransition(() => { 
+    startTransition(() => {
       router.push(`?${params.toString()}`);
     });
   };
@@ -104,7 +104,7 @@ export default function Products({
             <FilterMenu
               handleCloseFilter={() => {
                 setIsOpenFilterMenu(false);
-                closeModal(); 
+                closeModal();
               }}
             />
           </div>
@@ -197,7 +197,7 @@ export default function Products({
             ) : (
               <div className="flex flex-wrap justify-center gap-4 lg:hidden">
                 {products.map((product) => (
-                  <ProductItemOff
+                  <ProductCard
                     key={product.id}
                     id={product.id}
                     img={product.images[0]?.imageUrl}
@@ -265,9 +265,8 @@ export default function Products({
                         width={16}
                         height={16}
                         alt="dropdown icon"
-                        className={`absolute top-1/2 left-3 -translate-y-1/2 pointer-events-none transition ${
-                          isOpenSort ? "rotate-180" : ""
-                        }`}
+                        className={`absolute top-1/2 left-3 -translate-y-1/2 pointer-events-none transition ${isOpenSort ? "rotate-180" : ""
+                          }`}
                       />
                     </button>
 
@@ -278,7 +277,7 @@ export default function Products({
                             key={option.id}
                             onClick={() => {
                               handleSortChange(option);
-                              
+
                             }}
                             className="px-4 py-2 hover:bg-neutral-gray-2 cursor-pointer text-xs leading-4.5 text-neutral-gray-7"
                           >
@@ -303,7 +302,7 @@ export default function Products({
                 ) : (
                   <div className="flex items-center flex-wrap gap-x-6 gap-y-8">
                     {products.map((product) => (
-                      <ProductItemOff
+                      <ProductCard
                         key={product.id}
                         id={product.id}
                         img={product.images[0]?.imageUrl}

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 
-export default function ProductItemOff({
+export default function FavoriteProductCard({
   id,
   img,
   title,
@@ -68,7 +68,7 @@ export default function ProductItemOff({
           {price}
         </p>
         <p className="text-sm leading-6 lg:text-[1rem] lg:leading-7">
-          {" "}
+
           <span className="ml-1">{finalPrice}</span>تومان
         </p>
       </div>

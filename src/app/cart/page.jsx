@@ -1,17 +1,18 @@
 "use client";
 
- import BasketDetailsCard from "@/components/BasketDetailsCard";
+import BasketDetailsCard from "@/components/BasketDetailsCard";
 import ProgressBar from "@/components/ProgressBar";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import DeleteModal from "@/components/DeleteModal";
-import { useRouter } from "next/navigation";
 import { useBasketContext } from "@/context/BasketContext";
 import { toast, ToastContainer } from "react-toastify";
 import { useScrollLockContext } from "@/context/ScrollLockContext";
+import Empty from "./components/Empty";
 
 export default function Page() {
-  const router = useRouter();
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
+  const { openModal, closeModal } = useScrollLockContext();
   const {
     cart,
     countOfProduct,
@@ -22,16 +23,11 @@ export default function Page() {
     clearEntireCart,
   } = useBasketContext();
 
-  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
-
   const handleIncreaseQuantity = async (cartItemId, currentQuantity) => {
-
     try {
       await updateCartItemQuantity(cartItemId, currentQuantity + 1);
-
     } catch (error) {
       console.error("Error increasing quantity in handler:", error);
-
       toast.error("خطایی در افزایش تعداد رخ داد.");
     }
   };
@@ -40,10 +36,8 @@ export default function Page() {
     try {
       if (currentQuantity === 1) {
         await removeCartItem(cartItemId);
-
       } else {
         await updateCartItemQuantity(cartItemId, currentQuantity - 1);
-
       }
     } catch (error) {
       console.error("Error decreasing quantity in handler:", error);
@@ -62,40 +56,11 @@ export default function Page() {
     }
   };
 
-  const { openModal, closeModal } = useScrollLockContext();
-  const handleCloseDeleteModal = () => {
-    setIsOpenDeleteModal(false);
-    closeModal();
-  };
-
   return (
     <div className="container mx-auto px-5 mb-22 lg:px-12">
       <ToastContainer autoClose={2000} className={"custom-toast-container"} />
       {isEmptyCart ? (
-        <div className="mt-35 mb-6 mx-5 lg:mb-33.75 lg:mt-26">
-          <div className="flex justify-center items-center mb-55.5 lg:mb-8">
-            <div>
-              <Image
-                width={180}
-                height={162}
-                className="lg:w-62.5 lg:h-56.5"
-                src="/img/error-404.svg"
-                alt="Empty Cart"
-              />
-              <p className="leading-7 text-neutral-gray-9 mt-6 text-center">
-                سبد خرید شما خالی است
-              </p>
-            </div>
-          </div>
-          <div className="flex justify-center items-center">
-            <button
-              onClick={() => router.push("/products")}
-              className="text-sm leading-5 bg-cognac-primery rounded-lg py-3.5 px-20 sm:px-30 text-white cursor-pointer lg:text-[1rem] lg:leading-5.5 lg:px-12"
-            >
-              مشاهده محصولات
-            </button>
-          </div>
-        </div>
+        <Empty />
       ) : (
         <>
           <div className="mt-6 flex justify-between items-center lg:hidden">
@@ -209,7 +174,6 @@ export default function Page() {
                             <Image
                               onClick={async () => {
                                 await removeCartItem(item.id);
-
                               }}
                               width={16}
                               height={16}
@@ -252,10 +216,11 @@ export default function Page() {
                   cart.items.map((item, index) => (
                     <div key={item.id} className="space-y-3">
                       <div
-                        className={`grid grid-cols-4 items-center ${index !== cart.items.length - 1
-                          ? "border-b border-gray-200 pb-6"
-                          : ""
-                          }`}
+                        className={`grid grid-cols-4 items-center ${
+                          index !== cart.items.length - 1
+                            ? "border-b border-gray-200 pb-6"
+                            : ""
+                        }`}
                       >
                         <div className="flex gap-4">
                           <Image
@@ -337,7 +302,6 @@ export default function Page() {
                                 <Image
                                   onClick={async () => {
                                     await removeCartItem(item.id);
-
                                   }}
                                   width={16}
                                   height={16}
@@ -392,7 +356,10 @@ export default function Page() {
           </div>
           {isOpenDeleteModal && (
             <DeleteModal
-              handleCloseModal={handleCloseDeleteModal}
+              handleCloseModal={() => {
+                setIsOpenDeleteModal(false);
+                closeModal();
+              }}
               handleAction={handleDeleteEntireBasket}
               title={"حذف سبد خرید"}
               subtitle={"آیا از حذف کل سبد خرید اطمینان دارید؟"}

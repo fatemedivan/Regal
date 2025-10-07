@@ -29,7 +29,6 @@ export default function Page() {
     try {
       await updateCartItemQuantity(cartItemId, currentQuantity + 1);
     } catch (error) {
-      console.error("Error increasing quantity in handler:", error);
       toast.error("خطایی در افزایش تعداد رخ داد.");
     }
   };
@@ -42,19 +41,25 @@ export default function Page() {
         await updateCartItemQuantity(cartItemId, currentQuantity - 1);
       }
     } catch (error) {
-      console.error("Error decreasing quantity in handler:", error);
       toast.error("خطایی در کاهش تعداد رخ داد.");
     }
   };
 
+  const handleDeleteItem = async (cartItemId) => {
+    try {
+      await removeCartItem(cartItemId);
+    } catch (error) {
+      toast.error("خطایی در حذف محصول رخ داد.");
+    }
+  };
   const handleDeleteEntireBasket = async () => {
     try {
       await clearEntireCart();
       setIsOpenDeleteModal(false);
       closeModal();
     } catch (error) {
-      console.error("Error deleting entire cart:", error);
       toast.error("خطایی در حذف سبد خرید رخ داد.");
+    } finally {
     }
   };
 
@@ -65,16 +70,20 @@ export default function Page() {
         <Empty />
       ) : (
         <>
-          <PageHeader
-            deleteBasket={() => {
-              setIsOpenDeleteModal(true);
-              openModal();
-            }}
-          />
-          <div className="xl:px-40.5">
-            <ProgressBar progress={"basket"} />
+          {/* header */}
+          <div>
+            <PageHeader
+              deleteBasket={() => {
+                setIsOpenDeleteModal(true);
+                openModal();
+              }}
+            />
+            <div className="xl:px-40.5">
+              <ProgressBar progress={"basket"} />
+            </div>
           </div>
 
+          {/* cart items for mobile */}
           <div className="lg:hidden">
             {cart &&
               cart.items &&
@@ -82,14 +91,14 @@ export default function Page() {
                 <CartItemMobile
                   key={item.id}
                   item={item}
-                  onIncrease={handleIncreaseQuantity}
-                  onDecrease={handleDecreaseQuantity}
-                  onDelete={removeCartItem}
+                  updateCartItemQuantity={updateCartItemQuantity}
+                  removeCartItem={removeCartItem}
                 />
               ))}
           </div>
 
           <div className="lg:flex lg:justify-evenly lg:gap-6">
+            {/* cart items for desktop */}
             <div className="hidden lg:block rounded-2xl border border-neutral-gray-4 p-8 max-w-222 max-h-max lg:mb-22">
               <div className="space-y-6">
                 <div className="grid grid-cols-4 text-neutral-gray-12 font-bold text-lg leading-5.5">
@@ -109,11 +118,12 @@ export default function Page() {
                       index={index}
                       onIncrease={handleIncreaseQuantity}
                       onDecrease={handleDecreaseQuantity}
-                      onDelete={removeCartItem}
+                      onDelete={handleDeleteItem}
                     />
                   ))}
               </div>
             </div>
+
             <BasketDetailsCard
               step={1}
               count={countOfProduct}

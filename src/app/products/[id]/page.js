@@ -153,7 +153,7 @@ export default function Page() {
     }
   };
 
-  const addProductToBasket = () => {
+  const addProductToBasket = async () => {
     const needsColor = product.colors && product.colors.length > 0;
     const needsSize = product.sizes && product.sizes.length > 0;
     if (!token) {
@@ -169,7 +169,16 @@ export default function Page() {
       return;
     }
 
-    addToCart(product.id, 1, selectedColor, selectedSize);
+    try {
+      await addToCart(product.id, 1, selectedColor, selectedSize);
+
+      router.push('/cart')
+
+
+    } catch (error) {
+      console.log(error);
+
+    }
   };
 
   return (

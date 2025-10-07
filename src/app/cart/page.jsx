@@ -1,14 +1,16 @@
 "use client";
 
-import BasketDetailsCard from "@/components/BasketDetailsCard";
-import ProgressBar from "@/components/ProgressBar";
-import Image from "next/image";
-import React, { useState } from "react";
-import DeleteModal from "@/components/DeleteModal";
+import { useState } from "react";
+import { useScrollLockContext } from "@/context/ScrollLockContext";
 import { useBasketContext } from "@/context/BasketContext";
 import { toast, ToastContainer } from "react-toastify";
-import { useScrollLockContext } from "@/context/ScrollLockContext";
+import BasketDetailsCard from "@/components/BasketDetailsCard";
+import ProgressBar from "@/components/ProgressBar";
+import DeleteModal from "@/components/DeleteModal";
 import Empty from "./components/Empty";
+import PageHeader from "./components/PageHeader";
+import CartItemDesktop from "./components/CartItemDesktop";
+import CartItemMobile from "./components/CartItemMobile";
 
 export default function Page() {
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
@@ -63,30 +65,12 @@ export default function Page() {
         <Empty />
       ) : (
         <>
-          <div className="mt-6 flex justify-between items-center lg:hidden">
-            <Image
-              width={24}
-              height={24}
-              className="cursor-pointer"
-              src="/img/arrow-right-6.svg"
-              alt="Back"
-              onClick={() => router.back()}
-            />
-            <h3 className="text-xl font-semibold leading-6 text-neutral-gray-13">
-              سبد خرید
-            </h3>
-            <Image
-              width={24}
-              height={24}
-              className="cursor-pointer"
-              src="/img/trash-2.svg"
-              alt="Clear Cart"
-              onClick={() => {
-                setIsOpenDeleteModal(true);
-                openModal();
-              }}
-            />
-          </div>
+          <PageHeader
+            deleteBasket={() => {
+              setIsOpenDeleteModal(true);
+              openModal();
+            }}
+          />
           <div className="xl:px-40.5">
             <ProgressBar progress={"basket"} />
           </div>
@@ -95,109 +79,13 @@ export default function Page() {
             {cart &&
               cart.items &&
               cart.items.map((item) => (
-                <div
+                <CartItemMobile
                   key={item.id}
-                  className="flex items-center gap-2 border-b border-neutral-gray-4 pb-4 mb-4"
-                >
-                  <Image
-                    width={88}
-                    height={116}
-                    src={item.product.images[0].imageUrl}
-                    alt={item.product.name}
-                  />
-                  <div className="w-full">
-                    <p className="text-sm leading-5 text-neutral-gray-11">
-                      {item.product.name}
-                    </p>
-                    <div className="flex items-center gap-4 my-3.75">
-                      {item.productSize && (
-                        <p className="text-xs leading-4.5 text-neutral-gray-9">
-                          سایز: {item.productSize.size.name}
-                        </p>
-                      )}
-                      {item.productColor && (
-                        <div className="flex items-center gap-2">
-                          <p className="text-xs leading-4.5 text-neutral-gray-9">
-                            رنگ:
-                          </p>
-                          <div
-                            style={{
-                              backgroundColor: item.productColor.color.hexCode,
-                            }}
-                            className="w-5 h-5 rounded-sm"
-                          ></div>
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="flex items-center justify-between gap-4">
-                      <div>
-                        {item.product.isDiscounted ? (
-                          <div className="flex items-center gap-1">
-                            <p className="text-sm leading-4.5 text-neutral-gray-7 line-through">
-                              {item.product.price.toLocaleString()}
-                            </p>
-                            <div className="px-2 py-0.5 bg-cognac-primery rounded-100 text-white text-sm leading-5">
-                              {(
-                                ((item.product.price -
-                                  item.product.discountedPrice) /
-                                  item.product.price) *
-                                100
-                              ).toFixed(0) + "%"}
-                            </div>
-                          </div>
-                        ) : null}
-                        <p className="text-neutral-gray-11 text-sm leading-5 mt-1">
-                          {item.product.isDiscounted
-                            ? item.product.discountedPrice.toLocaleString()
-                            : item.product.price.toLocaleString()}{" "}
-                          تومان
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-4">
-                        <button
-                          onClick={() =>
-                            handleIncreaseQuantity(item.id, item.quantity)
-                          }
-                          className="p-3 rounded-lg border border-neutral-gray-8 cursor-pointer"
-                        >
-                          <Image
-                            width={16}
-                            height={16}
-                            src="/img/add.svg"
-                            alt="Add"
-                          />
-                        </button>
-                        <span>{item.quantity}</span>
-                        <button className="p-3 rounded-lg border border-neutral-gray-8">
-                          {item.quantity === 1 ? (
-                            <Image
-                              onClick={async () => {
-                                await removeCartItem(item.id);
-                              }}
-                              width={16}
-                              height={16}
-                              src="/img/trash.svg"
-                              className="cursor-pointer"
-                              alt="Remove"
-                            />
-                          ) : (
-                            <Image
-                              onClick={() => {
-                                handleDecreaseQuantity(item.id, item.quantity);
-                              }}
-                              width={16}
-                              height={16}
-                              src="/img/minus.svg"
-                              className="cursor-pointer"
-                              alt="Minus"
-                            />
-                          )}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                  item={item}
+                  onIncrease={handleIncreaseQuantity}
+                  onDecrease={handleDecreaseQuantity}
+                  onDelete={removeCartItem}
+                />
               ))}
           </div>
 
@@ -214,132 +102,15 @@ export default function Page() {
                 {cart &&
                   cart.items &&
                   cart.items.map((item, index) => (
-                    <div key={item.id} className="space-y-3">
-                      <div
-                        className={`grid grid-cols-4 items-center ${
-                          index !== cart.items.length - 1
-                            ? "border-b border-gray-200 pb-6"
-                            : ""
-                        }`}
-                      >
-                        <div className="flex gap-4">
-                          <Image
-                            className="object-cover max-w-21 max-h-21 rounded-lg"
-                            width={84}
-                            height={84}
-                            src={item.product.images[0].imageUrl}
-                            alt={item.product.name}
-                          />
-                          <div>
-                            <p className="leading-7 text-neutral-gray-10 xl:text-nowrap">
-                              {item.product.name}
-                            </p>
-                            {item.productSize && (
-                              <p className="text-sm leading-6 text-neutral-gray-10">
-                                سایز: {item.productSize.size.name}
-                              </p>
-                            )}
-                            {item.productColor && (
-                              <div className="flex items-center gap-2">
-                                <p className="text-sm leading-6 text-neutral-gray-10">
-                                  رنگ:
-                                </p>
-                                <div
-                                  style={{
-                                    backgroundColor:
-                                      item.productColor.color.hexCode,
-                                  }}
-                                  className="w-5 h-5 rounded-sm"
-                                ></div>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-
-                        <div className="flex justify-center items-center">
-                          <div>
-                            {item.product.isDiscounted ? (
-                              <div className="flex items-center gap-1">
-                                <p className="text-sm leading-6 text-neutral-gray-7 line-through">
-                                  {item.product.price.toLocaleString()}
-                                </p>
-                                <div className="px-3 py-1 bg-cognac-primery rounded-100 text-white text-sm leading-5">
-                                  {(
-                                    ((item.product.price -
-                                      item.product.discountedPrice) /
-                                      item.product.price) *
-                                    100
-                                  ).toFixed(0) + "%"}
-                                </div>
-                              </div>
-                            ) : null}
-                            <p className="text-neutral-gray-10 text-sm leading-6">
-                              {item.product.isDiscounted
-                                ? item.product.discountedPrice.toLocaleString()
-                                : item.product.price.toLocaleString()}
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="flex justify-center items-center">
-                          <div className="flex items-center gap-4">
-                            <button
-                              onClick={() =>
-                                handleIncreaseQuantity(item.id, item.quantity)
-                              }
-                              className="p-3 rounded-lg border border-neutral-gray-8 cursor-pointer"
-                            >
-                              <Image
-                                width={16}
-                                height={16}
-                                src="/img/add.svg"
-                                alt="Add"
-                              />
-                            </button>
-                            <span>{item.quantity}</span>
-                            <button className="p-3 rounded-lg border border-neutral-gray-8">
-                              {item.quantity === 1 ? (
-                                <Image
-                                  onClick={async () => {
-                                    await removeCartItem(item.id);
-                                  }}
-                                  width={16}
-                                  height={16}
-                                  src="/img/trash.svg"
-                                  className="cursor-pointer"
-                                  alt="Remove"
-                                />
-                              ) : (
-                                <Image
-                                  onClick={() => {
-                                    handleDecreaseQuantity(
-                                      item.id,
-                                      item.quantity
-                                    );
-                                  }}
-                                  width={16}
-                                  height={16}
-                                  src="/img/minus.svg"
-                                  className="cursor-pointer"
-                                  alt="Minus"
-                                />
-                              )}
-                            </button>
-                          </div>
-                        </div>
-
-                        <div className="flex justify-end items-center">
-                          <p className="text-sm leading-6 text-neutral-gray-10">
-                            {(
-                              (item.product.isDiscounted
-                                ? item.product.discountedPrice
-                                : item.product.price) * item.quantity
-                            ).toLocaleString()}{" "}
-                            تومان
-                          </p>
-                        </div>
-                      </div>
-                    </div>
+                    <CartItemDesktop
+                      key={item.id}
+                      totalCount={cart.items.length}
+                      item={item}
+                      index={index}
+                      onIncrease={handleIncreaseQuantity}
+                      onDecrease={handleDecreaseQuantity}
+                      onDelete={removeCartItem}
+                    />
                   ))}
               </div>
             </div>

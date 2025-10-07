@@ -2,11 +2,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { ClipLoader } from "react-spinners";
 
-export default function CartItemMobile({
-  item,
-  updateCartItemQuantity,
-  removeCartItem,
-}) {
+export default function CartItemMobile({ item, onUpdate, onDelete }) {
   const [loading, setLoading] = useState({
     increase: false,
     decrease: false,
@@ -16,7 +12,7 @@ export default function CartItemMobile({
   const handleIncrease = async () => {
     try {
       setLoading((prev) => ({ ...prev, increase: true }));
-      await updateCartItemQuantity(item.id, item.quantity + 1);
+      await onUpdate(item.id, item.quantity + 1);
     } catch (error) {
       toast.error("خطایی در افزایش تعداد رخ داد.");
     } finally {
@@ -28,9 +24,9 @@ export default function CartItemMobile({
     try {
       setLoading((prev) => ({ ...prev, decrease: true }));
       if (item.quantity === 1) {
-        await removeCartItem(item.id);
+        await onDelete(item.id);
       } else {
-        await updateCartItemQuantity(item.id, item.quantity - 1);
+        await onUpdate(item.id, item.quantity - 1);
       }
     } catch (error) {
       toast.error("خطایی در کاهش تعداد رخ داد.");
@@ -42,7 +38,7 @@ export default function CartItemMobile({
   const handleDelete = async () => {
     try {
       setLoading((prev) => ({ ...prev, delete: true }));
-      await removeCartItem(item.id);
+      await onDelete(item.id);
     } catch (error) {
       toast.error("خطایی در حذف محصول رخ داد.");
     } finally {

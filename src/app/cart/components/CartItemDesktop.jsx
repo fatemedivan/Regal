@@ -1,13 +1,56 @@
 import Image from "next/image";
+import { useState } from "react";
+import { ClipLoader } from "react-spinners";
 
 export default function CartItemDesktop({
   item,
   index,
   totalCount,
-  onIncrease,
-  onDecrease,
+  onUpdate,
   onDelete,
 }) {
+  const [loading, setLoading] = useState({
+    increase: false,
+    decrease: false,
+    delete: false,
+  });
+
+  const handleIncrease = async () => {
+    try {
+      setLoading((prev) => ({ ...prev, increase: true }));
+      await onUpdate(item.id, item.quantity + 1);
+    } catch (error) {
+      toast.error("خطایی در افزایش تعداد رخ داد.");
+    } finally {
+      setLoading((prev) => ({ ...prev, increase: false }));
+    }
+  };
+
+  const handleDecrease = async () => {
+    try {
+      setLoading((prev) => ({ ...prev, decrease: true }));
+      if (item.quantity === 1) {
+        await onDelete(item.id);
+      } else {
+        await onUpdate(item.id, item.quantity - 1);
+      }
+    } catch (error) {
+      toast.error("خطایی در کاهش تعداد رخ داد.");
+    } finally {
+      setLoading((prev) => ({ ...prev, decrease: false }));
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      setLoading((prev) => ({ ...prev, delete: true }));
+      await onDelete(item.id);
+    } catch (error) {
+      toast.error("خطایی در حذف محصول رخ داد.");
+    } finally {
+      setLoading((prev) => ({ ...prev, delete: false }));
+    }
+  };
   return (
     <div className="space-y-3">
       <div
@@ -73,28 +116,38 @@ export default function CartItemDesktop({
         <div className="flex justify-center items-center">
           <div className="flex items-center gap-4">
             <button
-              onClick={() => onIncrease(item.id, item.quantity)}
-              className="p-3 rounded-lg border border-neutral-gray-8 cursor-pointer"
+              onClick={() => handleIncrease(item.id, item.quantity)}
+              className="p-3 max-w-10 max-h-10 rounded-lg border border-neutral-gray-8 cursor-pointer"
             >
-              <Image width={16} height={16} src="/img/add.svg" alt="Add" />
+              {loading.increase ? (
+                <ClipLoader size={16} className="w-4 h-4" color="#888" />
+              ) : (
+                <Image width={16} height={16} src="/img/add.svg" alt="Add" />
+              )}
             </button>
             <span>{item.quantity}</span>
-            <button className="p-3 rounded-lg border border-neutral-gray-8">
+            <button className="p-3 max-w-10 max-h-10 rounded-lg border border-neutral-gray-8">
               {item.quantity === 1 ? (
-                <Image
-                  onClick={async () => {
-                    await onDelete(item.id);
-                  }}
-                  width={16}
-                  height={16}
-                  src="/img/trash.svg"
-                  className="cursor-pointer"
-                  alt="Remove"
-                />
+                loading.delete ? (
+                  <ClipLoader size={16} className="w-4 h-4" color="#888" />
+                ) : (
+                  <Image
+                    onClick={async () => {
+                      await handleDelete(item.id);
+                    }}
+                    width={16}
+                    height={16}
+                    src="/img/trash.svg"
+                    className="cursor-pointer"
+                    alt="Remove"
+                  />
+                )
+              ) : loading.decrease ? (
+                <ClipLoader size={16} className="w-4 h-4" color="#888" />
               ) : (
                 <Image
                   onClick={() => {
-                    onDecrease(item.id, item.quantity);
+                    handleDecrease(item.id, item.quantity);
                   }}
                   width={16}
                   height={16}

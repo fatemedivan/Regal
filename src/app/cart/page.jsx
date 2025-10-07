@@ -15,6 +15,7 @@ import CartItemMobile from "./components/CartItemMobile";
 export default function Page() {
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const { openModal, closeModal } = useScrollLockContext();
+  const [isDeleting, setIsDeleting] = useState(false);
   const {
     cart,
     countOfProduct,
@@ -25,41 +26,25 @@ export default function Page() {
     clearEntireCart,
   } = useBasketContext();
 
-  const handleIncreaseQuantity = async (cartItemId, currentQuantity) => {
-    try {
-      await updateCartItemQuantity(cartItemId, currentQuantity + 1);
-    } catch (error) {
-      toast.error("خطایی در افزایش تعداد رخ داد.");
-    }
+  const handleCloseDeleteModal = () => {
+    console.log("Closing modal...");
+    setIsOpenDeleteModal(false);
+    closeModal();
   };
 
-  const handleDecreaseQuantity = async (cartItemId, currentQuantity) => {
-    try {
-      if (currentQuantity === 1) {
-        await removeCartItem(cartItemId);
-      } else {
-        await updateCartItemQuantity(cartItemId, currentQuantity - 1);
-      }
-    } catch (error) {
-      toast.error("خطایی در کاهش تعداد رخ داد.");
-    }
-  };
-
-  const handleDeleteItem = async (cartItemId) => {
-    try {
-      await removeCartItem(cartItemId);
-    } catch (error) {
-      toast.error("خطایی در حذف محصول رخ داد.");
-    }
-  };
   const handleDeleteEntireBasket = async () => {
     try {
+      setIsDeleting(true);
+      console.log("Starting delete...");
       await clearEntireCart();
+      console.log("Delete completed, closing modal...");
       setIsOpenDeleteModal(false);
       closeModal();
     } catch (error) {
+      console.error("Delete error:", error);
       toast.error("خطایی در حذف سبد خرید رخ داد.");
     } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -91,8 +76,8 @@ export default function Page() {
                 <CartItemMobile
                   key={item.id}
                   item={item}
-                  updateCartItemQuantity={updateCartItemQuantity}
-                  removeCartItem={removeCartItem}
+                  onUpdate={updateCartItemQuantity}
+                  onDelete={removeCartItem}
                 />
               ))}
           </div>
@@ -116,9 +101,8 @@ export default function Page() {
                       totalCount={cart.items.length}
                       item={item}
                       index={index}
-                      onIncrease={handleIncreaseQuantity}
-                      onDecrease={handleDecreaseQuantity}
-                      onDelete={handleDeleteItem}
+                      onUpdate={updateCartItemQuantity}
+                      onDelete={removeCartItem}
                     />
                   ))}
               </div>
@@ -137,14 +121,12 @@ export default function Page() {
           </div>
           {isOpenDeleteModal && (
             <DeleteModal
-              handleCloseModal={() => {
-                setIsOpenDeleteModal(false);
-                closeModal();
-              }}
+              handleCloseModal={handleCloseDeleteModal}
               handleAction={handleDeleteEntireBasket}
               title={"حذف سبد خرید"}
               subtitle={"آیا از حذف کل سبد خرید اطمینان دارید؟"}
               actiontitle={"حذف"}
+              isDeleting={isDeleting}
             />
           )}
         </>

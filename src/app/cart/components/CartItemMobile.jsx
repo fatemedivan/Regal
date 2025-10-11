@@ -1,50 +1,11 @@
 import Image from "next/image";
-import { useState } from "react";
 import { ClipLoader } from "react-spinners";
+import { useCartActions } from "../hook/useCart";
 
 export default function CartItemMobile({ item, onUpdate, onDelete }) {
-  const [loading, setLoading] = useState({
-    increase: false,
-    decrease: false,
-    delete: false,
-  });
+  const { loading, handleIncrease, handleDecrease, handleDelete } =
+    useCartActions(onUpdate, onDelete);
 
-  const handleIncrease = async () => {
-    try {
-      setLoading((prev) => ({ ...prev, increase: true }));
-      await onUpdate(item.id, item.quantity + 1);
-    } catch (error) {
-      toast.error("خطایی در افزایش تعداد رخ داد.");
-    } finally {
-      setLoading((prev) => ({ ...prev, increase: false }));
-    }
-  };
-
-  const handleDecrease = async () => {
-    try {
-      setLoading((prev) => ({ ...prev, decrease: true }));
-      if (item.quantity === 1) {
-        await onDelete(item.id);
-      } else {
-        await onUpdate(item.id, item.quantity - 1);
-      }
-    } catch (error) {
-      toast.error("خطایی در کاهش تعداد رخ داد.");
-    } finally {
-      setLoading((prev) => ({ ...prev, decrease: false }));
-    }
-  };
-
-  const handleDelete = async () => {
-    try {
-      setLoading((prev) => ({ ...prev, delete: true }));
-      await onDelete(item.id);
-    } catch (error) {
-      toast.error("خطایی در حذف محصول رخ داد.");
-    } finally {
-      setLoading((prev) => ({ ...prev, delete: false }));
-    }
-  };
   return (
     <div className="flex items-center gap-2 border-b border-neutral-gray-4 pb-4 mb-4">
       <Image
@@ -101,7 +62,7 @@ export default function CartItemMobile({ item, onUpdate, onDelete }) {
           </div>
           <div className="flex items-center gap-4">
             <button
-              onClick={() => handleIncrease(item.id, item.quantity)}
+              onClick={() => handleIncrease(item)}
               className="p-3 max-w-10 max-h-10 rounded-lg border border-neutral-gray-8 cursor-pointer"
             >
               {loading.increase ? (
@@ -118,7 +79,7 @@ export default function CartItemMobile({ item, onUpdate, onDelete }) {
                 ) : (
                   <Image
                     onClick={async () => {
-                      await handleDelete(item.id);
+                      await handleDelete(item);
                     }}
                     width={16}
                     height={16}
@@ -132,7 +93,7 @@ export default function CartItemMobile({ item, onUpdate, onDelete }) {
               ) : (
                 <Image
                   onClick={() => {
-                    handleDecrease(item.id, item.quantity);
+                    handleDecrease(item);
                   }}
                   width={16}
                   height={16}

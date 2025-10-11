@@ -27,7 +27,6 @@ export default function Page() {
   } = useBasketContext();
 
   const handleCloseDeleteModal = () => {
-    console.log("Closing modal...");
     setIsOpenDeleteModal(false);
     closeModal();
   };
@@ -35,13 +34,10 @@ export default function Page() {
   const handleDeleteEntireBasket = async () => {
     try {
       setIsDeleting(true);
-      console.log("Starting delete...");
       await clearEntireCart();
-      console.log("Delete completed, closing modal...");
       setIsOpenDeleteModal(false);
       closeModal();
     } catch (error) {
-      console.error("Delete error:", error);
       toast.error("خطایی در حذف سبد خرید رخ داد.");
     } finally {
       setIsDeleting(false);

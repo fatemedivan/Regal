@@ -44,12 +44,21 @@ export default function Modal({ handleCloseModal, handleAction, title, subtitle,
           </button>
           <button
             onClick={(e) => {
-              e.stopPropagation(); 
-              handleAction();
+              e.stopPropagation();
+             // handleAction();
             }}
-            className={`leading-5.5 flex justify-center items-center bg-error-primery text-white py-3.25 px-16.5 rounded-lg cursor-pointer lg:px-18.75 `}
+            className={`leading-5.5 max-w-40 h-12.5 flex justify-center items-center bg-error-primery text-white py-3.25 px-16.5 rounded-lg cursor-pointer lg:px-18.75 `}
           >
-            {isDeleting ? <BeatLoader size={8} color="#fff" className="py-1.5" /> : actiontitle}
+            {/* {isDeleting ? <BeatLoader size={8} color="#fff" className="py-1.5" /> : actiontitle} */}
+            {isDeleting ? (
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[0ms]"></div>
+                <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[150ms]"></div>
+                <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[300ms]"></div>
+              </div>
+            ) : (
+              <p>حذف</p>
+            )}
           </button>
         </div>
       </div>

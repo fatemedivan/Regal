@@ -27,7 +27,7 @@ export default function Navbar() {
   const { role } = useAuthContext();
 
   return (
-    <div>
+    <>
       <nav className="relative z-50 bg-white p-5 border-b-1 border-neutral-gray-4 lg:py-6.25 lg:px-12 lg:border-none">
         <div className="container mx-auto flex justify-between items-center ">
           <Link href={"/"}>
@@ -317,6 +317,6 @@ export default function Navbar() {
           handleCloseMenu={handleCloseMenu}
         />
       )}
-    </div>
+    </>
   );
 }

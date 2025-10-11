@@ -8,9 +8,11 @@ import BasketDetailsCard from "@/components/BasketDetailsCard";
 import ProgressBar from "@/components/ProgressBar";
 import DeleteModal from "@/components/DeleteModal";
 import Empty from "./components/Empty";
-import PageHeader from "./components/PageHeader";
+
 import CartItemDesktop from "./components/CartItemDesktop";
 import CartItemMobile from "./components/CartItemMobile";
+import PageHeader from "@/components/PageHeader";
+import Image from "next/image";
 
 export default function Page() {
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
@@ -52,16 +54,20 @@ export default function Page() {
       ) : (
         <>
           {/* header */}
-          <div>
-            <PageHeader
-              deleteBasket={() => {
-                setIsOpenDeleteModal(true);
-                openModal();
-              }}
-            />
-            <div className="xl:px-40.5">
-              <ProgressBar progress={"basket"} />
-            </div>
+          <div className="mt-5">
+            <PageHeader title={"سبد خرید"} steper={"basket"}>
+              <Image
+                width={24}
+                height={24}
+                className="cursor-pointer"
+                src="/img/trash-2.svg"
+                alt="Clear Cart"
+                onClick={() => {
+                  setIsOpenDeleteModal(true);
+                  openModal();
+                }}
+              />
+            </PageHeader>
           </div>
 
           {/* cart items for mobile */}

@@ -1,5 +1,6 @@
 "use client";
 import BasketDetailsCard from "@/components/BasketDetailsCard";
+import PageHeader from "@/components/PageHeader";
 import ProgressBar from "@/components/ProgressBar";
 import { useBasketContext } from "@/context/BasketContext";
 import Image from "next/image";
@@ -8,7 +9,8 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export default function Page() {
-  const { countOfProduct, totalPric, cart, clearEntireCart } = useBasketContext();
+  const { countOfProduct, totalPric, cart, clearEntireCart } =
+    useBasketContext();
   const router = useRouter();
   const [token, setToken] = useState("");
   const [fullAddress, setFullAddress] = useState("");
@@ -16,12 +18,13 @@ export default function Page() {
   const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
-
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
       setToken(storedToken);
     } else {
-      toast.error("برای ادامه فرآیند سفارش، لطفاً ابتدا وارد حساب کاربری خود شوید.");
+      toast.error(
+        "برای ادامه فرآیند سفارش، لطفاً ابتدا وارد حساب کاربری خود شوید."
+      );
       router.push("/auth/login");
       return;
     }
@@ -34,19 +37,16 @@ export default function Page() {
       return;
     }
 
-
     if (!cart || cart.length === 0) {
       toast.error("سبد خرید شما خالی است و امکان ثبت سفارش وجود ندارد.");
       router.push("/cart");
       return;
     }
-
   }, [router, cart]);
 
   const addOrders = async () => {
     setErrorMessage(null);
     setIsLoading(true);
-
 
     if (!token) {
       toast.error("خطا: توکن احراز هویت یافت نشد. لطفاً دوباره وارد شوید.");
@@ -73,8 +73,8 @@ export default function Page() {
         },
         body: JSON.stringify({
           fullAddress: fullAddress,
-          deliveryMethod: 'COURIER',
-          paymentMethod: 'online'
+          deliveryMethod: "COURIER",
+          paymentMethod: "online",
         }),
       });
 
@@ -91,16 +91,20 @@ export default function Page() {
         setErrorMessage(apiErrorMessage);
         toast.error(apiErrorMessage);
 
-
         if (res.status === 401) {
           router.push("/auth/login");
-        } else if (res.status === 400 && apiErrorMessage.includes("سبد خرید شما خالی است.")) {
+        } else if (
+          res.status === 400 &&
+          apiErrorMessage.includes("سبد خرید شما خالی است.")
+        ) {
           router.push("/cart");
         }
       }
     } catch (err) {
       console.error("خطا در برقراری ارتباط با سرور هنگام ثبت سفارش:", err);
-      setErrorMessage("مشکل در اتصال به سرور. لطفاً از اتصال اینترنت خود مطمئن شده و دوباره امتحان کنید.");
+      setErrorMessage(
+        "مشکل در اتصال به سرور. لطفاً از اتصال اینترنت خود مطمئن شده و دوباره امتحان کنید."
+      );
       toast.error("خطای شبکه یا سرور. لطفاً دوباره تلاش کنید.");
     } finally {
       setIsLoading(false);
@@ -109,25 +113,7 @@ export default function Page() {
 
   return (
     <div className="container mx-auto px-5 pt-6 pb-16 lg:pt-0 lg:px-12">
-      <div className="flex justify-between items-center mb-6 lg:hidden">
-        <Image
-          width={24}
-          height={24}
-          className="cursor-pointer"
-          src="/img/arrow-right-6.svg"
-          alt=""
-          onClick={() => router.back()}
-        />
-        <p className="font-semibold text-xl leading-6 text-neutral-gray-13">
-          پرداخت
-        </p>
-        <div></div>
-      </div>
-
-      <div className="xl:px-40.5">
-        <ProgressBar progress={"payment"} />
-      </div>
-
+      <PageHeader title={"پرداخت"} steper={"payment"} />
       <div className="mt-8 lg:flex lg:gap-6 lg:justify-between lg:mt-12">
         <div className="flex-1">
           <h5 className="font-semibold leading-5 text-black mb-4 lg:font-bold lg:text-lg lg:leading-5.5 lg:mb-6">

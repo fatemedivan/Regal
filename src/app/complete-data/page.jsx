@@ -13,6 +13,7 @@ import { useBasketContext } from "@/context/BasketContext";
 import dayjs from "dayjs";
 import jalali from "jalali-dayjs";
 import "dayjs/locale/fa";
+import PageHeader from "@/components/PageHeader";
 
 export default function Page() {
   const router = useRouter();
@@ -24,7 +25,7 @@ export default function Page() {
   const [isHadAddress, setIsHadAddress] = useState(false);
   const [addresses, setAddresses] = useState([]);
   const [token, setToken] = useState("");
-  const [mainDate, setMainDate] = useState('')
+  const [mainDate, setMainDate] = useState("");
   const [date, setDate] = useState([]);
   const [time, setTime] = useState([
     "ساعت ۹ تا ۱۲",
@@ -119,27 +120,9 @@ export default function Page() {
   }, []);
   return (
     <div className="container mx-auto px-5 pt-6 pb-16 lg:pt-0 lg:px-12 lg:pb-22">
-      <div className="flex justify-between items-center mb-8 lg:hidden">
-        <Image
-          width={24}
-          height={24}
-          className="cursor-pointer"
-          src="/img/arrow-right-6.svg"
-          alt=""
-          onClick={() => router.back()}
-        />
-        <p className="font-semibold text-xl leading-6 text-neutral-gray-13">
-          تکمیل اطلاعات
-        </p>
-        <div></div>
-      </div>
-      <div className="xl:px-40.5">
-        <ProgressBar progress={"completeData"} />
-      </div>
+      <PageHeader title={"تکمیل اطلاعات"} steper={"completeData"} />
       <div className="lg:flex lg:justify-between lg:gap-6">
         <div className="flex-1">
-
-
           <div className="mb-9">
             {isHadAddress ? (
               <>
@@ -312,10 +295,18 @@ export default function Page() {
       </div>
       <div className="lg:hidden">
         {isShowDateModal && (
-          <DateModal handleCloseModal={handleCloseDateModal} mainDate={mainDate} setMainDate={setMainDate} />
+          <DateModal
+            handleCloseModal={handleCloseDateModal}
+            mainDate={mainDate}
+            setMainDate={setMainDate}
+          />
         )}
         {isShowTimeModal && (
-          <TimeModal handleCloseModal={handleCloseTimeModal} mainTime={mainTime} setMainTime={setMainTime} />
+          <TimeModal
+            handleCloseModal={handleCloseTimeModal}
+            mainTime={mainTime}
+            setMainTime={setMainTime}
+          />
         )}
       </div>
     </div>

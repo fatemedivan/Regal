@@ -4,7 +4,7 @@ import PageHeader from "@/components/PageHeader";
 import { useBasketContext } from "@/context/BasketContext";
 import getToken from "@/utils/getToken";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export default function Page() {

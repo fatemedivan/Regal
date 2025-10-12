@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useBasketContext } from "@/context/BasketContext";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import BasketDetailsCard from "@/components/BasketDetailsCard";
 import PageHeader from "@/components/PageHeader";
 import getToken from "@/utils/getToken";
@@ -12,6 +12,7 @@ export default function Page() {
     useBasketContext();
   const router = useRouter();
   const token = getToken();
+  const [offCode, setOffCode] = useState("");
   const [fullAddress, setFullAddress] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -80,6 +81,7 @@ export default function Page() {
 
   return (
     <div className="container mx-auto px-5 pt-6 pb-16 lg:pt-0 lg:px-12">
+      <ToastContainer autoClose={2000} className="custom-toast-container" />
       <PageHeader title={"پرداخت"} steper={"payment"} />
       <div className="mt-8 lg:flex lg:gap-6 lg:justify-between lg:mt-12">
         <div className="flex-1">
@@ -89,11 +91,22 @@ export default function Page() {
           <div className="lg:border lg:border-neutral-gray-4 lg:p-6 lg:w-full lg:rounded-2xl lg:mb-8">
             <div className="flex items-center gap-2 mb-8 lg:mb-0">
               <input
+                value={offCode}
+                onChange={(e) => setOffCode(e.target.value)}
                 type="text"
                 placeholder="کد تخفیف"
                 className="border border-neutral-gray-4 py-3.75 px-4 w-59 rounded-lg placeholder:text-neutral-gray-7 placeholder:text-xs placeholder:leading-4.5 lg:placeholder:text-[1rem] lg:placeholder:leading-5.5 lg:w-84 outline-none"
               />
-              <button className="py-3.75 px-3 sm:px-6 border border-cognac-primery text-cognac-primery rounded-lg leading-5.5 lg:px-12.5 cursor-pointer">
+              <button
+                onClick={() => {
+                  if (!offCode.trim()) {
+                    toast.warning("کد تخفیف را به درستی وارد کنید");
+                  } else {
+                    toast.warning("این کد تخفیف اعتبار ندارد");
+                  }
+                }}
+                className="py-3.75 px-3 sm:px-6 border border-cognac-primery text-cognac-primery rounded-lg leading-5.5 lg:px-12.5 cursor-pointer"
+              >
                 اعمال کد
               </button>
             </div>

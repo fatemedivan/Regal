@@ -2,23 +2,33 @@
 import BasketDetailsCard from "@/components/BasketDetailsCard";
 import PageHeader from "@/components/PageHeader";
 import { useBasketContext } from "@/context/BasketContext";
-import getToken from "@/utils/getToken";
 import { useRouter } from "next/navigation";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export default function Page() {
   const { countOfProduct, totalPric, cart, clearEntireCart } =
     useBasketContext();
   const router = useRouter();
-  const token = getToken();
+  const [token, setToken] = useState("");
   const [fullAddress, setFullAddress] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const address = sessionStorage.getItem("full address");
-    if (address) {
-      setFullAddress(address);
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    } else {
+      toast.error(
+        "برای ادامه فرآیند سفارش، لطفاً ابتدا وارد حساب کاربری خود شوید."
+      );
+      router.push("/auth/login");
+      return;
+    }
+
+    const storedFullAddress = sessionStorage.getItem("full address");
+    if (storedFullAddress) {
+      setFullAddress(storedFullAddress);
     } else {
       toast.error("لطفاً آدرس تحویل سفارش را مشخص کنید.");
       return;
@@ -31,15 +41,15 @@ export default function Page() {
     }
   }, [router, cart]);
 
-  const addOrders = useCallback(async () => {
+  const addOrders = async () => {
     if (!token)
-      return toast.error("توکن احراز هویت یافت نشد. لطفاً وارد شوید.");
-    if (!fullAddress) return toast.error("آدرس تحویل سفارش مشخص نشده است.");
-    if (!cart?.length) return toast.error("سبد خرید شما خالی است.");
-
-    setIsLoading(true);
+      toast.error("خطا: توکن احراز هویت یافت نشد. لطفاً دوباره وارد شوید.");
+    if (!fullAddress) toast.error("خطا: آدرس تحویل سفارش مشخص نشده است.");
+    if (!cart || cart.length === 0)
+      toast.error("خطا: سبد خرید شما خالی است و نمی‌توانید سفارش ثبت کنید.");
 
     try {
+      setIsLoading(true);
       const res = await fetch(`/api/orders`, {
         method: "POST",
         headers: {
@@ -52,26 +62,24 @@ export default function Page() {
           paymentMethod: "online",
         }),
       });
-      const data = await res.json();
 
-      if (!res.ok) {
-        toast.error(data.message || "خطا در ثبت سفارش.");
+      if (res.ok) {
+        const data = await res.json();
+        toast.success(`سفارش شما با موفقیت ثبت شد! کد سفارش: ${data.orderId}`);
+        clearEntireCart();
+        sessionStorage.removeItem("full address");
+
+        router.push("/payment/success");
+      } else {
+        toast.error("خطا در ثبت سفارش.");
         if (res.status === 401) router.push("/auth/login");
-        if (res.status === 400 && data.message?.includes("سبد خرید"))
-          router.push("/cart");
-        return;
       }
-
-      toast.success(`سفارش شما با موفقیت ثبت شد! کد سفارش: ${data.orderId}`);
-      clearEntireCart();
-      sessionStorage.removeItem("full address");
-      router.push("/payment/success");
     } catch (err) {
       toast.error("خطای شبکه یا سرور. لطفاً دوباره تلاش کنید.");
     } finally {
       setIsLoading(false);
     }
-  }, [token, fullAddress, cart, clearEntireCart, router]);
+  };
 
   return (
     <div className="container mx-auto px-5 pt-6 pb-16 lg:pt-0 lg:px-12">

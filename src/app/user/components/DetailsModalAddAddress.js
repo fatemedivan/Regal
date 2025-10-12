@@ -1,4 +1,5 @@
 import { useAuthContext } from "@/context/AuthContext";
+import getToken from "@/utils/getToken";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
@@ -10,7 +11,8 @@ export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) 
   const [postalCode, setPostalCode] = useState("");
   const [fullAddress, setFullAddress] = useState("");
   const [addressId, setAddressId] = useState("");
-  const [token, setToken] = useState("");
+ // const [token, setToken] = useState("");
+ const token = getToken()
   const [isOpenProvince, setIsOpenProvince] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -46,12 +48,12 @@ export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) 
 
   const { phoneNumber } = useAuthContext();
 
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const storedToken = localStorage.getItem("token");
+  //   if (storedToken) {
+  //     setToken(storedToken);
+  //   }
+  // }, []);
 
   useEffect(() => {
     const storedFullAddress = sessionStorage.getItem("full address");

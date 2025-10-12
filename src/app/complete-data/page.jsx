@@ -1,36 +1,33 @@
 "use client";
 
-import AdressCard from "./components/AdressCard";
-import BasketDetailsCard from "@/components/BasketDetailsCard";
-import DateModal from "@/app/complete-data/components/DateModal";
-import TimeModal from "@/app/complete-data/components/TimeModal";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-//import { useScrollLockContext } from "@/context/ScrollLockContext";
-import { useBasketContext } from "@/context/BasketContext";
+
 import dayjs from "dayjs";
 import jalali from "jalali-dayjs";
 import "dayjs/locale/fa";
+
+//import { useScrollLockContext } from "@/context/ScrollLockContext";
+import { useBasketContext } from "@/context/BasketContext";
+import AdressCard from "../../components/AdressCard";
+import BasketDetailsCard from "@/components/BasketDetailsCard";
+import DateModal from "@/app/complete-data/components/DateModal";
 import PageHeader from "@/components/PageHeader";
-import { Time } from "@/constants/complateData";
+import getToken from "@/utils/getToken";
+import EmptyAddressBox from "./components/EmptyAddressBox";
 
 export default function Page() {
   const router = useRouter();
-  const maxLenght = 200;
-  const [text, setText] = useState("");
-  const [selectedAddressId, setSelectedAddressId] = useState(null);
+  const token = getToken();
+  const { countOfProduct, totalPric, cart } = useBasketContext();
+  // const { isModalOpen, openModal, closeModal, setMobileOnlyLock } =
+  //   useScrollLockContext();
+
+  //handel date
   const [isShowDateModal, setIsShowDateModal] = useState(false);
-  const [isShowTimeModal, setIsShowTimeModal] = useState(false);
-  const [isHadAddress, setIsHadAddress] = useState(false);
-  const [addresses, setAddresses] = useState([]);
-  const [token, setToken] = useState("");
   const [mainDate, setMainDate] = useState("");
   const [date, setDate] = useState([]);
-  const [time, setTime] = useState([
-   
-  ]);
-
   dayjs.extend(jalali);
   dayjs.locale("fa");
   const getNextNDays = (n = 4) => {
@@ -65,28 +62,10 @@ export default function Page() {
     }
   }, [date]);
 
-  const [mainTime, setMainTime] = useState("ساعت ۹ تا ۱۲");
-
-  const handleCloseDateModal = () => {
-    setIsShowDateModal(false);
-   // closeModal();
-  };
-  const handleCloseTimeModal = () => {
-    setIsShowTimeModal(false);
-   // closeModal();
-  };
-
-  // const { isModalOpen, openModal, closeModal, setMobileOnlyLock } =
-  //   useScrollLockContext();
-  const { countOfProduct, totalPric, cart } = useBasketContext();
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-    }
-  }, []);
-
+  //handle addresses
+  const [selectedAddressId, setSelectedAddressId] = useState(null);
+  const [isHadAddress, setIsHadAddress] = useState(false);
+  const [addresses, setAddresses] = useState([]);
   useEffect(() => {
     if (!token) return;
     getAddresses();
@@ -98,11 +77,10 @@ export default function Page() {
     });
     if (res.ok) {
       const data = await res.json();
-      if (data) {
+      if (data.length > 0) {
         setIsHadAddress(true);
         setAddresses(data);
       }
-      console.log(data);
     }
     if (res.status === 404) {
       setIsHadAddress(false);
@@ -114,6 +92,7 @@ export default function Page() {
       sessionStorage.setItem("selectedAddressId", selectedAddressId);
     }
   }, []);
+
   return (
     <div className="container mx-auto px-5 pt-6 pb-16 lg:pt-0 lg:px-12 lg:pb-22">
       <PageHeader title={"تکمیل اطلاعات"} steper={"completeData"} />
@@ -155,22 +134,7 @@ export default function Page() {
                   ))}
               </>
             ) : (
-              <div>
-                <h5 className="font-semibold leading-5 text-black mb-4 lg:font-bold lg:text-lg lg:leading-5.5">
-                  لیست آدرس‌ها
-                </h5>
-                <div className="border border-neutral-gray-4 rounded-xl py-12 px-11.5 flex flex-col items-center justify-center gap-6 lg:rounded-2xl lg:gap-8">
-                  <p className="text-neutral-gray-9 leading-6 text-sm lg:text-[1rem] lg:leading-7">
-                    شما در حال حاضر هیچ آدرسی ثبت نکرده‌اید!
-                  </p>
-                  <button
-                    onClick={() => router.push("/user/addresses")}
-                    className="text-white bg-cognac-primery rounded-lg leading-5.5 py-3.25 px-9.5 lg:text-sm lg:leading-5 lg:px-7.25 lg:py-2.5 cursor-pointer"
-                  >
-                    افزودن آدرس
-                  </button>
-                </div>
-              </div>
+              <EmptyAddressBox />
             )}
           </div>
           <div className="mb-9">
@@ -181,8 +145,8 @@ export default function Page() {
               <div
                 onClick={() => {
                   setIsShowDateModal(!isShowDateModal);
-                 // setMobileOnlyLock(true);
-                //  isModalOpen ? closeModal() : openModal();
+                  // setMobileOnlyLock(true);
+                  //  isModalOpen ? closeModal() : openModal();
                 }}
                 className="px-4 py-3.75 border border-neutral-gray-4 rounded-lg flex justify-between items-center relative cursor-pointer lg:w-1/2"
               >
@@ -217,45 +181,6 @@ export default function Page() {
                   </ul>
                 )}
               </div>
-              <div
-                onClick={() => {
-                  setIsShowTimeModal(!isShowTimeModal);
-                //  setMobileOnlyLock(true);
-                 // isModalOpen ? closeModal() : openModal();
-                }}
-                className="px-4 py-3.75 border border-neutral-gray-4 rounded-lg flex justify-between items-center relative mt-3 cursor-pointer lg:mt-0 lg:w-1/2 "
-              >
-                <p className="text-xs leading-4.5 text-neutral-gray-13 lg:text-sm lg:leading-5">
-                  {mainTime}
-                </p>
-                <Image
-                  width={16}
-                  height={16}
-                  src="/img/arrow-down-2.svg"
-                  alt=""
-                />
-                <div className="absolute -top-2.5">
-                  <p className="text-neutral-gray-7 text-xs leading-4.5 font-normal bg-white px-1">
-                    بازه زمانی
-                  </p>
-                </div>
-                {isShowTimeModal && (
-                  <ul className="bg-white absolute w-full top-14 right-0 rounded-lg border border-neutral-gray-4 p-4 overflow-y-scroll max-h-48 hidden lg:block custom-scrollbar">
-                    {Time.map((time, index) => (
-                      <li
-                        key={index}
-                        onClick={() => {
-                          setIsShowTimeModal(false);
-                          setMainTime(time);
-                        }}
-                        className="text-xs leading-4.5 text-neutral-gray-11 p-2 rounded-sm hover:bg-neutral-gray-2 cursor-pointer"
-                      >
-                        {time}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
             </div>
           </div>
 
@@ -265,17 +190,10 @@ export default function Page() {
             </h5>
             <div className="p-4 border border-neutral-gray-4 rounded-lg">
               <textarea
-                value={text}
-                onChange={(e) => setText(e.target.value)}
                 maxLength={200}
                 placeholder="توضیحات سفارش"
                 className="placeholder:text-neutral-gray-7 placeholder:text-sm placeholder:leading-5 w-full h-full outline-none resize-none"
               ></textarea>
-              <div className="flex items-center justify-end">
-                <p className="text-xs text-neutral-gray-7 leading-4.5 ">
-                  {text.length}/{maxLenght}
-                </p>
-              </div>
             </div>
           </div>
         </div>
@@ -292,16 +210,9 @@ export default function Page() {
       <div className="lg:hidden">
         {isShowDateModal && (
           <DateModal
-            handleCloseModal={handleCloseDateModal}
+            handleCloseModal={() => setIsShowDateModal(false)}
             mainDate={mainDate}
             setMainDate={setMainDate}
-          />
-        )}
-        {isShowTimeModal && (
-          <TimeModal
-            handleCloseModal={handleCloseTimeModal}
-            mainTime={mainTime}
-            setMainTime={setMainTime}
           />
         )}
       </div>

@@ -1,8 +1,9 @@
 "use client";
-import AdressCard from "@/app/complete-data/components/AdressCard";
+import AdressCard from "@/components/AdressCard";
 import AddAddressModal from "@/app/user/components/AddAddressModal";
 import DetailsModalAddAddress from "@/app/user/components/DetailsModalAddAddress";
 import UserPannel from "@/app/user/components/UserPannel";
+import getToken from "@/utils/getToken";
 // import { useScrollLockContext } from "@/context/ScrollLockContext";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,15 +17,16 @@ export default function Page() {
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
   // const { openModal, closeModal } = useScrollLockContext();
-  const [token, setToken] = useState("");
+  //const [token, setToken] = useState("");
+  const token = getToken()
   const [addresses, setAddresses] = useState([]);
 
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const storedToken = localStorage.getItem("token");
+  //   if (storedToken) {
+  //     setToken(storedToken);
+  //   }
+  // }, []);
 
   useEffect(() => {
     sessionStorage.removeItem("addressId");
@@ -58,15 +60,15 @@ export default function Page() {
   };
   const handleCloseDetailsModal = () => {
     setIsOpenDetailsModal(false);
-   // closeModal();
+    // closeModal();
   };
   const handleCloseAddAddressModal = () => {
     setIsOpenAddAddressModal(false);
-   // closeModal();
+    // closeModal();
   };
   const handleOpenDetailsModal = () => {
     setIsOpenDetailsModal(true);
-   // openModal();
+    // openModal();
   };
   useEffect(() => {
     if (selectedAddressId) {
@@ -171,7 +173,7 @@ export default function Page() {
               <button
                 onClick={() => {
                   setIsOpenAddAddressModal(true);
-                //  openModal();
+                  //  openModal();
                 }}
                 className="bg-cognac-primery rounded-lg py-3.25 px-12 text-white leading-5.5 cursor-pointer"
               >

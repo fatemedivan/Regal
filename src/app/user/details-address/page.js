@@ -1,5 +1,6 @@
 "use client";
 import { useAuthContext } from "@/context/AuthContext";
+import getToken from "@/utils/getToken";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -12,7 +13,8 @@ export default function Page() {
   const [details, setDetails] = useState(""); 
   const [postalCode, setPostalCode] = useState("");
   const [fullAddress, setFullAddress] = useState("");
-  const [token, setToken] = useState("");
+ // const [token, setToken] = useState("");
+  const token = getToken()
   const [addressId, setAddressId] = useState(null);
   const [isOpenProvince, setIsOpenProvince] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -50,12 +52,12 @@ export default function Page() {
 
   const { phoneNumber } = useAuthContext();
 
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const storedToken = localStorage.getItem("token");
+  //   if (storedToken) {
+  //     setToken(storedToken);
+  //   }
+  // }, []);
 
   useEffect(() => {
    

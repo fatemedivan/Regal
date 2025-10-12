@@ -5,24 +5,26 @@ import { useRouter } from "next/navigation";
 // import { useScrollLockContext } from "@/context/ScrollLockContext";
 import { HashLoader } from "react-spinners";
 import ProductSearchItem from "./ProductSearchItem";
+import getToken from "@/utils/getToken";
 
 export default function Search({ handleCloseSearch }) {
   const router = useRouter();
   const [isSearching, setIsSearching] = useState(false);
   const [searchText, setSearchText] = useState("");
-  const [token, setToken] = useState(null);
+ // const [token, setToken] = useState(null);
+  const token = getToken()
   const [searchProducts, setSearchProducts] = useState([]);
   const [isEmptySearch, setIsEmptySearch] = useState(true);
   const [isNotFound, setIsNotFound] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   // const { closeModal } = useScrollLockContext();
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const storedToken = localStorage.getItem("token");
+  //   if (storedToken) {
+  //     setToken(storedToken);
+  //   }
+  // }, []);
 
   const headers = token
     ? {

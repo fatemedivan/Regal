@@ -11,13 +11,15 @@ import "@glidejs/glide/dist/css/glide.core.min.css";
 import Glide from "@glidejs/glide";
 import { toast, ToastContainer } from "react-toastify";
 import { HashLoader } from "react-spinners";
+import getToken from "@/utils/getToken";
 
 export default function Page() {
   const router = useRouter();
   const glideRef = useRef(null);
   const { id } = useParams();
 
-  const [token, setToken] = useState(null);
+  const token = getToken()
+ // const [token, setToken] = useState(null);
   const [product, setProduct] = useState({});
   const [currentImgSrc, setCurrentImgSrc] = useState("");
   const [similarProducts, setSimilarProducts] = useState([]);
@@ -30,12 +32,12 @@ export default function Page() {
   const [selectedSize, setSelectedSize] = useState(null);
   const { addToCart } = useBasketContext();
 
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const storedToken = localStorage.getItem("token");
+  //   if (storedToken) {
+  //     setToken(storedToken);
+  //   }
+  // }, []);
 
   const headers = token
     ? {

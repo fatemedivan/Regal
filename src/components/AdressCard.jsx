@@ -8,6 +8,7 @@ import { useAuthContext } from "@/context/AuthContext";
 import { toast, ToastContainer } from "react-toastify";
 import AddAddressModal from "@/app/user/components/AddAddressModal";
 import DetailsModalAddAddress from "@/app/user/components/DetailsModalAddAddress";
+import getToken from "@/utils/getToken";
 
 export default function AdressCard({
   selectedAddressId,
@@ -19,18 +20,19 @@ export default function AdressCard({
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [isOpenAddAddressModal, setIsOpenAddAddressModal] = useState(false);
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
-  const [token, setToken] = useState("");
+ // const [token, setToken] = useState("");
+ const token = getToken()
   const { phoneNumber, name, family } = useAuthContext();
   const handleCloseDeleteModal = () => {
     setIsOpenDeleteModal(false);
    // closeModal();
   };
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const storedToken = localStorage.getItem("token");
+  //   if (storedToken) {
+  //     setToken(storedToken);
+  //   }
+  // }, []);
 
   const deleteAddress = async () => {
     try {

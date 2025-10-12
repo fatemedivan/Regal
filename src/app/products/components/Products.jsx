@@ -3,7 +3,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState, useTransition } from "react";
 import Image from "next/image";
 import Sort from "./Sort";
-import { useScrollLockContext } from "@/context/ScrollLockContext";
+// import { useScrollLockContext } from "@/context/ScrollLockContext";
 import FilterMenu from "@/app/products/components/FilterMenu";
 import Pagination from "@/components/Pagination";
 import ProductSceleton from "@/components/ProductSceleton";
@@ -15,7 +15,7 @@ export default function Products({
   totalProducts,
 }) {
   const router = useRouter();
-  const { openModal, closeModal } = useScrollLockContext();
+  // const { openModal, closeModal } = useScrollLockContext();
   const searchParamsHook = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
@@ -70,7 +70,7 @@ export default function Products({
     startTransition(() => {
       router.push(`?${params.toString()}`);
       setIsOpenSort(false);
-      closeModal();
+     // closeModal();
     });
   };
 
@@ -104,7 +104,7 @@ export default function Products({
             <FilterMenu
               handleCloseFilter={() => {
                 setIsOpenFilterMenu(false);
-                closeModal();
+             //   closeModal();
               }}
             />
           </div>
@@ -118,7 +118,7 @@ export default function Products({
               selectedOption={selectedOption}
               handleSortChange={handleSortChange}
               handleCloseSort={() => {
-                closeModal();
+              //  closeModal();
                 setIsOpenSort(false);
               }}
               sortOptions={sortOptions}
@@ -155,7 +155,7 @@ export default function Products({
                 <div
                   onClick={() => {
                     setIsOpenFilterMenu(true);
-                    openModal(true);
+                   // openModal(true);
                   }}
                   className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer"
                 >
@@ -169,7 +169,7 @@ export default function Products({
                 <div
                   onClick={() => {
                     setIsOpenSort(true);
-                    openModal();
+                  //  openModal();
                   }}
                   className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer"
                 >

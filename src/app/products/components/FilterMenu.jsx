@@ -2,13 +2,13 @@
 import Image from "next/image";
 import React, { useEffect, useState, useCallback, useTransition } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation"; 
-import { useScrollLockContext } from "@/context/ScrollLockContext";
+// import { useScrollLockContext } from "@/context/ScrollLockContext";
 
 export default function FilterMenu({ handleCloseFilter }) {
   const router = useRouter();
   const searchParamsHook = useSearchParams();
   const pathname = usePathname(); 
-  const { closeModal } = useScrollLockContext();
+  // const { closeModal } = useScrollLockContext();
 
   const [isPending, startTransition] = useTransition(); 
 
@@ -177,7 +177,7 @@ export default function FilterMenu({ handleCloseFilter }) {
     }
     startTransition(() => {
       router.push(`${pathname}?${params.toString()}`);
-      closeModal()
+    //  closeModal()
     });
   };
 
@@ -196,7 +196,7 @@ export default function FilterMenu({ handleCloseFilter }) {
     setMaxPrice(defaultMaxPrice);
     if (handleCloseFilter) {
       handleCloseFilter();
-      closeModal();
+      //closeModal();
     }
   };
 
@@ -223,8 +223,8 @@ export default function FilterMenu({ handleCloseFilter }) {
         router.push(newUrl);
       });
     }
-    closeModal();
-  }, [minPrice, maxPrice, router, pathname, searchParamsHook, defaultMinPrice, defaultMaxPrice, closeModal]);
+   // closeModal();
+  }, [minPrice, maxPrice, router, pathname, searchParamsHook, defaultMinPrice, defaultMaxPrice]);
 
   // Function to remove individual selected filter chips
   const handleRemoveSelected = (optionToRemove, type) => {
@@ -247,7 +247,7 @@ export default function FilterMenu({ handleCloseFilter }) {
 
     startTransition(() => { 
       router.push(`${pathname}?${params.toString()}`);
-      closeModal()
+    //  closeModal()
     });
   };
 

@@ -45,7 +45,7 @@ export default function Modal({ handleCloseModal, handleAction, title, subtitle,
           <button
             onClick={(e) => {
               e.stopPropagation();
-             // handleAction();
+              handleAction();
             }}
             className={`leading-5.5 max-w-40 h-12.5 flex justify-center items-center bg-error-primery text-white py-3.25 px-16.5 rounded-lg cursor-pointer lg:px-18.75 `}
           >
@@ -57,7 +57,7 @@ export default function Modal({ handleCloseModal, handleAction, title, subtitle,
                 <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[300ms]"></div>
               </div>
             ) : (
-              <p>حذف</p>
+              <p>{actiontitle}</p>
             )}
           </button>
         </div>

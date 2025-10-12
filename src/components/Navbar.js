@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Search from "@/components/Search";
 import Categories from "@/components/CategoriesMenu";
 import Link from "next/link";
-import { useScrollLockContext } from "@/context/ScrollLockContext";
+// import { useScrollLockContext } from "@/context/ScrollLockContext";
 import { useAuthContext } from "@/context/AuthContext";
 
 export default function Navbar() {
@@ -16,14 +16,14 @@ export default function Navbar() {
   };
   const handleCloseCategory = () => {
     setIsOpenCategory(false);
-    closeModal();
+   // closeModal();
   };
   const handleCloseMenu = () => {
     setIsOpenMenu(false);
-    closeModal();
+   // closeModal();
   };
 
-  const { isModalOpen, openModal, closeModal } = useScrollLockContext();
+  // const { isModalOpen, openModal, closeModal } = useScrollLockContext();
   const { role } = useAuthContext();
 
   return (
@@ -50,7 +50,7 @@ export default function Navbar() {
             <li
               onClick={() => {
                 setIsOpenCategory(!isOpenCategory);
-                isModalOpen ? closeModal() : openModal();
+            //    isModalOpen ? closeModal() : openModal();
               }}
               className="flex justify-center items-center gap-2"
             >
@@ -111,7 +111,7 @@ export default function Navbar() {
                 quality={100}
                 onClick={() => {
                   setIsSearching(true);
-                  openModal();
+                //  openModal();
                   setIsOpenCategory(false);
                 }}
               />
@@ -123,7 +123,7 @@ export default function Navbar() {
                   setIsOpenMenu(false);
                   setIsSearching(false);
                   setIsOpenCategory(false);
-                  closeModal();
+                //  closeModal();
                 }}
               >
                 <Image
@@ -140,7 +140,7 @@ export default function Navbar() {
                 className="p-3.5"
                 onClick={() => {
                   setIsOpenMenu(true);
-                  openModal();
+               //   openModal();
                 }}
               >
                 <Image
@@ -231,7 +231,7 @@ export default function Navbar() {
             className="fixed inset-0 bg-[#1E1E1E] opacity-50 z-40"
             onClick={() => {
               setIsOpenMenu(false);
-              closeModal();
+            //  closeModal();
             }}
           />
           <div className="fixed top-21.25 left-0 right-0  w-full bg-white px-5 pt-6 pb-10 text-neutral-gray-13 lg:hidden z-50">
@@ -239,7 +239,7 @@ export default function Navbar() {
               <div
                 onClick={() => {
                   setIsOpenMenu(false);
-                  closeModal;
+               //   closeModal;
                 }}
                 className="flex justify-between items-center pb-4 border-b-1 border-neutral-gray-4 cursor-pointer"
               >
@@ -256,7 +256,7 @@ export default function Navbar() {
             <div
               onClick={() => {
                 setIsOpenCategory(true);
-                openModal();
+              //  openModal();
               }}
               className="flex justify-between items-center pb-4 mt-4 border-b-1 border-neutral-gray-4 cursor-pointer"
             >
@@ -273,7 +273,7 @@ export default function Navbar() {
               <div
                 onClick={() => {
                   setIsOpenMenu(false);
-                  closeModal();
+               //   closeModal();
                 }}
                 className="flex justify-between items-center pb-4 mt-4 border-b-1 border-neutral-gray-4 cursor-pointer"
               >
@@ -292,7 +292,7 @@ export default function Navbar() {
                 <div
                   onClick={() => {
                     setIsOpenMenu(false);
-                    closeModal();
+                  //  closeModal();
                   }}
                   className="flex justify-between items-center mt-4 cursor-pointer"
                 >

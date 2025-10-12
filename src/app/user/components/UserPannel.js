@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import DeleteModal from "@/components/DeleteModal";
 import AddAddressModal from "./AddAddressModal";
 import DetailsModalAddAddress from "./DetailsModalAddAddress";
-import { useScrollLockContext } from "@/context/ScrollLockContext";
+// import { useScrollLockContext } from "@/context/ScrollLockContext";
 import { useAuthContext } from "@/context/AuthContext";
 
 export default function UserPannel({
@@ -32,20 +32,20 @@ export default function UserPannel({
 
   const handleCloseAddAddressModal = () => {
     setIsOpenAddAddressModal(false);
-    openModal();
+ //   openModal();
   };
   const handleOpenDetailsModal = () => {
     setIsOpenDetailsModal(true);
-    openModal();
+  //  openModal();
   };
   const handleCloseDetailsModal = () => {
     setIsOpenDetailsModal(false);
-    closeModal();
+  //  closeModal();
   };
 
   const handleCloseLogoutModal = () => {
     setIsOpenLogoutModal(false);
-    closeModal();
+  //  closeModal();
   };
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -54,9 +54,9 @@ export default function UserPannel({
     document.cookie = `token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC`;
     router.replace("/auth/login");
     setIsOpenLogoutModal(false);
-    closeModal();
+   // closeModal();
   };
-  const { openModal, closeModal } = useScrollLockContext();
+  // const { openModal, closeModal } = useScrollLockContext();
   const { phoneNumber } = useAuthContext();
 
   return (
@@ -181,7 +181,7 @@ export default function UserPannel({
           <div
             onClick={() => {
               setIsOpenLogoutModal(true);
-              openModal();
+             // openModal();
             }}
             className="flex items-center gap-2 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:mb-0  lg:rounded-lg lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer"
           >
@@ -322,7 +322,7 @@ export default function UserPannel({
                 <div
                   onClick={() => {
                     setIsOpenAddAddressModal(true);
-                    openModal();
+                  //  openModal();
                   }}
                   className="flex items-center gap-2 px-6 py-3.25 cursor-pointer"
                 >

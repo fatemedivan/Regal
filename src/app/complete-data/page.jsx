@@ -3,17 +3,17 @@
 import AdressCard from "./components/AdressCard";
 import BasketDetailsCard from "@/components/BasketDetailsCard";
 import DateModal from "@/app/complete-data/components/DateModal";
-import ProgressBar from "@/components/ProgressBar";
 import TimeModal from "@/app/complete-data/components/TimeModal";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useScrollLockContext } from "@/context/ScrollLockContext";
+//import { useScrollLockContext } from "@/context/ScrollLockContext";
 import { useBasketContext } from "@/context/BasketContext";
 import dayjs from "dayjs";
 import jalali from "jalali-dayjs";
 import "dayjs/locale/fa";
 import PageHeader from "@/components/PageHeader";
+import { Time } from "@/constants/complateData";
 
 export default function Page() {
   const router = useRouter();
@@ -28,11 +28,7 @@ export default function Page() {
   const [mainDate, setMainDate] = useState("");
   const [date, setDate] = useState([]);
   const [time, setTime] = useState([
-    "ساعت ۹ تا ۱۲",
-    "ساعت ۱۲ تا ۱۵",
-    "ساعت ۱۵ تا ۱۸",
-    "ساعت ۱۸ تا ۲۱",
-    "ساعت ۲۱ تا ۲۴",
+   
   ]);
 
   dayjs.extend(jalali);
@@ -73,15 +69,15 @@ export default function Page() {
 
   const handleCloseDateModal = () => {
     setIsShowDateModal(false);
-    closeModal();
+   // closeModal();
   };
   const handleCloseTimeModal = () => {
     setIsShowTimeModal(false);
-    closeModal();
+   // closeModal();
   };
 
-  const { isModalOpen, openModal, closeModal, setMobileOnlyLock } =
-    useScrollLockContext();
+  // const { isModalOpen, openModal, closeModal, setMobileOnlyLock } =
+  //   useScrollLockContext();
   const { countOfProduct, totalPric, cart } = useBasketContext();
 
   useEffect(() => {
@@ -185,8 +181,8 @@ export default function Page() {
               <div
                 onClick={() => {
                   setIsShowDateModal(!isShowDateModal);
-                  setMobileOnlyLock(true);
-                  isModalOpen ? closeModal() : openModal();
+                 // setMobileOnlyLock(true);
+                //  isModalOpen ? closeModal() : openModal();
                 }}
                 className="px-4 py-3.75 border border-neutral-gray-4 rounded-lg flex justify-between items-center relative cursor-pointer lg:w-1/2"
               >
@@ -224,8 +220,8 @@ export default function Page() {
               <div
                 onClick={() => {
                   setIsShowTimeModal(!isShowTimeModal);
-                  setMobileOnlyLock(true);
-                  isModalOpen ? closeModal() : openModal();
+                //  setMobileOnlyLock(true);
+                 // isModalOpen ? closeModal() : openModal();
                 }}
                 className="px-4 py-3.75 border border-neutral-gray-4 rounded-lg flex justify-between items-center relative mt-3 cursor-pointer lg:mt-0 lg:w-1/2 "
               >
@@ -245,7 +241,7 @@ export default function Page() {
                 </div>
                 {isShowTimeModal && (
                   <ul className="bg-white absolute w-full top-14 right-0 rounded-lg border border-neutral-gray-4 p-4 overflow-y-scroll max-h-48 hidden lg:block custom-scrollbar">
-                    {time.map((time, index) => (
+                    {Time.map((time, index) => (
                       <li
                         key={index}
                         onClick={() => {

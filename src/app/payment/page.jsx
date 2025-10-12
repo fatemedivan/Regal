@@ -1,9 +1,7 @@
 "use client";
 import BasketDetailsCard from "@/components/BasketDetailsCard";
 import PageHeader from "@/components/PageHeader";
-import ProgressBar from "@/components/ProgressBar";
 import { useBasketContext } from "@/context/BasketContext";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";

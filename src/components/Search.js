@@ -2,7 +2,7 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useScrollLockContext } from "@/context/ScrollLockContext";
+// import { useScrollLockContext } from "@/context/ScrollLockContext";
 import { HashLoader } from "react-spinners";
 import ProductSearchItem from "./ProductSearchItem";
 
@@ -16,7 +16,7 @@ export default function Search({ handleCloseSearch }) {
   const [isNotFound, setIsNotFound] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { closeModal } = useScrollLockContext();
+  // const { closeModal } = useScrollLockContext();
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
@@ -247,7 +247,7 @@ export default function Search({ handleCloseSearch }) {
                           router.push("/products");
                         }
                         handleCloseSearch();
-                        closeModal();
+                       // closeModal();
                       }}
                       className="text-neutral-gray-11 text-sm leading-5 flex items-center gap-2 px-4 cursor-pointer"
                     >

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useScrollLockContext } from "@/context/ScrollLockContext";
+// import { useScrollLockContext } from "@/context/ScrollLockContext";
 import { useBasketContext } from "@/context/BasketContext";
 import { toast, ToastContainer } from "react-toastify";
 import BasketDetailsCard from "@/components/BasketDetailsCard";
@@ -16,7 +16,7 @@ import Image from "next/image";
 
 export default function Page() {
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
-  const { openModal, closeModal } = useScrollLockContext();
+  // const { openModal, closeModal } = useScrollLockContext();
   const [isDeleting, setIsDeleting] = useState(false);
   const {
     cart,
@@ -30,7 +30,7 @@ export default function Page() {
 
   const handleCloseDeleteModal = () => {
     setIsOpenDeleteModal(false);
-    closeModal();
+  //  closeModal();
   };
 
   const handleDeleteEntireBasket = async () => {
@@ -38,7 +38,7 @@ export default function Page() {
       setIsDeleting(true);
       await clearEntireCart();
       setIsOpenDeleteModal(false);
-      closeModal();
+    //  closeModal();
     } catch (error) {
       toast.error("خطایی در حذف سبد خرید رخ داد.");
     } finally {
@@ -64,7 +64,7 @@ export default function Page() {
                 alt="Clear Cart"
                 onClick={() => {
                   setIsOpenDeleteModal(true);
-                  openModal();
+                 // openModal();
                 }}
               />
             </PageHeader>
@@ -117,7 +117,7 @@ export default function Page() {
               cart={cart}
               deleteCart={() => {
                 setIsOpenDeleteModal(true);
-                openModal();
+               // openModal();
               }}
             />
           </div>

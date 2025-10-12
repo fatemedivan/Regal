@@ -3,7 +3,7 @@ import AdressCard from "@/app/complete-data/components/AdressCard";
 import AddAddressModal from "@/app/user/components/AddAddressModal";
 import DetailsModalAddAddress from "@/app/user/components/DetailsModalAddAddress";
 import UserPannel from "@/app/user/components/UserPannel";
-import { useScrollLockContext } from "@/context/ScrollLockContext";
+// import { useScrollLockContext } from "@/context/ScrollLockContext";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -15,7 +15,7 @@ export default function Page() {
   const [isOpenAddAddressModal, setIsOpenAddAddressModal] = useState(false);
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
-  const { openModal, closeModal } = useScrollLockContext();
+  // const { openModal, closeModal } = useScrollLockContext();
   const [token, setToken] = useState("");
   const [addresses, setAddresses] = useState([]);
 
@@ -58,15 +58,15 @@ export default function Page() {
   };
   const handleCloseDetailsModal = () => {
     setIsOpenDetailsModal(false);
-    closeModal();
+   // closeModal();
   };
   const handleCloseAddAddressModal = () => {
     setIsOpenAddAddressModal(false);
-    closeModal();
+   // closeModal();
   };
   const handleOpenDetailsModal = () => {
     setIsOpenDetailsModal(true);
-    openModal();
+   // openModal();
   };
   useEffect(() => {
     if (selectedAddressId) {
@@ -171,7 +171,7 @@ export default function Page() {
               <button
                 onClick={() => {
                   setIsOpenAddAddressModal(true);
-                  openModal();
+                //  openModal();
                 }}
                 className="bg-cognac-primery rounded-lg py-3.25 px-12 text-white leading-5.5 cursor-pointer"
               >

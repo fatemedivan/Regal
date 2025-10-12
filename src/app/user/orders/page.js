@@ -2,7 +2,7 @@
 import OrderDetailsCard from "../components/OrderDetailsCard";
 import OrderDetailsCardDesktop from "../components/OrderDetailsCardDesktop";
 import UserPannel from "@/app/user/components/UserPannel";
-import { useScrollLockContext } from "@/context/ScrollLockContext";
+// import { useScrollLockContext } from "@/context/ScrollLockContext";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -23,7 +23,7 @@ export default function Page() {
     { label: "تحویل شده", value: "delivered" },
     { label: "مرجوع شده", value: "returned" },
   ];
-  const { isModalOpen, openModal, closeModal } = useScrollLockContext();
+  // const { isModalOpen, openModal, closeModal } = useScrollLockContext();
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -112,7 +112,7 @@ export default function Page() {
             <div
               onClick={() => {
                 setIsOpenTypeOrder(!isOpenTypeOrder);
-                isModalOpen ? closeModal() : openModal();
+             //   isModalOpen ? closeModal() : openModal();
               }}
               className="relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg mb-4 flex items-center justify-between cursor-pointer"
             >
@@ -201,7 +201,7 @@ export default function Page() {
             className="fixed inset-0 bg-[#1E1E1E] opacity-50 z-50"
             onClick={() => {
               setIsOpenTypeOrder(false);
-              closeModal();
+             // closeModal();
             }}
           />
           <div className="bg-white fixed bottom-0 left-0 right-0 z-60 w-full rounded-tr-3xl rounded-tl-3xl px-5 pt-4 pb-6">
@@ -215,7 +215,7 @@ export default function Page() {
                 alt=""
                 onClick={() => {
                   setIsOpenTypeOrder(false);
-                  closeModal();
+               //   closeModal();
                 }}
               />
             </div>
@@ -233,7 +233,7 @@ export default function Page() {
                       setSelectedOrderType(type.label);
                       setSelectedOrderTypeValue(type.value);
                       setIsOpenTypeOrder(false);
-                      closeModal();
+                     // closeModal();
                     }}
                     checked={selectedOrderTypeValue === type.value}
                   />

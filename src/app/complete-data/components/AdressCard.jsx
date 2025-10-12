@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import DeleteModal from "@/components/DeleteModal";
-import { useScrollLockContext } from "@/context/ScrollLockContext";
+// import { useScrollLockContext } from "@/context/ScrollLockContext";
 import { useAuthContext } from "@/context/AuthContext";
 import { toast, ToastContainer } from "react-toastify";
 import AddAddressModal from "@/app/user/components/AddAddressModal";
@@ -23,7 +23,7 @@ export default function AdressCard({
   const { phoneNumber, name, family } = useAuthContext();
   const handleCloseDeleteModal = () => {
     setIsOpenDeleteModal(false);
-    closeModal();
+   // closeModal();
   };
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -51,22 +51,22 @@ export default function AdressCard({
   const handleDeleteAddress = () => {
     deleteAddress();
     setIsOpenDeleteModal(false);
-    closeModal();
+   // closeModal();
   };
 
   const handleCloseAddAddressModal = () => {
     setIsOpenAddAddressModal(false);
-    closeModal();
+  //  closeModal();
   };
   const handleOpenDetailsModal = () => {
     setIsOpenDetailsModal(true);
-    openModal();
+  //  openModal();
   };
   const handleCloseDetailsModal = () => {
     setIsOpenDetailsModal(false);
-    closeModal();
+  //  closeModal();
   };
-  const { openModal, closeModal } = useScrollLockContext();
+  // const { openModal, closeModal } = useScrollLockContext();
 
   useEffect(() => {
     if (fullAddress) {
@@ -93,7 +93,7 @@ export default function AdressCard({
             height={16}
             onClick={() => {
               setIsOpenDeleteModal(true);
-              openModal();
+             // openModal();
             }}
             className="cursor-pointer lg:w-6 lg:h-6"
             src="/img/trash-3.svg"
@@ -104,7 +104,7 @@ export default function AdressCard({
             onClick={() => {
               setIsOpenDetailsModal(true);
               setSelectedAddressId(id)
-              openModal();
+           //   openModal();
             }}
             width={24}
             height={24}

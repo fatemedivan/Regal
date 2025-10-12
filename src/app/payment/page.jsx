@@ -1,29 +1,26 @@
 "use client";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useBasketContext } from "@/context/BasketContext";
+import { toast } from "react-toastify";
 import BasketDetailsCard from "@/components/BasketDetailsCard";
 import PageHeader from "@/components/PageHeader";
-import { useBasketContext } from "@/context/BasketContext";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import getToken from "@/utils/getToken";
 
 export default function Page() {
   const { countOfProduct, totalPric, cart, clearEntireCart } =
     useBasketContext();
   const router = useRouter();
-  const [token, setToken] = useState("");
+  const token = getToken();
   const [fullAddress, setFullAddress] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-    } else {
+    if (!token) {
       toast.error(
         "برای ادامه فرآیند سفارش، لطفاً ابتدا وارد حساب کاربری خود شوید."
       );
       router.push("/auth/login");
-      return;
     }
 
     const storedFullAddress = sessionStorage.getItem("full address");
@@ -69,10 +66,10 @@ export default function Page() {
         clearEntireCart();
         sessionStorage.removeItem("full address");
 
-        router.push("/payment/success");
+        router.replace("/payment/success");
       } else {
         toast.error("خطا در ثبت سفارش.");
-        if (res.status === 401) router.push("/auth/login");
+        if (res.status === 401) router.replace("/auth/login");
       }
     } catch (err) {
       toast.error("خطای شبکه یا سرور. لطفاً دوباره تلاش کنید.");

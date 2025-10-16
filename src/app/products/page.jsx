@@ -1,34 +1,16 @@
 import Products from "./components/Products";
 import { cookies } from "next/headers";
 
-
 export default async function Page({ searchParams }) {
-
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
 
-  const params = await searchParams || {};
-  const page = params.page || 1;
-  const sort = params.sort || "";
-  const categoryId = params.categoryId || "";
-  const minPrice = params.minPrice || "";
-  const maxPrice = params.maxPrice || "";
-  const color = params.color || "";
-  const size = params.size || "";
-  const isDiscounted = params.isDiscounted || "";
-  const search = params.search || "";
-
-  let url = `${baseUrl}/api/products?page=${page}`;
-
-  if (sort) url += `&sort=${sort}`;
-  if (categoryId) url += `&categoryId=${categoryId}`;
-  if (minPrice) url += `&minPrice=${minPrice}`;
-  if (maxPrice) url += `&maxPrice=${maxPrice}`;
-  if (color) url += `&color=${color}`;
-  if (size) url += `&size=${size}`;
-  if (isDiscounted) url += `&isDiscounted=${isDiscounted}`;
-  if (search) url += `&search=${search}`;
+  const params = new URLSearchParams();
+  for (const [key, value] of Object.entries(await searchParams)) {
+    if (value) params.set(key, value);
+  }
+  let url = `${baseUrl}/api/products?${params.toString()}`;
 
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
@@ -39,7 +21,7 @@ export default async function Page({ searchParams }) {
   try {
     const res = await fetch(url, {
       headers,
-      cache: "no-store",
+      next: { revalidate: 60 * 30 },
     });
 
     if (res.ok) {
@@ -47,8 +29,6 @@ export default async function Page({ searchParams }) {
       products = data.products;
       totalPages = data.totalPages;
       totalProducts = data.totalProducts;
-    } else {
-      console.error("Server Component: Fetch failed with status", res.status, await res.text());
     }
   } catch (err) {
     console.error("Server Component: Fetch error", err);
@@ -56,7 +36,7 @@ export default async function Page({ searchParams }) {
 
   return (
     <Products
-      key={JSON.stringify(params)}
+      key={params.toString()}
       allProducts={products}
       totalProducts={totalProducts}
       totalProductsPages={totalPages}

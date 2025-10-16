@@ -252,6 +252,7 @@ export default function FilterMenu({ handleCloseFilter }) {
   };
 
   return (
+    
     <div className="pb-10">
       {/* Close Button */}
       <div className="flex items-center gap-2 py-4 pr-5 mb-6 lg:hidden">
@@ -266,9 +267,9 @@ export default function FilterMenu({ handleCloseFilter }) {
         <p className="leading-7 text-neutral-gray-13">فیلترها</p>
       </div>
       <div className="flex items-center flex-wrap gap-1 mt-7 mx-5 mb-6">
-        <div
+        {/* <div
           className={`hidden lg:${selectedFilters.length ? "flex" : "hidden"
-            } w-full justify-between items-center gap-4 border-b border-neutral-gray-4 pb-4.5 mb-4`}
+            }max-w-80 justify-between items-center gap-4 border-b border-neutral-gray-4 pb-4.5 mb-4`}
         >
           <p className="leading-4.5">فیلترهای اعمال شده</p>
           <div className="flex items-center gap-2 px-4 py-3">
@@ -282,7 +283,7 @@ export default function FilterMenu({ handleCloseFilter }) {
               alt=""
             />
           </div>
-        </div>
+        </div> */}
         {selectedFilters.length !== 0 &&
           selectedFilters.map((item, index) => (
             <div

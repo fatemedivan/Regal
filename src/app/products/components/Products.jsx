@@ -1,9 +1,12 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useCallback, useEffect, useState, useTransition } from "react";
-import Sort from "./Sort";
-// import { useScrollLockContext } from "@/context/ScrollLockContext";
-import FilterMenu from "@/app/products/components/FilterMenu";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  useTransition,
+} from "react";
 import Pagination from "@/components/Pagination";
 import ProductCard from "@/components/ProductCard";
 import { sortOptions } from "@/constants/products";
@@ -17,31 +20,38 @@ export default function Products({
   totalProducts,
 }) {
   const router = useRouter();
-  // const { openModal, closeModal } = useScrollLockContext();
   const searchParamsHook = useSearchParams();
   const [isPending, startTransition] = useTransition();
+
+  const [searchValue, setSearchValue] = useState("");
+  const [selectedOption, setSelectedOption] = useState(sortOptions[0]);
+
   const notFound = allProducts?.length === 0;
-
   const currentPage = parseInt(searchParamsHook.get("page") || "1", 10);
-  const [searchValue, setSearchValue] = useState(
-    searchParamsHook.get("search") || ""
-  );
-  const [isOpenFilterMenu, setIsOpenFilterMenu] = useState(false);
-  const [isOpenSort, setIsOpenSort] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(() => {
-    const currentSort = searchParamsHook.get("sort");
-    // Find the option based on URL or default to "newest"
-    const option = sortOptions.find((opt) => opt.value === currentSort);
-    return option || { id: 1, title: "جدیدترین", value: "newest" };
-  });
 
-  // Effect to sync search and sort states with URL search params
   useEffect(() => {
-    setSearchValue(searchParamsHook.get("search") || "");
-    const currentSort = searchParamsHook.get("sort");
-    const option = sortOptions.find((opt) => opt.value === currentSort);
-    setSelectedOption(option || { id: 1, title: "جدیدترین", value: "newest" });
-  }, [searchParamsHook]);
+    const search = searchParamsHook.get("search") || "";
+    const sort = searchParamsHook.get("sort") || "newest";
+    setSearchValue(search);
+    const option = sortOptions.find((opt) => opt.value === sort);
+    setSelectedOption(option || sortOptions[0]);
+  }, [searchParamsHook.get("search"), searchParamsHook.get("sort")]);
+
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      const currentSearch = searchParamsHook.get("search") || "";
+      if (searchValue.trim() !== currentSearch.trim()) {
+        const params = new URLSearchParams(searchParamsHook.toString());
+        if (searchValue.trim()) params.set("search", searchValue.trim());
+        else params.delete("search");
+        params.set("page", "1");
+        startTransition(() => {
+          router.push(`?${params.toString()}`);
+        });
+      }
+    }, 600);
+    return () => clearTimeout(delay);
+  }, [searchValue]);
 
   const handleSortChange = useCallback(
     (option) => {
@@ -50,8 +60,6 @@ export default function Products({
       params.set("page", "1");
       startTransition(() => {
         router.push(`?${params.toString()}`);
-        setIsOpenSort(false);
-        // closeModal();
       });
     },
     [searchParamsHook, router]
@@ -63,28 +71,20 @@ export default function Products({
       params.set("page", page);
       startTransition(() => {
         router.push(`?${params.toString()}`);
+        window.scrollTo({ top: 0, behavior: "smooth" });
       });
     },
     [searchParamsHook, router]
   );
 
-  const handleSearch = useCallback(() => {
-    const params = new URLSearchParams(searchParamsHook.toString());
-    if (searchValue.trim()) {
-      params.set("search", searchValue.trim());
-    } else {
-      params.delete("search");
+  const renderedProducts = useMemo(() => {
+    if (isPending) {
+      return Array.from({ length: 8 }).map((_, i) => (
+        <ProductSceleton key={i} />
+      ));
     }
-    params.set("page", "1");
-    startTransition(() => {
-      router.push(`?${params.toString()}`);
-    });
-  }, [searchParamsHook, router]);
 
-  const renderedProducts = allProducts?.map((product) => {
-    return isPending ? (
-      <ProductSceleton key={product.id} />
-    ) : (
+    return allProducts?.map((product) => (
       <ProductCard
         key={product.id}
         id={product.id}
@@ -96,72 +96,38 @@ export default function Products({
         colors={product.productColors.map((pc) => pc.color.hexCode)}
         favorites={product.isLiked}
       />
-    );
-  });
+    ));
+  }, [isPending, allProducts]);
 
   return (
     <div>
       <div className="container mx-auto">
-        {/* Mobile Filter Menu Modal */}
-        {isOpenFilterMenu && (
-          <div className="lg:hidden fixed top-0 left-0 right-0 bottom-0 bg-white z-50 overflow-y-auto">
-            <FilterMenu
-              handleCloseFilter={() => {
-                setIsOpenFilterMenu(false);
-                //   closeModal();
-              }}
-            />
-          </div>
-        )}
+        <div className="mx-5 mb-16 lg:mx-12 lg:mb-22">
+          {/* Mobile View */}
+          <MobileViewProducts
+            totalProducts={totalProducts}
+            notFound={notFound}
+            renderedProducts={renderedProducts}
+          />
 
-        {/* Mobile Sort Menu Modal */}
-        {isOpenSort && (
-          <div className="lg:hidden fixed top-0 left-0 right-0 bottom-0 bg-white z-50 overflow-y-auto">
-            <Sort
-              setSelectedOption={setSelectedOption}
-              selectedOption={selectedOption}
-              handleSortChange={handleSortChange}
-              handleCloseSort={() => {
-                //  closeModal();
-                setIsOpenSort(false);
-              }}
-              sortOptions={sortOptions}
-            />
-          </div>
-        )}
+          {/* Desktop View */}
+          <DesktopViewProducts
+            setSearchValue={setSearchValue}
+            searchValue={searchValue}
+            handleSortChange={handleSortChange}
+            totalProducts={totalProducts}
+            selectedOption={selectedOption}
+            notFound={notFound}
+            renderedProducts={renderedProducts}
+          />
 
-        <div>
-          <div className="mx-5 mb-16 lg:mx-12 lg:mb-22">
-            {/* Mobile View */}
-            <MobileViewProducts
-              totalProducts={totalProducts}
-              setIsOpenFilterMenu={setIsOpenFilterMenu}
-              notFound={notFound}
-              renderedProducts={renderedProducts}
-              setIsOpenSort={setIsOpenSort}
+          {!notFound && (
+            <Pagination
+              currentPage={currentPage}
+              latestPage={totalProductsPages || 1}
+              onPageChange={handlePageChange}
             />
-            {/* Desktop View */}
-            <DesktopViewProducts
-              setSearchValue={setSearchValue}
-              handleSearch={handleSearch}
-              searchValue={searchValue}
-              setIsOpenSort={setIsOpenSort}
-              isOpenSort={isOpenSort}
-              handleSortChange={handleSortChange}
-              totalProducts={totalProducts}
-              selectedOption={selectedOption}
-              notFound={notFound}
-              renderedProducts={renderedProducts}
-            />
-
-            {!notFound && (
-              <Pagination
-                currentPage={currentPage}
-                latestPage={totalProductsPages || 1}
-                onPageChange={handlePageChange}
-              />
-            )}
-          </div>
+          )}
         </div>
       </div>
     </div>

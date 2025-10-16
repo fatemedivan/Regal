@@ -1,20 +1,19 @@
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import FilterMenu from "./FilterMenu";
 import { sortOptions } from "@/constants/products";
 
 export default function DesktopViewProducts({
   setSearchValue,
-  handleSearch,
   searchValue,
-  setIsOpenSort,
-  isOpenSort,
   handleSortChange,
   totalProducts,
   selectedOption,
   notFound,
-  renderedProducts
+  renderedProducts,
 }) {
+  const [isOpenSort, setIsOpenSort] = useState(false);
+
   return (
     <div className="hidden lg:flex justify-between gap-6 mt-10">
       <div>
@@ -32,8 +31,8 @@ export default function DesktopViewProducts({
       </div>
 
       <div className="flex-1">
+        {/* Search & Sort */}
         <div className="flex items-center gap-6 mb-6">
-          {/* Desktop Search Input */}
           <div className="px-4 py-3.75 rounded-lg border border-neutral-gray-4 flex items-center gap-1 w-full">
             <Image
               width={16}
@@ -45,19 +44,18 @@ export default function DesktopViewProducts({
               type="text"
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
               className="w-full outline-none placeholder:text-xs placeholder:leading-4.5 placeholder:text-neutral-gray-7"
               placeholder="جستجو کنید"
             />
             <button
-              onClick={handleSearch}
+              onClick={() => setSearchValue(searchValue)}
               className="px-3 py-1 bg-cognac-primary text-white rounded-md text-xs"
             >
               جستجو
             </button>
           </div>
 
-          {/* Desktop Sort Dropdown */}
+          {/* Sort Dropdown */}
           <div className="relative w-80">
             <button
               onClick={() => setIsOpenSort(!isOpenSort)}
@@ -84,6 +82,7 @@ export default function DesktopViewProducts({
                     key={option.id}
                     onClick={() => {
                       handleSortChange(option);
+                      setIsOpenSort(false);
                     }}
                     className="px-4 py-2 hover:bg-neutral-gray-2 cursor-pointer text-xs leading-4.5 text-neutral-gray-7"
                   >
@@ -95,6 +94,7 @@ export default function DesktopViewProducts({
           </div>
         </div>
 
+        {/* Products */}
         {notFound ? (
           <div className="text-center w-full text-red-500 text-3xl font-bold mt-10">
             محصولی یافت نشد

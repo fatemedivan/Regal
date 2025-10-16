@@ -2,13 +2,11 @@
 import Image from "next/image";
 import React, { useEffect, useState, useCallback, useTransition } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation"; 
-// import { useScrollLockContext } from "@/context/ScrollLockContext";
 
 export default function FilterMenu({ handleCloseFilter }) {
   const router = useRouter();
   const searchParamsHook = useSearchParams();
   const pathname = usePathname(); 
-  // const { closeModal } = useScrollLockContext();
 
   const [isPending, startTransition] = useTransition(); 
 
@@ -177,7 +175,6 @@ export default function FilterMenu({ handleCloseFilter }) {
     }
     startTransition(() => {
       router.push(`${pathname}?${params.toString()}`);
-    //  closeModal()
     });
   };
 
@@ -196,7 +193,6 @@ export default function FilterMenu({ handleCloseFilter }) {
     setMaxPrice(defaultMaxPrice);
     if (handleCloseFilter) {
       handleCloseFilter();
-      //closeModal();
     }
   };
 

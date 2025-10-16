@@ -31,11 +31,11 @@ export default function Page() {
     useState(true);
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
-  const [isAddingToCart, setIsAddingToCart] = useState(false); // لودینگ دکمه
+  const [isAddingToCart, setIsAddingToCart] = useState(false); 
 
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
-  // دریافت اطلاعات محصول
+
   useEffect(() => {
     const getProduct = async () => {
       setIsLoadingProduct(true);
@@ -66,7 +66,6 @@ export default function Page() {
     getProduct();
   }, [id, token]);
 
-  // تنظیم Glide برای محصولات مشابه
   useEffect(() => {
     if (glideRef.current && similarProducts.length > 0) {
       const glide = new Glide(glideRef.current, {
@@ -89,7 +88,6 @@ export default function Page() {
     }
   }, [similarProducts]);
 
-  // عملیات لایک
   const likeProduct = async () => {
     if (!token)
       return toast.warning("برای لایک کردن باید وارد حساب کاربری خود شوید.");
@@ -126,7 +124,6 @@ export default function Page() {
     }
   };
 
-  // افزودن به سبد خرید با لودینگ
   const addProductToBasket = async () => {
     if (!token)
       return toast.warn(

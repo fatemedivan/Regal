@@ -1,14 +1,18 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState, useTransition, useCallback } from "react";
-import Sort from "./Sort";
-import FilterMenu from "./FilterMenu";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  useTransition,
+} from "react";
 import Pagination from "@/components/Pagination";
 import ProductCard from "@/components/ProductCard";
-import ProductSkeleton from "@/components/ProductSceleton";
+import { sortOptions } from "@/constants/products";
+import ProductSceleton from "@/components/ProductSceleton";
 import DesktopViewProducts from "./DesktopViewProducts";
 import MobileViewProducts from "./MobileViewProducts";
-import { sortOptions } from "@/constants/products";
 
 export default function Products({
   allProducts,
@@ -19,126 +23,112 @@ export default function Products({
   const searchParamsHook = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
-  // کنترل اسکلتون
-  const [isLoading, setIsLoading] = useState(false);
-
   const [searchValue, setSearchValue] = useState("");
-  const [isOpenFilterMenu, setIsOpenFilterMenu] = useState(false);
-  const [isOpenSort, setIsOpenSort] = useState(false);
-  const [selectedOption, setSelectedOption] = useState({});
+  const [selectedOption, setSelectedOption] = useState(sortOptions[0]);
 
-  const currentPage = parseInt(searchParamsHook.get("page") || "1", 10);
   const notFound = allProducts?.length === 0;
+  const currentPage = parseInt(searchParamsHook.get("page") || "1", 10);
 
-  // Sync search & sort state with URL params
   useEffect(() => {
-    setSearchValue(searchParamsHook.get("search") || "");
-    const currentSort = searchParamsHook.get("sort");
-    const option = sortOptions.find((opt) => opt.value === currentSort);
-    setSelectedOption(option || { id: 1, title: "جدیدترین", value: "newest" });
-  }, [searchParamsHook]);
+    const search = searchParamsHook.get("search") || "";
+    const sort = searchParamsHook.get("sort") || "newest";
+    setSearchValue(search);
+    const option = sortOptions.find((opt) => opt.value === sort);
+    setSelectedOption(option || sortOptions[0]);
+  }, [searchParamsHook.get("search"), searchParamsHook.get("sort")]);
+  
+    useEffect(() => {
+      const delay = setTimeout(() => {
+        const currentSearch = searchParamsHook.get("search") || "";
+        if (searchValue.trim() !== currentSearch.trim()) {
+          const params = new URLSearchParams(searchParamsHook.toString());
+          if (searchValue.trim()) params.set("search", searchValue.trim());
+          else params.delete("search");
+          params.set("page", "1");
+          startTransition(() => {
+            router.push(`?${params.toString()}`);
+          });
+        }
+      }, 600);
+      return () => clearTimeout(delay);
+    }, [searchValue]);
 
-  // وقتی داده‌ها تغییر میکنن (بعد از fetch)، loading رو false کن
-  useEffect(() => {
-    if (isLoading) setIsLoading(false);
-  }, [allProducts]);
-
-  const updateURL = useCallback(
-    (paramsObj) => {
+  const handleSortChange = useCallback(
+    (option) => {
       const params = new URLSearchParams(searchParamsHook.toString());
-      Object.entries(paramsObj).forEach(([key, value]) => {
-        if (value === null || value === undefined) params.delete(key);
-        else params.set(key, value);
-      });
+      params.set("sort", option.value);
       params.set("page", "1");
-      setIsLoading(true);
       startTransition(() => {
         router.push(`?${params.toString()}`);
       });
     },
-    [router, searchParamsHook]
+    [searchParamsHook, router]
   );
 
-  const handleSortChange = (option) => {
-    setSelectedOption(option);
-    updateURL({ sort: option.value });
-    setIsOpenSort(false);
-  };
+  const handlePageChange = useCallback(
+    (page) => {
+      const params = new URLSearchParams(searchParamsHook.toString());
+      params.set("page", page);
+      startTransition(() => {
+        router.push(`?${params.toString()}`);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    },
+    [searchParamsHook, router]
+  );
 
-  const handlePageChange = (page) => {
-    updateURL({ page });
-  };
-
-  const handleSearch = () => {
-    updateURL({ search: searchValue.trim() || null });
-  };
-
-  const renderedProducts = isLoading
-    ? Array.from({ length: 8 }).map((_, i) => <ProductSkeleton key={i} />)
-    : allProducts?.map((product) => (
-        <ProductCard
-          key={product.id}
-          id={product.id}
-          img={product.images[0]?.imageUrl}
-          offPercent={product.offPercent}
-          title={product.name}
-          price={product.price}
-          finalPrice={product.discountedPrice}
-          colors={product.productColors.map((pc) => pc.color.hexCode)}
-          favorites={product.isLiked}
-        />
+  const renderedProducts = useMemo(() => {
+    if (isPending) {
+      return Array.from({ length: 8 }).map((_, i) => (
+        <ProductSceleton key={i} />
       ));
+    }
+
+    return allProducts?.map((product) => (
+      <ProductCard
+        key={product.id}
+        id={product.id}
+        img={product.images[0]?.imageUrl}
+        offPercent={product.offPercent}
+        title={product.name}
+        price={product.price}
+        finalPrice={product.discountedPrice}
+        colors={product.productColors.map((pc) => pc.color.hexCode)}
+        favorites={product.isLiked}
+      />
+    ));
+  }, [isPending, allProducts]);
 
   return (
-    <div className="container mx-auto">
-      {isOpenFilterMenu && (
-        <div className="lg:hidden fixed top-0 left-0 right-0 bottom-0 bg-white z-50 overflow-y-auto">
-          <FilterMenu
-            handleCloseFilter={() => setIsOpenFilterMenu(false)}
-            setIsLoading={setIsLoading} // مهم برای اسکلتون
+    <div>
+      <div className="container mx-auto">
+        <div className="mx-5 mb-16 lg:mx-12 lg:mb-22">
+          {/* Mobile View */}
+          <MobileViewProducts
+            totalProducts={totalProducts}
+            notFound={notFound}
+            renderedProducts={renderedProducts}
           />
-        </div>
-      )}
-      {isOpenSort && (
-        <div className="lg:hidden fixed top-0 left-0 right-0 bottom-0 bg-white z-50 overflow-y-auto">
-          <Sort
-            setSelectedOption={setSelectedOption}
-            selectedOption={selectedOption}
+
+          {/* Desktop View */}
+          <DesktopViewProducts
+            setSearchValue={setSearchValue}
+            searchValue={searchValue}
             handleSortChange={handleSortChange}
-            handleCloseSort={() => setIsOpenSort(false)}
-            sortOptions={sortOptions}
+            totalProducts={totalProducts}
+            selectedOption={selectedOption}
+            notFound={notFound}
+            renderedProducts={renderedProducts}
           />
+
+          {!notFound && (
+            <Pagination
+              currentPage={currentPage}
+              latestPage={totalProductsPages || 1}
+              onPageChange={handlePageChange}
+            />
+          )}
         </div>
-      )}
-
-      <div className="mx-5 mb-16 lg:mx-12 lg:mb-22">
-        <MobileViewProducts
-          totalProducts={totalProducts}
-          setIsOpenFilterMenu={setIsOpenFilterMenu}
-          setIsOpenSort={setIsOpenSort}
-          notFound={notFound}
-          renderedProducts={renderedProducts}
-        />
-        <DesktopViewProducts
-          setSearchValue={setSearchValue}
-          handleSearch={handleSearch}
-          searchValue={searchValue}
-          setIsOpenSort={setIsOpenSort}
-          isOpenSort={isOpenSort}
-          handleSortChange={handleSortChange}
-          totalProducts={totalProducts}
-          selectedOption={selectedOption}
-          notFound={notFound}
-          renderedProducts={renderedProducts}
-        />
-
-        {!notFound && (
-          <Pagination
-            currentPage={currentPage}
-            latestPage={totalProductsPages || 1}
-            onPageChange={handlePageChange}
-          />
-        )}
       </div>
     </div>
   );

@@ -18,8 +18,9 @@ export default function Page() {
   const glideRef = useRef(null);
   const { id } = useParams();
 
-  const token = getToken()
- // const [token, setToken] = useState(null);
+  const token = getToken();
+  const { addToCart } = useBasketContext();
+
   const [product, setProduct] = useState({});
   const [currentImgSrc, setCurrentImgSrc] = useState("");
   const [similarProducts, setSimilarProducts] = useState([]);
@@ -30,40 +31,23 @@ export default function Page() {
     useState(true);
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
-  const { addToCart } = useBasketContext();
+  const [isAddingToCart, setIsAddingToCart] = useState(false); // لودینگ دکمه
 
-  // useEffect(() => {
-  //   const storedToken = localStorage.getItem("token");
-  //   if (storedToken) {
-  //     setToken(storedToken);
-  //   }
-  // }, []);
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
-  const headers = token
-    ? {
-      Authorization: `Bearer ${token}`,
-    }
-    : {};
-
+  // دریافت اطلاعات محصول
   useEffect(() => {
     const getProduct = async () => {
       setIsLoadingProduct(true);
       try {
-        const res = await fetch(`/api/products/${id}`, {
-          headers: headers,
-          cache: "no-store",
-        });
-
+        const res = await fetch(`/api/products/${id}`, { headers });
         if (res.ok) {
           const data = await res.json();
           setProduct(data);
-
           setCurrentImgSrc(data?.images?.[0] || "");
           setIsExistProduct(true);
-
           setSimilarProducts(data.relatedProducts || []);
           setIsLoadingSimilarProducts(false);
-
           setIsLiked(data.isLiked || false);
         } else if (res.status === 404 || res.status === 500) {
           setIsExistProduct(false);
@@ -72,7 +56,7 @@ export default function Page() {
           setIsExistProduct(false);
         }
       } catch (error) {
-        console.error("خطا در دریافت محصول:", error);
+        console.error(error);
         toast.error("خطایی در ارتباط با سرور رخ داد.");
         setIsExistProduct(false);
       } finally {
@@ -82,6 +66,7 @@ export default function Page() {
     getProduct();
   }, [id, token]);
 
+  // تنظیم Glide برای محصولات مشابه
   useEffect(() => {
     if (glideRef.current && similarProducts.length > 0) {
       const glide = new Glide(glideRef.current, {
@@ -98,94 +83,75 @@ export default function Page() {
           440: { perView: 1.5, gap: 12 },
         },
       });
-
       glide.mount();
-
       glideRef.current.glideInstance = glide;
-
-      return () => {
-        glide.destroy();
-      };
+      return () => glide.destroy();
     }
   }, [similarProducts]);
 
+  // عملیات لایک
   const likeProduct = async () => {
-    if (!token) {
-      toast.warning("برای لایک کردن باید ابتدا وارد حساب کاربری خود شوید.");
-      return;
-    }
+    if (!token)
+      return toast.warning("برای لایک کردن باید وارد حساب کاربری خود شوید.");
     try {
       const res = await fetch(`/api/products/${product.id}/like`, {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers,
       });
       if (res.ok) {
         setIsLiked(true);
         toast.success("محصول با موفقیت به علاقه‌مندی‌ها اضافه شد.");
-      } else {
-        toast.error("عملیات لایک کردن ناموفق بود.");
-      }
+      } else toast.error("عملیات لایک کردن ناموفق بود.");
     } catch (error) {
-      console.error("خطا در لایک محصول:", error);
+      console.error(error);
       toast.error("خطایی رخ داد، لطفا دوباره تلاش کنید.");
     }
   };
 
   const disLikeProduct = async () => {
-    if (!token) {
-      toast.warning("برای حذف از علاقه‌مندی‌ها باید وارد شوید.");
-      return;
-    }
+    if (!token)
+      return toast.warning("برای حذف از علاقه‌مندی‌ها باید وارد شوید.");
     try {
       const res = await fetch(`/api/products/${product.id}/like`, {
         method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
+        headers,
       });
       if (res.ok) {
         setIsLiked(false);
         toast.info("محصول از علاقه‌مندی‌ها حذف شد.");
-      } else {
-        toast.error("عملیات حذف از علاقه‌مندی‌ها ناموفق بود.");
-      }
+      } else toast.error("عملیات حذف از علاقه‌مندی‌ها ناموفق بود.");
     } catch (error) {
-      console.error("خطا در دیس‌لایک محصول:", error);
+      console.error(error);
       toast.error("خطایی رخ داد، لطفا دوباره تلاش کنید.");
     }
   };
 
+  // افزودن به سبد خرید با لودینگ
   const addProductToBasket = async () => {
-    const needsColor = product.colors && product.colors.length > 0;
-    const needsSize = product.sizes && product.sizes.length > 0;
-    if (!token) {
-      toast.warn("برای اضافه کردن به سبد خرید باید وارد حساب کاربری شوید")
-      return;
-    }
-    if (needsColor && !selectedColor) {
-      toast.warn("لطفا رنگ مورد نظر خود را انتخاب کنید.");
-      return;
-    }
-    if (needsSize && !selectedSize) {
-      toast.warn("لطفا سایز مورد نظر خود را انتخاب کنید.");
-      return;
-    }
+    if (!token)
+      return toast.warn(
+        "برای اضافه کردن به سبد خرید باید وارد حساب کاربری شوید"
+      );
+    if (product.colors?.length > 0 && !selectedColor)
+      return toast.warn("لطفا رنگ مورد نظر خود را انتخاب کنید.");
+    if (product.sizes?.length > 0 && !selectedSize)
+      return toast.warn("لطفا سایز مورد نظر خود را انتخاب کنید.");
 
     try {
+      setIsAddingToCart(true);
       await addToCart(product.id, 1, selectedColor, selectedSize);
-
-      router.push('/cart')
-
-
+      router.push("/cart");
     } catch (error) {
-      console.log(error);
-
+      console.error(error);
+      toast.error("خطایی رخ داد، دوباره تلاش کنید.");
+    } finally {
+      setIsAddingToCart(false);
     }
   };
 
   return (
     <>
-      <ToastContainer autoClose={2000} className={"custom-toast-container"} />
+      <ToastContainer autoClose={2000} className="custom-toast-container" />
 
       {isExistProduct ? (
         <>
@@ -194,7 +160,6 @@ export default function Page() {
               items={[{ label: product.categoryName }, { label: product.name }]}
             />
           )}
-
           <div className="mx-auto px-5 container">
             {isLoadingProduct ? (
               <div className="flex flex-col justify-center items-center h-[60vh]">
@@ -207,7 +172,7 @@ export default function Page() {
               <div className="lg:flex gap-6 my-12">
                 <div className="flex flex-col gap-4 lg:flex-row-reverse lg:gap-6">
                   <div className="mt-6 lg:my-0">
-                    {product?.images && (
+                    {product.images && (
                       <Image
                         quality={100}
                         width={350}
@@ -220,28 +185,28 @@ export default function Page() {
                   </div>
 
                   <div className="flex items-center gap-2 mb-6 lg:hidden">
-                    {product?.images?.map((img) => (
+                    {product.images?.map((img) => (
                       <Image
-                        onClick={() => setCurrentImgSrc(img)}
                         key={img}
                         width={64}
                         height={64}
                         src={img}
                         alt="Product thumbnail"
+                        onClick={() => setCurrentImgSrc(img)}
                         className="rounded-lg cursor-pointer"
                       />
                     ))}
                   </div>
 
                   <div className="hidden lg:flex w-max flex-col gap-6 mb-6">
-                    {product?.images?.map((img) => (
+                    {product.images?.map((img) => (
                       <Image
-                        onClick={() => setCurrentImgSrc(img)}
                         key={img}
                         width={90}
                         height={84}
                         src={img}
                         alt="Product thumbnail"
+                        onClick={() => setCurrentImgSrc(img)}
                         className="rounded-lg cursor-pointer"
                       />
                     ))}
@@ -249,11 +214,10 @@ export default function Page() {
                 </div>
 
                 <div>
-                  <div className="flex justify-between gap-1 items-center mb-1">
+                  <div className="flex w-full justify-between gap-1 items-center mb-1">
                     <h4 className="text-xl font-semibold leading-5.5 text-neutral-gray-13 lg:text-[27px] lg:font-bold lg:leading-8">
                       {product.name}
                     </h4>
-
                     <div className="flex justify-center items-center gap-2">
                       <div className="p-3 border border-cognac-tint-8 rounded-lg">
                         {isLiked ? (
@@ -281,46 +245,6 @@ export default function Page() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-2">
-                      <Image
-                        width={16}
-                        height={16}
-                        src="/img/star-outline.svg"
-                        alt="Star rating"
-                        className="lg:w-5 lg:h-5"
-                      />
-                      <Image
-                        width={16}
-                        height={16}
-                        className="lg:w-5 lg:h-5"
-                        src="/img/star-fill.svg"
-                        alt="Star rating"
-                      />
-                      <Image
-                        width={16}
-                        height={16}
-                        className="lg:w-5 lg:h-5"
-                        src="/img/star-fill.svg"
-                        alt="Star rating"
-                      />
-                      <Image
-                        width={16}
-                        height={16}
-                        className="lg:w-5 lg:h-5"
-                        src="/img/star-fill.svg"
-                        alt="Star rating"
-                      />
-                      <Image
-                        width={16}
-                        height={16}
-                        className="lg:w-5 lg:h-5"
-                        src="/img/star-fill.svg"
-                        alt="Star rating"
-                      />
-                    </div>
-                  </div>
-
                   <div className="hidden lg:flex items-center my-7">
                     {product.percentOff && (
                       <p className="line-through font-normal leading-7 text-neutral-gray-9">
@@ -342,71 +266,34 @@ export default function Page() {
                     {product.description}
                   </p>
 
-                  <div className="mb-4 lg:mb-6">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Image
-                        width={20}
-                        height={20}
-                        src="/img/WashingMachine.svg"
-                        alt="Washing machine icon"
-                      />
-                      <p className="text-xs leading-4.5 text-neutral-gray-11">
-                        قابلیت شستشو: با ماشین لباسشویی یا دست
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <Image
-                        width={20}
-                        height={20}
-                        src="/img/SealCheck.svg"
-                        alt="Seal check icon"
-                      />
-                      <p className="text-xs leading-4.5 text-neutral-gray-11">
-                        جنس پارچه: با کیفیت بالا و ضد چروق
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Image
-                        width={20}
-                        height={20}
-                        src="/img/DropSlash.svg"
-                        alt="Drop slash icon"
-                      />
-                      <p className="text-xs leading-4.5 text-neutral-gray-11">
-                        مقاومت در برابر آب
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="mb-4 lg:mb-6">
+                  <div className="mb-12">
                     <p className="text-sm leading-6 mb-1 text-black">
                       رنگ بندی:
                     </p>
                     <div className="flex flex-wrap items-center gap-2">
-                      {product.colors &&
-                        product.colors.map((item) => (
-                          <label
-                            key={item.id}
-                            className="relative cursor-pointer"
-                          >
-                            <input
-                              type="radio"
-                              name="color"
-                              className="hidden peer"
-                              value={item.id}
-                              onChange={() => setSelectedColor(item.id)}
-                              checked={selectedColor === item.id}
-                            />
-                            <div
-                              style={{ backgroundColor: item.hexCode }}
-                              className="w-8 h-8 z-20 rounded-sm flex justify-center items-center relative before:content-[''] before:absolute before:w-1.5 before:h-2.5 before:border-r-2 before:border-b-2 before:border-white before:rotate-45 before:opacity-0 peer-checked:before:opacity-100"
-                            ></div>
-                            <div
-                              style={{ borderColor: item.hexCode }}
-                              className="absolute top-[-4px] left-[-4px] w-10 h-10 rounded-md border-2 opacity-0 peer-checked:opacity-100"
-                            ></div>
-                          </label>
-                        ))}
+                      {product.colors?.map((item) => (
+                        <label
+                          key={item.id}
+                          className="relative cursor-pointer"
+                        >
+                          <input
+                            type="radio"
+                            name="color"
+                            className="hidden peer"
+                            value={item.id}
+                            onChange={() => setSelectedColor(item.id)}
+                            checked={selectedColor === item.id}
+                          />
+                          <div
+                            style={{ backgroundColor: item.hexCode }}
+                            className="w-8 h-8 z-20 rounded-sm flex justify-center items-center relative before:content-[''] before:absolute before:w-1.5 before:h-2.5 before:border-r-2 before:border-b-2 before:border-white before:rotate-45 before:opacity-0 peer-checked:before:opacity-100"
+                          ></div>
+                          <div
+                            style={{ borderColor: item.hexCode }}
+                            className="absolute top-[-4px] left-[-4px] w-10 h-10 rounded-md border-2 opacity-0 peer-checked:opacity-100"
+                          ></div>
+                        </label>
+                      ))}
                     </div>
                   </div>
 
@@ -415,42 +302,44 @@ export default function Page() {
                       سایزبندی:
                     </p>
                     <div className="flex items-center gap-2">
-                      {product.sizes &&
-                        product.sizes.map((item) => (
-                          <label
-                            key={item.id}
-                            className="relative cursor-pointer"
-                          >
-                            <input
-                              type="radio"
-                              name="size"
-                              className="hidden peer"
-                              value={item.id}
-                              onChange={() => setSelectedSize(item.id)}
-                              checked={selectedSize === item.id}
-                            />
-                            <div className="w-8 h-8 text-neutral-gray-11 flex items-center justify-center rounded-sm border border-neutral-gray-4 peer-checked:bg-cognac-shade-4 peer-checked:text-white text-xs leading-4.5 pt-1">
-                              {item.name}{" "}
-                            </div>
-                            <div
-                              className={`absolute top-[-4px] left-[-4px] w-10 h-10 rounded-lg border-3 border-cognac-shade-4 opacity-0 peer-checked:opacity-100 transition-all`}
-                            ></div>
-                          </label>
-                        ))}
+                      {product.sizes?.map((item) => (
+                        <label
+                          key={item.id}
+                          className="relative cursor-pointer"
+                        >
+                          <input
+                            type="radio"
+                            name="size"
+                            className="hidden peer"
+                            value={item.id}
+                            onChange={() => setSelectedSize(item.id)}
+                            checked={selectedSize === item.id}
+                          />
+                          <div className="w-8 h-8 text-neutral-gray-11 flex items-center justify-center rounded-sm border border-neutral-gray-4 peer-checked:bg-cognac-shade-4 peer-checked:text-white text-xs leading-4.5 pt-1">
+                            {item.name}
+                          </div>
+                          <div className="absolute top-[-4px] left-[-4px] w-10 h-10 rounded-lg border-3 border-cognac-shade-4 opacity-0 peer-checked:opacity-100 transition-all"></div>
+                        </label>
+                      ))}
                     </div>
                   </div>
 
                   <div>
                     <button
                       onClick={addProductToBasket}
-                      className="flex items-center bg-cognac-primery gap-2 rounded-lg px-4 py-3.25 lg:px-10 xl:px-37 cursor-pointer"
+                      disabled={isAddingToCart}
+                      className="flex items-center bg-cognac-primery gap-2 rounded-lg px-4 py-3.25 lg:px-5 xl:px-20 cursor-pointer"
                     >
                       <img
                         className="hidden lg:block"
                         src="/img/shopping-cart-2.svg"
                         alt="Shopping cart icon"
                       />
-                      <p className="text-5.5 text-white">افزودن به سبد خرید</p>
+                      <p className="text-5.5 text-white">
+                        {isAddingToCart
+                          ? "در حال افزودن..."
+                          : "افزودن به سبد خرید"}
+                      </p>
                     </button>
                   </div>
                 </div>
@@ -463,7 +352,6 @@ export default function Page() {
                   <h5 className="font-semibold leading-5 lg:text-30 lg:bold lg:leading-9.5">
                     محصولات مشابه
                   </h5>
-
                   <div className="flex items-center gap-2">
                     <div
                       className="p-3 border border-neutral-gray-8 rounded-lg cursor-pointer custom-prev"

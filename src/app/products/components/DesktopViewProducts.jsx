@@ -16,8 +16,8 @@ export default function DesktopViewProducts({
 
   return (
     <div className="hidden lg:flex justify-between gap-6 mt-10">
-      <div>
-        <div className="flex gap-1 items-end">
+      <div className="w-80">
+        <div className="flex gap-1 items-end mb-6">
           <h5 className="text-xl font-bold leading-6.5 text-neutral-gray-13">
             فیلترها
           </h5>
@@ -96,7 +96,7 @@ export default function DesktopViewProducts({
 
         {/* Products */}
         {notFound ? (
-          <div className="text-center w-full text-red-500 text-3xl font-bold mt-10">
+          <div className="text-center w-full text-cognac-primery text-3xl font-bold mt-10">
             محصولی یافت نشد
           </div>
         ) : (

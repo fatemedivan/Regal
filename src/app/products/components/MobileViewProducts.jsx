@@ -61,7 +61,7 @@ export default function MobileViewProducts({
 
       {/* Products */}
       {notFound ? (
-        <p className="text-center w-full text-red-500 text-xl font-bold mt-10 lg:hidden">
+        <p className="text-center w-full text-cognac-primery  text-xl font-bold mt-10 lg:hidden">
           محصولی یافت نشد
         </p>
       ) : (

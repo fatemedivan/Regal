@@ -11,9 +11,7 @@ import ProductSceleton from "@/components/ProductSceleton";
 export default function Page() {
 
   const [isHadFavourite, setIsHadFavourite] = useState(false);
-  const [isOpenSort, setIsOpenSort] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedOptionSort, setSelectedOptionSort] = useState("");
   const [token, setToken] = useState("");
   const [favoriteProductes, setFavoriteProductes] = useState([]);
 
@@ -129,44 +127,7 @@ export default function Page() {
           </p>
           <div></div>
         </div>
-        <div className="relative w-full mb-6">
-          <button
-            onClick={() => setIsOpenSort(!isOpenSort)}
-            className="w-full border border-neutral-gray-4 rounded-lg py-5 pl-8 pr-6 text-right flex justify-between items-center cursor-pointer"
-          >
-            <p className="text-neutral-gray-7 text-xs leading-4.5">
-              {selectedOptionSort || "مرتب سازی بر اساس"}
-            </p>
-            <Image
-              src="/img/drop-down.svg"
-              width={16}
-              height={16}
-              alt="dropdown icon"
-              className={`absolute top-1/2 left-3 -translate-y-1/2 pointer-events-none transition ${isOpenSort && "rotate-180"
-                }`}
-            />
-          </button>
-
-          {isOpenSort && (
-            <ul className="absolute w-full z-20 bg-white border border-neutral-gray-4 mt-1 rounded-lg shadow-lg text-sm">
-              {["جدیدترین", "قدیمی‌ترین", "ارزان‌ترین", "گران‌ترین"].map(
-                (option) => (
-                  <li
-                    key={option}
-                    onClick={() => {
-                      setSelectedOptionSort(option);
-                      setIsOpenSort(false);
-                    }}
-                    className="px-4 py-2 hover:bg-neutral-gray-2 cursor-pointer text-xs leading-4.5 text-neutral-gray-7"
-                  >
-                    {option}
-                  </li>
-                )
-              )}
-            </ul>
-          )}
-        </div>
-
+       
 
         {isLoading ? (
 
@@ -205,9 +166,9 @@ export default function Page() {
               شما در حال حاضر هیچ محصولی را به علاقه‌مندی‌ها اضافه نکرده‌اید!
             </p>
             <div className="mt-60 flex items-center justify-center">
-              <Link href={"/"}>
+              <Link href={"/products"}>
                 <button className="bg-cognac-primery rounded-lg py-3.25 px-28.5 text-white leading-5.5 cursor-pointer">
-                  برو به صفحه اصلی
+                  مشاهده محصولات
                 </button>
               </Link>
             </div>
@@ -252,9 +213,9 @@ export default function Page() {
               <p className="leading-7 text-neutral-gray-9">
                 شما در حال حاضر هیچ محصولی را به علاقه‌مندی‌ها اضافه نکرده‌اید!
               </p>
-              <Link href={"/"}>
+              <Link href={"/products"}>
                 <button className="bg-cognac-primery rounded-lg py-3.25 px-12 text-white leading-5.5 cursor-pointer">
-                  برو به صفحه اصلی
+                 مشاهده محصولات
                 </button>
               </Link>
             </div>

@@ -89,7 +89,6 @@ export default function FilterMenu({ handleCloseFilter, setIsLoading }) {
 
   return (
     <div className="pb-10">
-   
       <div className="flex items-center gap-2 py-4 pr-5 mb-6 lg:hidden">
         <Image
           width={20}
@@ -107,7 +106,6 @@ export default function FilterMenu({ handleCloseFilter, setIsLoading }) {
         onRemoveFilter={handleRemoveFilter}
       />
 
- 
       <ul className="mx-5 lg:w-70">
         {filters.map((filter) => (
           <FilterSection
@@ -130,7 +128,6 @@ export default function FilterMenu({ handleCloseFilter, setIsLoading }) {
           />
         ))}
 
-   
         <PriceFilter
           isOpen={isOpenPriceFilter}
           onToggle={togglePriceFilter}
@@ -156,11 +153,22 @@ export default function FilterMenu({ handleCloseFilter, setIsLoading }) {
       </ul>
 
       <div className="mt-8 px-5">
-        <div className="flex gap-4 lg:flex-col">
+        <div className="flex justify-center gap-4">
+          <button
+            onClick={handleClearAllFilters}
+            disabled={isNoFiltersSelected}
+            className={`w-40 py-3 border border-neutral-gray-8 text-neutral-gray-11 rounded-lg transition-colors ${
+              isNoFiltersSelected
+                ? "cursor-default opacity-50"
+                : "hover:bg-neutral-gray-2 cursor-pointer"
+            }`}
+          >
+            حذف فیلترها
+          </button>
           <button
             onClick={handleApplyAllFilters}
             disabled={isApplying || isPending || isNoFiltersSelected}
-            className={`px-10 py-3 bg-cognac-primery text-white rounded-lg flex items-center justify-center gap-2 transition-colors ${
+            className={` py-3 bg-cognac-primery text-white w-40 rounded-lg flex items-center justify-center gap-2 transition-colors ${
               isApplying || isPending || isNoFiltersSelected
                 ? "cursor-default opacity-50"
                 : "cursor-pointer opacity-100"
@@ -175,18 +183,6 @@ export default function FilterMenu({ handleCloseFilter, setIsLoading }) {
             ) : (
               "اعمال فیلتر"
             )}
-          </button>
-
-          <button
-            onClick={handleClearAllFilters}
-            disabled={isNoFiltersSelected}
-            className={`px-10 py-3 border border-neutral-gray-8 text-neutral-gray-11 rounded-lg transition-colors ${
-              isNoFiltersSelected
-                ? "cursor-default opacity-50"
-                : "hover:bg-neutral-gray-2 cursor-pointer"
-            }`}
-          >
-            حذف فیلترها
           </button>
         </div>
       </div>

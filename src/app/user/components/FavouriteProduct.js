@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React from "react";
+import Link from "next/link";
 
 export default function FavoriteProductCard({
   id,
@@ -73,18 +73,20 @@ export default function FavoriteProductCard({
         </p>
       </div>
       <div className="w-41.75 lg:w-79.5 mt-3">
-        <button className="border rounded-lg border-cognac-tint-7 text-cognac-primery py-2.5 w-full lg:flex lg:justify-center lg:gap-2 cursor-pointer">
-          <Image
-            width={16}
-            height={16}
-            className="hidden lg:block"
-            src="/img/shopping-cart-primery.svg"
-            alt=""
-          />
-          <p className="lg:flex">
-            اضافه به سبد<span className="hidden lg:block">خرید </span>
-          </p>
-        </button>
+        <Link href={`/products/${id}`}>
+          <button className="border rounded-lg border-cognac-tint-7 text-cognac-primery py-2.5 w-full lg:flex lg:justify-center lg:gap-2 cursor-pointer">
+            <Image
+              width={16}
+              height={16}
+              className="hidden lg:block"
+              src="/img/shopping-cart-primery.svg"
+              alt=""
+            />
+            <p className="lg:flex">
+              مشاهده محصول
+            </p>
+          </button>
+        </Link>
       </div>
     </div>
   );

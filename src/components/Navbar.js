@@ -6,8 +6,10 @@ import Categories from "@/components/CategoriesMenu";
 import Link from "next/link";
 // import { useScrollLockContext } from "@/context/ScrollLockContext";
 import { useAuthContext } from "@/context/AuthContext";
+import getToken from "@/utils/getToken";
 
 export default function Navbar() {
+  const token = getToken()
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [isOpenCategory, setIsOpenCategory] = useState(false);
@@ -210,7 +212,7 @@ export default function Navbar() {
               </li>
             </Link>
 
-            <Link href={role === "ADMIN" ? "/admin/products" : "/user/profile"}>
+            <Link href={token ? "/user/profile" : '/auth/register'}>
               <li className="p-3">
                 <Image
                   className="cursor-pointer"

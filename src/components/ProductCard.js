@@ -94,7 +94,7 @@ export default function ProductCard({
           </div>
           <div className="flex items-center gap-2 text-black lg:justify-start">
             {offPercent !== 0 && (
-              <p className="text-neutral-gray-8 text-xs leading-4.5 lg:text-sm lg:leading-4.5 lg:line-through">
+              <p className="text-neutral-gray-8 text-xs leading-4.5 lg:text-sm lg:leading-4.5 line-through">
                 {price}
               </p>
             )}

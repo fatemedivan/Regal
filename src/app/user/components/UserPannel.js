@@ -32,20 +32,20 @@ export default function UserPannel({
 
   const handleCloseAddAddressModal = () => {
     setIsOpenAddAddressModal(false);
- //   openModal();
+    //   openModal();
   };
   const handleOpenDetailsModal = () => {
     setIsOpenDetailsModal(true);
-  //  openModal();
+    //  openModal();
   };
   const handleCloseDetailsModal = () => {
     setIsOpenDetailsModal(false);
-  //  closeModal();
+    //  closeModal();
   };
 
   const handleCloseLogoutModal = () => {
     setIsOpenLogoutModal(false);
-  //  closeModal();
+    //  closeModal();
   };
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -54,7 +54,7 @@ export default function UserPannel({
     document.cookie = `token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC`;
     router.replace("/auth/login");
     setIsOpenLogoutModal(false);
-   // closeModal();
+    // closeModal();
   };
   // const { openModal, closeModal } = useScrollLockContext();
   const { phoneNumber } = useAuthContext();
@@ -181,7 +181,7 @@ export default function UserPannel({
           <div
             onClick={() => {
               setIsOpenLogoutModal(true);
-             // openModal();
+              // openModal();
             }}
             className="flex items-center gap-2 lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:mb-0  lg:rounded-lg lg:p-3 lg:border-neutral-gray-8 transition-all cursor-pointer"
           >
@@ -278,69 +278,31 @@ export default function UserPannel({
                 </div>
               )}
             </div>
-          ) : rout === "favorites" ? (
-            <div className="relative min-w-64">
-              <button
-                onClick={() => setIsOpenSort(!isOpenSort)}
-                className="w-full border border-neutral-gray-4 rounded-lg py-5 pl-8 pr-6 text-right flex justify-between items-center cursor-pointer"
-              >
-                <p className="text-neutral-gray-7 text-xs leading-4.5">
-                  {selectedOptionSort || "مرتب سازی بر اساس"}
-                </p>
-                <Image
-                  src="/img/drop-down.svg"
-                  width={16}
-                  height={16}
-                  alt="dropdown icon"
-                  className={`absolute top-1/2 left-3 -translate-y-1/2 pointer-events-none transition ${isOpenSort && "rotate-180"
-                    }`}
-                />
-              </button>
-
-              {isOpenSort && (
-                <ul className="absolute w-full z-20 bg-white border border-neutral-gray-4 mt-1 rounded-lg shadow-lg text-sm">
-                  {["جدیدترین", "قدیمی‌ترین", "ارزان‌ترین", "گران‌ترین"].map(
-                    (option) => (
-                      <li
-                        key={option}
-                        onClick={() => {
-                          setSelectedOptionSort(option);
-                          setIsOpenSort(false);
-                        }}
-                        className="px-4 py-2 hover:bg-neutral-gray-2 cursor-pointer text-xs leading-4.5 text-neutral-gray-7"
-                      >
-                        {option}
-                      </li>
-                    )
-                  )}
-                </ul>
-              )}
-            </div>
-          ) : rout === "addresses" ? (
-            <div>
-              {isHadAddress && (
-                <div
-                  onClick={() => {
-                    setIsOpenAddAddressModal(true);
-                  //  openModal();
-                  }}
-                  className="flex items-center gap-2 px-6 py-3.25 cursor-pointer"
-                >
-                  <Image
-                    width={20}
-                    height={20}
-                    src="/img/add-circle.svg"
-                    alt=""
-                  />
-                  <p className="text-cognac-primery leading-5.5">
-                    افزودن آدرس جدید
-                  </p>
-                </div>
-              )}
-            </div>
-          ) : (
-            <></>
-          )}
+          )  : rout === "addresses" ? (
+              <div>
+                {isHadAddress && (
+                  <div
+                    onClick={() => {
+                      setIsOpenAddAddressModal(true);
+                      //  openModal();
+                    }}
+                    className="flex items-center gap-2 px-6 py-3.25 cursor-pointer"
+                  >
+                    <Image
+                      width={20}
+                      height={20}
+                      src="/img/add-circle.svg"
+                      alt=""
+                    />
+                    <p className="text-cognac-primery leading-5.5">
+                      افزودن آدرس جدید
+                    </p>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <></>
+            )}
         </div>
         <div>{children}</div>
       </div>

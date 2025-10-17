@@ -17,7 +17,7 @@ export default function KeyFeatures() {
               شما بیش از پیش نمایان خواهد شد.
             </p>
           </div>
-          <div className="flex flex-wrap gap-4 sm:justify-center lg:gap-6 lg:max-w-184 lg:grid lg:grid-cols-[auto_auto_auto]">
+          <div className="flex flex-wrap gap-4 justify-center lg:gap-6 lg:max-w-184 lg:grid lg:grid-cols-[auto_auto_auto]">
             <div className="max-w-42 lg:max-w-86">
               <Image
                 width={56}

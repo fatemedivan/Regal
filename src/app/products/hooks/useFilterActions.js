@@ -16,7 +16,6 @@ export const useFilterActions = (setIsLoading) => {
     }, [router, pathname, setIsLoading]);
 
     const handleOptionChange = useCallback((option, checked, parentFilter, searchParamsHook, selectedFilters, setSelectedFilters, CATEGORY_MAP) => {
-        // فقط آپدیت UI - نه URL (برای اعمال دستی با دکمه)
         setSelectedFilters((prev) => {
             if (checked)
                 return [
@@ -33,7 +32,6 @@ export const useFilterActions = (setIsLoading) => {
         const params = new URLSearchParams();
         params.set("page", "1");
 
-        // اضافه کردن فیلترهای انتخاب شده به URL
         selectedFilters.forEach(item => {
             if (item.type === "size") params.set("size", item.option);
             else if (item.type === "color") params.set("color", encodeURIComponent(item.option));
@@ -41,13 +39,11 @@ export const useFilterActions = (setIsLoading) => {
             else if (item.type === "isDiscounted") params.set("isDiscounted", item.option === "دارد" ? "true" : "false");
         });
 
-        // اضافه کردن فیلتر قیمت
         if (minPrice !== defaultMinPrice || maxPrice !== defaultMaxPrice) {
             params.set("minPrice", minPrice.toString());
             params.set("maxPrice", maxPrice.toString());
         }
 
-        // حفظ فیلترهای مرتب سازی و جستجو
         const sort = searchParamsHook.get("sort");
         const search = searchParamsHook.get("search");
         if (sort) params.set("sort", sort);
@@ -89,7 +85,6 @@ export const useFilterActions = (setIsLoading) => {
     }, [updateURL]);
 
     const handleRemoveSelected = useCallback((option, type, searchParamsHook, selectedFilters, setSelectedFilters, setMinPrice, setMaxPrice, defaultMinPrice, defaultMaxPrice) => {
-        // ابتدا state رو آپدیت کن
         if (type === "price") {
             setMinPrice(defaultMinPrice);
             setMaxPrice(defaultMaxPrice);
@@ -99,7 +94,6 @@ export const useFilterActions = (setIsLoading) => {
             prev.filter((f) => !(f.type === type && f.option === option))
         );
 
-        // سپس URL رو آپدیت کن (حذف مستقیم)
         const params = new URLSearchParams(searchParamsHook.toString());
         params.set("page", "1");
 

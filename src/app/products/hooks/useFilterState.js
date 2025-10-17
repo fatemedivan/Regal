@@ -56,7 +56,6 @@ export const useFilterState = (searchParamsHook, setIsLoading) => {
   const [minPrice, setMinPrice] = useState(defaultMinPrice);
   const [maxPrice, setMaxPrice] = useState(defaultMaxPrice);
 
-  // هماهنگی state با URL
   useEffect(() => {
     const currentSelected = [];
     const urlMinPrice = parseFloat(searchParamsHook.get("minPrice"));

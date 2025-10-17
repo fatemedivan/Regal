@@ -82,7 +82,6 @@ export default function FilterMenu({ handleCloseFilter, setIsLoading }) {
     );
   };
 
-  // بررسی آیا هیچ فیلتری انتخاب نشده
   const isNoFiltersSelected =
     selectedFilters.length === 0 &&
     minPrice === defaultMinPrice &&
@@ -90,7 +89,7 @@ export default function FilterMenu({ handleCloseFilter, setIsLoading }) {
 
   return (
     <div className="pb-10">
-      {/* Close Button - فقط برای موبایل */}
+   
       <div className="flex items-center gap-2 py-4 pr-5 mb-6 lg:hidden">
         <Image
           width={20}
@@ -103,13 +102,12 @@ export default function FilterMenu({ handleCloseFilter, setIsLoading }) {
         <p className="leading-7 text-neutral-gray-13">فیلترها</p>
       </div>
 
-      {/* Selected Filters */}
       <SelectedFilterTags
         selectedFilters={selectedFilters}
         onRemoveFilter={handleRemoveFilter}
       />
 
-      {/* Filters List */}
+ 
       <ul className="mx-5 lg:w-70">
         {filters.map((filter) => (
           <FilterSection
@@ -132,7 +130,7 @@ export default function FilterMenu({ handleCloseFilter, setIsLoading }) {
           />
         ))}
 
-        {/* Price Filter */}
+   
         <PriceFilter
           isOpen={isOpenPriceFilter}
           onToggle={togglePriceFilter}
@@ -157,49 +155,28 @@ export default function FilterMenu({ handleCloseFilter, setIsLoading }) {
         />
       </ul>
 
-      {/* فقط یک مجموعه دکمه - برای همه حالات */}
       <div className="mt-8 px-5">
         <div className="flex gap-4 lg:flex-col">
-          {/* دکمه اعمال فیلتر */}
           <button
             onClick={handleApplyAllFilters}
             disabled={isApplying || isPending || isNoFiltersSelected}
             className={`px-10 py-3 bg-cognac-primery text-white rounded-lg flex items-center justify-center gap-2 transition-colors ${
               isApplying || isPending || isNoFiltersSelected
                 ? "cursor-default opacity-50"
-                : "cursor-pointer opacity-100 hover:bg-cognac-shade-5"
+                : "cursor-pointer opacity-100"
             }`}
           >
             {isApplying || isPending ? (
-              <>
-                <svg
-                  className="animate-spin h-4 w-4 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                در حال اعمال...
-              </>
+              <div className="flex items-center py-1 gap-2">
+                <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[0ms]"></div>
+                <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[150ms]"></div>
+                <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[300ms]"></div>
+              </div>
             ) : (
               "اعمال فیلتر"
             )}
           </button>
 
-          {/* دکمه حذف فیلترها */}
           <button
             onClick={handleClearAllFilters}
             disabled={isNoFiltersSelected}

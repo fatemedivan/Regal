@@ -1,32 +1,26 @@
 "use client";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import React, { useState } from "react";
-import Search from "@/components/Search";
-import Categories from "@/components/CategoriesMenu";
 import Link from "next/link";
-// import { useScrollLockContext } from "@/context/ScrollLockContext";
-import { useAuthContext } from "@/context/AuthContext";
+import Categories from "@/components/CategoriesMenu";
 import getToken from "@/utils/getToken";
 
 export default function Navbar() {
-  const token = getToken()
+  const token = getToken();
   const [isOpenMenu, setIsOpenMenu] = useState(false);
-  const [isSearching, setIsSearching] = useState(false);
   const [isOpenCategory, setIsOpenCategory] = useState(false);
-  const handleCloseSearch = () => {
-    setIsSearching(false);
-  };
-  const handleCloseCategory = () => {
-    setIsOpenCategory(false);
-   // closeModal();
-  };
-  const handleCloseMenu = () => {
-    setIsOpenMenu(false);
-   // closeModal();
-  };
 
-  // const { isModalOpen, openModal, closeModal } = useScrollLockContext();
-  const { role } = useAuthContext();
+  useEffect(() => {
+    if (isOpenMenu || isOpenCategory) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpenMenu, isOpenCategory]);
 
   return (
     <>
@@ -52,7 +46,6 @@ export default function Navbar() {
             <li
               onClick={() => {
                 setIsOpenCategory(!isOpenCategory);
-            //    isModalOpen ? closeModal() : openModal();
               }}
               className="flex justify-center items-center gap-2"
             >
@@ -90,9 +83,7 @@ export default function Navbar() {
 
           <ul className="flex justify-center items-center lg:hidden">
             <li className="p-3.5">
-              <Link
-                href={role === "ADMIN" ? "/admin/products" : "/user/profile"}
-              >
+              <Link href={"/user/profile"}>
                 <Image
                   className="cursor-pointer"
                   width={16}
@@ -103,29 +94,14 @@ export default function Navbar() {
                 />
               </Link>
             </li>
-            <li className="p-3.5">
-              <Image
-                className="cursor-pointer"
-                width={16}
-                height={16}
-                src="/img/search-normal.svg"
-                alt=""
-                quality={100}
-                onClick={() => {
-                  setIsSearching(true);
-                //  openModal();
-                  setIsOpenCategory(false);
-                }}
-              />
-            </li>
-            {isOpenMenu || isSearching ? (
+
+            {isOpenMenu ? (
               <li
                 className="p-3.5"
                 onClick={(e) => {
                   setIsOpenMenu(false);
-                  setIsSearching(false);
+
                   setIsOpenCategory(false);
-                //  closeModal();
                 }}
               >
                 <Image
@@ -142,7 +118,6 @@ export default function Navbar() {
                 className="p-3.5"
                 onClick={() => {
                   setIsOpenMenu(true);
-               //   openModal();
                 }}
               >
                 <Image
@@ -157,36 +132,6 @@ export default function Navbar() {
             )}
           </ul>
           <ul className="hidden lg:flex justify-center items-center gap-1">
-            <li className="p-3">
-              {isSearching ? (
-                <Image
-                  className="cursor-pointer"
-                  width={16}
-                  height={16}
-                  src="/img/Close Icon.svg"
-                  alt=""
-                  quality={100}
-                  onClick={(e) => {
-                    setIsSearching(false);
-                  }}
-                />
-              ) : (
-                <Image
-                  className="cursor-pointer"
-                  width={16}
-                  height={16}
-                  src="/img/search-normal.svg"
-                  alt=""
-                  quality={100}
-                  onClick={(e) => {
-                    setIsSearching(true);
-                    setIsOpenCategory(false);
-                    setIsOpenMenu(false);
-                  }}
-                />
-              )}
-            </li>
-
             <Link href={"/cart"}>
               <li className="p-3">
                 <Image
@@ -212,7 +157,7 @@ export default function Navbar() {
               </li>
             </Link>
 
-            <Link href={token ? "/user/profile" : '/auth/register'}>
+            <Link href={token ? "/user/profile" : "/auth/register"}>
               <li className="p-3">
                 <Image
                   className="cursor-pointer"
@@ -233,7 +178,6 @@ export default function Navbar() {
             className="fixed inset-0 bg-[#1E1E1E] opacity-50 z-40"
             onClick={() => {
               setIsOpenMenu(false);
-            //  closeModal();
             }}
           />
           <div className="fixed top-21.25 left-0 right-0  w-full bg-white px-5 pt-6 pb-10 text-neutral-gray-13 lg:hidden z-50">
@@ -241,7 +185,6 @@ export default function Navbar() {
               <div
                 onClick={() => {
                   setIsOpenMenu(false);
-               //   closeModal;
                 }}
                 className="flex justify-between items-center pb-4 border-b-1 border-neutral-gray-4 cursor-pointer"
               >
@@ -258,7 +201,6 @@ export default function Navbar() {
             <div
               onClick={() => {
                 setIsOpenCategory(true);
-              //  openModal();
               }}
               className="flex justify-between items-center pb-4 mt-4 border-b-1 border-neutral-gray-4 cursor-pointer"
             >
@@ -275,9 +217,8 @@ export default function Navbar() {
               <div
                 onClick={() => {
                   setIsOpenMenu(false);
-               //   closeModal();
                 }}
-                className="flex justify-between items-center pb-4 mt-4 border-b-1 border-neutral-gray-4 cursor-pointer"
+                className="flex justify-between items-center pb-4 mt-4 cursor-pointer"
               >
                 <p className="text-sm leading-5">سبد خرید</p>
                 <Image
@@ -289,34 +230,14 @@ export default function Navbar() {
                 />
               </div>
             </Link>
-            {role === "USER" && (
-              <Link href={"/cart"}>
-                <div
-                  onClick={() => {
-                    setIsOpenMenu(false);
-                  //  closeModal();
-                  }}
-                  className="flex justify-between items-center mt-4 cursor-pointer"
-                >
-                  <p className="text-sm leading-5">سبد خرید</p>
-                  <Image
-                    width={16}
-                    height={16}
-                    src="/img/arrow-left-3.svg"
-                    alt=""
-                    quality={100}
-                  />
-                </div>
-              </Link>
-            )}
           </div>
         </div>
       )}
-      {isSearching && <Search handleCloseSearch={handleCloseSearch} />}
+
       {isOpenCategory && (
         <Categories
-          handleCloseCategory={handleCloseCategory}
-          handleCloseMenu={handleCloseMenu}
+          handleCloseCategory={() => setIsOpenCategory(false)}
+          handleCloseMenu={() => setIsOpenMenu(false)}
         />
       )}
     </>

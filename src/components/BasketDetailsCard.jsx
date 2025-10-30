@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import DetailsModal from "./DetailsModal";
 import DeleteModal from "./DeleteModal";
-// import { useScrollLockContext } from "@/context/ScrollLockContext";
 
 export default function BasketDetails({
   selectedAddressId,
@@ -22,12 +21,12 @@ export default function BasketDetails({
 
   const handleCloseDetailsModal = () => {
     setIsOpenDetailsModal(false);
-   // closeModal();
+
   };
   const handleCloseDeleteModal = () => {
     deleteCart();
     setIsOpenDeleteModal(false);
-  //  closeModal();
+
   };
 
   const cleanTotalPrice = parseInt(
@@ -37,14 +36,10 @@ export default function BasketDetails({
   const shippingCost = step === 3 ? 50000 : 0;
   const finalAmount = cleanTotalPrice + shippingCost;
 
-  // const { openModal, closeModal } = useScrollLockContext();
-
-
   const handleClick = () => {
     if (step === 2 && !selectedAddressId) {
       setShowError(true);
     }
-
   };
 
   return (
@@ -60,7 +55,7 @@ export default function BasketDetails({
               height={24}
               onClick={() => {
                 setIsOpenDeleteModal(true);
-               // openModal();
+
               }}
               className="cursor-pointer"
               src="/img/trash-2.svg"
@@ -111,7 +106,7 @@ export default function BasketDetails({
                 className="flex gap-2 items-center lg:hidden"
                 onClick={() => {
                   setIsOpenDetailsModal(true);
-                //  openModal();
+
                 }}
               >
                 <p className="text-cognac-primery text-sm leading-5 cursor-pointer">

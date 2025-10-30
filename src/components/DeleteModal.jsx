@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { BeatLoader } from "react-spinners";
 
 export default function Modal({ handleCloseModal, handleAction, title, subtitle, actiontitle, isDeleting }) {
   return (

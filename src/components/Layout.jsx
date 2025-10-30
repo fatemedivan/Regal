@@ -3,7 +3,6 @@ import React from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 
-// import { ScrollLockContextProvider } from "@/context/ScrollLockContext";
 import { AuthContextProvider } from "@/context/AuthContext";
 import { BasketProvider } from "@/context/BasketContext";
 import { usePathname } from "next/navigation";
@@ -14,13 +13,13 @@ export default function Layout({ children }) {
   const isAuthRout = pathName.startsWith("/auth");
   return (
     <AuthContextProvider>
-      {/* <ScrollLockContextProvider> */}
-        <BasketProvider>
-          {!isAdminRout && !isAuthRout && <Navbar />}
-          {children}
-          {!isAdminRout && !isAuthRout && <Footer />}
-        </BasketProvider>
-      {/* </ScrollLockContextProvider> */}
+
+      <BasketProvider>
+        {!isAdminRout && !isAuthRout && <Navbar />}
+        {children}
+        {!isAdminRout && !isAuthRout && <Footer />}
+      </BasketProvider>
+
     </AuthContextProvider>
   );
 }

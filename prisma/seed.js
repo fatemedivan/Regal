@@ -248,18 +248,7 @@ async function main() {
       colors: ["#000000", "#800080"],
       sizes: ["S", "M"],
       images: ["/img/category-page-desktop-7.png", "/img/category-page-desktop-6.png"],
-    },
-    {
-      name: "لگینگ ورزشی فشرده",
-      description: "لگینگ ورزشی با پارچه فشرده و کشی، ایده‌آل برای یوگا و تمرینات ورزشی.",
-      price: 650000,
-      discountedPrice: null,
-      isDiscounted: false,
-      categoryName: "لگینگ",
-      colors: ["#000000", "#0000FF"],
-      sizes: ["S", "M", "L"],
-      images: ["/img/category-page-desktop-9.png", "/img/category-page-desktop-8.png"],
-    },
+    }
   ];
 
   for (const productData of productsData) {

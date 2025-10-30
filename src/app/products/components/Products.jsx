@@ -36,22 +36,22 @@ export default function Products({
     const option = sortOptions.find((opt) => opt.value === sort);
     setSelectedOption(option || sortOptions[0]);
   }, [searchParamsHook.get("search"), searchParamsHook.get("sort")]);
-  
-    useEffect(() => {
-      const delay = setTimeout(() => {
-        const currentSearch = searchParamsHook.get("search") || "";
-        if (searchValue.trim() !== currentSearch.trim()) {
-          const params = new URLSearchParams(searchParamsHook.toString());
-          if (searchValue.trim()) params.set("search", searchValue.trim());
-          else params.delete("search");
-          params.set("page", "1");
-          startTransition(() => {
-            router.push(`?${params.toString()}`);
-          });
-        }
-      }, 600);
-      return () => clearTimeout(delay);
-    }, [searchValue]);
+
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      const currentSearch = searchParamsHook.get("search") || "";
+      if (searchValue.trim() !== currentSearch.trim()) {
+        const params = new URLSearchParams(searchParamsHook.toString());
+        if (searchValue.trim()) params.set("search", searchValue.trim());
+        else params.delete("search");
+        params.set("page", "1");
+        startTransition(() => {
+          router.push(`?${params.toString()}`);
+        });
+      }
+    }, 600);
+    return () => clearTimeout(delay);
+  }, [searchValue]);
 
   const handleSortChange = useCallback(
     (option) => {
@@ -108,6 +108,10 @@ export default function Products({
             totalProducts={totalProducts}
             notFound={notFound}
             renderedProducts={renderedProducts}
+            handleSortChange={handleSortChange}
+            selectedOption={selectedOption}
+            sortOptions={sortOptions}
+            isPending={isPending}
           />
 
           {/* Desktop View */}

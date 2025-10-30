@@ -2,12 +2,15 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import FilterMenu from "./FilterMenu";
 import Sort from "./Sort";
-import { sortOptions } from "@/constants/products";
 
 export default function MobileViewProducts({
   totalProducts,
   notFound,
   renderedProducts,
+  handleSortChange,
+  selectedOption,
+  sortOptions,
+  isPending,
 }) {
   const [isOpenFilterMenu, setIsOpenFilterMenu] = useState(false);
   const [isOpenSort, setIsOpenSort] = useState(false);
@@ -51,19 +54,35 @@ export default function MobileViewProducts({
       {isOpenSort && (
         <div className="lg:hidden fixed inset-0 bg-white z-50 overflow-y-auto">
           <Sort
-            selectedOption={{ id: 1, title: "جدیدترین", value: "newest" }}
-            handleSortChange={() => setIsOpenSort(false)}
+            selectedOption={
+              selectedOption || { id: 1, title: "جدیدترین", value: "newest" }
+            }
+            handleSortChange={(option) => {
+              if (typeof handleSortChange === "function") {
+                handleSortChange(option);
+              }
+              setIsOpenSort(false);
+            }}
             handleCloseSort={() => setIsOpenSort(false)}
             sortOptions={sortOptions}
+            isPending={isPending}
           />
         </div>
       )}
 
       {/* Products */}
       {notFound ? (
-        <p className="text-center w-full text-cognac-primery  text-xl font-bold mt-10 lg:hidden">
-          محصولی یافت نشد
-        </p>
+        <div className="flex lg:hidden flex-col justify-center items-center gap-6 mt-28">
+          <Image
+            width={128}
+            height={116}
+            src="/img/order-not-found.svg"
+            alt=""
+          />
+          <p className="text-sm leading-6 text-neutral-gray-9">
+            هیچ محصولی یافت نشد
+          </p>
+        </div>
       ) : (
         <div className="flex flex-wrap justify-center gap-4 lg:hidden">
           {renderedProducts}

@@ -84,7 +84,10 @@ export default function DesktopViewProducts({
                       handleSortChange(option);
                       setIsOpenSort(false);
                     }}
-                    className="px-4 py-2 hover:bg-neutral-gray-2 cursor-pointer text-xs leading-4.5 text-neutral-gray-7"
+                    className={`px-4 py-2 hover:bg-neutral-gray-1 ${
+                      selectedOption.title === option.title &&
+                      "bg-neutral-gray-3"
+                    } cursor-pointer text-xs leading-4.5 text-neutral-gray-7`}
                   >
                     {option.title}
                   </li>
@@ -96,8 +99,16 @@ export default function DesktopViewProducts({
 
         {/* Products */}
         {notFound ? (
-          <div className="text-center w-full text-cognac-primery text-3xl font-bold mt-10">
-            محصولی یافت نشد
+          <div className="flex flex-col justify-center items-center gap-6 mt-28">
+            <Image
+              width={128}
+              height={116}
+              src="/img/order-not-found.svg"
+              alt=""
+            />
+            <p className="text-sm leading-6 text-neutral-gray-9">
+              هیچ محصولی یافت نشد
+            </p>
           </div>
         ) : (
           <div className="flex items-center flex-wrap gap-x-6 gap-y-8">

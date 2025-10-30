@@ -76,9 +76,11 @@ export default function Navbar() {
                 <p className="text-sm leading-5 cursor-pointer">تخفیف‌دار‌ها</p>
               </li>
             </Link>
-            <li>
-              <p className="text-sm leading-5 cursor-pointer">درباره ما</p>
-            </li>
+            <Link href={"/about"}>
+              <li>
+                <p className="text-sm leading-5 cursor-pointer">درباره ما</p>
+              </li>
+            </Link>
           </ul>
 
           <ul className="flex justify-center items-center lg:hidden">
@@ -218,9 +220,26 @@ export default function Navbar() {
                 onClick={() => {
                   setIsOpenMenu(false);
                 }}
-                className="flex justify-between items-center pb-4 mt-4 cursor-pointer"
+                className="flex justify-between items-center border-b-1 border-neutral-gray-4 pb-4 mt-4 cursor-pointer"
               >
                 <p className="text-sm leading-5">سبد خرید</p>
+                <Image
+                  width={16}
+                  height={16}
+                  src="/img/arrow-left-3.svg"
+                  alt=""
+                  quality={100}
+                />
+              </div>
+            </Link>
+            <Link href={"/about"}>
+              <div
+                onClick={() => {
+                  setIsOpenMenu(false);
+                }}
+                className="flex justify-between items-center pb-4 mt-4 cursor-pointer"
+              >
+                <p className="text-sm leading-5">درباره ما</p>
                 <Image
                   width={16}
                   height={16}

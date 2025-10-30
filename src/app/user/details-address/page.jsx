@@ -13,7 +13,6 @@ export default function Page() {
   const [details, setDetails] = useState(""); 
   const [postalCode, setPostalCode] = useState("");
   const [fullAddress, setFullAddress] = useState("");
- // const [token, setToken] = useState("");
   const token = getToken()
   const [addressId, setAddressId] = useState(null);
   const [isOpenProvince, setIsOpenProvince] = useState(false);

@@ -11,7 +11,6 @@ export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) 
   const [postalCode, setPostalCode] = useState("");
   const [fullAddress, setFullAddress] = useState("");
   const [addressId, setAddressId] = useState("");
- // const [token, setToken] = useState("");
  const token = getToken()
   const [isOpenProvince, setIsOpenProvince] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -47,13 +46,6 @@ export default function DetailsModalAddAddress({ handleCloseModal, onSuccess }) 
     value || focus ? "-top-2.5" : "top-4.5";
 
   const { phoneNumber } = useAuthContext();
-
-  // useEffect(() => {
-  //   const storedToken = localStorage.getItem("token");
-  //   if (storedToken) {
-  //     setToken(storedToken);
-  //   }
-  // }, []);
 
   useEffect(() => {
     const storedFullAddress = sessionStorage.getItem("full address");

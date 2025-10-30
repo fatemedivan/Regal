@@ -2,7 +2,6 @@
 import OrderDetailsCard from "../components/OrderDetailsCard";
 import OrderDetailsCardDesktop from "../components/OrderDetailsCardDesktop";
 import UserPannel from "@/app/user/components/UserPannel";
-// import { useScrollLockContext } from "@/context/ScrollLockContext";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -23,8 +22,7 @@ export default function Page() {
     { label: "تحویل شده", value: "delivered" },
     { label: "مرجوع شده", value: "returned" },
   ];
-  // const { isModalOpen, openModal, closeModal } = useScrollLockContext();
-
+ 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {

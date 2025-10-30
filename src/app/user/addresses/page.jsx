@@ -4,7 +4,6 @@ import AddAddressModal from "@/app/user/components/AddAddressModal";
 import DetailsModalAddAddress from "@/app/user/components/DetailsModalAddAddress";
 import UserPannel from "@/app/user/components/UserPannel";
 import getToken from "@/utils/getToken";
-// import { useScrollLockContext } from "@/context/ScrollLockContext";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -16,17 +15,8 @@ export default function Page() {
   const [isOpenAddAddressModal, setIsOpenAddAddressModal] = useState(false);
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
-  // const { openModal, closeModal } = useScrollLockContext();
-  //const [token, setToken] = useState("");
-  const token = getToken()
+  const token = getToken();
   const [addresses, setAddresses] = useState([]);
-
-  // useEffect(() => {
-  //   const storedToken = localStorage.getItem("token");
-  //   if (storedToken) {
-  //     setToken(storedToken);
-  //   }
-  // }, []);
 
   useEffect(() => {
     sessionStorage.removeItem("addressId");
@@ -50,7 +40,7 @@ export default function Page() {
 
         setAddresses(data);
       } else {
-        setIsHadAddress(false)
+        setIsHadAddress(false);
       }
       console.log(data);
     }
@@ -60,15 +50,12 @@ export default function Page() {
   };
   const handleCloseDetailsModal = () => {
     setIsOpenDetailsModal(false);
-    // closeModal();
   };
   const handleCloseAddAddressModal = () => {
     setIsOpenAddAddressModal(false);
-    // closeModal();
   };
   const handleOpenDetailsModal = () => {
     setIsOpenDetailsModal(true);
-    // openModal();
   };
   useEffect(() => {
     if (selectedAddressId) {
@@ -143,7 +130,11 @@ export default function Page() {
       </div>
 
       <div className="hidden lg:block">
-        <UserPannel rout={"addresses"} isHadAddress={isHadAddress} getAddresses={getAddresses}>
+        <UserPannel
+          rout={"addresses"}
+          isHadAddress={isHadAddress}
+          getAddresses={getAddresses}
+        >
           {isHadAddress ? (
             <div className="mt-4">
               {addresses.map((address) => (
@@ -190,7 +181,6 @@ export default function Page() {
                   handleCloseModal={handleCloseDetailsModal}
                   onSuccess={getAddresses}
                 />
-
               )}
             </div>
           )}

@@ -51,13 +51,6 @@ export default function Page() {
 
   const { phoneNumber } = useAuthContext();
 
-  // useEffect(() => {
-  //   const storedToken = localStorage.getItem("token");
-  //   if (storedToken) {
-  //     setToken(storedToken);
-  //   }
-  // }, []);
-
   useEffect(() => {
    
     const storedFullAddress = sessionStorage.getItem("full address");

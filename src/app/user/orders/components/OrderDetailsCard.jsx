@@ -1,9 +1,9 @@
 "use client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import OrderDetailsModal from "./OrderDetailsModal";
 import ProgressBarProfile from "./ProgressBarProfile";
 import moment from "jalali-moment";
+import OrderDetailsModal from "./OrderDetailsModal";
 
 export default function OrderDetailsCard({
   status,

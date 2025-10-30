@@ -71,11 +71,11 @@ export default function Navbar() {
                 alt=""
               />
             </li>
-            <Link href={"/products"}>
+            {/* <Link href={"/products"}>
               <li>
                 <p className="text-sm leading-5 cursor-pointer">تخفیف‌دار‌ها</p>
               </li>
-            </Link>
+            </Link> */}
             <Link href={"/about"}>
               <li>
                 <p className="text-sm leading-5 cursor-pointer">درباره ما</p>

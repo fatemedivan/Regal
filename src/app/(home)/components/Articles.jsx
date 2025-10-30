@@ -3,13 +3,14 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Glide from "@glidejs/glide";
 import "@glidejs/glide/dist/css/glide.core.min.css";
+import Link from "next/link";
 
 export default function Articles() {
   const glideRef = useRef(null);
 
   const articles = [
     {
-      id: 1,
+      id: "1",
       image: "/img/article-1.svg",
       title: "انتخاب لباس‌های زنانه در هر فصل",
       description:
@@ -19,7 +20,7 @@ export default function Articles() {
       tags: ["استایل", "انتخاب پارچه"],
     },
     {
-      id: 2,
+      id: "2",
       image: "/img/article-2.svg",
       title: "جدیدترین ترندهای دنیای مد",
       description:
@@ -29,7 +30,7 @@ export default function Articles() {
       tags: ["ترندهای طراحی"],
     },
     {
-      id: 3,
+      id: "3",
       image: "/img/article-3.svg",
       title: "تأثیر رنگ‌ها در استایل",
       description:
@@ -96,37 +97,39 @@ export default function Articles() {
             <ul className="glide__slides">
               {articles.map((article) => (
                 <li key={article.id} className="glide__slide">
-                  <Image
-                    src={article.image}
-                    width={432}
-                    height={220}
-                    className="rounded-tr-2xl rounded-tl-2xl"
-                    alt={article.title}
-                    quality={100}
-                  />
-                  <div className="mr-2 lg:mr-4">
-                    <h6 className="text-sm font-semibold leading-4 text-neutral-gray-13 mt-3 mb-1 lg:text-lg lg:font-bold lg:leading-5.5 lg:mt-5 lg:mb-2">
-                      {article.title}
-                    </h6>
-                    <p className="text-xs leading-4.5 text-neutral-gray-10 mb-1 max-w-60.5 line-clamp-2 lg:leading-6 lg:text-sm lg:max-w-100">
-                      {article.description}
-                    </p>
-                    <p className="text-xs leading-4.5 text-neutral-gray-7 mb-2 lg:text-sm lg:leading-5">
-                      {article.date}
-                      <span className="mx-2">|</span>
-                      {article.time}
-                    </p>
-                    <div className="flex items-center gap-2 flex-wrap">
-                      {article.tags.map((tag, idx) => (
-                        <div
-                          key={idx}
-                          className="bg-cognac-tint-1 text-cognac-shade-1 rounded-100 px-2 py-0.5 lg:px-3 lg:py-1"
-                        >
-                          <p className="text-xs leading-4.5">{tag}</p>
-                        </div>
-                      ))}
+                  <Link href={`/blog/${article.id}`}>
+                    <Image
+                      src={article.image}
+                      width={432}
+                      height={220}
+                      className="rounded-tr-2xl rounded-tl-2xl"
+                      alt={article.title}
+                      quality={100}
+                    />
+                    <div className="mr-2 lg:mr-4">
+                      <h6 className="text-sm font-semibold leading-4 text-neutral-gray-13 mt-3 mb-1 lg:text-lg lg:font-bold lg:leading-5.5 lg:mt-5 lg:mb-2">
+                        {article.title}
+                      </h6>
+                      <p className="text-xs leading-4.5 text-neutral-gray-10 mb-1 max-w-60.5 line-clamp-2 lg:leading-6 lg:text-sm lg:max-w-100">
+                        {article.description}
+                      </p>
+                      <p className="text-xs leading-4.5 text-neutral-gray-7 mb-2 lg:text-sm lg:leading-5">
+                        {article.date}
+                        <span className="mx-2">|</span>
+                        {article.time}
+                      </p>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        {article.tags.map((tag, idx) => (
+                          <div
+                            key={idx}
+                            className="bg-cognac-tint-1 text-cognac-shade-1 rounded-100 px-2 py-0.5 lg:px-3 lg:py-1"
+                          >
+                            <p className="text-xs leading-4.5">{tag}</p>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 </li>
               ))}
             </ul>

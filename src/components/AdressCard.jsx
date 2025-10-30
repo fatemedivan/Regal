@@ -6,8 +6,8 @@ import DeleteModal from "@/components/DeleteModal";
 // import { useScrollLockContext } from "@/context/ScrollLockContext";
 import { useAuthContext } from "@/context/AuthContext";
 import { toast, ToastContainer } from "react-toastify";
-import AddAddressModal from "@/app/user/components/AddAddressModal";
-import DetailsModalAddAddress from "@/app/user/components/DetailsModalAddAddress";
+import AddAddressModal from "@/app/user/addresses/components/AddAddressModal";
+import DetailsModalAddAddress from "@/app/user/addresses/components/DetailsModalAddAddress";
 import getToken from "@/utils/getToken";
 
 export default function AdressCard({
@@ -20,12 +20,12 @@ export default function AdressCard({
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [isOpenAddAddressModal, setIsOpenAddAddressModal] = useState(false);
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
- // const [token, setToken] = useState("");
- const token = getToken()
+  // const [token, setToken] = useState("");
+  const token = getToken();
   const { phoneNumber, name, family } = useAuthContext();
   const handleCloseDeleteModal = () => {
     setIsOpenDeleteModal(false);
-   // closeModal();
+    // closeModal();
   };
   // useEffect(() => {
   //   const storedToken = localStorage.getItem("token");
@@ -53,20 +53,20 @@ export default function AdressCard({
   const handleDeleteAddress = () => {
     deleteAddress();
     setIsOpenDeleteModal(false);
-   // closeModal();
+    // closeModal();
   };
 
   const handleCloseAddAddressModal = () => {
     setIsOpenAddAddressModal(false);
-  //  closeModal();
+    //  closeModal();
   };
   const handleOpenDetailsModal = () => {
     setIsOpenDetailsModal(true);
-  //  openModal();
+    //  openModal();
   };
   const handleCloseDetailsModal = () => {
     setIsOpenDetailsModal(false);
-  //  closeModal();
+    //  closeModal();
   };
   // const { openModal, closeModal } = useScrollLockContext();
 
@@ -78,8 +78,11 @@ export default function AdressCard({
   return (
     <div
       onClick={() => setSelectedAddressId(id)}
-      className={`border ${selectedAddressId === id ? "border-cognac-primery" : "border-neutral-gray-4"
-        }  rounded-lg p-6 mb-2 lg:mb-4 cursor-pointer`}
+      className={`border ${
+        selectedAddressId === id
+          ? "border-cognac-primery"
+          : "border-neutral-gray-4"
+      }  rounded-lg p-6 mb-2 lg:mb-4 cursor-pointer`}
     >
       <ToastContainer autoClose={2000} className={"custom-toast-container"} />
       <div className="flex items-start justify-between gap-3 mb-4 lg:mb-3">
@@ -95,7 +98,7 @@ export default function AdressCard({
             height={16}
             onClick={() => {
               setIsOpenDeleteModal(true);
-             // openModal();
+              // openModal();
             }}
             className="cursor-pointer lg:w-6 lg:h-6"
             src="/img/trash-3.svg"
@@ -105,8 +108,8 @@ export default function AdressCard({
           <Image
             onClick={() => {
               setIsOpenDetailsModal(true);
-              setSelectedAddressId(id)
-           //   openModal();
+              setSelectedAddressId(id);
+              //   openModal();
             }}
             width={24}
             height={24}
@@ -170,7 +173,10 @@ export default function AdressCard({
         />
       )}
       {isOpenDetailsModal && (
-        <DetailsModalAddAddress onSuccess={getAddresses} handleCloseModal={handleCloseDetailsModal} />
+        <DetailsModalAddAddress
+          onSuccess={getAddresses}
+          handleCloseModal={handleCloseDetailsModal}
+        />
       )}
     </div>
   );

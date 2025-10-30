@@ -1,6 +1,6 @@
 "use client";
 import UserPannel from "@/app/user/components/UserPannel";
-import FavouriteProduct from "@/app/user/components/FavouriteProduct";
+import FavouriteProduct from "@/app/user/favorites/components/FavouriteProduct";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";

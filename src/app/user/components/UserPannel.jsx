@@ -4,8 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import DeleteModal from "@/components/DeleteModal";
-import AddAddressModal from "./AddAddressModal";
-import DetailsModalAddAddress from "./DetailsModalAddAddress";
+import AddAddressModal from "../addresses/components/AddAddressModal";
+import DetailsModalAddAddress from "../addresses/components/DetailsModalAddAddress";
 import { useAuthContext } from "@/context/AuthContext";
 
 export default function UserPannel({

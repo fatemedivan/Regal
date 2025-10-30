@@ -41,14 +41,7 @@ export const useFilterState = (searchParamsHook, setIsLoading) => {
       options: ["XS", "S", "M", "L", "XL", "2XL"],
       isOpen: false,
       type: "size",
-    },
-    {
-      id: 4,
-      title: "محصولات تخفیف‌دار",
-      options: ["دارد", "ندارد"],
-      isOpen: false,
-      type: "isDiscounted",
-    },
+    }
   ]);
 
   const [selectedFilters, setSelectedFilters] = useState([]);

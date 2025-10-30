@@ -1,7 +1,7 @@
 "use client";
 import AdressCard from "@/components/AdressCard";
-import AddAddressModal from "@/app/user/components/AddAddressModal";
-import DetailsModalAddAddress from "@/app/user/components/DetailsModalAddAddress";
+import AddAddressModal from "@/app/user/addresses/components/AddAddressModal";
+import DetailsModalAddAddress from "@/app/user/addresses/components/DetailsModalAddAddress";
 import UserPannel from "@/app/user/components/UserPannel";
 import getToken from "@/utils/getToken";
 import Image from "next/image";

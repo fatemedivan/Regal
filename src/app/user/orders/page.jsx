@@ -1,12 +1,12 @@
 "use client";
-import OrderDetailsCard from "../components/OrderDetailsCard";
-import OrderDetailsCardDesktop from "../components/OrderDetailsCardDesktop";
 import UserPannel from "@/app/user/components/UserPannel";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import OrderDetailsCard from "./components/OrderDetailsCard";
+import OrderDetailsCardDesktop from "./components/OrderDetailsCardDesktop";
 export default function Page() {
   const router = useRouter();
   const [isHadOrders, setIsHadOrders] = useState(true);
@@ -22,13 +22,15 @@ export default function Page() {
     { label: "تحویل شده", value: "delivered" },
     { label: "مرجوع شده", value: "returned" },
   ];
- 
+
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
       setToken(storedToken);
     } else {
-      toast.error("برای مشاهده سفارشات، لطفاً ابتدا وارد حساب کاربری خود شوید.");
+      toast.error(
+        "برای مشاهده سفارشات، لطفاً ابتدا وارد حساب کاربری خود شوید."
+      );
       router.push("/auth/login");
     }
   }, [router]);
@@ -110,7 +112,6 @@ export default function Page() {
             <div
               onClick={() => {
                 setIsOpenTypeOrder(!isOpenTypeOrder);
-             //   isModalOpen ? closeModal() : openModal();
               }}
               className="relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg mb-4 flex items-center justify-between cursor-pointer"
             >
@@ -153,7 +154,6 @@ export default function Page() {
                     orderItems={order.items}
                     amountPaid={order.totalAmount}
                     paymentMethod={order.paymentMethod}
-
                   />
                 ))
               ) : (
@@ -199,7 +199,6 @@ export default function Page() {
             className="fixed inset-0 bg-[#1E1E1E] opacity-50 z-50"
             onClick={() => {
               setIsOpenTypeOrder(false);
-             // closeModal();
             }}
           />
           <div className="bg-white fixed bottom-0 left-0 right-0 z-60 w-full rounded-tr-3xl rounded-tl-3xl px-5 pt-4 pb-6">
@@ -213,7 +212,6 @@ export default function Page() {
                 alt=""
                 onClick={() => {
                   setIsOpenTypeOrder(false);
-               //   closeModal();
                 }}
               />
             </div>
@@ -231,7 +229,6 @@ export default function Page() {
                       setSelectedOrderType(type.label);
                       setSelectedOrderTypeValue(type.value);
                       setIsOpenTypeOrder(false);
-                     // closeModal();
                     }}
                     checked={selectedOrderTypeValue === type.value}
                   />
@@ -242,9 +239,7 @@ export default function Page() {
                     className="w-5 h-5 border border-neutral-gray-10 rounded-sm relative flex items-center justify-center
                     before:content-[''] before:absolute before:w-1.5 before:h-2.5 before:border-r-2 before:border-b-2
                     before:border-neutral-gray-10 before:rotate-45 before:opacity-0 peer-checked:before:opacity-100 pb-1"
-                  >
-
-                  </div>
+                  ></div>
                 </label>
               ))}
             </div>
@@ -266,7 +261,6 @@ export default function Page() {
             <div className="my-6">
               {orders && orders.length ? (
                 orders.map((order) => (
-
                   <OrderDetailsCardDesktop
                     key={order.id}
                     status={order.status}
@@ -276,7 +270,6 @@ export default function Page() {
                     date={order.orderDate}
                     time={order.deliveryTime}
                     orderItems={order.items}
-
                   />
                 ))
               ) : (

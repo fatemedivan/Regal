@@ -13,13 +13,11 @@ export default function Layout({ children }) {
   const isAuthRout = pathName.startsWith("/auth");
   return (
     <AuthContextProvider>
-
       <BasketProvider>
         {!isAdminRout && !isAuthRout && <Navbar />}
         {children}
         {!isAdminRout && !isAuthRout && <Footer />}
       </BasketProvider>
-
     </AuthContextProvider>
   );
 }

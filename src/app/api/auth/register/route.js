@@ -13,10 +13,10 @@ export async function POST(request) {
     const { phoneNumber, password } = await request.json();
 
     if (!phoneNumber || !password) {
-      return NextResponse.json({ message: 'Phone number and password are required.' }, { status: 400 });
+      return NextResponse.json({ message: 'شماره و رمز عبور الزامی است' }, { status: 400 });
     }
     if (password.length < 6) {
-      return NextResponse.json({ message: 'Password must be at least 6 characters long.' }, { status: 400 });
+      return NextResponse.json({ message: 'پسورد باید حداقل 8 کرکتر باشد' }, { status: 400 });
     }
 
     const existingUser = await prisma.user.findUnique({
@@ -24,7 +24,7 @@ export async function POST(request) {
     });
 
     if (existingUser) {
-      return NextResponse.json({ message: 'A user with this phone number already exists.' }, { status: 409 });
+      return NextResponse.json({ message: 'کاربری با این شماره تلفن وجود دارد' }, { status: 409 });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -46,6 +46,6 @@ export async function POST(request) {
 
   } catch (error) {
     console.error('Error during user registration:', error);
-    return NextResponse.json({ message: 'Internal server error during registration.' }, { status: 500 });
+    return NextResponse.json({ message: 'خطای داخلی سرور' }, { status: 500 });
   }
 }

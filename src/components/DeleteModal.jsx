@@ -1,6 +1,13 @@
 import Image from "next/image";
 
-export default function Modal({ handleCloseModal, handleAction, title, subtitle, actiontitle, isDeleting }) {
+export default function Modal({
+  handleCloseModal,
+  handleAction,
+  title,
+  subtitle,
+  actiontitle,
+  isDeleting,
+}) {
   return (
     <>
       <div
@@ -36,7 +43,6 @@ export default function Modal({ handleCloseModal, handleAction, title, subtitle,
               e.stopPropagation();
               handleCloseModal();
             }}
-
             className="leading-5.5 py-3.25 px-14.75 border border-neutral-gray-8 rounded-lg cursor-pointer lg:px-17"
           >
             انصراف
@@ -48,7 +54,6 @@ export default function Modal({ handleCloseModal, handleAction, title, subtitle,
             }}
             className={`leading-5.5 max-w-40 h-12.5 flex justify-center items-center bg-error-primery text-white py-3.25 px-16.5 rounded-lg cursor-pointer lg:px-18.75 `}
           >
-            {/* {isDeleting ? <BeatLoader size={8} color="#fff" className="py-1.5" /> : actiontitle} */}
             {isDeleting ? (
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[0ms]"></div>

@@ -1,26 +1,9 @@
 "use client";
 import UserPannel from "@/app/user/components/UserPannel";
 import { useAuthContext } from "@/context/AuthContext";
-import React, { useEffect, useState } from "react";
 
 export default function Page() {
-  const [userData, setUserData] = useState({
-    firstName: "",
-    lastName: "",
-    phone: "",
-    email: "",
-  });
   const { phoneNumber, name, family, email } = useAuthContext();
-
-  useEffect(() => {
-    setUserData((prev) => ({
-      ...prev,
-      phone: phoneNumber,
-      firstName: name,
-      lastName: family,
-      email: email,
-    }));
-  }, [phoneNumber, name, family, email]);
 
   return (
     <UserPannel rout={"profile"}>
@@ -40,18 +23,18 @@ export default function Page() {
         <div>
           <ul>
             <li className="text-neutral-gray-11 text-sm leading-6 mb-4">
-              {userData.firstName ? userData.firstName : " نام وارد نشده است"}
+              {name ? name : " نام وارد نشده است"}
             </li>
             <li className="text-neutral-gray-11 text-sm leading-6 mb-4">
-              {userData.lastName
-                ? userData.lastName
+              {family
+                ? family
                 : "نام‌خانوادگی وارد نشده است"}
             </li>
             <li className="text-neutral-gray-11 text-sm leading-6 mb-4">
-              {userData.phone ? userData.phone : "شماره هنوز وارد نشده است"}
+              {phoneNumber ? phoneNumber : "شماره هنوز وارد نشده است"}
             </li>
             <li className="text-neutral-gray-11 text-sm leading-6">
-              {userData.lastName ? userData.email : " آدرس ایمیل وارد نشده است"}
+              {email ? email : " آدرس ایمیل وارد نشده است"}
             </li>
           </ul>
         </div>

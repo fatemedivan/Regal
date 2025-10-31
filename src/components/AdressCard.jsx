@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import DeleteModal from "@/components/DeleteModal";
-// import { useScrollLockContext } from "@/context/ScrollLockContext";
 import { useAuthContext } from "@/context/AuthContext";
 import { toast, ToastContainer } from "react-toastify";
 import AddAddressModal from "@/app/user/addresses/components/AddAddressModal";
@@ -20,19 +19,11 @@ export default function AdressCard({
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [isOpenAddAddressModal, setIsOpenAddAddressModal] = useState(false);
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
-  // const [token, setToken] = useState("");
   const token = getToken();
   const { phoneNumber, name, family } = useAuthContext();
   const handleCloseDeleteModal = () => {
     setIsOpenDeleteModal(false);
-    // closeModal();
   };
-  // useEffect(() => {
-  //   const storedToken = localStorage.getItem("token");
-  //   if (storedToken) {
-  //     setToken(storedToken);
-  //   }
-  // }, []);
 
   const deleteAddress = async () => {
     try {
@@ -53,22 +44,7 @@ export default function AdressCard({
   const handleDeleteAddress = () => {
     deleteAddress();
     setIsOpenDeleteModal(false);
-    // closeModal();
   };
-
-  const handleCloseAddAddressModal = () => {
-    setIsOpenAddAddressModal(false);
-    //  closeModal();
-  };
-  const handleOpenDetailsModal = () => {
-    setIsOpenDetailsModal(true);
-    //  openModal();
-  };
-  const handleCloseDetailsModal = () => {
-    setIsOpenDetailsModal(false);
-    //  closeModal();
-  };
-  // const { openModal, closeModal } = useScrollLockContext();
 
   useEffect(() => {
     if (fullAddress) {
@@ -168,14 +144,14 @@ export default function AdressCard({
       )}
       {isOpenAddAddressModal && (
         <AddAddressModal
-          handleCloseModal={handleCloseAddAddressModal}
-          handleOpenDetailsModal={handleOpenDetailsModal}
+          handleCloseModal={() => setIsOpenAddAddressModal(false)}
+          handleOpenDetailsModal={() => setIsOpenDetailsModal(true)}
         />
       )}
       {isOpenDetailsModal && (
         <DetailsModalAddAddress
           onSuccess={getAddresses}
-          handleCloseModal={handleCloseDetailsModal}
+          handleCloseModal={() => setIsOpenDetailsModal(false)}
         />
       )}
     </div>

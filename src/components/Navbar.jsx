@@ -77,7 +77,7 @@ export default function Navbar() {
               </li>
             </Link> */}
             <Link href={"/about"}>
-              <li>
+              <li onClick={()=>setIsOpenCategory(false)}>
                 <p className="text-sm leading-5 cursor-pointer">درباره ما</p>
               </li>
             </Link>

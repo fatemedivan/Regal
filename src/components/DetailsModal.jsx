@@ -1,5 +1,5 @@
+import { Formatter } from "@/utils/moneyFormatter";
 import Image from "next/image";
-import React from "react";
 
 export default function DetailsModal({ handleCloseModal, cart }) {
   return (
@@ -35,8 +35,8 @@ export default function DetailsModal({ handleCloseModal, cart }) {
               <p className="text-sm leading-6 text-neutral-gray-10">
                 {cartItem.product?.isDiscounted &&
                 cartItem.product?.discountedPrice !== null
-                  ? cartItem.product.discountedPrice
-                  : cartItem.product?.price}{" "}
+                  ? Formatter(cartItem.product.discountedPrice)
+                  : Formatter(cartItem.product?.price)}{" "}
                 تومان
               </p>
             </div>

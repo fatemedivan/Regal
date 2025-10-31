@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 
 const CATEGORY_MAP = {
-  "پیراهن کوتاه": "9bb293e1-285d-4a28-846f-46e8c1d55ef7",
-  "تاپ و کراپ": "87d187eb-2cf5-4875-aab1-fad320fef6fa",
-  شومیز: "a7a6e495-32ec-4f61-a8b3-d8e25ce9721c",
-  شلوار: "4840fca4-41eb-4aa5-b914-7ebdb5daa21d",
+  "پیراهن کوتاه": "2b962459-3cde-4b4a-b3d3-57a5c8f96ac4",
+  "تاپ و کراپ": "c8c15ac8-20c9-4c69-81d6-12c7b3b38296",
+  شومیز: "cbe0ec0e-3c2d-47bd-8722-47cf69f22d61",
+  شلوار: "dad35d92-a50c-4b86-9956-72e3516b2f9a",
 };
 
 export const useFilterState = (searchParamsHook, setIsLoading) => {

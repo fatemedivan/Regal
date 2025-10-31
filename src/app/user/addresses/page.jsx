@@ -48,15 +48,7 @@ export default function Page() {
       setIsHadAddress(false);
     }
   };
-  const handleCloseDetailsModal = () => {
-    setIsOpenDetailsModal(false);
-  };
-  const handleCloseAddAddressModal = () => {
-    setIsOpenAddAddressModal(false);
-  };
-  const handleOpenDetailsModal = () => {
-    setIsOpenDetailsModal(true);
-  };
+
   useEffect(() => {
     if (selectedAddressId) {
       sessionStorage.setItem("addressId", selectedAddressId);
@@ -172,13 +164,13 @@ export default function Page() {
               </button>
               {isOpenAddAddressModal && (
                 <AddAddressModal
-                  handleCloseModal={handleCloseAddAddressModal}
-                  handleOpenDetailsModal={handleOpenDetailsModal}
+                  handleCloseModal={() => setIsOpenAddAddressModal(false)}
+                  handleOpenDetailsModal={() => setIsOpenDetailsModal(true)}
                 />
               )}
               {isOpenDetailsModal && (
                 <DetailsModalAddAddress
-                  handleCloseModal={handleCloseDetailsModal}
+                  handleCloseModal={() => setIsOpenDetailsModal(false)}
                   onSuccess={getAddresses}
                 />
               )}

@@ -9,9 +9,9 @@ export default function AuthForm({ type, onSubmit }) {
     register,
     handleSubmit,
     formState: { errors, isValid, isSubmitting },
-  } = useForm({ mode: "onChange" });
+  } = useForm({ mode: 'onBlur' });
 
-  const phoneRegex = /^9\d{9}$/;
+  const phoneRegex = /^09\d{9}$/;
   const passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,32}$/;
 
@@ -53,11 +53,10 @@ export default function AuthForm({ type, onSubmit }) {
                   required: "شماره موبایل الزامی است",
                   pattern: {
                     value: phoneRegex,
-                    message:
-                      " شماره موبایل را بدون ۰ و با اعداد انگلیسی وارد کنید",
+                    message: "شماره موبایل باید 11 رقم و با اعداد انگلیسی باشد",
                   },
                 })}
-                maxLength={10}
+                maxLength={11}
                 placeholder="شماره موبایل"
                 className="w-full outline-none py-3.75 px-4 placeholder:text-xs"
               />
@@ -100,11 +99,11 @@ export default function AuthForm({ type, onSubmit }) {
               </p>
             )}
 
-            <div className="mt-56 flex flex-col justify-center items-center lg:items-start lg:mt-7.5">
+            <div className="mt-35 flex flex-col justify-center items-center lg:items-start lg:mt-7.5">
               <button
                 disabled={!isValid}
                 type="submit"
-                className={`leading-5.5 rounded-lg py-3.25 px-25 cursor-pointer w-full lg:text-lg lg:leading-6.5 lg:py-3.75 flex items-center justify-center ${
+                className={`leading-5.5 rounded-lg h-12.5 px-25 cursor-pointer w-full lg:text-lg lg:leading-6.5 flex items-center justify-center ${
                   isValid
                     ? "bg-cognac-primery text-white"
                     : "bg-neutral-gray-4 text-neutral-gray-5"
@@ -120,6 +119,30 @@ export default function AuthForm({ type, onSubmit }) {
                   <p>{type === "login" ? "ورود" : "ثبت‌نام"}</p>
                 )}
               </button>
+
+              <div className="mt-4 text-center text-sm text-neutral-gray-7">
+                {type === "login" ? (
+                  <p>
+                    حساب کاربری ندارید؟{" "}
+                    <a
+                      href="/auth/register"
+                      className="text-cognac-primery font-semibold hover:underline"
+                    >
+                      ثبت‌نام کنید
+                    </a>
+                  </p>
+                ) : (
+                  <p>
+                    حساب کاربری دارید؟{" "}
+                    <a
+                      href="/auth/login"
+                      className="text-cognac-primery font-semibold hover:underline"
+                    >
+                      وارد شوید
+                    </a>
+                  </p>
+                )}
+              </div>
             </div>
           </form>
         </div>

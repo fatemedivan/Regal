@@ -14,7 +14,7 @@ export async function POST(request) {
     const { phoneNumber, password } = await request.json();
 
     if (!phoneNumber || !password) {
-      return NextResponse.json({ message: 'Phone number and password are required.' }, { status: 400 });
+      return NextResponse.json({ message: 'شماره و رمز عبور الزامی است' }, { status: 400 });
     }
 
     const user = await prisma.user.findUnique({
@@ -41,6 +41,6 @@ export async function POST(request) {
 
   } catch (error) {
     console.error('Error during user login:', error);
-    return NextResponse.json({ message: 'Internal server error during login.' }, { status: 500 });
+    return NextResponse.json({ message: 'خطای داخلی سرور' }, { status: 500 });
   }
 }

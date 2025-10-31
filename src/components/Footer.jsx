@@ -1,8 +1,7 @@
-
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Footer() { 
+export default function Footer() {
   return (
     <>
       <div className="bg-[#0B0C17] p-5 lg:hidden">
@@ -21,7 +20,6 @@ export default function Footer() {
           </p>
           <div className="flex items-center gap-3.5">
             <input
-           
               type="text"
               placeholder="ایمیل خود را وارد کنید..."
               className="rounded-lg placeholder:text-neutral-gray-3 placeholder:text-sm placeholder:leading-5 border-1 border-neutral-gray-8 pr-6 py-3.5 text-white outline-none"

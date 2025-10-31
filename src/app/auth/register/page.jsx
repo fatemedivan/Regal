@@ -1,11 +1,10 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import AuthForm from "../components/AuthForm";
+import { useLoginUser } from "@/app/auth/hook/useLoginUser";
 
 export default function Page() {
-  const router = useRouter();
-
+  const { loginUser } = useLoginUser();
   const handleRegister = async (phone, password) => {
     try {
       const res = await fetch("/api/auth/register", {
@@ -16,10 +15,7 @@ export default function Page() {
       const result = await res.json();
 
       if (res.ok) {
-        sessionStorage.setItem("signupPhone", phone);
-        sessionStorage.setItem("signupPassword", password);
-        toast.success(result.message);
-        setTimeout(() => router.push("/auth/login"), 1500);
+        loginUser(phone, password);
       } else {
         toast.error(result.message);
       }

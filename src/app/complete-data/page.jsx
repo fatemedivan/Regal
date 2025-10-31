@@ -8,7 +8,6 @@ import dayjs from "dayjs";
 import jalali from "jalali-dayjs";
 import "dayjs/locale/fa";
 
-//import { useScrollLockContext } from "@/context/ScrollLockContext";
 import { useBasketContext } from "@/context/BasketContext";
 import AdressCard from "../../components/AdressCard";
 import BasketDetailsCard from "@/components/BasketDetailsCard";
@@ -21,8 +20,6 @@ export default function Page() {
   const router = useRouter();
   const token = getToken();
   const { countOfProduct, totalPric, cart } = useBasketContext();
-  // const { isModalOpen, openModal, closeModal, setMobileOnlyLock } =
-  //   useScrollLockContext();
 
   //handel date
   const [isShowDateModal, setIsShowDateModal] = useState(false);
@@ -145,8 +142,6 @@ export default function Page() {
               <div
                 onClick={() => {
                   setIsShowDateModal(!isShowDateModal);
-                  // setMobileOnlyLock(true);
-                  //  isModalOpen ? closeModal() : openModal();
                 }}
                 className="px-4 py-3.75 border border-neutral-gray-4 rounded-lg flex justify-between items-center relative cursor-pointer lg:w-1/2"
               >

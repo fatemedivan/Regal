@@ -91,7 +91,7 @@ async function main() {
   }
   console.log("Color seeding complete.");
 
-  const sizesData = ["S", "M", "L", "XL", "XXL", "Free Size"];
+  const sizesData = ["S", "M", "L", "XL", "XXL"];
   const createdSizes = {};
   for (const sizeName of sizesData) {
     const newSize = await prisma.size.upsert({
@@ -146,7 +146,7 @@ async function main() {
       isDiscounted: true,
       categoryName: "پیراهن شب",
       colors: ["#C0C0C0", "#000000"],
-      sizes: ["M", "Free Size"],
+      sizes: ["M"],
       images: ["/img/product-off-4.png", "/img/category-page-7.png", "/img/category-page-8.png"],
     },
 
@@ -169,7 +169,7 @@ async function main() {
       isDiscounted: true,
       categoryName: "کت تک",
       colors: ["#808080", "#F5F5DC"],
-      sizes: ["Free Size"],
+      sizes: ["XL"],
       images: ["/img/category-page-desktop-7.png", "/img/category-page-desktop-6.png"],
     },
     {
@@ -191,7 +191,7 @@ async function main() {
       isDiscounted: true,
       categoryName: "دامن بلند",
       colors: ["#000000", "#800080"],
-      sizes: ["M", "Free Size"],
+      sizes: ["M", "L"],
       images: ["/img/category-page-desktop-2.png", "/img/category-page-desktop-8.png"],
     },
     {
@@ -235,7 +235,7 @@ async function main() {
       isDiscounted: false,
       categoryName: "بلوز",
       colors: ["#FFFFFF", "#ADD8E6"],
-      sizes: ["S", "M", "Free Size"],
+      sizes: ["S", "M", "L"],
       images: ["/img/category-page-desktop-5.png", "/img/category-page-desktop-4.png"],
     },
     {

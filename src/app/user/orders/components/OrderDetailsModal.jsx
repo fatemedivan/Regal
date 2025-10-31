@@ -1,3 +1,4 @@
+import { Formatter } from "@/utils/moneyFormatter";
 import Image from "next/image";
 import React from "react";
 
@@ -5,17 +6,7 @@ export default function OrderDetailsModal({
   handleCloseModal,
   orderItems,
 }) {
- 
-  const formatPrice = (price) => {
-    const numericPrice = Number(price);
-    if (isNaN(numericPrice)) {
-      return "";
-    }
-    return new Intl.NumberFormat('fa-IR').format(numericPrice);
-  };
-
   const shippingCost = 80000;
-
 
   const calculateTotalDiscount = () => {
     let totalDiscountAmount = 0;
@@ -85,7 +76,7 @@ export default function OrderDetailsModal({
                   {item.product.name} (x{item.quantity})
                 </p>
                 <p className="text-sm leading-6 text-neutral-gray-10">
-                  {formatPrice(item.priceAtOrder)} تومان
+                  {Formatter(item.priceAtOrder)} تومان
                 </p>
               </div>
             ))
@@ -105,7 +96,7 @@ export default function OrderDetailsModal({
           <div className="flex justify-between items-center mb-2">
             <p className="text-sm leading-6 text-cognac-primery">تخفیف</p>
             <p className="text-sm leading-6 text-cognac-primery">
-              {formatPrice(calculatedDiscount)} تومان
+              {Formatter(calculatedDiscount)} تومان
             </p>
           </div>
           <div className="flex justify-between items-center">
@@ -113,7 +104,7 @@ export default function OrderDetailsModal({
               هزینه ارسال
             </p>
             <p className="text-sm leading-6 text-neutral-gray-10">
-              {formatPrice(shippingCost)} تومان
+              {Formatter(shippingCost)} تومان
             </p>
           </div>
         </div>
@@ -123,7 +114,7 @@ export default function OrderDetailsModal({
               مبلغ پرداخت شده
             </p>
             <p className="text-sm leading-6 text-neutral-gray-10">
-              {formatPrice(finalAmountToPay)} تومان
+              {Formatter(finalAmountToPay)} تومان
             </p>
           </div>
         </div>

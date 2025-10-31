@@ -1,5 +1,7 @@
 "use client";
 
+import getToken from "@/utils/getToken";
+
 const { createContext, useContext, useEffect, useState } = require("react");
 
 const AuthContext = createContext();
@@ -13,39 +15,37 @@ export const useAuthContext = () => {
 };
 
 export const AuthContextProvider = ({ children }) => {
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [name, setName] = useState("");
-  const [family, setFamily] = useState("");
-  const [email, setEmail] = useState("");
-  const [role, setRole] = useState('')
-  const [token, setToken] = useState("");
-  useEffect(()=>{
-    const storedToken = localStorage.getItem('token')
-    if (storedToken) {
-      setToken(storedToken)
-    }
-  },[])
-  useEffect(() => {
+  const [userInfo, setUserInfo] = useState({
+    phoneNumber: '',
+    name: '',
+    family: '',
+    email: ''
+  })
+  const token = getToken()
+
+  const getUser = async () => {
     if (!token) return
-    const getUser = async () => {
-      const response = await fetch('/api/auth/me', {
-        headers: { Authorization: `Bearer ${token}` },
+    const response = await fetch('/api/auth/me', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const result = await response.json();
+
+    if (response.ok) {
+      setUserInfo({
+        phoneNumber: result.phoneNumber,
+        name: result.firstName,
+        family: result.lastName,
+        email: result.email,
       });
-      const result = await response.json();
-      
-      if (response.ok) {
-        setPhoneNumber(result.phoneNumber);
-        setName(result.firstName);
-        setFamily(result.lastName);
-        setEmail(result.email);
-        setRole(result.role)
-      }
-    };
+    }
+  };
+
+  useEffect(() => {
     getUser();
   }, [token]);
 
   return (
-    <AuthContext.Provider value={{ phoneNumber, name, family, email, role }}>
+    <AuthContext.Provider value={{ ...userInfo, setUserInfo, refreshUser:getUser }}>
       {children}
     </AuthContext.Provider>
   );

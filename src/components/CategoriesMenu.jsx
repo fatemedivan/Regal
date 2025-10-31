@@ -2,10 +2,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-export default function CategoriesMenu({
-  handleCloseCategory,
-  handleCloseMenu,
-}) {
+export default function CategoriesMenu({ handleCloseCategory }) {
   const router = useRouter();
   const [categoriesData, setCategoriesData] = useState([]);
   const handleToggle = (id) => {
@@ -27,7 +24,6 @@ export default function CategoriesMenu({
           isOpen: false,
         }));
         setCategoriesData(updatedData);
-
       } catch (error) {
         console.log(error);
       }
@@ -56,13 +52,18 @@ export default function CategoriesMenu({
               <div key={category.id}>
                 <li
                   onClick={() => handleToggle(category.id)}
-                  className={`flex justify-between items-center mb-4 pb-4 cursor-pointer ${index === arr.length - 1 ? "" : "border-b border-neutral-gray-4"
-                    }`}
+                  className={`flex justify-between items-center mb-4 pb-4 cursor-pointer ${
+                    index === arr.length - 1
+                      ? ""
+                      : "border-b border-neutral-gray-4"
+                  }`}
                 >
                   <p className="text-sm leading-6">{category.name}</p>
                   <Image
                     onClick={() => handleToggle(category.id)}
-                    className={`${category.isOpen && "hidden pointer-events-none"}`}
+                    className={`${
+                      category.isOpen && "hidden pointer-events-none"
+                    }`}
                     src="/img/arrow-down-2.svg"
                     alt=""
                     width={16}
@@ -99,10 +100,7 @@ export default function CategoriesMenu({
               {categoriesData &&
                 categoriesData.slice(1, 5).map((category) => (
                   <ul key={category.id}>
-                    <li
-
-                      className="flex items-center gap-2.5"
-                    >
+                    <li className="flex items-center gap-2.5">
                       <div className="w-1.5 h-1.5 rounded-100 bg-cognac-primery"></div>
                       <p className="leading-7 text-neutral-gray-13 text-nowrap cursor-pointer">
                         {category.name}
@@ -110,11 +108,7 @@ export default function CategoriesMenu({
                     </li>
 
                     {category.subcategories.map((subCategory) => (
-                      <li
-                        key={subCategory.id}
-
-                        className="cursor-pointer"
-                      >
+                      <li key={subCategory.id} className="cursor-pointer">
                         <p className="leading-5 text-sm text-neutral-gray-11 px-4 py-2.5">
                           {subCategory.name}
                         </p>
@@ -127,10 +121,7 @@ export default function CategoriesMenu({
               {categoriesData &&
                 categoriesData.slice(6, 10).map((category) => (
                   <ul key={category.id}>
-                    <li
-
-                      className="flex items-center gap-2.5"
-                    >
+                    <li className="flex items-center gap-2.5">
                       <div className="w-1.5 h-1.5 rounded-100 bg-cognac-primery"></div>
                       <p className="leading-7 text-neutral-gray-13 text-nowrap cursor-pointer">
                         {category.name}
@@ -138,11 +129,7 @@ export default function CategoriesMenu({
                     </li>
 
                     {category.subcategories.map((subCategory) => (
-                      <li
-                        key={subCategory.id}
-
-                        className="cursor-pointer"
-                      >
+                      <li key={subCategory.id} className="cursor-pointer">
                         <p className="leading-5 text-sm text-neutral-gray-11 px-4 py-2.5">
                           {subCategory.name}
                         </p>
@@ -159,7 +146,9 @@ export default function CategoriesMenu({
             <div className="flex gap-6 items-center mt-3 mb-12">
               <div
                 onClick={() => {
-                  router.push("/products?categoryId=9bb293e1-285d-4a28-846f-46e8c1d55ef7&page=1");
+                  router.push(
+                    "/products?categoryId=2b962459-3cde-4b4a-b3d3-57a5c8f96ac4&page=1"
+                  );
                   handleCloseCategory();
                 }}
                 className="relative w-65 h-96 cursor-pointer"
@@ -173,7 +162,9 @@ export default function CategoriesMenu({
               <div>
                 <div
                   onClick={() => {
-                    router.push("/products?categoryId=88f73d74-df71-445b-a6bc-04f4473ccbc9&page=1");
+                    router.push(
+                      "/products?categoryId=81937097-70f8-44b5-919d-bcd2a003bd8e&page=1"
+                    );
                     handleCloseCategory();
                   }}
                   className="relative w-65 h-45 cursor-pointer"
@@ -186,7 +177,9 @@ export default function CategoriesMenu({
 
                 <div
                   onClick={() => {
-                    router.push("/products?categoryId=87d187eb-2cf5-4875-aab1-fad320fef6fa&page=1");
+                    router.push(
+                      "/products?categoryId=c8c15ac8-20c9-4c69-81d6-12c7b3b38296&page=1"
+                    );
                     handleCloseCategory();
                   }}
                   className="relative mt-6 w-65 h-45 cursor-pointer"

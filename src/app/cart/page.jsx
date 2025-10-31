@@ -1,11 +1,9 @@
 "use client";
 
 import { useState } from "react";
-// import { useScrollLockContext } from "@/context/ScrollLockContext";
 import { useBasketContext } from "@/context/BasketContext";
 import { toast, ToastContainer } from "react-toastify";
 import BasketDetailsCard from "@/components/BasketDetailsCard";
-import ProgressBar from "@/components/ProgressBar";
 import DeleteModal from "@/components/DeleteModal";
 import Empty from "./components/Empty";
 
@@ -16,7 +14,6 @@ import Image from "next/image";
 
 export default function Page() {
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
-  // const { openModal, closeModal } = useScrollLockContext();
   const [isDeleting, setIsDeleting] = useState(false);
   const {
     cart,
@@ -28,17 +25,11 @@ export default function Page() {
     clearEntireCart,
   } = useBasketContext();
 
-  const handleCloseDeleteModal = () => {
-    setIsOpenDeleteModal(false);
-  //  closeModal();
-  };
-
   const handleDeleteEntireBasket = async () => {
     try {
       setIsDeleting(true);
       await clearEntireCart();
       setIsOpenDeleteModal(false);
-    //  closeModal();
     } catch (error) {
       toast.error("خطایی در حذف سبد خرید رخ داد.");
     } finally {
@@ -64,7 +55,7 @@ export default function Page() {
                 alt="Clear Cart"
                 onClick={() => {
                   setIsOpenDeleteModal(true);
-                 // openModal();
+               
                 }}
               />
             </PageHeader>
@@ -117,13 +108,13 @@ export default function Page() {
               cart={cart}
               deleteCart={() => {
                 setIsOpenDeleteModal(true);
-               // openModal();
+            
               }}
             />
           </div>
           {isOpenDeleteModal && (
             <DeleteModal
-              handleCloseModal={handleCloseDeleteModal}
+              handleCloseModal={() => setIsOpenDeleteModal(false)}
               handleAction={handleDeleteEntireBasket}
               title={"حذف سبد خرید"}
               subtitle={"آیا از حذف کل سبد خرید اطمینان دارید؟"}

@@ -3,6 +3,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import ProgressBarProfile from "./ProgressBarProfile";
 import moment from "jalali-moment";
+import { Formatter } from "@/utils/moneyFormatter";
 
 export default function OrderDetailsCardDesktop({
   status,
@@ -70,17 +71,7 @@ export default function OrderDetailsCardDesktop({
     if (date) {
       setFormattedDate(formatJalaliDateTime(date));
     }
-  }, [date]);
-
-  // تابع کمکی برای فرمت کردن اعداد (با قابلیت مدیریت ناعدد)
-  const formatPrice = (price) => {
-    const numericPrice = Number(price);
-    if (isNaN(numericPrice)) {
-      return ""; 
-    }
-    return numericPrice.toLocaleString('fa-IR');
-  };
-
+  }, [date])
 
   const shippingCost = 80000;
 
@@ -119,7 +110,7 @@ export default function OrderDetailsCardDesktop({
           <div className="flex items-center gap-1">
             <Image width={20} height={20} src="/img/wallet-2.svg" alt="" />
             <p className="text-neutral-gray-11 text-sm leading-5">
-              مبلغ کل: {formatPrice(finalOrderTotalAmount)} تومان
+              مبلغ کل: {Formatter(finalOrderTotalAmount)} تومان
             </p>
           </div>
 
@@ -132,14 +123,14 @@ export default function OrderDetailsCardDesktop({
                 alt=""
               />
               <p className="text-neutral-gray-11 text-sm leading-5">
-                تخفیف کل: {formatPrice(calculatedTotalDiscount)} تومان
+                تخفیف کل: {Formatter(calculatedTotalDiscount)} تومان
               </p>
             </div>
           ) : null}
           <div className="flex items-center gap-1">
             <Image width={20} height={20} src="/img/truck-fast-2.svg" alt="" />
             <p className="text-neutral-gray-11 text-sm leading-5">
-              هزینه ارسال: {formatPrice(shippingCost)} تومان
+              هزینه ارسال: {Formatter(shippingCost)} تومان
             </p>
           </div>
         </div>
@@ -247,16 +238,16 @@ export default function OrderDetailsCardDesktop({
                         {item.product?.name || 'نامشخص'}
                       </p>
                       <p className="text-neutral-gray-11 text-sm leading-6">
-                        {formatPrice(validQuantity)} عدد
+                        {Formatter(validQuantity)} عدد
                       </p>
                       <p className="text-neutral-gray-11 text-sm leading-6">
-                        {formatPrice(validOriginalPrice)} تومان
+                        {Formatter(validOriginalPrice)} تومان
                       </p>
                       <p className="text-neutral-gray-11 text-sm leading-6">
-                        {formatPrice(itemDiscount)} تومان
+                        {Formatter(itemDiscount)} تومان
                       </p>
                       <p className="text-neutral-gray-11 text-sm leading-6">
-                        {formatPrice(itemTotalPrice)} تومان
+                        {Formatter(itemTotalPrice)} تومان
                       </p>
                     </React.Fragment>
                   );

@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import DetailsModal from "./DetailsModal";
 import DeleteModal from "./DeleteModal";
+import { Formatter } from "@/utils/moneyFormatter";
 
 export default function BasketDetails({
   selectedAddressId,
@@ -81,8 +82,8 @@ export default function BasketDetails({
                       <td className="py-1 text-left">
                         {cartItem.product?.isDiscounted &&
                           cartItem.product?.discountedPrice !== null
-                          ? cartItem.product.discountedPrice
-                          : cartItem.product?.price}{" "}
+                          ? Formatter(cartItem.product.discountedPrice)
+                          : Formatter(cartItem.product?.price)}{" "}
                         تومان
                       </td>
                     </tr>
@@ -137,12 +138,12 @@ export default function BasketDetails({
               قیمت کالاها
             </p>
             <p className="text-sm leading-6 text-neutral-gray-10">
-              {totalPric} تومان
+              {Formatter(totalPric)} تومان
             </p>
           </div>
           <div className="flex justify-between items-center mb-4">
             <p className="text-sm leading-6 text-cognac-primery">تخفیف</p>
-            <p className="text-sm leading-6 text-cognac-primery">۰ تومان</p>
+            <p className="text-sm leading-6 text-cognac-primery">0 تومان</p>
           </div>
           <div className="flex justify-between items-center mb-2">
             {step === 1 || step === 2 ? (
@@ -151,7 +152,7 @@ export default function BasketDetails({
                   هزینه ارسال
                 </p>
                 <p className="text-sm leading-6 text-neutral-gray-10">
-                  ۰ تومان
+                  0 تومان
                 </p>
               </>
             ) : (
@@ -160,7 +161,7 @@ export default function BasketDetails({
                   هزینه ارسال
                 </p>
                 <p className="text-sm leading-6 text-neutral-gray-10">
-                  {shippingCost} تومان
+                  {Formatter(shippingCost)} تومان
                 </p>
               </>
             )}
@@ -183,7 +184,7 @@ export default function BasketDetails({
               مبلغ قابل پرداخت
             </p>
             <p className="text-sm leading-6 text-neutral-gray-10">
-              {finalAmount} تومان
+              {Formatter(finalAmount)} تومان
             </p>
           </div>
           {step === 1 && (
@@ -198,7 +199,7 @@ export default function BasketDetails({
                 مبلغ قابل پرداخت:
               </p>
               <h6 className="text-neutral-gray-13 text-sm font-semibold leading-4">
-                {finalAmount} تومان
+                {Formatter(finalAmount)} تومان
               </h6>
             </div>
             <div className="flex justify-center items-center">

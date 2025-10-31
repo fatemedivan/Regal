@@ -1,6 +1,7 @@
 "use client";
 import UserPannel from "@/app/user/components/UserPannel";
 import { useAuthContext } from "@/context/AuthContext";
+import getToken from "@/utils/getToken";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -8,10 +9,10 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Page() {
+  const token = getToken();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [token, setToken] = useState("");
   const [isLoading, setIsLoaading] = useState(false);
   const [isBluredFirstName, setIsBluredFirstName] = useState(false);
   const [isBluredLastName, setIsBluredLastName] = useState(false);
@@ -30,12 +31,13 @@ export default function Page() {
   const floatLabel = (value, focus) =>
     value || focus ? "-top-2.5" : "top-4.5";
 
-  const { phoneNumber, name, family, email: userEmail } = useAuthContext();
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    setToken(storedToken);
-  }, []);
+  const {
+    phoneNumber,
+    name,
+    family,
+    email: userEmail,
+    refreshUser,
+  } = useAuthContext();
 
   useEffect(() => {
     name && setFirstName(name);
@@ -58,17 +60,15 @@ export default function Page() {
           "Content-Type": "application/json",
         },
       });
-      console.log("response : ", res);
       if (res.ok) {
         toast.success("با موفقیت ذخیره شد");
+        await refreshUser();
       } else {
         const result = await res.json();
-        console.log(result);
         toast.error(result.message);
       }
       setIsLoaading(false);
     } catch (error) {
-      console.log(error);
       toast.error("خطایی رخ داد");
       setIsLoaading(false);
     }
@@ -98,8 +98,9 @@ export default function Page() {
         </div>
         <div>
           <div
-            className={`relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg ${isBluredFirstName && !isValidFirstName ? "mb-0" : "mb-4"
-              }`}
+            className={`relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg ${
+              isBluredFirstName && !isValidFirstName ? "mb-0" : "mb-4"
+            }`}
           >
             <input
               type="text"
@@ -136,8 +137,9 @@ export default function Page() {
           )}
 
           <div
-            className={`relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg mb-4 ${isBluredLastName && !isValidLastName ? "mb-0" : "mb-4"
-              }`}
+            className={`relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg mb-4 ${
+              isBluredLastName && !isValidLastName ? "mb-0" : "mb-4"
+            }`}
           >
             <input
               type="text"
@@ -188,8 +190,9 @@ export default function Page() {
           </div>
 
           <div
-            className={`relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg ${isBluredEmail && !isValidEmail ? "mb-0" : "mb-4"
-              }`}
+            className={`relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg ${
+              isBluredEmail && !isValidEmail ? "mb-0" : "mb-4"
+            }`}
           >
             <input
               type="text"
@@ -223,14 +226,15 @@ export default function Page() {
             ایمیل را با فرمت abc@gmail.com وارد کنید
           </p>
         )}
-        <div className="w-full mt-66.5">
+        <div className="w-full mt-40">
           <button
             onClick={() => editUser()}
             disabled={!(isValidFirstName && isValidLastName && isValidEmail)}
-            className={`${isValidFirstName && isValidLastName && isValidEmail
-              ? "bg-cognac-primery text-white"
-              : "bg-cognac-tint-2 text-cognac-tint-4"
-              } py-3.25 px-31.5 rounded-lg w-full mb-4 cursor-pointer`}
+            className={`${
+              isValidFirstName && isValidLastName && isValidEmail
+                ? "bg-cognac-primery text-white"
+                : "bg-cognac-tint-2 text-cognac-tint-4"
+            } py-3.25 px-31.5 rounded-lg w-full mb-4 cursor-pointer`}
           >
             {isLoading ? (
               <div className="flex justify-center items-center gap-2  py-1.5">
@@ -397,10 +401,11 @@ export default function Page() {
             <button
               disabled={!(isValidFirstName && isValidLastName && isValidEmail)}
               onClick={() => editUser()}
-              className={`${isValidFirstName && isValidLastName && isValidEmail
-                ? "bg-cognac-primery text-white"
-                : "bg-cognac-tint-2 text-cognac-tint-4"
-                } py-3.25 px-16 rounded-lg cursor-pointer`}
+              className={`${
+                isValidFirstName && isValidLastName && isValidEmail
+                  ? "bg-cognac-primery text-white"
+                  : "bg-cognac-tint-2 text-cognac-tint-4"
+              } py-3.25 w-52 flex justify-center items-center rounded-lg cursor-pointer`}
             >
               {isLoading ? (
                 <div className="flex items-center gap-2 py-1.5">

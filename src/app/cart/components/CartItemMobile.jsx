@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ClipLoader } from "react-spinners";
 import { useCartActions } from "../hook/useCart";
+import { Formatter } from "@/utils/moneyFormatter";
 
 export default function CartItemMobile({ item, onUpdate, onDelete }) {
   const { loading, handleIncrease, handleDecrease, handleDelete } =
@@ -42,7 +43,7 @@ export default function CartItemMobile({ item, onUpdate, onDelete }) {
             {item.product.isDiscounted ? (
               <div className="flex items-center gap-1">
                 <p className="text-sm leading-4.5 text-neutral-gray-7 line-through">
-                  {item.product.price.toLocaleString()}
+                  {Formatter(item.product.price)}
                 </p>
                 <div className="px-2 py-0.5 bg-cognac-primery rounded-100 text-white text-sm leading-5">
                   {(
@@ -55,8 +56,8 @@ export default function CartItemMobile({ item, onUpdate, onDelete }) {
             ) : null}
             <p className="text-neutral-gray-11 text-sm leading-5 mt-1">
               {item.product.isDiscounted
-                ? item.product.discountedPrice.toLocaleString()
-                : item.product.price.toLocaleString()}{" "}
+                ? Formatter(item.product.discountedPrice)
+                : Formatter(item.product.price)}{" "}
               تومان
             </p>
           </div>

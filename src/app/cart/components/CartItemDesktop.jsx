@@ -1,7 +1,7 @@
 import Image from "next/image";
-import { useState } from "react";
 import { ClipLoader } from "react-spinners";
 import { useCartActions } from "../hook/useCart";
+import { Formatter } from "@/utils/moneyFormatter";
 
 export default function CartItemDesktop({
   item,
@@ -56,7 +56,7 @@ export default function CartItemDesktop({
             {item.product.isDiscounted ? (
               <div className="flex items-center gap-1">
                 <p className="text-sm leading-6 text-neutral-gray-7 line-through">
-                  {item.product.price.toLocaleString()}
+                  {Formatter(item.product.price)}
                 </p>
                 <div className="px-3 py-1 bg-cognac-primery rounded-100 text-white text-sm leading-5">
                   {(
@@ -69,8 +69,8 @@ export default function CartItemDesktop({
             ) : null}
             <p className="text-neutral-gray-10 text-sm leading-6">
               {item.product.isDiscounted
-                ? item.product.discountedPrice.toLocaleString()
-                : item.product.price.toLocaleString()}
+                ? Formatter(item.product.discountedPrice)
+                : Formatter(item.product.price)}
             </p>
           </div>
         </div>
@@ -124,11 +124,11 @@ export default function CartItemDesktop({
 
         <div className="flex justify-end items-center">
           <p className="text-sm leading-6 text-neutral-gray-10">
-            {(
+            {Formatter(
               (item.product.isDiscounted
                 ? item.product.discountedPrice
                 : item.product.price) * item.quantity
-            ).toLocaleString()}{" "}
+            )}{" "}
             تومان
           </p>
         </div>

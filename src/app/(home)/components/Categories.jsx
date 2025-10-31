@@ -72,10 +72,10 @@ export default function Categories() {
         {catDesktop.map((cat) => (
           <div
             key={cat.linkId}
-            onClick={() =>
-              router.push(`/products?categoryId=${cat.linkId}&page=1`)
-            }
-            className={`${cat.gridClass} relative rounded-xl overflow-hidden cursor-pointer`}
+            // onClick={() =>
+            //   router.push(`/products?categoryId=${cat.linkId}&page=1`)
+            // }
+            className={`${cat.gridClass} relative rounded-xl overflow-hidden`}
           >
             <Image
               src={cat.img}

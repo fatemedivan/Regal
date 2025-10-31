@@ -7,31 +7,25 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 import ProductSceleton from "@/components/ProductSceleton";
+import getToken from "@/utils/getToken";
 
 export default function Page() {
-
   const [isHadFavourite, setIsHadFavourite] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [token, setToken] = useState("");
+  const token = getToken();
   const [favoriteProductes, setFavoriteProductes] = useState([]);
 
   const router = useRouter();
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-    } else {
-
+    if (!token) {
       setIsLoading(false);
       setIsHadFavourite(false);
       toast.info("برای مشاهده علاقه‌مندی‌ها، ابتدا وارد شوید.");
-
     }
-  }, []);
+  }, [token]);
 
   const getFavoriteProducts = async () => {
-
     if (!token) {
       setIsLoading(false);
       return;
@@ -44,9 +38,7 @@ export default function Page() {
       });
 
       if (res.status === 401) {
-
         toast.error("احراز هویت شما منقضی شده است. لطفا دوباره وارد شوید.");
-        setToken("");
         localStorage.removeItem("token");
         setFavoriteProductes([]);
         setIsHadFavourite(false);
@@ -55,12 +47,9 @@ export default function Page() {
 
       if (res.ok) {
         const data = await res.json();
-        console.log(data);
-
         setFavoriteProductes(data);
         setIsHadFavourite(data.length > 0);
       } else {
-
         toast.error("خطا در دریافت لیست علاقه‌مندی‌ها.");
         setFavoriteProductes([]);
         setIsHadFavourite(false);
@@ -76,14 +65,12 @@ export default function Page() {
   };
 
   useEffect(() => {
-
     if (token) {
       getFavoriteProducts();
     }
   }, [token]);
 
   const disLikeProduct = async (id) => {
-
     if (!token) {
       toast.error("برای انجام این عملیات، ابتدا وارد شوید.");
       return;
@@ -127,17 +114,14 @@ export default function Page() {
           </p>
           <div></div>
         </div>
-       
 
         {isLoading ? (
-
           <div className="mt-4 flex items-center flex-wrap gap-4 lg:hidden">
             {[...Array(6)].map((_, index) => (
               <ProductSceleton key={index} />
             ))}
           </div>
         ) : isHadFavourite ? (
-
           <div className="flex flex-wrap gap-4">
             {favoriteProductes.map((product) => (
               <FavouriteProduct
@@ -147,14 +131,16 @@ export default function Page() {
                 title={product.name}
                 finalPrice={product.discountedPrice || product.price}
                 isMore={false}
-
-                colors={product.ProductColor && product.ProductColor.length > 0 ? product.ProductColor.map((item) => item.color) : []}
+                colors={
+                  product.ProductColor && product.ProductColor.length > 0
+                    ? product.ProductColor.map((item) => item.color)
+                    : []
+                }
                 disLikeProduct={disLikeProduct}
               />
             ))}
           </div>
         ) : (
-
           <div className="flex flex-col justify-center items-center gap-6 mt-28">
             <Image
               width={128}
@@ -176,18 +162,15 @@ export default function Page() {
         )}
       </div>
 
-
       <div className="hidden lg:block">
         <UserPannel rout={"favorites"}>
           {isLoading ? (
-
             <div className="mt-6 flex items-center flex-wrap gap-6">
               {[...Array(6)].map((_, index) => (
                 <ProductSceleton key={index} />
               ))}
             </div>
           ) : isHadFavourite ? (
-
             <div className="w-full flex flex-wrap gap-4 my-6">
               {favoriteProductes.map((product) => (
                 <FavouriteProduct
@@ -197,7 +180,11 @@ export default function Page() {
                   title={product.name}
                   finalPrice={product.discountedPrice || product.price}
                   isMore={false}
-                  colors={product.ProductColor && product.ProductColor.length > 0 ? product.ProductColor.map((item) => item.color) : []}
+                  colors={
+                    product.ProductColor && product.ProductColor.length > 0
+                      ? product.ProductColor.map((item) => item.color)
+                      : []
+                  }
                   disLikeProduct={disLikeProduct}
                 />
               ))}
@@ -215,7 +202,7 @@ export default function Page() {
               </p>
               <Link href={"/products"}>
                 <button className="bg-cognac-primery rounded-lg py-3.25 px-12 text-white leading-5.5 cursor-pointer">
-                 مشاهده محصولات
+                  مشاهده محصولات
                 </button>
               </Link>
             </div>

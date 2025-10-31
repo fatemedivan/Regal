@@ -31,10 +31,9 @@ export default function Page() {
     useState(true);
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
-  const [isAddingToCart, setIsAddingToCart] = useState(false); 
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
 
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
-
 
   useEffect(() => {
     const getProduct = async () => {
@@ -136,8 +135,11 @@ export default function Page() {
 
     try {
       setIsAddingToCart(true);
-      await addToCart(product.id, 1, selectedColor, selectedSize);
-      router.push("/cart");
+      const res = await addToCart(product.id, 1, selectedColor, selectedSize);
+      if (res) {
+        router.push("/cart");
+        setIsAddingToCart(false);
+      }
     } catch (error) {
       console.error(error);
       toast.error("خطایی رخ داد، دوباره تلاش کنید.");
@@ -173,10 +175,10 @@ export default function Page() {
                       <Image
                         quality={100}
                         width={350}
-                        height={353}
+                        height={525}
                         src={currentImgSrc}
                         alt={product.name || "Product Image"}
-                        className="lg:min-w-136.5 lg:min-h-138"
+                        className="lg:min-w-136.5 lg:max-h-131.25"
                       />
                     )}
                   </div>
@@ -188,6 +190,7 @@ export default function Page() {
                         width={64}
                         height={64}
                         src={img}
+                        quality={100}
                         alt="Product thumbnail"
                         onClick={() => setCurrentImgSrc(img)}
                         className="rounded-lg cursor-pointer"
@@ -202,6 +205,7 @@ export default function Page() {
                         width={90}
                         height={84}
                         src={img}
+                        quality={100}
                         alt="Product thumbnail"
                         onClick={() => setCurrentImgSrc(img)}
                         className="rounded-lg cursor-pointer"
@@ -325,17 +329,26 @@ export default function Page() {
                     <button
                       onClick={addProductToBasket}
                       disabled={isAddingToCart}
-                      className="flex items-center bg-cognac-primery gap-2 rounded-lg px-4 py-3.25 lg:px-5 xl:px-20 cursor-pointer"
+                      className="flex items-center bg-cognac-primery gap-2 rounded-lg h-12.5 w-40 justify-center cursor-pointer"
                     >
-                      <img
-                        className="hidden lg:block"
-                        src="/img/shopping-cart-2.svg"
-                        alt="Shopping cart icon"
-                      />
+                      {!isAddingToCart && (
+                        <img
+                          className="hidden lg:block"
+                          src="/img/shopping-cart-2.svg"
+                          alt="Shopping cart icon"
+                        />
+                      )}
+
                       <p className="text-5.5 text-white">
-                        {isAddingToCart
-                          ? "در حال افزودن..."
-                          : "افزودن به سبد خرید"}
+                        {isAddingToCart ? (
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[0ms]"></div>
+                            <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[150ms]"></div>
+                            <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[300ms]"></div>
+                          </div>
+                        ) : (
+                          "افزودن به سبد خرید"
+                        )}
                       </p>
                     </button>
                   </div>

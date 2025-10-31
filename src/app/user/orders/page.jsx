@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import OrderDetailsCard from "./components/OrderDetailsCard";
 import OrderDetailsCardDesktop from "./components/OrderDetailsCardDesktop";
+import getToken from "@/utils/getToken";
 export default function Page() {
   const router = useRouter();
   const [isHadOrders, setIsHadOrders] = useState(true);
@@ -15,7 +16,7 @@ export default function Page() {
   const [orders, setOrders] = useState([]);
   const [selectedOrderType, setSelectedOrderType] = useState("همه");
   const [selectedOrderTypeValue, setSelectedOrderTypeValue] = useState("ALL");
-  const [token, setToken] = useState("");
+  const token = getToken();
   const orderTypes = [
     { label: "همه", value: "ALL" },
     { label: "جاری", value: "pending" },
@@ -24,10 +25,7 @@ export default function Page() {
   ];
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-    } else {
+    if (!token) {
       toast.error(
         "برای مشاهده سفارشات، لطفاً ابتدا وارد حساب کاربری خود شوید."
       );

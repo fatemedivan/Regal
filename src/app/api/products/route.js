@@ -75,7 +75,13 @@ export async function GET(request) {
       };
     }
 
-    if (categoryId) filter.categoryId = categoryId;
+    if (categoryId) {
+      filter.OR = [
+        { categoryId: categoryId },
+        { category: { parentId: categoryId } }
+      ];
+    }
+
     if (isDiscounted === "true") filter.isDiscounted = true;
     if (isDiscounted === "false") filter.isDiscounted = false;
 

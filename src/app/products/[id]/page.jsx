@@ -72,15 +72,59 @@ export default function Page() {
         perView: 4,
         gap: 12,
         direction: "rtl",
+        peek: {
+          before: 0,
+          after: 0,
+        },
         breakpoints: {
-          1440: { perView: 3, gap: 24 },
-          1240: { perView: 3, gap: 12 },
-          1024: { perView: 3, gap: 12 },
-          768: { perView: 3, gap: 12, peek: { before: 0, after: 50 } },
-          680: { perView: 2, gap: 12, peek: { before: 0, after: 50 } },
-          440: { perView: 1.5, gap: 12 },
+          1440: {
+            perView: 3,
+            gap: 24,
+          },
+          1240: {
+            perView: 3,
+            gap: 12,
+          },
+          1024: {
+            perView: 4,
+            gap: 12,
+          },
+
+          768: {
+            perView: 3,
+            gap: 12,
+            peek: {
+              before: 0,
+              after: 50,
+            },
+          },
+          590: {
+            perView: 2.5,
+            gap: 6,
+            peek: {
+              before: 0,
+              after: 40,
+            },
+          },
+          500: {
+            perView: 2,
+            gap: 4,
+            peek: {
+              before: 0,
+              after: 0,
+            },
+          },
+          380: {
+            perView: 1.5,
+            gap: 2,
+            peek: {
+              before: 0,
+              after: 0,
+            },
+          },
         },
       });
+
       glide.mount();
       glideRef.current.glideInstance = glide;
       return () => glide.destroy();

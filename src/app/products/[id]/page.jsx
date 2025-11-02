@@ -163,9 +163,6 @@ export default function Page() {
             {isLoadingProduct ? (
               <div className="flex flex-col justify-center items-center h-[60vh]">
                 <HashLoader color="#b19276" size={80} />
-                <p className="mt-5 font-extrabold text-cognac-shade-3 animate-pulse">
-                  در حال بارگذاری محصول...
-                </p>
               </div>
             ) : (
               <div className="lg:flex gap-6 my-12">
@@ -178,7 +175,7 @@ export default function Page() {
                         height={525}
                         src={currentImgSrc}
                         alt={product.name || "Product Image"}
-                        className="lg:min-w-136.5 lg:max-h-131.25"
+                        className="lg:max-w-136.5 lg:max-h-131.25"
                       />
                     )}
                   </div>
@@ -393,9 +390,6 @@ export default function Page() {
                 {isLoadingSimilarProducts ? (
                   <div className="flex flex-col justify-center items-center h-[60vh]">
                     <HashLoader color="#b19276" size={80} />
-                    <p className="mt-5 text-xl font-extrabold text-cognac-shade-3 animate-pulse">
-                      ...در حال بارگذاری محصولات مشابه
-                    </p>
                   </div>
                 ) : (
                   <div className="glide" ref={glideRef}>

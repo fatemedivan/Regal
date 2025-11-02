@@ -55,17 +55,25 @@ export default function DiscountedProducts({ discountedProducts }) {
               after: 50,
             },
           },
-          580: {
-            perView: 2,
+          590: {
+            perView: 2.5,
             gap: 6,
             peek: {
               before: 0,
               after: 40,
             },
           },
-          440: {
+          500: {
+            perView: 2,
+            gap: 4,
+            peek: {
+              before: 0,
+              after: 0,
+            },
+          },
+          380: {
             perView: 1.5,
-            gap: 12,
+            gap: 2,
             peek: {
               before: 0,
               after: 0,

@@ -29,32 +29,32 @@ export default function Categories() {
       <h5 className="font-semibold leading-5 text-black mt-16 mb-6">
         دسته بندی محصولات
       </h5>
-      <div className="flex flex-wrap justify-center md:justify-start gap-4 lg:hidden">
+      <div className="flex justify-center gap-2 lg:hidden overflow-x-auto">
         {catMobile.map((column, i) => (
-          <div key={i} className="flex flex-col gap-4">
+          <div key={i} className="flex flex-col gap-2 flex-shrink-0">
             {column.map((cat) => (
               <Link
                 key={cat.linkId}
                 href={`/products?categoryId=${cat.linkId}`}
               >
-                <div className={cat.wrapperClass}>
+                <div className="relative w-[40vw] max-w-[167px] h-auto">
                   <Image
-                    className="relative w-full h-auto z-20"
                     src={cat.img}
-                    alt=""
-                    width={cat.height}
-                    height={cat.width}
+                    alt={data[cat.dataIndex]?.name || ""}
+                    className="w-full h-auto object-contain"
+                    width={cat.width}
+                    height={cat.height}
                     quality={100}
                   />
-                  <div className="absolute z-30 bottom-1 px-2">
+                  <div className="absolute bottom-1 px-2">
                     <h5 className="leading-5 font-semibold text-white">
                       {data[cat.dataIndex]?.name}
                     </h5>
-                    <div className="flex items-center gap-1 mt-1 mb-2 text-white">
+                    <div className="flex flex-wrap items-center gap-1 mt-1 mb-2 text-white">
                       {cat.tags.map((tag, i) => (
                         <div
                           key={i}
-                          className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px]"
+                          className="px-2 py-0.5 bg-white-15 border border-white-20 rounded-100 backdrop-blur-[20px] whitespace-nowrap"
                         >
                           <p className="text-xs leading-4.5">{tag}</p>
                         </div>

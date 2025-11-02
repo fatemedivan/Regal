@@ -24,7 +24,13 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="relative z-50 bg-white p-5 border-b-1 border-neutral-gray-4 lg:py-6.25 lg:px-12 lg:border-none">
+      <nav
+        className={`sticky top-0 ${
+          isOpenCategory || isOpenMenu
+            ? "bg-white "
+            : "bg-white/30 backdrop-blur-lg"
+        }  transition-colors duration-300 z-50 p-5 border-b-1 border-neutral-gray-4 lg:py-6.25 lg:px-12 lg:border-none`}
+      >
         <div className="container mx-auto flex justify-between items-center ">
           <Link href={"/"}>
             <Image
@@ -77,7 +83,7 @@ export default function Navbar() {
               </li>
             </Link> */}
             <Link href={"/about"}>
-              <li onClick={()=>setIsOpenCategory(false)}>
+              <li onClick={() => setIsOpenCategory(false)}>
                 <p className="text-sm leading-5 cursor-pointer">درباره ما</p>
               </li>
             </Link>
@@ -254,10 +260,12 @@ export default function Navbar() {
       )}
 
       {isOpenCategory && (
-        <Categories
-          handleCloseCategory={() => setIsOpenCategory(false)}
-          handleCloseMenu={() => setIsOpenMenu(false)}
-        />
+        <div>
+          <Categories
+            handleCloseCategory={() => setIsOpenCategory(false)}
+            handleCloseMenu={() => setIsOpenMenu(false)}
+          />
+        </div>
       )}
     </>
   );

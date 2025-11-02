@@ -45,7 +45,7 @@ export const BasketProvider = ({ children }) => {
         setCart(data);
       } else {
         const errorData = await res.json();
-        toast.error(errorData.message || "خطا در دریافت سبد خرید.");
+        // toast.error(errorData.message || "خطا در دریافت سبد خرید.");
         setCart({ items: [] });
       }
     } catch (error) {

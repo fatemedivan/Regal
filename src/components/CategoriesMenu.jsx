@@ -45,7 +45,7 @@ export default function CategoriesMenu({ handleCloseCategory }) {
         onClick={() => handleCloseCategory()}
       />
 
-      <div className="px-5 py-6 bg-white absolute w-full top-21.25 right-0 left-0 z-50">
+      <div className="px-5 py-6 bg-white fixed w-full top-21.25 right-0 left-0 z-50">
         <ul className="text-neutral-gray-13 lg:hidden">
           {categoriesData &&
             categoriesData.slice(1, 9).map((category, index, arr) => (

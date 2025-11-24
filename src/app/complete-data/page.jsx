@@ -9,10 +9,10 @@ import jalali from "jalali-dayjs";
 import "dayjs/locale/fa";
 
 import { useBasketContext } from "@/context/BasketContext";
-import AdressCard from "../../components/AdressCard";
-import BasketDetailsCard from "@/components/BasketDetailsCard";
+import AdressCard from "../../components/adressCard/AdressCard";
+import BasketDetailsCard from "@/components/basketDetailsCard/BasketDetailsCard";
 import DateModal from "@/app/complete-data/components/DateModal";
-import PageHeader from "@/components/PageHeader";
+import PageHeader from "@/components/pageHeader/PageHeader";
 import getToken from "@/utils/getToken";
 import EmptyAddressBox from "./components/EmptyAddressBox";
 

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import DeleteModal from "@/components/DeleteModal";
+import DeleteModal from "@/components/deleteModal/DeleteModal";
 import AddAddressModal from "../addresses/components/AddAddressModal";
 import DetailsModalAddAddress from "../addresses/components/DetailsModalAddAddress";
 import { useAuthContext } from "@/context/AuthContext";

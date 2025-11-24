@@ -7,8 +7,8 @@ import React, {
   useState,
   useTransition,
 } from "react";
-import Pagination from "@/components/Pagination";
-import ProductCard from "@/components/ProductCard";
+import Pagination from "@/components/pagination/Pagination";
+import ProductCard from "@/components/productCard/ProductCard";
 import { sortOptions } from "@/constants/products";
 import ProductSceleton from "@/components/ProductSceleton";
 import DesktopViewProducts from "./DesktopViewProducts";

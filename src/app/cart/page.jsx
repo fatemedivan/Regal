@@ -3,13 +3,13 @@
 import { useState } from "react";
 import { useBasketContext } from "@/context/BasketContext";
 import { toast, ToastContainer } from "react-toastify";
-import BasketDetailsCard from "@/components/BasketDetailsCard";
-import DeleteModal from "@/components/DeleteModal";
+import BasketDetailsCard from "@/components/basketDetailsCard/BasketDetailsCard";
+import DeleteModal from "@/components/deleteModal/DeleteModal";
 import Empty from "./components/Empty";
 
 import CartItemDesktop from "./components/CartItemDesktop";
 import CartItemMobile from "./components/CartItemMobile";
-import PageHeader from "@/components/PageHeader";
+import PageHeader from "@/components/pageHeader/PageHeader";
 import Image from "next/image";
 
 export default function Page() {
@@ -55,7 +55,6 @@ export default function Page() {
                 alt="Clear Cart"
                 onClick={() => {
                   setIsOpenDeleteModal(true);
-               
                 }}
               />
             </PageHeader>
@@ -108,7 +107,6 @@ export default function Page() {
               cart={cart}
               deleteCart={() => {
                 setIsOpenDeleteModal(true);
-            
               }}
             />
           </div>

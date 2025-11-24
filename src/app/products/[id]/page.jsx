@@ -3,8 +3,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 
-import Breadcrumb from "@/components/Breadcrumb";
-import ProductCard from "@/components/ProductCard";
+import Breadcrumb from "@/components/breadCrumb/Breadcrumb";
+import ProductCard from "@/components/productCard/ProductCard";
 import { useBasketContext } from "@/context/BasketContext";
 
 import "@glidejs/glide/dist/css/glide.core.min.css";

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export function Middleware(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const pathName = request.nextUrl.pathname;
   const token = request.cookies.get("token")?.value;
 

@@ -5,7 +5,7 @@ export type ProductCardProps = {
   price: number;
   finalPrice: number;
   offPercent: number;
-  isMore: boolean;
+  isMore?: boolean;
   colors: string[];
   favorites: boolean;
 };

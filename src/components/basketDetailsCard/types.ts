@@ -4,7 +4,7 @@ export type BasketDetailsCardProps = {
   totalPric: number;
   cart: any;
   addOrders?: () => Promise<void>;
-  deleteCart?: () => Promise<void>;
+  deleteCart?: () => void;
   isLoading?: boolean;
   selectedAddressId?: number;
 };

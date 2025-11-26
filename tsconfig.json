@@ -18,9 +18,18 @@
         "name": "next"
       }
     ],
-    "baseUrl": "src", 
+    "baseUrl": "src",
     "paths": { "@/*": ["./*"] }
   },
-  "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx", "src/app/payment/page.tsx"],
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/app/payment/page.tsx",
+    "src/app/products/[id]/page.jsx",
+    "src/app/products/components/selectedFilterTag/SelectedFilterTags.tsx",
+    "src/app/products/components/filterMenu/FilterMenu.tsx"
+  ],
   "exclude": ["node_modules"]
 }

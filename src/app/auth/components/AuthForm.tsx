@@ -64,7 +64,7 @@ export default function AuthForm({ type, onSubmit }: AuthFormProps) {
                 ۹۸+
               </div>
             </div>
-            {errors.phone && (
+            {errors.phone?.message && (
               <p className="text-xs mt-2 text-error-primery">
                 {errors.phone.message}
               </p>
@@ -93,7 +93,7 @@ export default function AuthForm({ type, onSubmit }: AuthFormProps) {
                 className="w-full outline-none py-3.75 px-4 placeholder:text-xs"
               />
             </div>
-            {errors.password.message && (
+            {errors.password?.message && (
               <p className="text-xs mt-2 text-error-primery">
                 {errors.password.message}
               </p>

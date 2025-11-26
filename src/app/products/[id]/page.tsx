@@ -198,9 +198,9 @@ export default function Page() {
 
       {isExistProduct ? (
         <>
-          {product.categoryName && (
+          {product?.categoryName && (
             <Breadcrumb
-              items={[{ label: product.categoryName }, { label: product.name }]}
+              items={[{ label: product?.categoryName }, { label: product.name }]}
             />
           )}
           <div className="mx-auto px-5 container">

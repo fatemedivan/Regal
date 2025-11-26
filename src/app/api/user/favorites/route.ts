@@ -1,43 +1,52 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../../lib/prisma";
 import { verifyToken } from "../../../../utils/auth";
 
-export async function GET(request) {
+type LikedProductWithProduct = {
+  product: {
+    id: number;
+    name: string;
+    description: string;
+    price: number;
+    discountedPrice: number | null;
+    isDiscounted: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+    categoryId: number;
+    images: { imageUrl: string }[];
+  };
+};
+export async function GET(request: NextRequest) {
   try {
-
     const { userId } = await verifyToken(request);
 
+    const likedProducts: LikedProductWithProduct[] =
+      await prisma.likedProduct.findMany({
+        where: { userId: userId },
+        include: {
+          product: {
+            select: {
+              id: true,
+              name: true,
+              description: true,
+              price: true,
+              discountedPrice: true,
+              isDiscounted: true,
+              createdAt: true,
+              updatedAt: true,
+              categoryId: true,
 
-    const likedProducts = await prisma.likedProduct.findMany({
-      where: { userId: userId },
-      include: {
-        product: {
-
-          select: {
-            id: true,
-            name: true,
-            description: true,
-            price: true,
-            discountedPrice: true,
-            isDiscounted: true,
-            createdAt: true,
-            updatedAt: true,
-            categoryId: true,
-
-            images: true,
+              images: true,
+            },
           },
         },
-      },
-    });
-
+      });
 
     const productsData = likedProducts.map((likedItem) => {
       const product = likedItem.product;
 
-
-      const imageUrl = product.images.length > 0
-        ? product.images[0].imageUrl
-        : null;
+      const imageUrl =
+        product.images.length > 0 ? product.images[0].imageUrl : null;
 
       let offPercent = 0;
       if (
@@ -57,14 +66,13 @@ export async function GET(request) {
       };
     });
 
-
     return NextResponse.json(productsData, { status: 200 });
-  } catch (error) {
+  } catch (error: any) {
     console.error("خطا در دریافت محصولات لایک شده:", error.message);
 
     if (
-      error.message.includes("Authentication required") ||
-      error.message.includes("Invalid or expired token")
+      error.message?.includes("Authentication required") ||
+      error.message?.includes("Invalid or expired token")
     ) {
       return NextResponse.json(
         { message: "برای مشاهده محصولات لایک شده، احراز هویت لازم است." },

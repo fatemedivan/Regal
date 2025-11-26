@@ -55,7 +55,7 @@ export default function MobileViewProducts({
       {isOpenSort && (
         <div className="lg:hidden fixed inset-0 bg-white z-50 overflow-y-auto">
           <Sort
-            selectedOption={
+            selectedSortOption={
               selectedSortOption || { id: 1, title: "جدیدترین", value: "newest" }
             }
             handleSortChange={(option) => {

@@ -39,4 +39,5 @@ const FilterSection: React.FC<FilterSectionProps> = React.memo(
   }
 );
 
+FilterSection.displayName = "FilterSection";
 export default FilterSection;

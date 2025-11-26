@@ -104,4 +104,5 @@ const PriceFilter: React.FC<PriceFilterProps> = React.memo(
   }
 );
 
+PriceFilter.displayName = "PriceFilter";
 export default PriceFilter;

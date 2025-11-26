@@ -28,5 +28,6 @@ const FilterOptions: React.FC<FilterOptionsProps> = React.memo(
     );
   }
 );
+FilterOptions.displayName = "FilterOptions";
 
 export default FilterOptions;

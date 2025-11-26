@@ -69,5 +69,6 @@ const SelectedFilterTags: React.FC<SelectedFilterTagsProps> = React.memo(
     );
   }
 );
+SelectedFilterTags.displayName = "SelectedFilterTags";
 
 export default SelectedFilterTags;

@@ -1,18 +1,14 @@
 import Products from "./components/products/Products";
 import { cookies } from "next/headers";
 
-type PageProps = {
-  searchParams: Record<string, string | undefined>;
-};
-
-export default async function Page({ searchParams }: PageProps) {
+export default async function Page({ searchParams }) {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL!;
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
 
   const params = new URLSearchParams();
   for (const [key, value] of Object.entries(await searchParams)) {
-    if (value) params.set(key, value);
+    if (value) params.set(key, value as string);
   }
   let url = `${baseUrl}/api/products?${params.toString()}`;
 

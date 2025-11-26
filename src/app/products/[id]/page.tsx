@@ -12,25 +12,25 @@ import Glide from "@glidejs/glide";
 import { toast, ToastContainer } from "react-toastify";
 import { HashLoader } from "react-spinners";
 import getToken from "@/utils/getToken";
+import { Product, RelatedProduct } from "./types";
 
 export default function Page() {
   const router = useRouter();
   const glideRef = useRef(null);
-  const { id } = useParams();
+  const { id } = useParams() as { id?: string };
 
   const token = getToken();
   const { addToCart } = useBasketContext();
-
-  const [product, setProduct] = useState({});
+  const [product, setProduct] = useState<Product | null>(null);
   const [currentImgSrc, setCurrentImgSrc] = useState("");
-  const [similarProducts, setSimilarProducts] = useState([]);
+  const [similarProducts, setSimilarProducts] = useState<RelatedProduct[]>([]);
   const [isLiked, setIsLiked] = useState(false);
   const [isExistProduct, setIsExistProduct] = useState(true);
   const [isLoadingProduct, setIsLoadingProduct] = useState(true);
   const [isLoadingSimilarProducts, setIsLoadingSimilarProducts] =
     useState(true);
-  const [selectedColor, setSelectedColor] = useState(null);
-  const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedColor, setSelectedColor] = useState<number | null>(null);
+  const [selectedSize, setSelectedSize] = useState<number | null>(null);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
 
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
@@ -45,7 +45,7 @@ export default function Page() {
           setProduct(data);
           setCurrentImgSrc(data?.images?.[0] || "");
           setIsExistProduct(true);
-          setSimilarProducts(data.relatedProducts || []);
+          setSimilarProducts(data.relatedProducts ?? []);
           setIsLoadingSimilarProducts(false);
           setIsLiked(data.isLiked || false);
         } else if (res.status === 404 || res.status === 500) {

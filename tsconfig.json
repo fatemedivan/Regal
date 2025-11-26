@@ -27,7 +27,7 @@
     "**/*.ts",
     "**/*.tsx",
     "src/app/payment/page.tsx",
-    "src/app/products/[id]/page.jsx",
+    "src/app/products/[id]/page.tsx",
     "src/app/products/components/selectedFilterTag/SelectedFilterTags.tsx",
     "src/app/products/components/filterMenu/FilterMenu.tsx"
   ],

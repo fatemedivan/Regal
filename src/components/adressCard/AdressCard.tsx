@@ -12,6 +12,7 @@ import DeleteModal from "@/components/deleteModal/DeleteModal";
 import AddAddressModal from "@/app/user/addresses/components/AddAddressModal";
 import DetailsModalAddAddress from "@/app/user/addresses/components/DetailsModalAddAddress";
 
+
 export default function AdressCard({
   selectedAddressId,
   setSelectedAddressId,

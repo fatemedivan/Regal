@@ -2,34 +2,18 @@
 import UserPannel from "@/app/user/components/UserPannel";
 import { useAuthContext } from "@/context/AuthContext";
 import getToken from "@/utils/getToken";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { editFormSchema, FormEditValues } from "./editForm.schema";
 
 export default function Page() {
   const token = getToken();
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [isLoading, setIsLoaading] = useState(false);
-  const [isBluredFirstName, setIsBluredFirstName] = useState(false);
-  const [isBluredLastName, setIsBluredLastName] = useState(false);
-  const [isBluredEmail, setIsBluredEmail] = useState(false);
   const router = useRouter();
-  const emailRegex = /^(?=.{1,64}$)[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const isValidEmail = emailRegex.test(email);
-  const isValidFirstName = firstName.length >= 3 && firstName.length <= 32;
-  const isValidLastName = lastName.length >= 3 && lastName.length <= 32;
-
-  const [isFocused, setIsFocused] = useState({
-    firstName: false,
-    lastName: false,
-    email: false,
-  });
-  const floatLabel = (value, focus) =>
-    value || focus ? "-top-2.5" : "top-4.5";
 
   const {
     phoneNumber,
@@ -39,22 +23,45 @@ export default function Page() {
     refreshUser,
   } = useAuthContext();
 
-  useEffect(() => {
-    name && setFirstName(name);
-    family && setLastName(family);
-    userEmail && setEmail(userEmail);
-  }, [name, userEmail, family]);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors, isValid, isSubmitting, isDirty },
+  } = useForm<FormEditValues>({
+    resolver: zodResolver(editFormSchema),
+    mode: "onChange",
+  });
 
-  const editUser = async () => {
-    setIsLoaading(true);
+  useEffect(() => {
+    if (name || family || userEmail) {
+      reset({
+        firstName: name ?? "",
+        lastName: family ?? "",
+        email: userEmail ?? "",
+      });
+    }
+  }, [name, family, userEmail, reset]);
+
+  const [isFocused, setIsFocused] = useState({
+    firstName: false,
+    lastName: false,
+    email: false,
+  });
+
+  const floatLabel = (value: string | undefined, focus: boolean) =>
+    value || focus ? "-top-2.5" : "top-4.5";
+
+  const firstName = watch("firstName");
+  const lastName = watch("lastName");
+  const email = watch("email");
+
+  const onSubmit = async (data: FormEditValues) => {
     try {
       const res = await fetch("/api/auth/me", {
         method: "PATCH",
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          email,
-        }),
+        body: JSON.stringify(data),
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -67,17 +74,11 @@ export default function Page() {
         const result = await res.json();
         toast.error(result.message);
       }
-      setIsLoaading(false);
     } catch (error) {
       toast.error("خطایی رخ داد");
-      setIsLoaading(false);
     }
   };
-  const resetStates = () => {
-    setEmail("");
-    setFirstName("");
-    setLastName("");
-  };
+
   return (
     <>
       <ToastContainer autoClose={2000} className={"custom-toast-container"} />
@@ -98,31 +99,21 @@ export default function Page() {
         </div>
         <div>
           <div
-            className={`relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg ${
-              isBluredFirstName && !isValidFirstName ? "mb-0" : "mb-4"
-            }`}
+            className={`relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg `}
           >
             <input
               type="text"
               maxLength={12}
               id="firstName"
               placeholder=" "
-              value={firstName}
-              onFocus={() =>
-                setIsFocused((prev) => ({ ...prev, firstName: true }))
-              }
-              onBlur={() => {
-                setIsFocused((prev) => ({ ...prev, firstName: false }));
-                setIsBluredFirstName(true);
-              }}
-              onChange={(e) => {
-                setFirstName(e.target.value);
-              }}
+              {...register("firstName")}
+              onFocus={() => setIsFocused((p) => ({ ...p, firstName: true }))}
+              onBlur={() => setIsFocused((p) => ({ ...p, firstName: false }))}
               className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent"
             />
             <label
               htmlFor="firstName"
-              className={`absolute right-4 bg-white px-1 text-xs text-neutral-gray-7 transition-all ${floatLabel(
+              className={`absolute right-4 bg-white px-1 text-xs text-neutral-gray-7 transition-all  ${floatLabel(
                 firstName,
                 isFocused.firstName
               )}`}
@@ -130,33 +121,23 @@ export default function Page() {
               نام
             </label>
           </div>
-          {isBluredFirstName && !isValidFirstName && (
+          {errors.firstName && (
             <p className="text-xs leading-4.5 mt-4 transition duration-200 ease-in-out text-error-primery mb-4 lg:hidden">
-              اسم باید حداقل ۳ و حداکثر ۱۲ کاراکتر باشد
+              {errors.firstName?.message}
             </p>
           )}
 
           <div
-            className={`relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg mb-4 ${
-              isBluredLastName && !isValidLastName ? "mb-0" : "mb-4"
-            }`}
+            className={`relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg mb-4`}
           >
             <input
               type="text"
               maxLength={20}
               id="lastName"
               placeholder=" "
-              value={lastName}
-              onFocus={() =>
-                setIsFocused((prev) => ({ ...prev, lastName: true }))
-              }
-              onBlur={() => {
-                setIsFocused((prev) => ({ ...prev, lastName: false }));
-                setIsBluredLastName(true);
-              }}
-              onChange={(e) => {
-                setLastName(e.target.value);
-              }}
+              {...register("lastName")}
+              onFocus={() => setIsFocused((p) => ({ ...p, lastName: true }))}
+              onBlur={() => setIsFocused((p) => ({ ...p, lastName: false }))}
               className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent"
             />
             <label
@@ -169,9 +150,9 @@ export default function Page() {
               نام خانوادگی
             </label>
           </div>
-          {isBluredLastName && !isValidLastName && (
+          {errors.lastName && (
             <p className="text-xs leading-4.5 mt-4 transition duration-200 ease-in-out text-error-primery mb-4 lg:hidden">
-              نام خانوادگی باید حداقل ۳ و حداکثر ۱۲ کاراکتر باشد
+              {errors.lastName?.message}
             </p>
           )}
           <div className="relative border border-neutral-gray-4 bg-neutral-gray-2 rounded-lg flex mb-4">
@@ -190,24 +171,16 @@ export default function Page() {
           </div>
 
           <div
-            className={`relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg ${
-              isBluredEmail && !isValidEmail ? "mb-0" : "mb-4"
-            }`}
+            className={`relative border border-neutral-gray-4 px-4 py-3.75 rounded-lg`}
           >
             <input
               type="text"
               id="email"
               dir="ltr"
               placeholder=" "
-              value={email}
-              onFocus={() => setIsFocused((prev) => ({ ...prev, email: true }))}
-              onBlur={() => {
-                setIsFocused((prev) => ({ ...prev, email: false }));
-                setIsBluredEmail(true);
-              }}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
+              {...register("email")}
+              onFocus={() => setIsFocused((p) => ({ ...p, email: true }))}
+              onBlur={() => setIsFocused((p) => ({ ...p, email: false }))}
               className="placeholder:text-transparent w-full outline-none text-neutral-gray-7"
             />
             <label
@@ -221,23 +194,23 @@ export default function Page() {
             </label>
           </div>
         </div>
-        {isBluredEmail && !isValidEmail && (
+        {errors.email && (
           <p className="text-xs leading-4.5 mt-4 transition duration-200 ease-in-out text-error-primery mb-4 lg:hidden">
-            ایمیل را با فرمت abc@gmail.com وارد کنید
+            {errors.email?.message}
           </p>
         )}
         <div className="w-full mt-40">
           <button
-            onClick={() => editUser()}
-            disabled={!(isValidFirstName && isValidLastName && isValidEmail)}
+            onClick={handleSubmit(onSubmit)}
+            disabled={!isDirty || !isValid || isSubmitting}
             className={`${
-              isValidFirstName && isValidLastName && isValidEmail
+              isValid && isDirty
                 ? "bg-cognac-primery text-white"
                 : "bg-cognac-tint-2 text-cognac-tint-4"
-            } py-3.25 px-31.5 rounded-lg w-full mb-4 cursor-pointer`}
+            } py-3.25 rounded-lg w-full mb-4 cursor-pointer`}
           >
-            {isLoading ? (
-              <div className="flex justify-center items-center gap-2  py-1.5">
+            {isSubmitting ? (
+              <div className="flex justify-center items-center gap-2 py-1.5">
                 <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[0ms]"></div>
                 <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[150ms]"></div>
                 <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[300ms]"></div>
@@ -247,8 +220,9 @@ export default function Page() {
             )}
           </button>
           <button
-            onClick={() => resetStates()}
-            className="bg-white text-cognac-tint-7 border border-cognac-tint-7 py-3.25 px-37.5 rounded-lg w-full cursor-pointer"
+            disabled={!isDirty}
+            onClick={() => reset()}
+            className="bg-white text-cognac-tint-7 border border-cognac-tint-7 py-3.25 rounded-lg w-full cursor-pointer"
           >
             انصراف
           </button>
@@ -266,17 +240,13 @@ export default function Page() {
                     id="firstName-desktop"
                     maxLength={12}
                     placeholder=" "
-                    value={firstName}
+                    {...register("firstName")}
                     onFocus={() =>
-                      setIsFocused((prev) => ({ ...prev, firstName: true }))
+                      setIsFocused((p) => ({ ...p, firstName: true }))
                     }
-                    onBlur={() => {
-                      setIsFocused((prev) => ({ ...prev, firstName: false }));
-                      setIsBluredFirstName(true);
-                    }}
-                    onChange={(e) => {
-                      setFirstName(e.target.value);
-                    }}
+                    onBlur={() =>
+                      setIsFocused((p) => ({ ...p, firstName: false }))
+                    }
                     className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent"
                   />
                   <label
@@ -289,9 +259,9 @@ export default function Page() {
                     نام
                   </label>
                 </div>
-                {isBluredFirstName && !isValidFirstName && (
+                {errors.firstName && (
                   <p className="text-xs leading-4.5 mt-4 transition duration-200 ease-in-out text-error-primery">
-                    اسم باید حداقل ۳ و حداکثر ۱۲ کاراکتر باشد
+                    {errors.firstName?.message}
                   </p>
                 )}
               </div>
@@ -302,17 +272,13 @@ export default function Page() {
                     id="lastName-desktop"
                     maxLength={20}
                     placeholder=" "
-                    value={lastName}
+                    {...register("lastName")}
                     onFocus={() =>
-                      setIsFocused((prev) => ({ ...prev, lastName: true }))
+                      setIsFocused((p) => ({ ...p, lastName: true }))
                     }
-                    onBlur={() => {
-                      setIsFocused((prev) => ({ ...prev, lastName: false }));
-                      setIsBluredLastName(true);
-                    }}
-                    onChange={(e) => {
-                      setLastName(e.target.value);
-                    }}
+                    onBlur={() =>
+                      setIsFocused((p) => ({ ...p, lastName: false }))
+                    }
                     className="w-full outline-none text-neutral-gray-7 placeholder:text-transparent"
                   />
                   <label
@@ -325,9 +291,9 @@ export default function Page() {
                     نام خانوادگی
                   </label>
                 </div>
-                {isBluredLastName && !isValidLastName && (
+                {errors.lastName && (
                   <p className="text-xs leading-4.5 mt-4 transition duration-200 ease-in-out text-error-primery">
-                    نام خانوادگی باید حداقل ۳ و حداکثر ۱۲ کاراکتر باشد
+                    {errors.lastName?.message}
                   </p>
                 )}
               </div>
@@ -356,20 +322,9 @@ export default function Page() {
                     id="email-desktop"
                     dir="ltr"
                     placeholder=" "
-                    value={email}
-                    onFocus={() =>
-                      setIsFocused((prev) => ({ ...prev, email: true }))
-                    }
-                    onBlur={() => {
-                      setIsFocused((prev) => ({
-                        ...prev,
-                        email: false,
-                      }));
-                      setIsBluredEmail(true);
-                    }}
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                    }}
+                    {...register("email")}
+                    onFocus={() => setIsFocused((p) => ({ ...p, email: true }))}
+                    onBlur={() => setIsFocused((p) => ({ ...p, email: false }))}
                     className="placeholder:text-transparent w-full outline-none text-neutral-gray-7"
                   />
                   <label
@@ -382,9 +337,9 @@ export default function Page() {
                     آدرس ایمیل
                   </label>
                 </div>
-                {isBluredEmail && !isValidEmail && (
+                {errors.email && (
                   <p className="text-xs leading-4.5 mt-4 transition duration-200 ease-in-out text-error-primery">
-                    ایمیل را با فرمت abc@gmail.com وارد کنید
+                    {errors.email?.message}
                   </p>
                 )}
               </div>
@@ -393,21 +348,22 @@ export default function Page() {
 
           <div className="flex items-center justify-end gap-2 mt-38 mb-6">
             <button
-              onClick={() => resetStates()}
+              disabled={!isDirty}
+              onClick={() => reset()}
               className="bg-white text-cognac-tint-7 border border-cognac-tint-7 py-3.25 px-22 rounded-lg cursor-pointer"
             >
               انصراف
             </button>
             <button
-              disabled={!(isValidFirstName && isValidLastName && isValidEmail)}
-              onClick={() => editUser()}
+              disabled={!isDirty || !isValid || isSubmitting}
+              onClick={handleSubmit(onSubmit)}
               className={`${
-                isValidFirstName && isValidLastName && isValidEmail
+                isValid && isDirty
                   ? "bg-cognac-primery text-white"
                   : "bg-cognac-tint-2 text-cognac-tint-4"
               } py-3.25 w-52 flex justify-center items-center rounded-lg cursor-pointer`}
             >
-              {isLoading ? (
+              {isSubmitting ? (
                 <div className="flex items-center gap-2 py-1.5">
                   <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[0ms]"></div>
                   <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[150ms]"></div>

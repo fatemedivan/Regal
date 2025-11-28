@@ -2,20 +2,22 @@
 import Image from "next/image";
 import { ToastContainer } from "react-toastify";
 import { useForm } from "react-hook-form";
-import { AuthFormProps, FormValues } from "./types";
+
+import { AuthFormProps } from "./types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { authSchema, FormAuthValues } from "./authForm.schema";
 
 export default function AuthForm({ type, onSubmit }: AuthFormProps) {
   const {
     register,
     handleSubmit,
     formState: { errors, isValid, isSubmitting },
-  } = useForm<FormValues>({ mode: "onChange" });
+  } = useForm<FormAuthValues>({
+    resolver: zodResolver(authSchema),
+    mode: "onChange",
+  });
 
-  const phoneRegex = /^09\d{9}$/;
-  const passwordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,32}$/;
-
-  const handleClick = async (data: FormValues) => {
+  const handleClick = async (data: FormAuthValues) => {
     await onSubmit(data.phone, data.password);
   };
 
@@ -49,13 +51,7 @@ export default function AuthForm({ type, onSubmit }: AuthFormProps) {
             >
               <input
                 type="text"
-                {...register("phone", {
-                  required: "شماره موبایل الزامی است",
-                  pattern: {
-                    value: phoneRegex,
-                    message: "شماره موبایل باید 11 رقم و با اعداد انگلیسی باشد",
-                  },
-                })}
+                {...register("phone")}
                 maxLength={11}
                 placeholder="شماره موبایل"
                 className="w-full outline-none py-3.75 px-4 placeholder:text-xs"
@@ -80,14 +76,7 @@ export default function AuthForm({ type, onSubmit }: AuthFormProps) {
             >
               <input
                 type="text"
-                {...register("password", {
-                  required: "رمز عبور الزامی است",
-                  pattern: {
-                    value: passwordRegex,
-                    message:
-                      "رمز عبور باید ۸ تا ۳۲ کاراکتر شامل عدد، حروف بزرگ/کوچک و کاراکتر باشد",
-                  },
-                })}
+                {...register("password")}
                 maxLength={32}
                 placeholder="رمز عبور"
                 className="w-full outline-none py-3.75 px-4 placeholder:text-xs"

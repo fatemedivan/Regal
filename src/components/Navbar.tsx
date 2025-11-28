@@ -9,6 +9,11 @@ export default function Navbar() {
   const token = getToken();
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [isOpenCategory, setIsOpenCategory] = useState(false);
+  const [clientToken, setClientToken] = useState(null);
+
+  useEffect(() => {
+    setClientToken(getToken());
+  }, []);
 
   useEffect(() => {
     if (isOpenMenu || isOpenCategory) {
@@ -165,7 +170,7 @@ export default function Navbar() {
               </li>
             </Link>
 
-            <Link href={token ? "/user/profile" : "/auth/register"}>
+            <Link href={clientToken ? "/user/profile" : "/auth/register"}>
               <li className="p-3">
                 <Image
                   className="cursor-pointer"

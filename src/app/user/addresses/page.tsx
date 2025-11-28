@@ -10,12 +10,12 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 export default function Page() {
+  const token = getToken();
   const router = useRouter();
   const [isHadAddress, setIsHadAddress] = useState(true);
   const [isOpenAddAddressModal, setIsOpenAddAddressModal] = useState(false);
   const [isOpenDetailsModal, setIsOpenDetailsModal] = useState(false);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
-  const token = getToken();
   const [addresses, setAddresses] = useState([]);
 
   useEffect(() => {
@@ -31,18 +31,16 @@ export default function Page() {
     const res = await fetch(`/api/addresses`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    console.log("res address", res);
+
     if (res.ok) {
       const data = await res.json();
       if (data && data.length !== 0) {
         setIsHadAddress(true);
-        console.log(isHadAddress);
 
         setAddresses(data);
       } else {
         setIsHadAddress(false);
       }
-      console.log(data);
     }
     if (res.status === 404) {
       setIsHadAddress(false);
@@ -111,7 +109,7 @@ export default function Page() {
               شما در حال حاضر هیچ آدرسی ثبت نکرده‌اید!
             </p>
             <Link href={"/user/add-address"}>
-              <div className="mt-60 flex items-center justify-center">
+              <div className="mt-30 flex items-center justify-center">
                 <button className="bg-cognac-primery rounded-lg py-3.25 px-28.5 text-white leading-5.5 cursor-pointer">
                   افزودن آدرس
                 </button>

@@ -145,7 +145,7 @@ export default function DiscountedProducts({
                   </li>
                 ))
               : discountedProducts &&
-                discountedProducts.map((product) => (
+                discountedProducts?.map((product) => (
                   <li key={product.id} className="glide__slide">
                     <ProductCard
                       id={product.id}

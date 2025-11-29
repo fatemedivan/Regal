@@ -20,8 +20,9 @@ export default function UserPannel({
   orderTypes,
   getAddresses,
 }: UserPannelProps) {
-  const router = useRouter();
+  const router = useRouter()
   const pathname = usePathname();
+  const { phoneNumber, logout } = useAuthContext();
   const [isShownOrderTypes, setIsShownOrderTypes] = useState(false);
 
   const [isOpenLogoutModal, setIsOpenLogoutModal] = useState(false);
@@ -42,14 +43,10 @@ export default function UserPannel({
     setIsOpenLogoutModal(false);
   };
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    sessionStorage.removeItem("full address");
-    sessionStorage.removeItem("address");
-    document.cookie = `token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC`;
+    logout();
     router.replace("/auth/login");
     setIsOpenLogoutModal(false);
   };
-  const { phoneNumber } = useAuthContext();
 
   return (
     <div className="container mx-auto pt-8 px-5 pb-66.5 lg:px-12 lg:pt-12 lg:pb-22 lg:flex lg:gap-4">

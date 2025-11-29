@@ -8,7 +8,7 @@ import PageHeader from "@/components/pageHeader/PageHeader";
 import getToken from "@/utils/getToken";
 
 export default function Page() {
-  const { countOfProduct, totalPric, cart, clearEntireCart } =
+  const { countOfProduct, totalPrice, cart, clearEntireCart } =
     useBasketContext();
   const router = useRouter();
   const token = getToken();
@@ -32,7 +32,7 @@ export default function Page() {
       return;
     }
 
-    if (!cart || cart.length === 0) {
+    if (!cart || cart.items.length === 0) {
       toast.error("سبد خرید شما خالی است و امکان ثبت سفارش وجود ندارد.");
       router.push("/cart");
       return;
@@ -43,7 +43,7 @@ export default function Page() {
     if (!token)
       toast.error("خطا: توکن احراز هویت یافت نشد. لطفاً دوباره وارد شوید.");
     if (!fullAddress) toast.error("خطا: آدرس تحویل سفارش مشخص نشده است.");
-    if (!cart || cart.length === 0)
+    if (!cart || cart.items.length === 0)
       toast.error("خطا: سبد خرید شما خالی است و نمی‌توانید سفارش ثبت کنید.");
 
     try {
@@ -115,7 +115,7 @@ export default function Page() {
 
         <BasketDetailsCard
           step={3}
-          totalPric={totalPric}
+          totalPrice={totalPrice}
           count={countOfProduct}
           cart={cart}
           addOrders={addOrders}

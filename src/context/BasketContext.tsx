@@ -1,38 +1,26 @@
 "use client";
 
+import getToken from "@/utils/getToken";
+import { BasketContextType, ProviderProps } from "./types";
 import React, {
   createContext,
   useContext,
   useState,
   useEffect,
   useCallback,
+  useMemo,
 } from "react";
 import { toast } from "react-toastify";
+import { Cart } from "@/types/cart";
 
-const BasketContext = createContext();
+const BasketContext = createContext<BasketContextType | null>(null);
 
-export const BasketProvider = ({ children }) => {
-  const [cart, setCart] = useState(null);
-  const [token, setToken] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+export const BasketProvider: React.FC<ProviderProps> = ({ children }) => {
+  const token = getToken();
+  const [cart, setCart] = useState<Cart>({ id: "", userId: "", items: [] });
 
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-    } else {
-      setCart({ items: [] });
-      setIsLoading(false);
-    }
-  }, []);
-
+  const resetCartState = () => setCart({ items: [], id: "", userId: "" });
   const getCart = useCallback(async () => {
-    if (!token) {
-      setCart({ items: [] });
-      setIsLoading(false);
-      return;
-    }
-    setIsLoading(true);
     try {
       const res = await fetch("/api/cart", {
         headers: {
@@ -44,36 +32,33 @@ export const BasketProvider = ({ children }) => {
         const data = await res.json();
         setCart(data);
       } else {
-        const errorData = await res.json();
-        // toast.error(errorData.message || "خطا در دریافت سبد خرید.");
-        setCart({ items: [] });
+        resetCartState();
       }
     } catch (error) {
-      console.error("Error fetching cart:", error);
       toast.error("خطا در ارتباط با سرور برای دریافت سبد خرید.");
-      setCart({ items: [] });
-    } finally {
-      setIsLoading(false);
+      resetCartState();
     }
   }, [token]);
 
   useEffect(() => {
-    if (token) {
-      getCart();
+    if (!token) {
+      resetCartState();
+      return;
     }
-  }, [token, getCart]);
+    getCart();
+  }, [token]);
 
   const addToCart = async (
-    productId,
-    quantity = 1,
-    productColorId = null,
-    productSizeId = null
-  ) => {
+    productId: string,
+    quantity: number = 1,
+    productColorId: string | null = null,
+    productSizeId: string | null = null
+  ): Promise<boolean> => {
     if (!token) {
       toast.error("برای افزودن به سبد خرید، وارد شوید.");
       return false;
     }
-    setIsLoading(true);
+
     try {
       const res = await fetch("/api/cart", {
         method: "POST",
@@ -94,20 +79,19 @@ export const BasketProvider = ({ children }) => {
         await getCart();
         return true;
       } else {
-        const errorData = await res.json();
-        toast.error(errorData.message || "افزودن به سبد خرید ناموفق بود.");
+        toast.error("افزودن به سبد خرید ناموفق بود.");
         return false;
       }
     } catch (error) {
-      console.error("Error adding to cart:", error);
       toast.error("خطایی در افزودن محصول به سبد خرید رخ داد.");
       return false;
-    } finally {
-      setIsLoading(false);
     }
   };
 
-  const updateCartItemQuantity = async (cartItemId, newQuantity) => {
+  const updateCartItemQuantity = async (
+    cartItemId: string,
+    newQuantity: number
+  ): Promise<boolean> => {
     if (!token) {
       toast.error("برای به‌روزرسانی سبد خرید، وارد شوید.");
       return false;
@@ -120,20 +104,15 @@ export const BasketProvider = ({ children }) => {
       return false;
     }
 
-    setIsLoading(true);
     try {
       if (!cart || !cart.items) {
         toast.error("سبد خرید در دسترس نیست. لطفاً دوباره تلاش کنید.");
-        setIsLoading(false);
+
         return false;
       }
 
       const itemToUpdate = cart.items.find((item) => item.id === cartItemId);
-      if (!itemToUpdate) {
-        toast.error("آیتم مورد نظر برای به‌روزرسانی در سبد خرید یافت نشد.");
-        setIsLoading(false);
-        return false;
-      }
+      if (!itemToUpdate) return toast.error("آیتم مورد نظر یافت نشد."), false;
 
       const res = await fetch(`/api/cart`, {
         method: "PUT",
@@ -154,36 +133,32 @@ export const BasketProvider = ({ children }) => {
         toast.success("تعداد محصول به‌روزرسانی شد.");
         return true;
       } else {
-        const errorData = await res.json();
-        toast.error(errorData.message || "به‌روزرسانی تعداد ناموفق بود.");
+        toast.error("به‌روزرسانی تعداد ناموفق بود.");
         return false;
       }
     } catch (error) {
-      console.error("Error updating cart item quantity:", error);
       toast.error("خطایی در به‌روزرسانی تعداد آیتم سبد خرید رخ داد.");
       return false;
-    } finally {
-      setIsLoading(false);
     }
   };
 
-  const removeCartItem = async (cartItemId) => {
+  const removeCartItem = async (cartItemId: string): Promise<boolean> => {
     if (!token) {
       toast.error("برای حذف از سبد خرید، وارد شوید.");
       return false;
     }
-    setIsLoading(true);
+
     try {
       if (!cart || !cart.items) {
         toast.error("سبد خرید در دسترس نیست. لطفاً دوباره تلاش کنید.");
-        setIsLoading(false);
+
         return false;
       }
 
       const itemToRemove = cart.items.find((item) => item.id === cartItemId);
       if (!itemToRemove) {
         toast.error("آیتم مورد نظر برای حذف در سبد خرید یافت نشد.");
-        setIsLoading(false);
+
         return false;
       }
 
@@ -209,16 +184,12 @@ export const BasketProvider = ({ children }) => {
         toast.success("آیتم از سبد خرید حذف شد.");
         return true;
       } else {
-        const errorData = await res.json();
-        toast.error(errorData.message || "حذف آیتم ناموفق بود.");
+        toast.error("حذف آیتم ناموفق بود.");
         return false;
       }
     } catch (error) {
-      console.error("Error removing cart item:", error);
       toast.error("خطایی در حذف آیتم سبد خرید رخ داد.");
       return false;
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -227,9 +198,8 @@ export const BasketProvider = ({ children }) => {
       toast.error("برای پاک کردن سبد خرید، وارد شوید.");
       return false;
     }
-    setIsLoading(true);
-    try {
 
+    try {
       const res = await fetch("/api/cart/clear-all", {
         method: "DELETE",
         headers: {
@@ -238,38 +208,38 @@ export const BasketProvider = ({ children }) => {
       });
 
       if (res.ok) {
-
-        setCart({ items: [] });
+        resetCartState();
         toast.success("سبد خرید شما با موفقیت خالی شد.");
         return true;
       } else {
-        const errorData = await res.json();
-        toast.error(errorData.message || "پاک کردن سبد خرید ناموفق بود.");
+        toast.error("پاک کردن سبد خرید ناموفق بود.");
         return false;
       }
     } catch (error) {
-      console.error("Error clearing entire cart:", error);
       toast.error("خطایی در پاک کردن سبد خرید رخ داد.");
       return false;
-    } finally {
-      setIsLoading(false);
     }
   };
 
-  const countOfProduct =
-    cart?.items?.reduce((acc, item) => acc + item.quantity, 0) || 0;
+  const countOfProduct = useMemo(
+    () => cart?.items?.reduce((acc, item) => acc + item.quantity, 0) || 0,
+    [cart.items]
+  );
 
-  const totalPric =
-    cart?.items?.reduce((acc, item) => {
-      const itemPrice = item.product.isDiscounted
-        ? item.product.discountedPrice
-        : item.product.price;
-      return acc + itemPrice * item.quantity;
-    }, 0) || 0;
+  const totalPrice = useMemo(
+    () =>
+      cart?.items?.reduce((acc, item) => {
+        const itemPrice = item.product.isDiscounted
+          ? item.product.discountedPrice
+          : item.product.price;
+        return acc + itemPrice * item.quantity;
+      }, 0) || 0,
+    [cart.items]
+  );
 
-  const isEmptyCart = !cart || !cart.items || cart.items.length === 0;
+  const isEmptyCart = useMemo(() => cart.items.length === 0, [cart.items]);
 
-  const contextValue = {
+  const contextValue: BasketContextType = {
     cart,
     getCart,
     addToCart,
@@ -277,9 +247,8 @@ export const BasketProvider = ({ children }) => {
     removeCartItem,
     clearEntireCart,
     countOfProduct,
-    totalPric,
+    totalPrice,
     isEmptyCart,
-    isLoading,
   };
 
   return (

@@ -255,7 +255,7 @@ export default function OrderDetailsCardDesktop({
                     validOriginalPrice > validPriceAtOrder
                       ? validOriginalPrice - validPriceAtOrder
                       : 0;
-                  const itemTotalPrice = validPriceAtOrder * validQuantity;
+                  const itemtotalPricee = validPriceAtOrder * validQuantity;
 
                   return (
                     <React.Fragment key={item.id}>
@@ -272,7 +272,7 @@ export default function OrderDetailsCardDesktop({
                         {Formatter(itemDiscount)} تومان
                       </p>
                       <p className="text-neutral-gray-11 text-sm leading-6">
-                        {Formatter(itemTotalPrice)} تومان
+                        {Formatter(itemtotalPricee)} تومان
                       </p>
                     </React.Fragment>
                   );

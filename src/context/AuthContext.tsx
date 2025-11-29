@@ -1,20 +1,13 @@
 "use client";
 
 import getToken from "@/utils/getToken";
+import { AuthContextType, ProviderProps, UserInfo } from "./types";
 import { createContext, useContext, useEffect, useState } from "react";
-import { AuthContextType, AuthProviderProps, UserInfo } from "./types";
+
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-export const useAuthContext = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuthContext باید داخل AuthContextProvider استفاده شود");
-  }
-  return context;
-};
-
-export const AuthContextProvider = ({ children }: AuthProviderProps) => {
+export const AuthContextProvider = ({ children }: ProviderProps) => {
   const token = getToken();
   const [userInfo, setUserInfo] = useState<UserInfo>({
     phoneNumber: "",
@@ -71,4 +64,12 @@ export const AuthContextProvider = ({ children }: AuthProviderProps) => {
       {children}
     </AuthContext.Provider>
   );
+};
+
+export const useAuthContext = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuthContext باید داخل AuthContextProvider استفاده شود");
+  }
+  return context;
 };

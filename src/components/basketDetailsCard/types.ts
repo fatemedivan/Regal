@@ -1,7 +1,7 @@
 export type BasketDetailsCardProps = {
   step: number;
   count: number;
-  totalPric: number;
+  totalPrice: number;
   cart: any;
   addOrders?: () => Promise<void>;
   deleteCart?: () => void;

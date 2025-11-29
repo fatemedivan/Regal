@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function Empty() {
   return (
     <div className="mt-35 mb-6 mx-5 lg:mb-33.75 lg:mt-26">
-      <div className="flex justify-center items-center mb-55.5 lg:mb-8">
+      <div className="flex justify-center items-center mb-30 lg:mb-8">
         <div>
           <Image
             width={180}

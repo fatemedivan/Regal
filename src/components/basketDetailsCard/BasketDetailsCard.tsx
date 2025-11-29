@@ -11,7 +11,7 @@ export default function BasketDetails({
   selectedAddressId,
   step,
   count,
-  totalPric,
+  totalPrice,
   cart,
   addOrders,
   deleteCart,
@@ -29,12 +29,12 @@ export default function BasketDetails({
     setIsOpenDeleteModal(false);
   };
 
-  const cleanTotalPrice = parseInt(
-    (totalPric || "0").toString().replace(/,/g, "")
+  const cleantotalPricee = parseInt(
+    (totalPrice || "0").toString().replace(/,/g, "")
   );
 
   const shippingCost = step === 3 ? 50000 : 0;
-  const finalAmount = cleanTotalPrice + shippingCost;
+  const finalAmount = cleantotalPricee + shippingCost;
 
   const handleClick = () => {
     if (step === 2 && !selectedAddressId) {
@@ -135,7 +135,7 @@ export default function BasketDetails({
               قیمت کالاها
             </p>
             <p className="text-sm leading-6 text-neutral-gray-10">
-              {Formatter(totalPric)} تومان
+              {Formatter(totalPrice)} تومان
             </p>
           </div>
           <div className="flex justify-between items-center mb-4">

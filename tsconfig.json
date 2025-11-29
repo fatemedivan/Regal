@@ -30,6 +30,6 @@
     "src/app/products/[id]/page.tsx",
     "src/app/products/components/selectedFilterTag/SelectedFilterTags.tsx",
     "src/app/products/components/filterMenu/FilterMenu.tsx"
-, "src/app/api/products/route.js", "src/context/AuthContext.tsx", "src/context/BasketContext.js"  ],
+, "src/app/api/products/route.js", "src/context/AuthContext.tsx", "src/context/BasketContext.tsx"  ],
   "exclude": ["node_modules"]
 }

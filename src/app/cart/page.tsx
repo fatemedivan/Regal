@@ -19,7 +19,7 @@ export default function Page() {
   const {
     cart,
     countOfProduct,
-    totalPric,
+    totalPrice,
     isEmptyCart,
     updateCartItemQuantity,
     removeCartItem,
@@ -104,7 +104,7 @@ export default function Page() {
             <BasketDetailsCard
               step={1}
               count={countOfProduct}
-              totalPric={totalPric}
+              totalPrice={totalPrice}
               cart={cart}
               deleteCart={() => {
                 setIsOpenDeleteModal(true);

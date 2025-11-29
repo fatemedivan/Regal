@@ -19,7 +19,7 @@ import { useBasketContext } from "@/context/BasketContext";
 export default function Page() {
   const router = useRouter();
   const token = getToken();
-  const { countOfProduct, totalPric, cart } = useBasketContext();
+  const { countOfProduct, totalPrice, cart } = useBasketContext();
 
   //handel date
   const [isShowDateModal, setIsShowDateModal] = useState(false);
@@ -195,7 +195,7 @@ export default function Page() {
         <div>
           <BasketDetailsCard
             step={2}
-            totalPric={totalPric}
+            totalPrice={totalPrice}
             count={countOfProduct}
             cart={cart}
             selectedAddressId={selectedAddressId}

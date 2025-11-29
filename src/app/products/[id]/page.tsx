@@ -179,7 +179,12 @@ export default function Page() {
 
     try {
       setIsAddingToCart(true);
-      const res = await addToCart(product.id, 1, selectedColor, selectedSize);
+      const res = await addToCart(
+        product.id.toString(),
+        1,
+        selectedColor ? selectedColor.toString() : null,
+        selectedSize ? selectedSize.toString() : null
+      );
       if (res) {
         router.push("/cart");
         setIsAddingToCart(false);
@@ -200,7 +205,10 @@ export default function Page() {
         <>
           {product?.categoryName && (
             <Breadcrumb
-              items={[{ label: product?.categoryName }, { label: product.name }]}
+              items={[
+                { label: product?.categoryName },
+                { label: product.name },
+              ]}
             />
           )}
           <div className="mx-auto px-5 container">

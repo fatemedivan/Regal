@@ -1,5 +1,5 @@
 export type CartItemMobileProps = {
   item: any;
-  onUpdate: (itemId: number, newQuantity: number) => Promise<void>;
-  onDelete: (itemId: number) => Promise<void>;
+  onUpdate: (itemId: string, newQuantity: number) => Promise<boolean>;
+  onDelete: (itemId: string) => Promise<boolean>;
 };

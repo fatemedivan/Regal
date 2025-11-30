@@ -1,8 +1,8 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '../../../../lib/prisma';
 import { verifyToken } from '../../../../utils/auth';
 
-export async function GET(request) {
+export async function GET(request: NextRequest) {
   try {
     const { userId } = await verifyToken(request);
 
@@ -37,7 +37,7 @@ export async function GET(request) {
   }
 }
 
-export async function PATCH(request) {
+export async function PATCH(request: NextRequest) {
   try {
     const { userId } = await verifyToken(request);
 

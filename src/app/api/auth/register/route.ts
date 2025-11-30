@@ -1,10 +1,10 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '../../../../lib/prisma';
 import bcrypt from 'bcryptjs';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
-export async function POST(request) {
+export async function POST(request: NextRequest) {
   if (!JWT_SECRET) {
     return NextResponse.json({ message: 'JWT_SECRET is not defined in environment variables.' }, { status: 500 });
   }
@@ -45,7 +45,7 @@ export async function POST(request) {
     return NextResponse.json({ message: 'با موفقیت ثبت نام شدید لطفا وارد شوید', user: newUser }, { status: 201 });
 
   } catch (error) {
-    console.error('Error during user registration:', error);
+    
     return NextResponse.json({ message: 'خطای داخلی سرور' }, { status: 500 });
   }
 }

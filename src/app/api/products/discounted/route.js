@@ -72,7 +72,6 @@ export async function GET() {
 
     return NextResponse.json(productsWithLikedStatus, { status: 200 });
   } catch (error) {
-    console.error("Error fetching discounted products:", error);
     return NextResponse.json(
       { message: "خطا در دریافت محصولات تخفیف‌دار." },
       { status: 500 }

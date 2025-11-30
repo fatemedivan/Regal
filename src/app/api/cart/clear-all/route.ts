@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../../lib/prisma";
 import { verifyToken } from "../../../../utils/auth";
 
-export async function DELETE(request) {
+export async function DELETE(request: NextRequest) {
   try {
     const { userId } = await verifyToken(request);
 
@@ -21,15 +21,11 @@ export async function DELETE(request) {
       where: { cartId: userCart.id },
     });
 
-
-    console.log(`Cart for user ${userId} has been cleared.`);
-
     return NextResponse.json(
       { message: "سبد خرید با موفقیت پاک شد." },
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error clearing entire cart:", error.message);
     if (
       error.message.includes("Authentication required") ||
       error.message.includes("Invalid or expired token")

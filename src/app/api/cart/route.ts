@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../lib/prisma";
 import { verifyToken } from "../../../utils/auth";
 
-export async function GET(request) {
+export async function GET(request: NextRequest) {
   try {
     const { userId } = await verifyToken(request);
 
@@ -88,7 +88,7 @@ export async function GET(request) {
   }
 }
 
-export async function POST(request) {
+export async function POST(request: NextRequest) {
   try {
     const { userId } = await verifyToken(request);
 
@@ -193,7 +193,7 @@ export async function POST(request) {
   }
 }
 
-export async function PUT(request) {
+export async function PUT(request: NextRequest) {
   try {
     const { userId } = await verifyToken(request);
     let requestBody;
@@ -202,7 +202,10 @@ export async function PUT(request) {
       requestBody = await request.json();
       console.log("Parsed PUT Request Body:", requestBody);
     } catch (jsonError) {
-      console.error("Error parsing request body as JSON in PUT:", jsonError.message);
+      console.error(
+        "Error parsing request body as JSON in PUT:",
+        jsonError.message
+      );
       return NextResponse.json(
         { message: "فرمت بدنه درخواست نامعتبر است (باید JSON باشد)." },
         { status: 400 }
@@ -294,7 +297,11 @@ export async function PUT(request) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Unhandled error in PUT handler:", error.message, error.stack);
+    console.error(
+      "Unhandled error in PUT handler:",
+      error.message,
+      error.stack
+    );
     if (
       error.message.includes("Authentication required") ||
       error.message.includes("Invalid or expired token")
@@ -311,7 +318,7 @@ export async function PUT(request) {
   }
 }
 
-export async function DELETE(request) {
+export async function DELETE(request: NextRequest) {
   try {
     const { userId } = await verifyToken(request);
     const { searchParams } = new URL(request.url);

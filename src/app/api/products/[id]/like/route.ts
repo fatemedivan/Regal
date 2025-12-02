@@ -3,10 +3,11 @@ import { prisma } from "../../../../../lib/prisma";
 import { verifyToken } from "../../../../../utils/auth";
 import { Params } from "../../types";
 
-export async function POST(request: NextRequest, { params }: Params) {
+export async function POST(request: NextRequest) {
   try {
     const { userId } = await verifyToken(request);
-    const productId = params.id;
+    const urlParts = request.nextUrl.pathname.split("/");
+    const productId = urlParts[urlParts.length - 2];
 
     const productExists = await prisma.product.findUnique({
       where: { id: productId },

@@ -3,7 +3,7 @@ import { prisma } from "../../../../lib/prisma";
 import { verifyToken } from "../../../../utils/auth";
 import { Params, SingleProductWithIncludes } from "../types";
 
-export async function GET(request: NextRequest, { params }: Params) {
+export async function GET(request: NextRequest) {
   try {
     const token = request.cookies.get("token")?.value;
 
@@ -15,7 +15,8 @@ export async function GET(request: NextRequest, { params }: Params) {
       } catch (tokenError) {}
     }
 
-    const { id } = params;
+    const urlParts = request.nextUrl.pathname.split("/");
+    const id = urlParts[urlParts.length - 1];
 
     const product: SingleProductWithIncludes | null =
       await prisma.product.findUnique({

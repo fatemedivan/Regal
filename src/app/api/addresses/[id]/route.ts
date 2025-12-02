@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "../../../../utils/auth";
 import { prisma } from "../../../../lib/prisma";
-import { Params } from "../../products/types";
 import { AddressBody } from "../types";
 
 export async function GET(request: NextRequest) {
@@ -43,10 +42,11 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function PUT(request: NextRequest, { params }: Params) {
+export async function PUT(request: NextRequest) {
   try {
     const { userId } = await verifyToken(request);
-    const addressId = params.id;
+    const { pathname } = request.nextUrl;
+    const addressId = pathname.split("/").pop();
 
     const { fullAddress, province, city, postalCode, details } =
       (await request.json()) as AddressBody;
@@ -99,10 +99,11 @@ export async function PUT(request: NextRequest, { params }: Params) {
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: Params) {
+export async function DELETE(request: NextRequest) {
   try {
     const { userId } = await verifyToken(request);
-    const addressId = params.id;
+    const { pathname } = request.nextUrl;
+    const addressId = pathname.split("/").pop();
 
     const existingAddress = await prisma.address.findUnique({
       where: { id: addressId },

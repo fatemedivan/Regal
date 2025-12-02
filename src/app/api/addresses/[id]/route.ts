@@ -4,10 +4,11 @@ import { prisma } from "../../../../lib/prisma";
 import { Params } from "../../products/types";
 import { AddressBody } from "../types";
 
-export async function GET(request: NextRequest, { params }: Params) {
+export async function GET(request: NextRequest) {
   try {
     const { userId } = await verifyToken(request);
-    const addressId = params.id;
+    const { pathname } = request.nextUrl;
+    const addressId = pathname.split("/").pop();
 
     const address = await prisma.address.findUnique({
       where: { id: addressId },

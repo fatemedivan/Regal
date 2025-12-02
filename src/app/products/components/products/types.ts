@@ -1,14 +1,4 @@
-export type Product = {
-  id: number;
-  name: string;
-  price: number;
-  discountedPrice?: number;
-  isDiscounted: boolean;
-  offPercent?: number;
-  images: { imageUrl: string }[];
-  productColors: { color: { hexCode: string } }[];
-  isLiked: boolean;
-};
+import { Product } from "@/types/product";
 
 export type ProductsProps = {
   allProducts: Product[];

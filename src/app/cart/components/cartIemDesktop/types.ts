@@ -1,5 +1,7 @@
+import { CartItem } from "@/types/cart";
+
 export type CartItemDesktopProps = {
-  item: any;
+  item: CartItem;
   index: number;
   totalCount: number;
   onUpdate: (itemId: string, newQuantity: number) => Promise<boolean>;

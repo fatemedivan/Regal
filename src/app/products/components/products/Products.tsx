@@ -94,7 +94,7 @@ export default function Products({
         title={product.name}
         price={product.price}
         finalPrice={product.discountedPrice}
-        colors={product.productColors.map((pc) => pc.color.hexCode)}
+        colors={product.colors.map((pc) => pc.hexCode)}
         favorites={product.isLiked}
       />
     ));

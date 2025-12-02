@@ -1,24 +1,10 @@
 export interface ProductImage {
   id: string;
-  url: string;
+  imageUrl: string;
 }
 
-export interface ProductColor {
-  id: string;
-  color: {
-    id: string;
-    name: string;
-    hexCode?: string;
-  };
-}
-
-export interface ProductSize {
-  id: string;
-  size: {
-    id: string;
-    name: string;
-  };
-}
+export type ProductColor = { id: number; hexCode: string };
+export type ProductSize = { id: number; name: string };
 
 export interface Product {
   id: string;
@@ -33,8 +19,8 @@ export interface Product {
   imageUrl?: string | null;
   offPercent?: number;
   isLiked?: boolean;
-  colors?: string[];
-  sizes?: string[];
+  colors?: ProductColor[];
+  sizes?: ProductSize[];
   createdAt?: string;
   updatedAt?: string;
   relatedProducts?: SimilarProduct[];
@@ -48,6 +34,6 @@ export interface SimilarProduct {
   price: number;
   offPercent: number;
   isLiked: boolean;
-  colors: string[];
-  sizes: string[];
+  colors: ProductColor[];
+  sizes: ProductSize[];
 }

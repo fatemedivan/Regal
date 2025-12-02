@@ -16,7 +16,6 @@ export default function ProductCard({
   colors,
   favorites,
 }: ProductCardProps) {
-
   return (
     <>
       <div className="min-w-41.75 lg:min-w-79.5 relative">
@@ -83,12 +82,12 @@ export default function ProductCard({
 
               <div className="flex items-center gap-1">
                 {colors &&
-                  colors.map((hexCode, index) => (
+                  colors.map((color) => (
                     <div
-                      key={hexCode || index}
+                      key={color}
                       className="w-5 h-5 rounded-sm border border-gray-300"
-                      style={{ backgroundColor: hexCode }}
-                      title={hexCode}
+                      style={{ backgroundColor: color }}
+                      title={color}
                     ></div>
                   ))}
               </div>

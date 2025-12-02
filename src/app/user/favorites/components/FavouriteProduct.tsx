@@ -8,7 +8,6 @@ export default function FavoriteProductCard({
   title,
   price,
   finalPrice,
-  offPercent,
   isMore,
   colors,
   disLikeProduct,
@@ -34,11 +33,7 @@ export default function FavoriteProductCard({
             alt=""
             quality={100}
           />
-          {offPercent && (
-            <div className="bg-cognac-primery px-2 py-0.5 lg:px-3 lg:py-1 rounded-100 text-white text-xs leading-4.5">
-              {offPercent}٪
-            </div>
-          )}
+          
         </div>
       </div>
       <div

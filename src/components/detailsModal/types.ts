@@ -1,4 +1,6 @@
+import { Cart } from "@/types/cart";
+
 export type DetailsModalProps = {
   handleCloseModal: () => void;
-  cart: any;
+  cart: Cart;
 };

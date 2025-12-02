@@ -6,13 +6,13 @@ import Image from "next/image";
 import Breadcrumb from "@/components/breadCrumb/Breadcrumb";
 import ProductCard from "@/components/productCard/ProductCard";
 import { useBasketContext } from "@/context/BasketContext";
+import { Product, SimilarProduct } from "@/types/product";
 
 import "@glidejs/glide/dist/css/glide.core.min.css";
 import Glide from "@glidejs/glide";
 import { toast, ToastContainer } from "react-toastify";
 import { HashLoader } from "react-spinners";
 import getToken from "@/utils/getToken";
-import { Product, RelatedProduct } from "./types";
 
 export default function Page() {
   const router = useRouter();
@@ -23,7 +23,7 @@ export default function Page() {
   const { addToCart } = useBasketContext();
   const [product, setProduct] = useState<Product | null>(null);
   const [currentImgSrc, setCurrentImgSrc] = useState("");
-  const [similarProducts, setSimilarProducts] = useState<RelatedProduct[]>([]);
+  const [similarProducts, setSimilarProducts] = useState<SimilarProduct[]>([]);
   const [isLiked, setIsLiked] = useState(false);
   const [isExistProduct, setIsExistProduct] = useState(true);
   const [isLoadingProduct, setIsLoadingProduct] = useState(true);
@@ -55,7 +55,6 @@ export default function Page() {
           setIsExistProduct(false);
         }
       } catch (error) {
-        console.error(error);
         toast.error("خطایی در ارتباط با سرور رخ داد.");
         setIsExistProduct(false);
       } finally {
@@ -144,7 +143,6 @@ export default function Page() {
         toast.success("محصول با موفقیت به علاقه‌مندی‌ها اضافه شد.");
       } else toast.error("عملیات لایک کردن ناموفق بود.");
     } catch (error) {
-      console.error(error);
       toast.error("خطایی رخ داد، لطفا دوباره تلاش کنید.");
     }
   };
@@ -162,7 +160,6 @@ export default function Page() {
         toast.info("محصول از علاقه‌مندی‌ها حذف شد.");
       } else toast.error("عملیات حذف از علاقه‌مندی‌ها ناموفق بود.");
     } catch (error) {
-      console.error(error);
       toast.error("خطایی رخ داد، لطفا دوباره تلاش کنید.");
     }
   };
@@ -190,7 +187,6 @@ export default function Page() {
         setIsAddingToCart(false);
       }
     } catch (error) {
-      console.error(error);
       toast.error("خطایی رخ داد، دوباره تلاش کنید.");
     } finally {
       setIsAddingToCart(false);
@@ -235,13 +231,13 @@ export default function Page() {
                   <div className="flex items-center gap-2 mb-6 lg:hidden">
                     {product.images?.map((img) => (
                       <Image
-                        key={img}
+                        key={img.id}
                         width={64}
                         height={64}
-                        src={img}
+                        src={img.imageUrl}
                         quality={100}
                         alt="Product thumbnail"
-                        onClick={() => setCurrentImgSrc(img)}
+                        onClick={() => setCurrentImgSrc(img.imageUrl)}
                         className="rounded-lg cursor-pointer"
                       />
                     ))}
@@ -250,13 +246,13 @@ export default function Page() {
                   <div className="hidden lg:flex w-max flex-col gap-6 mb-6">
                     {product.images?.map((img) => (
                       <Image
-                        key={img}
+                        key={img.id}
                         width={90}
                         height={84}
-                        src={img}
+                        src={img.imageUrl}
                         quality={100}
                         alt="Product thumbnail"
-                        onClick={() => setCurrentImgSrc(img)}
+                        onClick={() => setCurrentImgSrc(img.imageUrl)}
                         className="rounded-lg cursor-pointer"
                       />
                     ))}
@@ -296,13 +292,13 @@ export default function Page() {
                   </div>
 
                   <div className="hidden lg:flex items-center my-7">
-                    {product.percentOff && (
+                    {product.offPercent && (
                       <p className="line-through font-normal leading-7 text-neutral-gray-9">
                         {product.price?.toLocaleString()}
                       </p>
                     )}
                     <p className="text-xl leading-5.5 font-bold text-neutral-gray-13 mr-2">
-                      {product.percentOff
+                      {product.offPercent
                         ? product.discountedPrice?.toLocaleString()
                         : product.price?.toLocaleString()}{" "}
                       تومان
@@ -321,7 +317,7 @@ export default function Page() {
                       رنگ بندی:
                     </p>
                     <div className="flex flex-wrap items-center gap-2">
-                      {product.colors?.map((item) => (
+                      {product.colors.map((item) => (
                         <label
                           key={item.id}
                           className="relative cursor-pointer"
@@ -454,7 +450,7 @@ export default function Page() {
                               title={product.title}
                               finalPrice={product.finalPrice}
                               isMore={false}
-                              colors={product.colors}
+                              colors={product.colors.map((pc) => pc.hexCode)}
                               id={product.id}
                             />
                           </li>

@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '../../../../lib/prisma';
-import { verifyToken } from '../../../../utils/auth';
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "../../../../lib/prisma";
+import { verifyToken } from "../../../../utils/auth";
+import { UpdateUserBody } from "./types";
 
 export async function GET(request: NextRequest) {
   try {
@@ -21,19 +22,27 @@ export async function GET(request: NextRequest) {
     });
 
     if (!user) {
-      return NextResponse.json({ message: 'کاربر مورد نظر یافت نشد.' }, { status: 404 });
+      return NextResponse.json(
+        { message: "کاربر مورد نظر یافت نشد." },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json(user, { status: 200 });
-
   } catch (error) {
-    console.error('Error fetching user profile (GET):', error);
+    console.error("Error fetching user profile (GET):", error);
 
-    if (error.message.includes('Authentication required') || error.message.includes('Invalid or expired token')) {
+    if (
+      error.message.includes("Authentication required") ||
+      error.message.includes("Invalid or expired token")
+    ) {
       return NextResponse.json({ message: error.message }, { status: 401 });
     }
 
-    return NextResponse.json({ message: 'خطای داخلی سرور در دریافت اطلاعات پروفایل.' }, { status: 500 });
+    return NextResponse.json(
+      { message: "خطای داخلی سرور در دریافت اطلاعات پروفایل." },
+      { status: 500 }
+    );
   }
 }
 
@@ -41,10 +50,14 @@ export async function PATCH(request: NextRequest) {
   try {
     const { userId } = await verifyToken(request);
 
-    const { firstName, lastName, email } = await request.json();
+    const { firstName, lastName, email } =
+      (await request.json()) as UpdateUserBody;
 
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return NextResponse.json({ message: 'فرمت ایمیل نامعتبر است.' }, { status: 400 });
+      return NextResponse.json(
+        { message: "فرمت ایمیل نامعتبر است." },
+        { status: 400 }
+      );
     }
 
     const updatedUser = await prisma.user.update({
@@ -66,23 +79,38 @@ export async function PATCH(request: NextRequest) {
       },
     });
 
-    return NextResponse.json({ message: 'اطلاعات پروفایل با موفقیت به‌روزرسانی شد!', user: updatedUser }, { status: 200 });
-
+    return NextResponse.json(
+      {
+        message: "اطلاعات پروفایل با موفقیت به‌روزرسانی شد!",
+        user: updatedUser,
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    console.error('Error updating user profile (PATCH):', error);
-
-    if (error.message.includes('Authentication required') || error.message.includes('Invalid or expired token')) {
+    if (
+      error.message.includes("Authentication required") ||
+      error.message.includes("Invalid or expired token")
+    ) {
       return NextResponse.json({ message: error.message }, { status: 401 });
     }
 
-    if (error.code === 'P2025') {
-      return NextResponse.json({ message: 'کاربر مورد نظر برای به‌روزرسانی یافت نشد.' }, { status: 404 });
+    if (error.code === "P2025") {
+      return NextResponse.json(
+        { message: "کاربر مورد نظر برای به‌روزرسانی یافت نشد." },
+        { status: 404 }
+      );
     }
 
-    if (error.code === 'P2002' && error.meta?.target?.includes('email')) {
-      return NextResponse.json({ message: 'این آدرس ایمیل قبلاً توسط کاربر دیگری استفاده شده است.' }, { status: 409 });
+    if (error.code === "P2002" && error.meta?.target?.includes("email")) {
+      return NextResponse.json(
+        { message: "این آدرس ایمیل قبلاً توسط کاربر دیگری استفاده شده است." },
+        { status: 409 }
+      );
     }
 
-    return NextResponse.json({ message: 'خطای داخلی سرور در به‌روزرسانی اطلاعات پروفایل.' }, { status: 500 });
+    return NextResponse.json(
+      { message: "خطای داخلی سرور در به‌روزرسانی اطلاعات پروفایل." },
+      { status: 500 }
+    );
   }
 }

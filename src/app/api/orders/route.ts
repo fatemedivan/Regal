@@ -99,7 +99,11 @@ export async function POST(request: NextRequest) {
     }
 
     let totalAmount = 0;
-    const orderItemsData = userCart.items.map((item) => {
+    const orderItemsData: {
+      productId: string;
+      quantity: number;
+      priceAtOrder: number;
+    }[] = userCart.items.map((item) => {
       const priceToUse =
         item.product.isDiscounted && item.product.discountedPrice !== null
           ? item.product.discountedPrice

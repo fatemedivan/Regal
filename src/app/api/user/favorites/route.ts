@@ -1,22 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../../lib/prisma";
 import { verifyToken } from "../../../../utils/auth";
+import { LikedProductWithProduct } from "./types";
 
-type LikedProductWithProduct = {
-  product: {
-    id: number;
-    name: string;
-    description: string;
-    price: number;
-    discountedPrice: number | null;
-    isDiscounted: boolean;
-    createdAt: Date;
-    updatedAt: Date;
-    categoryId: number;
-    images: { imageUrl: string }[];
-  };
-};
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
     const { userId } = await verifyToken(request);
 
@@ -36,7 +23,11 @@ export async function GET(request: NextRequest) {
               updatedAt: true,
               categoryId: true,
 
-              images: true,
+              images: {
+                select: {
+                  imageUrl: true,
+                },
+              },
             },
           },
         },
@@ -68,8 +59,6 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(productsData, { status: 200 });
   } catch (error: any) {
-    console.error("خطا در دریافت محصولات لایک شده:", error.message);
-
     if (
       error.message?.includes("Authentication required") ||
       error.message?.includes("Invalid or expired token")

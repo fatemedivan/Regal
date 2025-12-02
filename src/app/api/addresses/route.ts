@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../lib/prisma";
 import { verifyToken } from "../../../utils/auth";
+import { AddressBody } from "./types";
 
 export async function GET(request: NextRequest) {
   try {
@@ -14,7 +15,6 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(addresses, { status: 200 });
   } catch (error) {
-    console.error("Error fetching addresses:", error.message);
     if (
       error.message.includes("Authentication required") ||
       error.message.includes("Invalid or expired token")
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     const { userId } = await verifyToken(request);
 
     const { fullAddress, province, city, postalCode, details } =
-      await request.json();
+      (await request.json()) as AddressBody;
 
     if (!fullAddress || !province || !city || !postalCode || !details) {
       return NextResponse.json(
@@ -64,7 +64,6 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("Error adding address:", error.message);
     if (
       error.message.includes("Authentication required") ||
       error.message.includes("Invalid or expired token")

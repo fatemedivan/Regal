@@ -1,17 +1,17 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../lib/prisma";
 import { verifyToken } from "../../../utils/auth";
+import { Prisma } from "@prisma/client";
+import { LikedProductByUser, ProductWithIncludes } from "./types";
 
-export async function GET(request) {
-  let userId = null;
+export async function GET(request: NextRequest): Promise<NextResponse> {
+  let userId: string | null = null;
   try {
     const decoded = await verifyToken(request);
     if (decoded && decoded.userId) {
       userId = decoded.userId;
     }
-  } catch (error) {
-
-  }
+  } catch (error) {}
 
   try {
     const { searchParams } = new URL(request.url);
@@ -21,7 +21,7 @@ export async function GET(request) {
     const skip = (page - 1) * limit;
 
     const sort = searchParams.get("sort");
-    let orderBy = {};
+    let orderBy: Prisma.ProductOrderByWithRelationInput = {};
 
     switch (sort) {
       case "cheapest":
@@ -39,20 +39,24 @@ export async function GET(request) {
         break;
     }
 
-    const filter = {};
-    const minPrice = parseFloat(searchParams.get("minPrice"));
-    const maxPrice = parseFloat(searchParams.get("maxPrice"));
+    const filter: Prisma.ProductWhereInput = {};
+    const minPriceParam = searchParams.get("minPrice");
+    const maxPriceParam = searchParams.get("maxPrice");
+
+    const minPrice = minPriceParam ? parseFloat(minPriceParam) : undefined;
+    const maxPrice = maxPriceParam ? parseFloat(maxPriceParam) : undefined;
     const color = searchParams.get("color");
     const size = searchParams.get("size");
     const categoryId = searchParams.get("categoryId");
     const isDiscounted = searchParams.get("isDiscounted");
     const search = searchParams.get("search");
+    const OR: Prisma.ProductWhereInput[] = [];
 
-    if (minPrice && maxPrice) {
+    if (minPrice !== undefined && maxPrice !== undefined) {
       filter.price = { gte: minPrice, lte: maxPrice };
-    } else if (minPrice) {
+    } else if (minPrice !== undefined) {
       filter.price = { gte: minPrice };
-    } else if (maxPrice) {
+    } else if (maxPrice !== undefined) {
       filter.price = { lte: maxPrice };
     }
 
@@ -76,21 +80,19 @@ export async function GET(request) {
     }
 
     if (categoryId) {
-      filter.OR = [
-        { categoryId: categoryId },
-        { category: { parentId: categoryId } }
-      ];
+      OR.push({ categoryId }, { category: { parentId: categoryId } });
     }
 
     if (isDiscounted === "true") filter.isDiscounted = true;
     if (isDiscounted === "false") filter.isDiscounted = false;
 
     if (search) {
-      filter.OR = [
+      OR.push(
         { name: { contains: search } },
-        { description: { contains: search } },
-      ];
+        { description: { contains: search } }
+      );
     }
+    if (OR.length > 0) filter.OR = OR;
 
     const [products, totalProducts] = await prisma.$transaction([
       prisma.product.findMany({
@@ -114,9 +116,9 @@ export async function GET(request) {
       prisma.product.count({ where: filter }),
     ]);
 
-    let likedProductIds = new Set();
+    let likedProductIds = new Set<string>();
     if (userId) {
-      const productIds = products.map((p) => p.id);
+      const productIds = products.map((p: ProductWithIncludes) => p.id);
       const likedProductsByUser = await prisma.likedProduct.findMany({
         where: {
           userId: userId,
@@ -124,10 +126,14 @@ export async function GET(request) {
         },
         select: { productId: true },
       });
-      likedProductIds = new Set(likedProductsByUser.map((lp) => lp.productId));
+      likedProductIds = new Set(
+        likedProductsByUser.map((lp: LikedProductByUser) => lp.productId)
+      );
     }
 
-    const productsWithCalculatedFields = products.map((product) => {
+    const productsWithCalculatedFields = (
+      products as ProductWithIncludes[]
+    ).map((product) => {
       let offPercent = 0;
       if (
         product.isDiscounted &&
@@ -138,7 +144,8 @@ export async function GET(request) {
           ((product.price - product.discountedPrice) / product.price) * 100;
         offPercent = Math.round(offPercent);
       }
-      const imageUrl = product.images.length > 0 ? product.images[0].url : null;
+      const imageUrl =
+        product.images.length > 0 ? product.images[0].imageUrl : null;
 
       return {
         ...product,
@@ -158,7 +165,6 @@ export async function GET(request) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error fetching products:", error.message);
     return NextResponse.json(
       { message: "Internal server error fetching products." },
       { status: 500 }

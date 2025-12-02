@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../lib/prisma";
 import { verifyToken } from "../../../utils/auth";
+import { CartItemBody, CartItemFull, CartWithItems } from "./types";
+import { CartItem } from "@prisma/client";
 
 export async function GET(request: NextRequest) {
   try {
     const { userId } = await verifyToken(request);
 
-    let userCart = await prisma.cart.findUnique({
+    let userCart: CartWithItems | null = await prisma.cart.findUnique({
       where: { userId: userId },
       include: {
         items: {
@@ -47,11 +49,13 @@ export async function GET(request: NextRequest) {
       userCart = newCart;
     }
 
-    const cartWithCalculatedFields = {
+    const cartWithCalculatedFields: CartWithItems = {
       ...userCart,
-      items: userCart.items.map((item) => {
+      items: userCart.items.map((item): CartItemFull => {
         const imageUrl =
-          item.product.images.length > 0 ? item.product.images[0].url : null;
+          item.product.images.length > 0
+            ? item.product.images[0].imageUrl
+            : null;
 
         let offPercent = 0;
         if (
@@ -79,8 +83,6 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(cartWithCalculatedFields, { status: 200 });
   } catch (error) {
-    console.error("Error fetching cart:", error.message);
-
     return NextResponse.json(
       { message: "خطای داخلی سرور در دریافت سبد خرید." },
       { status: 500 }
@@ -97,7 +99,7 @@ export async function POST(request: NextRequest) {
       quantity = 1,
       productColorId,
       productSizeId,
-    } = await request.json();
+    } = (await request.json()) as CartItemBody;
 
     if (!productId || typeof quantity !== "number" || quantity < 1) {
       return NextResponse.json(
@@ -153,7 +155,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    let cartItem;
+    let cartItem: CartItem;
     if (existingCartItem) {
       cartItem = await prisma.cartItem.update({
         where: { id: existingCartItem.id },
@@ -176,7 +178,6 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error adding to cart:", error.message);
     if (
       error.message.includes("Authentication required") ||
       error.message.includes("Invalid or expired token")
@@ -196,16 +197,11 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const { userId } = await verifyToken(request);
-    let requestBody;
+    let requestBody: CartItemBody;
 
     try {
       requestBody = await request.json();
-      console.log("Parsed PUT Request Body:", requestBody);
     } catch (jsonError) {
-      console.error(
-        "Error parsing request body as JSON in PUT:",
-        jsonError.message
-      );
       return NextResponse.json(
         { message: "فرمت بدنه درخواست نامعتبر است (باید JSON باشد)." },
         { status: 400 }
@@ -215,14 +211,12 @@ export async function PUT(request: NextRequest) {
     const { productId, quantity, productColorId, productSizeId } = requestBody;
 
     if (!productId) {
-      console.error("PUT Validation Error: productId is missing.");
       return NextResponse.json(
         { message: "شناسه محصول لازم است." },
         { status: 400 }
       );
     }
     if (typeof quantity !== "number" || quantity < 0) {
-      console.error("PUT Validation Error: Invalid quantity.", { quantity });
       return NextResponse.json(
         { message: "تعداد معتبر لازم است (عدد مثبت یا صفر)." },
         { status: 400 }
@@ -233,19 +227,11 @@ export async function PUT(request: NextRequest) {
       where: { userId: userId },
     });
     if (!userCart) {
-      console.error("PUT Error: Cart not found for user:", userId);
       return NextResponse.json(
         { message: "سبد خرید یافت نشد." },
         { status: 404 }
       );
     }
-
-    console.log("Searching for cart item with:", {
-      cartId: userCart.id,
-      productId: productId,
-      productColorId: productColorId || null,
-      productSizeId: productSizeId || null,
-    });
 
     const existingCartItem = await prisma.cartItem.findUnique({
       where: {
@@ -258,25 +244,17 @@ export async function PUT(request: NextRequest) {
       },
     });
 
-    console.log("Found existingCartItem for PUT:", existingCartItem);
-
     if (!existingCartItem) {
-      console.error("PUT Error: Product not found in cart for update:", {
-        cartId: userCart.id,
-        productId,
-        productColorId,
-        productSizeId,
-      });
       return NextResponse.json(
         { message: "محصول در سبد خرید یافت نشد." },
         { status: 404 }
       );
     }
 
-    let updatedItem;
+    let updatedItem: CartItem;
+
     if (quantity === 0) {
       await prisma.cartItem.delete({ where: { id: existingCartItem.id } });
-      console.log("PUT: Cart item deleted (quantity 0):", existingCartItem.id);
       return NextResponse.json(
         { message: "محصول از سبد خرید حذف شد.", removed: true },
         { status: 200 }
@@ -286,7 +264,6 @@ export async function PUT(request: NextRequest) {
         where: { id: existingCartItem.id },
         data: { quantity: quantity },
       });
-      console.log("PUT: Cart item quantity updated:", updatedItem);
     }
 
     return NextResponse.json(
@@ -297,11 +274,6 @@ export async function PUT(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    console.error(
-      "Unhandled error in PUT handler:",
-      error.message,
-      error.stack
-    );
     if (
       error.message.includes("Authentication required") ||
       error.message.includes("Invalid or expired token")
@@ -322,9 +294,9 @@ export async function DELETE(request: NextRequest) {
   try {
     const { userId } = await verifyToken(request);
     const { searchParams } = new URL(request.url);
-    const productId = searchParams.get("productId");
-    const productColorId = searchParams.get("productColorId");
-    const productSizeId = searchParams.get("productSizeId");
+    const productId = searchParams.get("productId") as string | null;
+    const productColorId = searchParams.get("productColorId") as string | null;
+    const productSizeId = searchParams.get("productSizeId") as string | null;
 
     if (!productId) {
       return NextResponse.json(
@@ -370,7 +342,6 @@ export async function DELETE(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error deleting cart item:", error.message);
     if (
       error.message.includes("Authentication required") ||
       error.message.includes("Invalid or expired token")

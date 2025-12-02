@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { CategoryWithSub } from "./types";
 
 export async function GET(request: NextRequest) {
   try {
-    const categories = await prisma.category.findMany({
+    const categories: CategoryWithSub[] = await prisma.category.findMany({
       where: {
         parentId: null,
       },

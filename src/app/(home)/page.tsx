@@ -13,7 +13,9 @@ const DiscountedProducts = dynamicWithLoading(
 const KeyFeatures = dynamicWithLoading(
   () => import("./components/KeyFeatures")
 );
-const Articles = dynamicWithLoading(() => import("./components/articles/Articles"));
+const Articles = dynamicWithLoading(
+  () => import("./components/articles/Articles")
+);
 
 export default async function Home() {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -36,6 +38,7 @@ export default async function Home() {
   } catch (error) {
     console.log(error);
   }
+  console.log("API RESULT =>", discountedProducts);
 
   return (
     <>

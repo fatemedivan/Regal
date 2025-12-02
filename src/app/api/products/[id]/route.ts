@@ -1,54 +1,50 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../../lib/prisma";
 import { verifyToken } from "../../../../utils/auth";
+import { Params, SingleProductWithIncludes } from "../types";
 
-export async function GET(request, { params }) {
+export async function GET(request: NextRequest, { params }: Params) {
   try {
     const token = request.cookies.get("token")?.value;
 
     let userId = null;
     if (token) {
       try {
-        const decoded = await verifyToken(token);
+        const decoded = await verifyToken(request);
         userId = decoded.userId;
-      } catch (tokenError) {
-        console.warn(
-          "Invalid or expired token in single product fetch:",
-          tokenError.message
-        );
-      }
+      } catch (tokenError) {}
     }
 
     const { id } = params;
 
-    const product = await prisma.product.findUnique({
-      where: { id: id },
-      include: {
-        category: {
-          select: { id: true, name: true },
-        },
-        productColors: {
-          select: {
-            id: true,
-            color: { select: { hexCode: true, name: true } },
+    const product: SingleProductWithIncludes | null =
+      await prisma.product.findUnique({
+        where: { id: id },
+        include: {
+          category: {
+            select: { id: true, name: true },
           },
-        },
-        productSizes: {
-          select: {
-            id: true,
-            size: { select: { name: true } },
+          productColors: {
+            select: {
+              id: true,
+              color: { select: { hexCode: true, name: true } },
+            },
           },
+          productSizes: {
+            select: {
+              id: true,
+              size: { select: { name: true } },
+            },
+          },
+          images: {
+            select: { imageUrl: true },
+            orderBy: { createdAt: "asc" },
+          },
+          likes: userId
+            ? { where: { userId }, select: { userId: true } }
+            : false,
         },
-        images: {
-          select: { imageUrl: true },
-          orderBy: { createdAt: "asc" },
-        },
-        likes: {
-          where: userId ? { userId: userId } : { id: "a_non_existent_like_id" },
-          select: { userId: true },
-        },
-      },
-    });
+      });
 
     if (!product) {
       return NextResponse.json(
@@ -57,38 +53,38 @@ export async function GET(request, { params }) {
       );
     }
 
-    const relatedProducts = await prisma.product.findMany({
-      where: {
-        categoryId: product.categoryId,
-        id: {
-          not: id,
-        },
-      },
-      include: {
-        category: { select: { name: true } },
-        productColors: {
-          include: {
-            color: { select: { hexCode: true } },
+    const relatedProducts: SingleProductWithIncludes[] =
+      await prisma.product.findMany({
+        where: {
+          categoryId: product.categoryId,
+          id: {
+            not: id,
           },
         },
-        productSizes: {
-          include: {
-            size: { select: { name: true } },
+        include: {
+          category: { select: { name: true } },
+          productColors: {
+            include: {
+              color: { select: { hexCode: true } },
+            },
           },
-        },
-        images: {
-          select: { imageUrl: true },
-          orderBy: { createdAt: "asc" },
-        },
+          productSizes: {
+            include: {
+              size: { select: { name: true } },
+            },
+          },
+          images: {
+            select: { imageUrl: true },
+            orderBy: { createdAt: "asc" },
+          },
 
-        likes: {
-          where: userId ? { userId: userId } : { id: "a_non_existent_like_id" },
-          select: { userId: true },
+          likes: userId
+            ? { where: { userId }, select: { userId: true } }
+            : false,
         },
-      },
-      take: 4,
-      orderBy: { createdAt: "desc" },
-    });
+        take: 4,
+        orderBy: { createdAt: "desc" },
+      });
 
     const formattedRelatedProducts = relatedProducts.map((relatedProduct) => {
       let offPercent = 0;
@@ -100,7 +96,7 @@ export async function GET(request, { params }) {
         offPercent = Math.round(
           ((relatedProduct.price - relatedProduct.discountedPrice) /
             relatedProduct.price) *
-          100
+            100
         );
       }
 
@@ -154,19 +150,18 @@ export async function GET(request, { params }) {
       updatedAt: product.updatedAt,
       offPercent:
         product.isDiscounted &&
-          product.price &&
-          product.discountedPrice &&
-          product.price > 0
+        product.price &&
+        product.discountedPrice &&
+        product.price > 0
           ? Math.round(
-            ((product.price - product.discountedPrice) / product.price) * 100
-          )
+              ((product.price - product.discountedPrice) / product.price) * 100
+            )
           : 0,
       relatedProducts: formattedRelatedProducts,
     };
 
     return NextResponse.json(productData, { status: 200 });
   } catch (error) {
-    console.error("Error fetching single product:", error);
     if (
       error.message.includes("Authentication required") ||
       error.message.includes("Invalid or expired token")

@@ -6,13 +6,6 @@ import jwt from "jsonwebtoken";
 const JWT_SECRET = process.env.JWT_SECRET;
 
 export async function POST(request: NextRequest) {
-  if (!JWT_SECRET) {
-    return NextResponse.json(
-      { message: "JWT_SECRET is not defined in environment variables." },
-      { status: 500 }
-    );
-  }
-
   try {
     const { phoneNumber, password } = await request.json();
 

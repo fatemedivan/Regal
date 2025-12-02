@@ -130,7 +130,6 @@ export default function Page() {
                 title={product.name}
                 finalPrice={product.discountedPrice || ""}
                 price={product.price}
-                offPercent={product.offPercent}
                 isMore={false}
                 colors={
                   product.ProductColor && product.ProductColor.length > 0
@@ -188,7 +187,6 @@ export default function Page() {
                   }
                   disLikeProduct={disLikeProduct}
                   price={product.price}
-                  offPercent={product.offPercent}
                 />
               ))}
             </div>

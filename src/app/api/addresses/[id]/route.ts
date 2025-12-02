@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "../../../../utils/auth";
 import { prisma } from "../../../../lib/prisma";
+import { Params } from "../../products/types";
+import { AddressBody } from "../types";
 
-export async function GET(request: NextRequest, { params }) {
+export async function GET(request: NextRequest, { params }: Params) {
   try {
     const { userId } = await verifyToken(request);
     const addressId = params.id;
@@ -24,7 +26,6 @@ export async function GET(request: NextRequest, { params }) {
 
     return NextResponse.json(address, { status: 200 });
   } catch (error) {
-    console.error("Error fetching single address:", error.message);
     if (
       error.message.includes("Authentication required") ||
       error.message.includes("Invalid or expired token")
@@ -41,13 +42,13 @@ export async function GET(request: NextRequest, { params }) {
   }
 }
 
-export async function PUT(request: NextRequest, { params }) {
+export async function PUT(request: NextRequest, { params }: Params) {
   try {
     const { userId } = await verifyToken(request);
     const addressId = params.id;
 
     const { fullAddress, province, city, postalCode, details } =
-      await request.json();
+      (await request.json()) as AddressBody;
 
     const existingAddress = await prisma.address.findUnique({
       where: { id: addressId },
@@ -66,7 +67,8 @@ export async function PUT(request: NextRequest, { params }) {
     const updatedAddress = await prisma.address.update({
       where: { id: addressId },
       data: {
-        fullAddress: fullAddress ?? existingAddress.fullAddress,
+        fullAddress:
+          fullAddress !== undefined ? fullAddress : existingAddress.fullAddress,
         province: province ?? existingAddress.province,
         city: city ?? existingAddress.city,
         postalCode: postalCode ?? existingAddress.postalCode,
@@ -79,7 +81,6 @@ export async function PUT(request: NextRequest, { params }) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error updating address:", error.message);
     if (
       error.message.includes("Authentication required") ||
       error.message.includes("Invalid or expired token")
@@ -97,7 +98,7 @@ export async function PUT(request: NextRequest, { params }) {
   }
 }
 
-export async function DELETE(request: NextRequest, { params }) {
+export async function DELETE(request: NextRequest, { params }: Params) {
   try {
     const { userId } = await verifyToken(request);
     const addressId = params.id;
@@ -125,7 +126,6 @@ export async function DELETE(request: NextRequest, { params }) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error deleting address:", error.message);
     if (
       error.message.includes("Authentication required") ||
       error.message.includes("Invalid or expired token")

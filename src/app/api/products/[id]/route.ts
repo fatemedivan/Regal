@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../../lib/prisma";
 import { verifyToken } from "../../../../utils/auth";
-import { Params, SingleProductWithIncludes } from "../types";
+import { SingleProductWithIncludes } from "../types";
 
 export async function GET(request: NextRequest) {
   try {
@@ -28,13 +28,13 @@ export async function GET(request: NextRequest) {
           productColors: {
             select: {
               id: true,
-              color: { select: { hexCode: true, name: true } },
+              color: { select: {id:true, hexCode: true, name: true } },
             },
           },
           productSizes: {
             select: {
               id: true,
-              size: { select: { name: true } },
+              size: { select: {id:true, name: true } },
             },
           },
           images: {
@@ -101,12 +101,16 @@ export async function GET(request: NextRequest) {
         );
       }
 
-      const availableColors = relatedProduct.productColors.map(
-        (pc) => pc.color.hexCode
-      );
-      const availableSizes = relatedProduct.productSizes.map(
-        (ps) => ps.size.name
-      );
+      const productColors = relatedProduct.productColors.map((pc) => ({
+        id: pc.id,
+        name: pc.color.name,
+        hexCode: pc.color.hexCode,
+      }));
+      const productSizes = relatedProduct.productSizes.map((ps) => ({
+        id: ps.id,
+        name: ps.size.name,
+      }));
+
       const mainImageUrl =
         relatedProduct.images.length > 0
           ? relatedProduct.images[0].imageUrl
@@ -120,8 +124,8 @@ export async function GET(request: NextRequest) {
         price: relatedProduct.price,
         offPercent: offPercent,
         isLiked: relatedProduct.likes.length > 0,
-        colors: availableColors,
-        sizes: availableSizes,
+        productColors,
+        productSizes,
       };
     });
 
@@ -135,13 +139,13 @@ export async function GET(request: NextRequest) {
       categoryName: product.category.name,
       categoryId: product.category.id,
 
-      colors: product.productColors.map((pc) => ({
+      productColors: product.productColors.map((pc) => ({
         id: pc.id,
         name: pc.color.name,
         hexCode: pc.color.hexCode,
       })),
 
-      sizes: product.productSizes.map((ps) => ({
+      productSizes: product.productSizes.map((ps) => ({
         id: ps.id,
         name: ps.size.name,
       })),

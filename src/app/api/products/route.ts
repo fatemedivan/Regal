@@ -152,6 +152,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         isLiked: userId ? likedProductIds.has(product.id) : false,
         offPercent: offPercent,
         imageUrl: imageUrl,
+        productColors: product.productColors.map((pc) => ({
+          hexCode: pc.color.hexCode,
+        })),
       };
     });
 

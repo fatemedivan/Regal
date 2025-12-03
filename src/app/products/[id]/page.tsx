@@ -42,6 +42,8 @@ export default function Page() {
         const res = await fetch(`/api/products/${id}`, { headers });
         if (res.ok) {
           const data = await res.json();
+          console.log("data product", data);
+
           setProduct(data);
           setCurrentImgSrc(data?.images?.[0] || "");
           setIsExistProduct(true);
@@ -169,9 +171,9 @@ export default function Page() {
       return toast.warn(
         "برای اضافه کردن به سبد خرید باید وارد حساب کاربری شوید"
       );
-    if (product.colors?.length > 0 && !selectedColor)
+    if (product.productColors?.length > 0 && !selectedColor)
       return toast.warn("لطفا رنگ مورد نظر خود را انتخاب کنید.");
-    if (product.sizes?.length > 0 && !selectedSize)
+    if (product.productSizes?.length > 0 && !selectedSize)
       return toast.warn("لطفا سایز مورد نظر خود را انتخاب کنید.");
 
     try {
@@ -317,7 +319,7 @@ export default function Page() {
                       رنگ بندی:
                     </p>
                     <div className="flex flex-wrap items-center gap-2">
-                      {product.colors.map((item) => (
+                      {product.productColors.map((item) => (
                         <label
                           key={item.id}
                           className="relative cursor-pointer"
@@ -348,7 +350,7 @@ export default function Page() {
                       سایزبندی:
                     </p>
                     <div className="flex items-center gap-2">
-                      {product.sizes?.map((item) => (
+                      {product.productSizes?.map((item) => (
                         <label
                           key={item.id}
                           className="relative cursor-pointer"

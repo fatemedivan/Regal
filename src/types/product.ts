@@ -19,8 +19,8 @@ export interface Product {
   imageUrl?: string | null;
   offPercent?: number;
   isLiked?: boolean;
-  colors?: ProductColor[];
-  sizes?: ProductSize[];
+  productColors?: ProductColor[];
+  productSizes?: ProductSize[];
   createdAt?: string;
   updatedAt?: string;
   relatedProducts?: SimilarProduct[];

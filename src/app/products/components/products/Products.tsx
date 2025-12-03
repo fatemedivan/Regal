@@ -85,19 +85,21 @@ export default function Products({
       ));
     }
 
-    return allProducts?.map((product) => (
-      <ProductCard
-        key={product.id}
-        id={product.id}
-        img={product.images[0]?.imageUrl}
-        offPercent={product.offPercent}
-        title={product.name}
-        price={product.price}
-        finalPrice={product.discountedPrice}
-        colors={product.colors.map((pc) => pc.hexCode)}
-        favorites={product.isLiked}
-      />
-    ));
+    return allProducts?.map((product) => {
+      return (
+        <ProductCard
+          key={product.id}
+          id={product.id}
+          img={product.images[0]?.imageUrl}
+          offPercent={product.offPercent}
+          title={product.name}
+          price={product.price}
+          finalPrice={product.discountedPrice}
+          colors={product.productColors.map((pc) => pc.hexCode)}
+          favorites={product.isLiked}
+        />
+      );
+    });
   }, [isPending, allProducts]);
 
   return (

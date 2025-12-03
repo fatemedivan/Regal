@@ -45,7 +45,7 @@ export default function Page() {
           console.log("data product", data);
 
           setProduct(data);
-          setCurrentImgSrc(data?.images?.[0] || "");
+          setCurrentImgSrc(data?.images?.[0].imageUrl || "");
           setIsExistProduct(true);
           setSimilarProducts(data.relatedProducts ?? []);
           setIsLoadingSimilarProducts(false);
@@ -386,7 +386,7 @@ export default function Page() {
                         />
                       )}
 
-                      <p className="text-5.5 text-white">
+                      <span className="text-5.5 text-white">
                         {isAddingToCart ? (
                           <div className="flex items-center gap-2">
                             <div className="w-3 h-3 rounded-full bg-white animate-pulse delay-[0ms]"></div>
@@ -396,7 +396,7 @@ export default function Page() {
                         ) : (
                           "افزودن به سبد خرید"
                         )}
-                      </p>
+                      </span>
                     </button>
                   </div>
                 </div>

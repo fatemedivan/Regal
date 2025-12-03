@@ -36,7 +36,7 @@ export type SingleProductWithIncludes = Prisma.ProductGetPayload<{
     productSizes: {
       select: { id: true; size: { select: { name: true } } };
     };
-    images: { select: { imageUrl: true } };
+    images: { select: { imageUrl: true; id: true } };
     likes: { select: { userId: true } };
   };
 }>;

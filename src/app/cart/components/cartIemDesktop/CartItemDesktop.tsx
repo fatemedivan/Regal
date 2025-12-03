@@ -35,7 +35,7 @@ export default function CartItemDesktop({
             </p>
             {item.productSize && (
               <p className="text-sm leading-6 text-neutral-gray-10">
-                سایز: {item.productSize.name}
+                سایز: {item.productSize.size.name}
               </p>
             )}
             {item.productColor && (
@@ -43,7 +43,7 @@ export default function CartItemDesktop({
                 <p className="text-sm leading-6 text-neutral-gray-10">رنگ:</p>
                 <div
                   style={{
-                    backgroundColor: item.productColor.hexCode,
+                    backgroundColor: item.productColor.color.hexCode,
                   }}
                   className="w-5 h-5 rounded-sm"
                 ></div>

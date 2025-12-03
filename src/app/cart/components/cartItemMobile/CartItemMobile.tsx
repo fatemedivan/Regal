@@ -28,7 +28,7 @@ export default function CartItemMobile({
         <div className="flex items-center gap-4 my-3.75">
           {item.productSize && (
             <p className="text-xs leading-4.5 text-neutral-gray-9">
-              سایز: {item.productSize.name}
+              سایز: {item.productSize.size.name}
             </p>
           )}
           {item.productColor && (
@@ -36,7 +36,7 @@ export default function CartItemMobile({
               <p className="text-xs leading-4.5 text-neutral-gray-9">رنگ:</p>
               <div
                 style={{
-                  backgroundColor: item.productColor.hexCode,
+                  backgroundColor: item.productColor.color.hexCode,
                 }}
                 className="w-5 h-5 rounded-sm"
               ></div>

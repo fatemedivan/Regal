@@ -28,17 +28,17 @@ export async function GET(request: NextRequest) {
           productColors: {
             select: {
               id: true,
-              color: { select: {id:true, hexCode: true, name: true } },
+              color: { select: { id: true, hexCode: true, name: true } },
             },
           },
           productSizes: {
             select: {
               id: true,
-              size: { select: {id:true, name: true } },
+              size: { select: { id: true, name: true } },
             },
           },
           images: {
-            select: { imageUrl: true },
+            select: { id: true, imageUrl: true },
             orderBy: { createdAt: "asc" },
           },
           likes: userId
@@ -75,7 +75,7 @@ export async function GET(request: NextRequest) {
             },
           },
           images: {
-            select: { imageUrl: true },
+            select: { id: true, imageUrl: true },
             orderBy: { createdAt: "asc" },
           },
 
@@ -149,7 +149,11 @@ export async function GET(request: NextRequest) {
         id: ps.id,
         name: ps.size.name,
       })),
-      images: product.images.map((img) => img.imageUrl),
+      images: product.images.map((img) => ({
+        id: img.id,
+        imageUrl: img.imageUrl,
+      })),
+
       isLiked: product.likes.length > 0,
       createdAt: product.createdAt,
       updatedAt: product.updatedAt,

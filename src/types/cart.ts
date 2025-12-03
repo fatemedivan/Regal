@@ -1,5 +1,19 @@
-import { Product, ProductColor, ProductSize } from "./product";
+import { Product } from "./product";
 
+type ProductColor = {
+  id: string
+  color:{
+    id:string
+    hexCode: string
+  }
+}
+type ProductSize = {
+  id: string
+  size:{
+    id:string
+    name: string
+  }
+}
 export interface CartItem {
   id: string;
   cartId: string;

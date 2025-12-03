@@ -1,26 +1,44 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import dayjs from "dayjs";
-import jalali from "jalali-dayjs";
-import "dayjs/locale/fa";
 import { DateModalProps } from "./types";
 
 export default function DateModal({
   handleCloseModal,
   setMainDate,
 }: DateModalProps) {
-  dayjs.extend(jalali);
-  dayjs.locale("fa");
   const [dates, setDates] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
 
   useEffect(() => {
-    const today = dayjs();
-    const futureDates = Array.from({ length: 3 }, (_, i) =>
-      today.add(i, "day")
-    );
+    const weekdays = [
+      "یکشنبه",
+      "دوشنبه",
+      "سه‌شنبه",
+      "چهارشنبه",
+      "پنج‌شنبه",
+      "جمعه",
+      "شنبه",
+    ];
+    const futureDates = [];
+
+    for (let i = 0; i < 3; i++) {
+      const today = new Date();
+      today.setDate(today.getDate() + i);
+
+      const formatter = new Intl.DateTimeFormat("fa-IR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+      const dateStr = formatter.format(today);
+      const weekday = weekdays[today.getDay()];
+
+      futureDates.push({ date: today, formatted: `${weekday} ${dateStr}` });
+    }
+
     setDates(futureDates);
   }, []);
+
   return (
     <>
       <div
@@ -40,19 +58,17 @@ export default function DateModal({
           />
         </div>
         <div>
-          {dates.map((date, index) => (
+          {dates.map((item, index) => (
             <div
               key={index}
-              onClick={() => setSelectedDate(date)}
+              onClick={() => setSelectedDate(item)}
               className={`flex items-center justify-between border-b border-neutral-gray-4 pb-4 mb-4 cursor-pointer ${
-                selectedDate?.isSame(date, "day")
+                selectedDate?.date.getTime() === item.date.getTime()
                   ? "text-cognac-primery font-bold"
                   : "text-neutral-gray-6"
               }`}
             >
-              <p className="text-sm leading-5">
-                {date.format("dddd D MMMM YYYY")}
-              </p>
+              <p className="text-sm leading-5">{item.formatted}</p>
             </div>
           ))}
 
@@ -60,9 +76,9 @@ export default function DateModal({
             <button
               onClick={() => {
                 if (selectedDate) {
-                  const formattedDate = selectedDate.format("dddd D MMMM YYYY");
-                  setMainDate(formattedDate);
+                  setMainDate(selectedDate.formatted);
                 }
+
                 handleCloseModal();
               }}
               className="text-white rounded-lg bg-cognac-primery py-3.25 px-30 cursor-pointer"

@@ -4,10 +4,6 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import dayjs from "dayjs";
-import jalali from "jalali-dayjs";
-import "dayjs/locale/fa";
-
 import AdressCard from "../../components/adressCard/AdressCard";
 import BasketDetailsCard from "@/components/basketDetailsCard/BasketDetailsCard";
 import DateModal from "@/app/complete-data/components/dateModal/DateModal";
@@ -25,8 +21,7 @@ export default function Page() {
   const [isShowDateModal, setIsShowDateModal] = useState(false);
   const [mainDate, setMainDate] = useState("");
   const [date, setDate] = useState([]);
-  dayjs.extend(jalali);
-  dayjs.locale("fa");
+
   const getNextNDays = (n = 4) => {
     const days = [];
     const weekdays = [
@@ -40,10 +35,18 @@ export default function Page() {
     ];
 
     for (let i = 0; i < n; i++) {
-      const date = dayjs().add(i, "day");
-      const weekday = weekdays[date.day()];
-      const fullDate = `${weekday} ${date.format("D MMMM YYYY")}`;
-      days.push(fullDate);
+      const today = new Date();
+      today.setDate(today.getDate() + i);
+
+      const formatter = new Intl.DateTimeFormat("fa-IR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+      const dateStr = formatter.format(today);
+
+      const weekday = weekdays[today.getDay()];
+      days.push(`${weekday} ${dateStr}`);
     }
 
     return days;

@@ -2,7 +2,7 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import ProgressBarProfile from "./ProgressBarProfile";
-import moment from "jalali-moment";
+
 import { Formatter } from "@/utils/moneyFormatter";
 import { OrderDetailsCard } from "./types";
 
@@ -20,7 +20,32 @@ export default function OrderDetailsCardDesktop({
 
   const formatJalaliDateTime = (isoString) => {
     if (!isoString) return "";
-    return moment(isoString).locale("fa").format("dddd D MMMM HH:mm");
+
+    const weekdays = [
+      "یکشنبه",
+      "دوشنبه",
+      "سه‌شنبه",
+      "چهارشنبه",
+      "پنج‌شنبه",
+      "جمعه",
+      "شنبه",
+    ];
+    const date = new Date(isoString);
+
+    if (typeof window === "undefined") return "";
+
+    const formatter = new Intl.DateTimeFormat("fa-IR", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    const dateStr = formatter.format(date);
+    const weekday = weekdays[date.getDay()];
+
+    return `${weekday} ${dateStr}`;
   };
 
   // تابع برای ترجمه وضعیت سفارش

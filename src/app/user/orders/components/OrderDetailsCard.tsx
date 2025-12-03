@@ -2,7 +2,6 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import ProgressBarProfile from "./ProgressBarProfile";
-import moment from "jalali-moment";
 import OrderDetailsModal from "./OrderDetailsModal";
 
 export default function OrderDetailsCard({
@@ -20,7 +19,32 @@ export default function OrderDetailsCard({
 
   const formatJalaliDateTime = (isoString) => {
     if (!isoString) return "";
-    return moment(isoString).locale("fa").format("dddd D MMMM HH:mm");
+
+    if (typeof window === "undefined") return "";
+
+    const weekdays = [
+      "یکشنبه",
+      "دوشنبه",
+      "سه‌شنبه",
+      "چهارشنبه",
+      "پنج‌شنبه",
+      "جمعه",
+      "شنبه",
+    ];
+    const date = new Date(isoString);
+
+    const formatter = new Intl.DateTimeFormat("fa-IR", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    const dateStr = formatter.format(date);
+    const weekday = weekdays[date.getDay()];
+
+    return `${weekday} ${dateStr}`;
   };
 
   const translateStatus = (statusKey) => {

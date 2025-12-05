@@ -47,7 +47,15 @@ export default function OrderDetailsCard({
     return `${weekday} ${dateStr}`;
   };
 
-  const translateStatus = (statusKey) => {
+  const translateStatus = (
+    statusKey:
+      | "pending"
+      | "processing"
+      | "shipped"
+      | "delivered"
+      | "cancelled"
+      | "returned"
+  ) => {
     switch (statusKey) {
       case "pending":
         return "در حال بررسی";
@@ -67,7 +75,7 @@ export default function OrderDetailsCard({
   };
 
   // تابع برای ترجمه روش تحویل
-  const translateDeliveryMethod = (methodKey) => {
+  const translateDeliveryMethod = (methodKey: "pickup" | "delivery") => {
     switch (methodKey) {
       case "pickup":
         return "تحویل حضوری در فروشگاه";

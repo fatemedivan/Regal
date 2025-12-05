@@ -34,6 +34,6 @@ export interface SimilarProduct {
   price: number;
   offPercent: number;
   isLiked: boolean;
-  colors: ProductColor[];
-  sizes: ProductSize[];
+  productColors: ProductColor[];
+  productSizes: ProductSize[];
 }

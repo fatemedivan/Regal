@@ -215,17 +215,17 @@ export default function Page() {
                 <HashLoader color="#b19276" size={80} />
               </div>
             ) : (
-              <div className="lg:flex gap-6 my-12">
-                <div className="flex flex-col gap-4 lg:flex-row-reverse lg:gap-6">
+              <div className="lg:flex justify-center gap-6 my-12">
+                <div className="flex flex-col items-center lg:items-start gap-4 lg:flex-row-reverse lg:gap-6">
                   <div className="mt-6 lg:my-0">
                     {product.images && (
                       <Image
                         quality={100}
                         width={350}
-                        height={525}
+                        height={353}
                         src={currentImgSrc}
                         alt={product.name || "Product Image"}
-                        className="lg:max-w-136.5 lg:max-h-131.25"
+                        className="h-88.5 object-cover rounded-xl lg:w-136.5 lg:h-138"
                       />
                     )}
                   </div>
@@ -240,12 +240,21 @@ export default function Page() {
                         quality={100}
                         alt="Product thumbnail"
                         onClick={() => setCurrentImgSrc(img.imageUrl)}
-                        className="rounded-lg cursor-pointer"
+                        className="rounded-lg cursor-pointer max-h-16 object-cover"
                       />
                     ))}
+                    {product.images.length < 5 &&
+                      Array(5 - product.images.length)
+                        .fill(0)
+                        .map((_, i) => (
+                          <div
+                            key={i}
+                            className="w-16 h-16 rounded-lg bg-neutral-200"
+                          ></div>
+                        ))}
                   </div>
 
-                  <div className="hidden lg:flex w-max flex-col gap-6 mb-6">
+                  <div className="hidden lg:flex w-max flex-col gap-8 mb-6">
                     {product.images?.map((img) => (
                       <Image
                         key={img.id}
@@ -255,9 +264,18 @@ export default function Page() {
                         quality={100}
                         alt="Product thumbnail"
                         onClick={() => setCurrentImgSrc(img.imageUrl)}
-                        className="rounded-lg cursor-pointer"
+                        className="rounded-lg cursor-pointer object-cover lg:w-22.5 lg:max-h-21"
                       />
                     ))}
+                    {product.images.length < 5 &&
+                      Array(5 - product.images.length)
+                        .fill(0)
+                        .map((_, i) => (
+                          <div
+                            key={i}
+                            className="w-22.5 h-21 rounded-lg bg-neutral-200"
+                          ></div>
+                        ))}
                   </div>
                 </div>
 
@@ -403,7 +421,7 @@ export default function Page() {
               </div>
             )}
 
-            {similarProducts.length !== 0 && (
+            {similarProducts && similarProducts.length !== 0 && (
               <div className="mb-16">
                 <div className="mb-6 flex justify-between items-center lg:mb-10">
                   <h5 className="font-semibold leading-5 lg:text-30 lg:bold lg:leading-9.5">
@@ -452,7 +470,9 @@ export default function Page() {
                               title={product.title}
                               finalPrice={product.finalPrice}
                               isMore={false}
-                              colors={product.colors.map((pc) => pc.hexCode)}
+                              colors={product.productColors.map(
+                                (pc) => pc.hexCode
+                              )}
                               id={product.id}
                             />
                           </li>

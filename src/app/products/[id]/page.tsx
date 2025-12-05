@@ -390,11 +390,20 @@ export default function Page() {
                     </div>
                   </div>
 
-                  <div>
+                  <div className="flex items-center gap-4">
+                    <button className="flex items-center text-cognac-primery border border-cognac-primery gap-2 rounded-lg h-12.5 w-40 justify-center cursor-pointer">
+                      <Image
+                        width={20}
+                        height={20}
+                        src="/img/compare.svg"
+                        alt="compare-icon"
+                      />
+                      مقایسه محصول
+                    </button>
                     <button
                       onClick={addProductToBasket}
                       disabled={isAddingToCart}
-                      className="flex items-center bg-cognac-primery gap-2 rounded-lg h-12.5 w-40 justify-center cursor-pointer"
+                      className="flex-1 flex items-center bg-cognac-primery gap-2 rounded-lg h-12.5 w-40 justify-center cursor-pointer"
                     >
                       {!isAddingToCart && (
                         <img
@@ -487,7 +496,7 @@ export default function Page() {
         </>
       ) : (
         <div className="mt-35 mb-6 mx-5 lg:mb-33.75 lg:mt-26">
-          <div className="flex justify-center items-center mb-55.5 lg:mb-8">
+          <div className="flex justify-center items-center mb-30 lg:mb-8">
             <div>
               <Image
                 width={180}

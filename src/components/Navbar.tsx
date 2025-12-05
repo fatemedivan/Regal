@@ -53,6 +53,11 @@ export default function Navbar() {
                 <p className="text-sm leading-5 cursor-pointer">صفحه اصلی</p>
               </li>
             </Link>
+            <Link href={"/products"}>
+              <li>
+                <p className="text-sm leading-5 cursor-pointer">محصولات</p>
+              </li>
+            </Link>
 
             <li
               onClick={() => {
@@ -202,6 +207,23 @@ export default function Navbar() {
                 className="flex justify-between items-center pb-4 border-b-1 border-neutral-gray-4 cursor-pointer"
               >
                 <p className="text-sm leading-5">صفحه اصلی</p>
+                <Image
+                  width={16}
+                  height={16}
+                  src="/img/arrow-left-3.svg"
+                  alt=""
+                  quality={100}
+                />
+              </div>
+            </Link>
+            <Link href={"/products"}>
+              <div
+                onClick={() => {
+                  setIsOpenMenu(false);
+                }}
+                className="flex justify-between items-center pb-4 mt-4 border-b-1 border-neutral-gray-4 cursor-pointer"
+              >
+                <p className="text-sm leading-5">محصولات</p>
                 <Image
                   width={16}
                   height={16}

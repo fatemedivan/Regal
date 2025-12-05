@@ -3,14 +3,18 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { catDesktop, catMobile } from "@/constants/category";
 import { Category } from "./types";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Categories() {
   const [data, setData] = useState<Category[]>([]);
+  const router = useRouter()
 
   useEffect(() => {
     const getCategory = async () => {
       try {
         const categoriesRes = await fetch("/api/category");
+        
         if (categoriesRes.ok) {
           const categoryDate: Category[] = await categoriesRes.json();
           setData(categoryDate);
@@ -29,9 +33,9 @@ export default function Categories() {
         {catMobile.map((column, i) => (
           <div key={i} className="flex flex-col gap-2 flex-shrink-0">
             {column.map((cat) => (
-              <div
+              <Link
                 key={cat.linkId}
-                // href={`/products?categoryId=${cat.linkId}`}
+                 href={`/products?categoryId=${cat.linkId}`}
               >
                 <div className="relative w-[40vw] max-w-[167px] h-auto">
                   <Image
@@ -58,7 +62,7 @@ export default function Categories() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         ))}
@@ -68,10 +72,10 @@ export default function Categories() {
         {catDesktop.map((cat) => (
           <div
             key={cat.linkId}
-            // onClick={() =>
-            //   router.push(`/products?categoryId=${cat.linkId}&page=1`)
-            // }
-            className={`${cat.gridClass} relative rounded-xl overflow-hidden`}
+            onClick={() =>
+              router.push(`/products?categoryId=${cat.linkId}&page=1`)
+            }
+            className={`${cat.gridClass} relative rounded-xl overflow-hidden cursor-pointer`}
           >
             <Image
               src={cat.img}

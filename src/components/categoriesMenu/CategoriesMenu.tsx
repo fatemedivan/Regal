@@ -150,7 +150,7 @@ export default function CategoriesMenu({
               <div
                 onClick={() => {
                   router.push(
-                    "/products?categoryId=2b962459-3cde-4b4a-b3d3-57a5c8f96ac4&page=1"
+                    "/products?categoryId=d3c05d42-e51f-4bd5-adc0-6c925da361bd&page=1"
                   );
                   handleCloseCategory();
                 }}
@@ -181,7 +181,7 @@ export default function CategoriesMenu({
                 <div
                   onClick={() => {
                     router.push(
-                      "/products?categoryId=c8c15ac8-20c9-4c69-81d6-12c7b3b38296&page=1"
+                      "/products?categoryId=c8c15ac8-20c9-4c69-81d6-12c7b3b3829&page=1"
                     );
                     handleCloseCategory();
                   }}

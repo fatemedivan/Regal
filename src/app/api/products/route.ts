@@ -64,7 +64,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       filter.productColors = {
         some: {
           color: {
-            hexCode: color,
+            hexCode: color.toLowerCase(),
           },
         },
       };

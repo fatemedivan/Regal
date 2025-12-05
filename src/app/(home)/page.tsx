@@ -38,7 +38,6 @@ export default async function Home() {
   } catch (error) {
     console.log(error);
   }
-  console.log("API RESULT =>", discountedProducts);
 
   return (
     <>

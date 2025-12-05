@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import FilterMenu from "../filterMenu/FilterMenu";
 import Sort from "../sort/Sort";
 import { MobileViewProductsPros } from "./types";
+import ProductSceleton from "@/components/ProductSceleton";
 
 export default function MobileViewProducts({
   totalProducts,
@@ -12,6 +13,7 @@ export default function MobileViewProducts({
   selectedSortOption,
   sortOptions,
   isPending,
+  setIsMobileLoading
 }: MobileViewProductsPros) {
   const [isOpenFilterMenu, setIsOpenFilterMenu] = useState(false);
   const [isOpenSort, setIsOpenSort] = useState(false);
@@ -47,7 +49,10 @@ export default function MobileViewProducts({
       {/* Filter Modal */}
       {isOpenFilterMenu && (
         <div className="lg:hidden fixed inset-0 bg-white z-50 overflow-y-auto">
-          <FilterMenu handleCloseFilter={() => setIsOpenFilterMenu(false)} />
+          <FilterMenu
+            setIsLoading={setIsMobileLoading}
+            handleCloseFilter={() => setIsOpenFilterMenu(false)}
+          />
         </div>
       )}
 
@@ -56,7 +61,11 @@ export default function MobileViewProducts({
         <div className="lg:hidden fixed inset-0 bg-white z-50 overflow-y-auto">
           <Sort
             selectedSortOption={
-              selectedSortOption || { id: 1, title: "جدیدترین", value: "newest" }
+              selectedSortOption || {
+                id: 1,
+                title: "جدیدترین",
+                value: "newest",
+              }
             }
             handleSortChange={(option) => {
               if (typeof handleSortChange === "function") {
@@ -86,7 +95,11 @@ export default function MobileViewProducts({
         </div>
       ) : (
         <div className="flex flex-wrap justify-center gap-4 lg:hidden">
-          {renderedProducts}
+          {isPending
+            ? Array.from({ length: 8 }).map((_, i) => (
+                <ProductSceleton key={i} />
+              ))
+            : renderedProducts}
         </div>
       )}
     </div>

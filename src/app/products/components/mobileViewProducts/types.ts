@@ -9,4 +9,5 @@ export type MobileViewProductsPros = {
   selectedSortOption: SortOption;
   sortOptions: SortOption[];
   isPending: boolean;
+  setIsMobileLoading: (v: boolean) => void;
 };

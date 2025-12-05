@@ -62,7 +62,7 @@ export const useFilterActions = (setIsLoading: (loading: boolean) => void) => {
       selectedFilters.forEach((item) => {
         if (item.type === "size") params.set("size", item.option as string);
         else if (item.type === "color")
-          params.set("color", encodeURIComponent(item.option as string));
+          params.set("color", (item.option as string).toLowerCase());
         else if (item.type === "clothes")
           params.set(
             "categoryId",

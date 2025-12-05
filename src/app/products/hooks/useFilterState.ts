@@ -76,7 +76,7 @@ export const useFilterState = (searchParamsHook: URLSearchParams) => {
       currentSelected.push({
         type: "color",
         filterTitle: "رنگ‌بندی",
-        option: decodeURIComponent(color),
+        option: color.toLowerCase(),
       });
 
     const size = searchParamsHook.get("size");

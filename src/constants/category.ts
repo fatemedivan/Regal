@@ -7,7 +7,7 @@ export const catMobile = [
       width: 167,
       wrapperClass: "h-71 relative w-41.75",
       tags: ["دخترانه", "مناسب مهمانی"],
-      linkId: "9bb293e1-285d-4a28-846f-46e8c1d55ef7",
+      linkId: "d3c05d42-e51f-4bd5-adc0-6c925da361bd",
     },
     {
       dataIndex: 1,
@@ -16,7 +16,7 @@ export const catMobile = [
       width: 167,
       wrapperClass: "h-35 relative w-41.75",
       tags: ["روزمره", "کالکشن جدید"],
-      linkId: "de29c317-6ecd-45d4-90f4-4acea4c9602d",
+      linkId: "11f86684-c7fa-4fec-9e3d-1f66b2d069bc",
     },
     {
       dataIndex: 3,
@@ -25,7 +25,7 @@ export const catMobile = [
       width: 167,
       wrapperClass: "h-50 relative w-41.75",
       tags: ["تمام فصول", "کژوال"],
-      linkId: "a7a6e495-32ec-4f61-a8b3-d8e25ce9721c",
+      linkId: "cbe0ec0e-3c2d-47bd-8722-47cf69f22d61",
     },
     {
       dataIndex: 7,
@@ -34,7 +34,7 @@ export const catMobile = [
       width: 167,
       wrapperClass: "h-51.5 relative w-41.75",
       tags: ["مجلسی", "روزمره"],
-      linkId: "87d187eb-2cf5-4875-aab1-fad320fef6fa",
+      linkId: "c8c15ac8-20c9-4c69-81d6-12c7b3b3829",
     },
   ],
   [
@@ -45,7 +45,7 @@ export const catMobile = [
       width: 167,
       wrapperClass: "h-50 relative w-41.75",
       tags: ["استایل روزمره", "رسمی"],
-      linkId: "4840fca4-41eb-4aa5-b914-7ebdb5daa21d",
+      linkId: "dad35d92-a50c-4b86-9956-72e3516b2f9a",
     },
     {
       dataIndex: 6,
@@ -54,7 +54,7 @@ export const catMobile = [
       width: 167,
       wrapperClass: "h-37.5 relative w-41.75",
       tags: ["کلاسیک", "مینیمال"],
-      linkId: "88f73d74-df71-445b-a6bc-04f4473ccbc9",
+      linkId: "81937097-70f8-44b5-919d-bcd2a003bd8e",
     },
     {
       dataIndex: 0,
@@ -63,7 +63,7 @@ export const catMobile = [
       width: 167,
       wrapperClass: "h-49 relative w-41.75",
       tags: ["تابستانه", "پاییزه"],
-      linkId: "ee54ca88-fa1a-4b3c-8331-76ef9f9990b9",
+      linkId: "cd7d78f0-3a49-4282-bc27-228664836761",
     },
     {
       dataIndex: 5,
@@ -72,7 +72,7 @@ export const catMobile = [
       width: 167,
       wrapperClass: "h-71 relative w-41.75",
       tags: ["گرم و سبک", "مدرن"],
-      linkId: "26c4629c-5eeb-410b-a28a-e0c9741d8180",
+      linkId: "44e346bd-6e28-4073-b61d-1c1baa55563b",
     },
   ],
 ];
@@ -83,7 +83,7 @@ export const catDesktop = [
     img: "/img/Category-desktop-1.png",
     gridClass: "col-span-1 row-span-6",
     tags: ["دخترانه", "مناسب مهمانی"],
-    linkId: "9bb293e1-285d-4a28-846f-46e8c1d55ef7",
+    linkId: "d3c05d42-e51f-4bd5-adc0-6c925da361bd",
 
     height: 532,
   },
@@ -92,7 +92,7 @@ export const catDesktop = [
     img: "/img/Category-desktop-2.png",
     gridClass: "col-start-2 row-span-3",
     tags: ["استایل روزمره", "رسمی"],
-    linkId: "4840fca4-41eb-4aa5-b914-7ebdb5daa21d",
+    linkId: "dad35d92-a50c-4b86-9956-72e3516b2f9a",
 
     height: 256,
   },
@@ -101,7 +101,7 @@ export const catDesktop = [
     img: "/img/Category-desktop-3.png",
     gridClass: "col-start-2 row-start-4 row-span-3",
     tags: ["روزمره", "کالکشن جدید"],
-    linkId: "de29c317-6ecd-45d4-90f4-4acea4c9602d",
+    linkId: "11f86684-c7fa-4fec-9e3d-1f66b2d069bc",
     height: 256,
   },
   {
@@ -109,7 +109,7 @@ export const catDesktop = [
     img: "/img/Category-desktop-4.png",
     gridClass: "col-start-3 row-span-2",
     tags: ["کلاسیک", "مینیمال"],
-    linkId: "88f73d74-df71-445b-a6bc-04f4473ccbc9",
+    linkId: "81937097-70f8-44b5-919d-bcd2a003bd8e",
     height: 164,
   },
   {
@@ -117,7 +117,7 @@ export const catDesktop = [
     img: "/img/Category-desktop-5.png",
     gridClass: "col-start-3 row-start-3 row-span-2",
     tags: ["تابستانه", "پاییزه"],
-    linkId: "ee54ca88-fa1a-4b3c-8331-76ef9f9990b9",
+    linkId: "cd7d78f0-3a49-4282-bc27-228664836761",
     height: 164,
   },
   {
@@ -125,7 +125,7 @@ export const catDesktop = [
     img: "/img/Category-desktop-6.png",
     gridClass: "col-start-3 row-start-5 row-span-2",
     tags: ["تمام فصول", "کژوال"],
-    linkId: "a7a6e495-32ec-4f61-a8b3-d8e25ce9721c",
+    linkId: "cbe0ec0e-3c2d-47bd-8722-47cf69f22d61",
     height: 164,
   },
   {
@@ -133,7 +133,7 @@ export const catDesktop = [
     img: "/img/Category-desktop-7.png",
     gridClass: "col-start-4 row-span-2",
     tags: ["مجلسی", "روزمره"],
-    linkId: "87d187eb-2cf5-4875-aab1-fad320fef6fa",
+    linkId: "c8c15ac8-20c9-4c69-81d6-12c7b3b3829",
     height: 164,
   },
   {
@@ -141,7 +141,7 @@ export const catDesktop = [
     img: "/img/Category-desktop-8.png",
     gridClass: "col-start-4 row-start-3 row-span-4",
     tags: ["گرم و سبک", "مدرن"],
-    linkId: "26c4629c-5eeb-410b-a28a-e0c9741d8180",
+    linkId: "44e346bd-6e28-4073-b61d-1c1baa55563b",
     height: 348,
   },
 ];

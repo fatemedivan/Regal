@@ -233,7 +233,7 @@ export default function Navbar() {
                 />
               </div>
             </Link>
-            <div
+            {/* <div
               onClick={() => {
                 setIsOpenCategory(true);
               }}
@@ -247,7 +247,7 @@ export default function Navbar() {
                 alt=""
                 quality={100}
               />
-            </div>
+            </div> */}
             <Link href={"/cart"}>
               <div
                 onClick={() => {
@@ -270,7 +270,7 @@ export default function Navbar() {
                 onClick={() => {
                   setIsOpenMenu(false);
                 }}
-                className="flex justify-between items-center pb-4 mt-4 cursor-pointer"
+                className="flex justify-between items-center mt-4 cursor-pointer"
               >
                 <p className="text-sm leading-5">درباره ما</p>
                 <Image

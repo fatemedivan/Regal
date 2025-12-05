@@ -23,6 +23,7 @@ export default function Products({
   const router = useRouter();
   const searchParamsHook = useSearchParams();
   const [isPending, startTransition] = useTransition();
+  const [isMobileLoading, setIsMobileLoading] = useState(false);
 
   const [searchValue, setSearchValue] = useState("");
   const [selectedOption, setSelectedOption] = useState(sortOptions[0]);
@@ -114,7 +115,8 @@ export default function Products({
             handleSortChange={handleSortChange}
             selectedSortOption={selectedOption}
             sortOptions={sortOptions}
-            isPending={isPending}
+            isPending={isPending || isMobileLoading}
+            setIsMobileLoading={setIsMobileLoading}
           />
 
           {/* Desktop View */}

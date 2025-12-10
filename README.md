@@ -42,17 +42,19 @@
 
 </div>
 
----
+## 🛠️ تکنولوژی‌ها
 
 <p align="center">
-  <img src="https://img.shields.io/badge/-000000?style=for-the-badge&logo=next.js&logoColor=white&label=" height="60" />
-  <img src="https://img.shields.io/badge/-3178C6?style=for-the-badge&logo=typescript&logoColor=white&label=" height="60" />
-  <img src="https://img.shields.io/badge/-0EA5E9?style=for-the-badge&logo=tailwindcss&logoColor=white&label=" height="60" />
-  <img src="https://img.shields.io/badge/-4169E1?style=for-the-badge&logo=postgresql&logoColor=white&label=" height="60" />
-  <img src="https://img.shields.io/badge/-0C344B?style=for-the-badge&logo=prisma&logoColor=white&label=" height="60" />
-  <img src="https://img.shields.io/badge/-3E67B1?style=for-the-badge&logo=zod&logoColor=white&label=" height="60" />
-  <img src="https://img.shields.io/badge/-EC5990?style=for-the-badge&logo=reacthookform&logoColor=white&label=" height="60" />
+  <img src="https://img.shields.io/badge/-Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white" height="60" />
+  <img src="https://img.shields.io/badge/-TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" height="60" />
+  <img src="https://img.shields.io/badge/-TailwindCSS-0EA5E9?style=for-the-badge&logo=tailwindcss&logoColor=white" height="60" />
+  <img src="https://img.shields.io/badge/-PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" height="60" />
+  <img src="https://img.shields.io/badge/-Prisma-0C344B?style=for-the-badge&logo=prisma&logoColor=white" height="60" />
+  <img src="https://img.shields.io/badge/-Zod-3E67B1?style=for-the-badge&logoColor=white" height="60" />
+  <img src="https://img.shields.io/badge/-ReactHookForm-EC5990?style=for-the-badge&logo=reacthookform&logoColor=white" height="60" />
 </p>
+
+---
 
 ## 📁 ساختار پروژه
 

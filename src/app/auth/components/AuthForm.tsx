@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { AuthFormProps } from "./types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authSchema, FormAuthValues } from "./authForm.schema";
+import Link from "next/link";
 
 export default function AuthForm({ type, onSubmit }: AuthFormProps) {
   const {
@@ -112,23 +113,23 @@ export default function AuthForm({ type, onSubmit }: AuthFormProps) {
               <div className="mt-4 text-center text-sm text-neutral-gray-7">
                 {type === "login" ? (
                   <p>
-                    حساب کاربری ندارید؟{" "}
-                    <a
+                    حساب کاربری ندارید؟
+                    <Link
                       href="/auth/register"
                       className="text-cognac-primery font-semibold hover:underline"
                     >
                       ثبت‌نام کنید
-                    </a>
+                    </Link>
                   </p>
                 ) : (
                   <p>
-                    حساب کاربری دارید؟{" "}
-                    <a
+                    حساب کاربری دارید؟
+                    <Link
                       href="/auth/login"
                       className="text-cognac-primery font-semibold hover:underline"
                     >
                       وارد شوید
-                    </a>
+                    </Link>
                   </p>
                 )}
               </div>

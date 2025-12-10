@@ -391,15 +391,6 @@ export default function Page() {
                   </div>
 
                   <div className="flex items-center gap-4">
-                    <button className="flex items-center text-cognac-primery border border-cognac-primery gap-2 rounded-lg h-12.5 w-40 justify-center cursor-pointer">
-                      <Image
-                        width={20}
-                        height={20}
-                        src="/img/compare.svg"
-                        alt="compare-icon"
-                      />
-                      مقایسه محصول
-                    </button>
                     <button
                       onClick={addProductToBasket}
                       disabled={isAddingToCart}

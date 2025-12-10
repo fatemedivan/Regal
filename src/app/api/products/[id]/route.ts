@@ -81,7 +81,7 @@ export async function GET(request: NextRequest) {
 
           likes: userId
             ? { where: { userId }, select: { userId: true } }
-            : false,
+            : undefined,
         },
         take: 4,
         orderBy: { createdAt: "desc" },

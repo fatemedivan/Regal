@@ -20,8 +20,7 @@ export default async function Page({ searchParams }) {
 
   try {
     const res = await fetch(url, {
-      headers,
-      next: { revalidate: 60 * 30 },
+      headers
     });
 
     if (res.ok) {

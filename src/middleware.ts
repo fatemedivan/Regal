@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
-const JWT_SECRET = process.env.JWT_SECRET!;
 
 export function middleware(request: NextRequest) {
   const pathName = request.nextUrl.pathname;
@@ -21,17 +19,6 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(userUrl);
   }
 
-  if (token) {
-    try {
-      jwt.verify(token, JWT_SECRET);
-    } catch (err) {
-      const response = NextResponse.redirect(
-        new URL("/auth/login", request.url)
-      );
-      response.cookies.set("token", "", { path: "/", expires: new Date(0) });
-      return response;
-    }
-  }
 
   return NextResponse.next();
 }

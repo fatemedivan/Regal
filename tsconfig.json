@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -12,14 +16,18 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "plugins": [
       {
         "name": "next"
       }
     ],
     "baseUrl": "src",
-    "paths": { "@/*": ["./*"] }
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    }
   },
   "include": [
     "next-env.d.ts",
@@ -29,7 +37,14 @@
     "src/app/payment/page.tsx",
     "src/app/products/[id]/page.tsx",
     "src/app/products/components/selectedFilterTag/SelectedFilterTags.tsx",
-    "src/app/products/components/filterMenu/FilterMenu.tsx"
-, "src/app/api/products/route.ts", "src/context/AuthContext.tsx", "src/context/BasketContext.tsx", "src/app/api/products/discounted/route.ts"  ],
-  "exclude": ["node_modules"]
+    "src/app/products/components/filterMenu/FilterMenu.tsx",
+    "src/app/api/products/route.ts",
+    "src/context/AuthContext.tsx",
+    "src/context/BasketContext.tsx",
+    "src/app/api/products/discounted/route.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

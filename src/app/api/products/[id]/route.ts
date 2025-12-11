@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
           },
           likes: userId
             ? { where: { userId }, select: { userId: true } }
-            : false,
+            : undefined,
         },
       });
 
@@ -123,7 +123,7 @@ export async function GET(request: NextRequest) {
         finalPrice: relatedProduct.discountedPrice || relatedProduct.price,
         price: relatedProduct.price,
         offPercent: offPercent,
-        isLiked: relatedProduct.likes.length > 0,
+        isLiked: (relatedProduct.likes || []).length > 0,
         productColors,
         productSizes,
       };
@@ -154,7 +154,7 @@ export async function GET(request: NextRequest) {
         imageUrl: img.imageUrl,
       })),
 
-      isLiked: product.likes.length > 0,
+      isLiked: (product.likes || []).length > 0,
       createdAt: product.createdAt,
       updatedAt: product.updatedAt,
       offPercent:

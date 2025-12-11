@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import jwt from "jsonwebtoken";
+const JWT_SECRET = process.env.JWT_SECRET!;
 
 export function middleware(request: NextRequest) {
   const pathName = request.nextUrl.pathname;
@@ -8,7 +10,7 @@ export function middleware(request: NextRequest) {
   const authPaths = ["/auth/login", "/auth/register"];
 
   const isAuthPaths = authPaths.includes(pathName);
-  const isProtectedPaths = protectedPaths.some(p=> pathName.startsWith(p));
+  const isProtectedPaths = protectedPaths.some((p) => pathName.startsWith(p));
 
   if (!token && isProtectedPaths) {
     const signUpUrl = new URL("/auth/register", request.url);
@@ -18,6 +20,19 @@ export function middleware(request: NextRequest) {
     const userUrl = new URL("/user/profile", request.url);
     return NextResponse.redirect(userUrl);
   }
+
+  if (token) {
+    try {
+      jwt.verify(token, JWT_SECRET);
+    } catch (err) {
+      const response = NextResponse.redirect(
+        new URL("/auth/login", request.url)
+      );
+      response.cookies.set("token", "", { path: "/", expires: new Date(0) });
+      return response;
+    }
+  }
+
   return NextResponse.next();
 }
 

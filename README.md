@@ -4,22 +4,7 @@
 
 **رگال | فروشگاه آنلاین فول استک پوشاک زنانه**
 
-تکنولوژی‌ها: 
-Next.js
-
-TypeScript
-
-Tailwind CSS
-
-Prisma
-
-PostgreSQL
-
-React hook form
-
-Zod
-
-Leaflet
+تکنولوژی‌ها: Next.js, TypeScript, Tailwind CSS, Prisma, PostgreSQL, React hook form, Zod, Leaflet
 
 ویژگی‌ها: معماری ماژولار، طراحی ریسپانسیو، جستجو و فیلتر هوشمند، سبد خرید پویا، پنل کاربری کامل (شامل علاقه مندی ها، آدرس ها و پیگیری سفارشات)
 

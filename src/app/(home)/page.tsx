@@ -3,18 +3,28 @@ import { cookies } from "next/headers";
 import Header from "./components/header/Header";
 import Categories from "@/app/(home)/components/categories/Categories";
 import { dynamicWithLoading } from "@/utils/dynamicWithLoading";
+import {
+  CustomizationSkeleton,
+  DiscountedProductsSkeleton,
+  KeyFeaturesSkeleton,
+  ArticlesSkeleton,
+} from "./components/HomeSkeleton";
 
 const Customization = dynamicWithLoading(
-  () => import("./components/Customization")
+  () => import("./components/Customization"),
+  CustomizationSkeleton,
 );
 const DiscountedProducts = dynamicWithLoading(
-  () => import("./components/discountedProducts/DiscountedProducts")
+  () => import("./components/discountedProducts/DiscountedProducts"),
+  DiscountedProductsSkeleton,
 );
 const KeyFeatures = dynamicWithLoading(
-  () => import("./components/KeyFeatures")
+  () => import("./components/KeyFeatures"),
+  KeyFeaturesSkeleton,
 );
 const Articles = dynamicWithLoading(
-  () => import("./components/articles/Articles")
+  () => import("./components/articles/Articles"),
+  ArticlesSkeleton,
 );
 
 export default async function Home() {

@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import Categories from "@/components/categoriesMenu/CategoriesMenu";
+import CategoriesMenu from "@/components/categoriesMenu/CategoriesMenu";
 import getToken from "@/utils/getToken";
 
 export default function Navbar() {
@@ -288,7 +288,7 @@ export default function Navbar() {
 
       {isOpenCategory && (
         <div>
-          <Categories handleCloseCategory={() => setIsOpenCategory(false)} />
+          <CategoriesMenu handleCloseCategory={() => setIsOpenCategory(false)} />
         </div>
       )}
     </>

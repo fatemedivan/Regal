@@ -89,7 +89,7 @@ export default function DiscountedProducts({
     }
   }, [discountedProducts, isLoading]);
 
-  return (
+  return discountedProducts.length ? (
     <section className="container mx-auto mt-17 mb-16 lg:mt-22">
       <div className="mx-5 mb-6 flex justify-between items-center lg:mx-12 lg:mb-10">
         <div className="flex items-center gap-2">
@@ -144,8 +144,7 @@ export default function DiscountedProducts({
                     <ProductSceleton />
                   </li>
                 ))
-              : discountedProducts &&
-                discountedProducts.map((product) => (
+              : discountedProducts.map((product) => (
                   <li key={product.id} className="glide__slide">
                     <ProductCard
                       id={product.id}
@@ -155,7 +154,7 @@ export default function DiscountedProducts({
                       price={product.price}
                       offPercent={product.offPercent}
                       isMore={false}
-                       colors={product.colors}
+                      colors={product.colors}
                       favorites={product.isLiked}
                     />
                   </li>
@@ -164,5 +163,7 @@ export default function DiscountedProducts({
         </div>
       </div>
     </section>
+  ) : (
+    <></>
   );
 }
